@@ -40,6 +40,10 @@ public class UserController {
     @PostMapping("/signup")
     public SingleResult<UserInfo> signUp(@RequestBody UserInfo userInfo){
 
+        System.out.println("깃테스트");
+        System.out.println("깃테스트");
+        System.out.println("깃테스트");
+        System.out.println("깃테스트");
         if (!userInfo.getUserEmailType().equals("user")){
             if (userService.userSnsLoginService(userInfo.getUserSnsKey()).isPresent()){
                 throw new CUserExistException();
