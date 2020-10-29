@@ -35,9 +35,8 @@ public class LoggingController {
     private final ResponseService responseService;
     private final LoggingService loggingService;
 
-
     @ApiOperation(value = "클릭 로그 조회", notes = "특정 유저의 UUID로 클릭 로그를 조회한다.")
-    @GetMapping("/clk/{uuid}/{month}")
+    @GetMapping("/clk/{uuid}")
     public ListResult<AppClkLog> getListByUserId(@ApiParam(value = "uuid",required = true,example = "4df4e39e-0f50-409f-9e81-14bf37189706")@PathVariable("uuid") UUID uuid){
 
         return responseService.getListResult(loggingService.findByUserId(uuid));
@@ -47,10 +46,7 @@ public class LoggingController {
     @PostMapping("/clk")
     public CommonResult saveClkLog(@RequestBody List<AppClkLog> clkLog){
 
-        System.out.println(clkLog.get(0).toString());
         clkLog.forEach(appClkLog -> Optional.ofNullable(loggingService.saveClkLog(appClkLog)).orElseThrow(CUserNotFoundException::new));
-
-
 
     return responseService.getSuccessResult();
 
