@@ -1,6 +1,5 @@
 package com.kctv.api.controller.v1;
 
-
 import com.kctv.api.advice.exception.CIncorrectPasswordException;
 import com.kctv.api.advice.exception.CNotFoundEmailException;
 import com.kctv.api.advice.exception.CUserExistException;
@@ -24,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+
 
 
 @Api(tags = {"00. Logging"})
@@ -51,12 +51,5 @@ public class LoggingController {
     return responseService.getSuccessResult();
 
     }
-
-
-
-
-
-
-
 
 }

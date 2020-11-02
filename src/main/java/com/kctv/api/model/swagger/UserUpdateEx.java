@@ -7,6 +7,7 @@ import org.springframework.data.cassandra.core.cql.PrimaryKeyType;
 import org.springframework.data.cassandra.core.mapping.Column;
 import org.springframework.data.cassandra.core.mapping.PrimaryKeyColumn;
 
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -21,7 +22,7 @@ public class UserUpdateEx {
     @ApiModelProperty(value = "성별",dataType = "String", example = "남")
     private String userGender;
     @ApiModelProperty(value = "디바이스 맥 주소",dataType = "String", example = "54:EC:2F:3F:71:80")
-    private String userMac;
+    private List<String> userMac;
     @ApiModelProperty(value = "사용자 별명",dataType = "String", example = "별명수정해")
     private String userNickname;
     @ApiModelProperty(value = "사용자 비밀번호",dataType = "String", example = "0694123")

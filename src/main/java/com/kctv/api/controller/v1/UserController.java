@@ -21,6 +21,7 @@ import org.springframework.web.context.request.WebRequest;
 
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Function;
 
 
 @Api(tags = {"1. User"})
@@ -40,11 +41,8 @@ public class UserController {
     @PostMapping("/signup")
     public SingleResult<UserInfo> signUp(@RequestBody UserInfo userInfo){
 
-        if (!userInfo.getUserEmailType().equals("user")){
-            if (userService.userSnsLoginService(userInfo.getUserSnsKey()).isPresent()){
-                throw new CUserExistException();
-            }
-        }
+        if (!userInfo.getUserEmailType().equals("user")&&userService.userSnsLoginService(userInfo.getUserSnsKey()).isPresent())
+            throw new COverlapSnsKey();
 
         return responseService.getSingleResult(userService.userSignUpService(userInfo));
 
@@ -63,6 +61,8 @@ public class UserController {
 
         UUID uuid = UUID.fromString(authentication.getName());
         UserInfo user = Optional.ofNullable(userService.findByUserId(uuid)).orElseThrow(CUserNotFoundException::new);
+
+
 
         return responseService.getSingleResult(user);
     }
@@ -94,8 +94,6 @@ public class UserController {
     @PostMapping("/login")
     public LoginResult<UserInfo> userLogin(@ApiParam(hidden = true)@RequestBody UserInfo loginRequest){
 
-
-        System.out.println("깃테스트");
         
         if(loginRequest.getUserEmailType().equals("user")){
             UserInfo user = userService.checkByEmail(loginRequest.getUserEmail(),loginRequest.getUserEmailType()).orElseThrow(CNotFoundEmailException::new);
@@ -121,13 +119,13 @@ public class UserController {
 
         Optional<UserInfo> user = userService.checkByEmail(email,emailType);
 
-        if (userService.checkByEmail(email,emailType).isPresent()){
-            SingleResult result = responseService.getSingleResult(user.get());
-            result.setMessage("중복된 이메일입니다.");
-            return result;
-        }else {
+        if (!user.isPresent()) {
              CommonResult result = responseService.getSuccessResult();
              result.setMessage("사용 가능한 이메일입니다.");
+            return result;
+        } else {
+            SingleResult<UserInfo> result = responseService.getSingleResult(user.get());
+            result.setMessage("중복된 이메일입니다.");
             return result;
         }
     }
@@ -138,6 +136,7 @@ public class UserController {
     })
     @GetMapping("/users")
     public ListResult<UserInfo> getAllUser(){
+
 
         return responseService.getListResult(userService.getAllUserService());
     }

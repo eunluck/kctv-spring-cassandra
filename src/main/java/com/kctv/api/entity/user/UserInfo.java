@@ -54,7 +54,7 @@ public class UserInfo implements UserDetails {
 
     @ApiModelProperty(value = "사용자 디바이스 맥 주소",dataType = "String", example = "54:EC:2F:3F:71:80")
     @Column("user_mac")
-    private String userMac;
+    private List<String> userMac;
 
     @ApiModelProperty(value = "사용자 이름",dataType = "String", example = "은행운")
     @Column("user_name")
