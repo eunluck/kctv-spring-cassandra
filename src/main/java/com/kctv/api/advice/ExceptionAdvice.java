@@ -102,6 +102,12 @@ public class ExceptionAdvice {
         return responseService.getFailResult(Integer.valueOf(getMessage("overlapSnsKey.code")), getMessage("overlapSnsKey.msg"));
     }
 
+    @ExceptionHandler(CPartnerNotFoundException.class)
+    @ResponseStatus(HttpStatus.OK)
+    public CommonResult partnerNotFound(HttpServletRequest request, CPartnerNotFoundException e) {
+        return responseService.getFailResult(Integer.valueOf(getMessage("partnerNotFound.code")), getMessage("partnerNotFound.msg"));
+    }
+
 
 
     // code정보에 해당하는 메시지를 조회합니다.

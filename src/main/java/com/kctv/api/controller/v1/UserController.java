@@ -24,7 +24,7 @@ import java.util.UUID;
 import java.util.function.Function;
 
 
-@Api(tags = {"1. User"})
+@Api(tags = {"01. User"})
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/v1")
@@ -136,6 +136,7 @@ public class UserController {
     })
     @GetMapping("/users")
     public ListResult<UserInfo> getAllUser(){
+
 
 
         return responseService.getListResult(userService.getAllUserService());
