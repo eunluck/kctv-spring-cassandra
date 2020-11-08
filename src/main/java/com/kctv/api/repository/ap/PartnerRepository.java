@@ -15,7 +15,4 @@ public interface PartnerRepository extends CassandraRepository<PartnerInfo, UUID
 
     Optional<PartnerInfo> findByPartnerId(UUID id);
 
-    @Override
-    Slice<PartnerInfo> findAll(Pageable pageable);
-
 }

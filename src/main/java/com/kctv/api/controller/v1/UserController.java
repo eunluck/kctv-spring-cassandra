@@ -9,6 +9,7 @@ import com.kctv.api.model.response.ListResult;
 import com.kctv.api.model.response.LoginResult;
 import com.kctv.api.model.response.SingleResult;
 import com.kctv.api.model.swagger.UserUpdateEx;
+import com.kctv.api.service.EmailService;
 import com.kctv.api.service.ResponseService;
 import com.kctv.api.service.UserService;
 import io.swagger.annotations.*;
@@ -24,7 +25,7 @@ import java.util.UUID;
 import java.util.function.Function;
 
 
-@Api(tags = {"01. User"})
+@Api(tags = {"01 - User API"})
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/v1")
@@ -33,6 +34,7 @@ public class UserController {
     private final JwtTokenProvider jwtTokenProvider;
     private final ResponseService responseService;
     private final UserService userService;
+    private final EmailService emailService;
 
     @ApiOperation(value = "회원가입 API", notes = "회원가입")
     @ApiImplicitParams({
@@ -41,10 +43,15 @@ public class UserController {
     @PostMapping("/signup")
     public SingleResult<UserInfo> signUp(@RequestBody UserInfo userInfo){
 
-        if (!userInfo.getUserEmailType().equals("user")&&userService.userSnsLoginService(userInfo.getUserSnsKey()).isPresent())
-            throw new COverlapSnsKey();
 
-        return responseService.getSingleResult(userService.userSignUpService(userInfo));
+        if (!userInfo.getUserEmailType().equals("user")&&userService.userSnsLoginService(userInfo.getUserSnsKey()).isPresent()){
+            throw new COverlapSnsKey();
+        }
+
+       SingleResult<UserInfo>  result = responseService.getSingleResult(userService.userSignUpService(userInfo));
+        result.setMessage("이메일로 인증 링크를 보내드렸습니다. 회원가입을 완료해주세요.");
+
+    return result;
 
     }
 
@@ -92,8 +99,7 @@ public class UserController {
 
     })
     @PostMapping("/login")
-    public LoginResult<UserInfo> userLogin(@ApiParam(hidden = true)@RequestBody UserInfo loginRequest){
-
+    public LoginResult<UserInfo> userLogin(@RequestBody UserInfo loginRequest){
         
         if(loginRequest.getUserEmailType().equals("user")){
             UserInfo user = userService.checkByEmail(loginRequest.getUserEmail(),loginRequest.getUserEmailType()).orElseThrow(CNotFoundEmailException::new);
@@ -140,6 +146,15 @@ public class UserController {
 
 
         return responseService.getListResult(userService.getAllUserService());
+    }
+
+
+    @GetMapping("/verify/{key}")
+    public CommonResult getVerify(@PathVariable("key") String key){
+
+        userService.verifyEmail(key);
+
+        return responseService.getSuccessResult();
     }
 
 

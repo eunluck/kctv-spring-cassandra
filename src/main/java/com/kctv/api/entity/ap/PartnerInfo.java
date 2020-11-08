@@ -10,6 +10,8 @@ import org.springframework.data.cassandra.core.mapping.Column;
 import org.springframework.data.cassandra.core.mapping.PrimaryKeyColumn;
 import org.springframework.data.cassandra.core.mapping.Table;
 
+import java.sql.Time;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -28,7 +30,7 @@ public class PartnerInfo {
 
     @Column("closing_time")
     @ApiModelProperty(value = "매장 마감시간",readOnly = true)
-    private String closingTime;
+    private LocalTime closingTime;
 
     @Column("business_name")
     @ApiModelProperty(value = "상호명",readOnly = true)
@@ -36,7 +38,7 @@ public class PartnerInfo {
 
     @Column("opening_time")
     @ApiModelProperty(value = "매장 오픈시간",readOnly = true)
-    private String openingTime;
+    private LocalTime openingTime;
 
     @Column("partner_address")
     @ApiModelProperty(value = "매장 주소",readOnly = true)

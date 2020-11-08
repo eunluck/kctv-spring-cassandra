@@ -39,3 +39,6 @@ overlapSnsKey:
 incorrectPassword:
   code: "-1010"
   msg: "패스워드가 틀렸습니다."
+partnerNotFound:
+  code: "-1009"
+  msg: "존재하지 않는 상호입니다."

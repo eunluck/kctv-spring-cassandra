@@ -26,7 +26,7 @@ import java.util.UUID;
 
 
 
-@Api(tags = {"00. Logging"})
+@Api(tags = {"00. Log API"})
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/v1")
