@@ -40,6 +40,9 @@ server:
 logging:
   level:
     sql: trace
+  file:
+    name: APILOG.LOG
+    path: LOGS
 application:
   appVersion: v1
 

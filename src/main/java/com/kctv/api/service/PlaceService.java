@@ -1,7 +1,7 @@
 package com.kctv.api.service;
 
 import com.kctv.api.advice.exception.CPartnerNotFoundException;
-import com.kctv.api.common.GeoOperations;
+import com.kctv.api.util.GeoOperations;
 import com.kctv.api.entity.ap.PartnerInfo;
 import com.kctv.api.entity.ap.WifiInfo;
 import com.kctv.api.repository.ap.PartnerRepository;
@@ -9,7 +9,6 @@ import com.kctv.api.repository.ap.WifiRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.awt.print.Pageable;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;

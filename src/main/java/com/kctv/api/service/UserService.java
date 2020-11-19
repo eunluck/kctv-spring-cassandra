@@ -1,14 +1,12 @@
 package com.kctv.api.service;
 
 
-import com.kctv.api.advice.exception.CNotFoundEmailException;
 import com.kctv.api.advice.exception.CUserExistException;
 import com.kctv.api.advice.exception.CUserNotFoundException;
+import com.kctv.api.util.RedisUtil;
 import com.kctv.api.entity.user.UserInfo;
 import com.kctv.api.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.autoconfigure.cache.CacheProperties;
-import org.springframework.data.cassandra.core.cql.CqlTemplate;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;

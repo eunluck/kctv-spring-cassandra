@@ -19,6 +19,7 @@ import java.util.UUID;
 @Table(value = "wifi_info")
 public class WifiInfo {
 
+
     @ApiModelProperty(value = "ap 맥주소",readOnly = true)
     @PrimaryKeyColumn(value = "ap_mac",type = PrimaryKeyType.PARTITIONED)
     private String apMac;

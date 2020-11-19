@@ -13,6 +13,7 @@ import org.springframework.data.cassandra.core.mapping.Table;
 import java.sql.Time;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Builder
@@ -53,7 +54,7 @@ public class PartnerInfo {
     private String storeType;
 
     @ApiModelProperty(value = "매장 태그",readOnly = true)
-    private List<String> tags;
+    private Set<String> tags;
 
     @ApiModelProperty(value = "매장 전화번호",readOnly = true)
     @Column("tel_number")

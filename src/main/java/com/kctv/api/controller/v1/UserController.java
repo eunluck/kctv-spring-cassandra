@@ -34,7 +34,6 @@ public class UserController {
     private final JwtTokenProvider jwtTokenProvider;
     private final ResponseService responseService;
     private final UserService userService;
-    private final EmailService emailService;
 
     @ApiOperation(value = "회원가입 API", notes = "회원가입")
     @ApiImplicitParams({
@@ -156,6 +155,8 @@ public class UserController {
 
         return responseService.getSuccessResult();
     }
+
+
 
 
 

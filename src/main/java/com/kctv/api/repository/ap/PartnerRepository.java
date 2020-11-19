@@ -15,4 +15,6 @@ public interface PartnerRepository extends CassandraRepository<PartnerInfo, UUID
 
     Optional<PartnerInfo> findByPartnerId(UUID id);
 
+    List<PartnerInfo> findByTagsContains(String input);
+
 }
