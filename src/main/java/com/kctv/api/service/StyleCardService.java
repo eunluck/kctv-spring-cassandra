@@ -24,6 +24,10 @@ public class StyleCardService {
 
 
 
+
+    public List<StyleCardInfo> getStyleCardListAllService(){
+        return styleCardRepository.findAll();
+    }
     public List<Tag> getTagListAllService (){
         return tagRepository.findAll();
     }

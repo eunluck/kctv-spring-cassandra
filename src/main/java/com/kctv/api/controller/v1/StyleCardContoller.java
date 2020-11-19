@@ -1,6 +1,7 @@
 package com.kctv.api.controller.v1;
 
 import com.kctv.api.entity.tag.StyleCardInfo;
+import com.kctv.api.model.response.ListResult;
 import com.kctv.api.model.response.SingleResult;
 import com.kctv.api.service.ResponseService;
 import com.kctv.api.service.StyleCardService;
@@ -28,11 +29,11 @@ public class StyleCardContoller {
     /* tag를 통해 작성되어 있는 style Card 목록을 가져옴*/
     @ApiOperation(value = "태그를 통해 StyleCard를 검색.", notes = "태그에 충족하는 스타일카드를 검색한다.")
     @GetMapping("/card/tags/{tag}")
-    public List<StyleCardInfo> getStyleCardList(@ApiParam(value = "검색할 태그 입력(콤마','로 구분)",defaultValue = "제주여행,따뜻한")@PathVariable("tag") String tags){
+    public ListResult<StyleCardInfo> getStyleCardList(@ApiParam(value = "검색할 태그 입력(콤마','로 구분)",defaultValue = "제주여행,따뜻한")@PathVariable("tag") String tags){
 
         List<String> tagArr = Arrays.asList(tags.split(","));
 
-        return styleCardService.getCardByTagsService(tagArr);
+        return responseService.getListResult(styleCardService.getCardByTagsService(tagArr));
 
     }
 
@@ -43,6 +44,16 @@ public class StyleCardContoller {
         return responseService.getSingleResult(styleCardService.getCardById(cardId));
 
     }
+
+
+    @ApiOperation(value = "StyleCardList", notes = "등록된 모든 카드를 조회한다.")
+    @GetMapping("/card")
+    public ListResult<StyleCardInfo> getStyleCardAll(){
+
+        return responseService.getListResult(styleCardService.getStyleCardListAllService());
+
+    }
+
 
 
     @ApiOperation(value = "태그 검색", notes = "태그 타입을 입력하여 소속된 태그들을 검색한다.")
