@@ -1,14 +1,14 @@
 package com.kctv.api.service;
 
+import com.kctv.api.advice.exception.CPartnerNotFoundException;
 import com.kctv.api.entity.tag.StyleCardByTags;
 import com.kctv.api.entity.tag.StyleCardInfo;
 import com.kctv.api.entity.tag.Tag;
 import com.kctv.api.repository.card.StyleByTagsRepository;
 import com.kctv.api.repository.card.StyleCardRepository;
 import com.kctv.api.repository.card.TagRepository;
-import com.kctv.api.util.MapUtill;
+import com.kctv.api.util.sorting.SortingTagsUtiil;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -22,18 +22,35 @@ public class StyleCardService {
     private final StyleByTagsRepository styleByTagsRepository;
     private final TagRepository tagRepository;
 
-    public List<String> getTagList (String search){
 
 
-        List<Tag> tagList = tagRepository.findByTagType(search);
+    public List<Tag> getTagListAllService (){
+        return tagRepository.findAll();
+    }
+    public List<Tag> getTagList (String search){
 
 
+        return tagRepository.findByTagType(search);
+    }
 
-        return null;
+    public StyleCardInfo getCardById (UUID uuid){
+
+        return styleCardRepository.findByCardId(uuid).orElseThrow(CPartnerNotFoundException::new);
     }
 
     public List<StyleCardInfo> getCardByTagsService(List<String> tags){
 
+
+        List<StyleCardByTags> result = styleByTagsRepository.findByTagIn(tags); //태그를 조건으로 StyleCard를 검색
+        List<UUID> uuidList = SortingTagsUtiil.duplicationMappingList(result);  //검색된 카드의 태그가 중복되는 갯수 순서로 내림차순 정렬
+
+
+        List<StyleCardInfo> styleCardInfos = styleCardRepository.findByCardIdIn(uuidList);  // 위 태그에 충족되는 카드들을 UUID를 통해 조회
+        return SortingTagsUtiil.SortingToList(styleCardInfos,uuidList); // 중복되는 순서로 내림차순 정렬
+
+
+
+/*
         List<StyleCardByTags> result = styleByTagsRepository.findByTagIn(tags);
 
         ArrayList<UUID> idArr = new ArrayList<>();
@@ -64,14 +81,11 @@ public class StyleCardService {
         } else {
             return new ArrayList<StyleCardInfo>();
         }
-
-
-
-
-
-
+*/
 
     }
+
+
 
 
 

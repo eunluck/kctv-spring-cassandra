@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.awt.print.Pageable;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -50,6 +51,18 @@ public class PlaceController {
     public SingleResult<PartnerInfo> getPlaceById(@ApiParam(value = "검색할 가게 ID",defaultValue = "b3dc4146-2827-47c0-bbc8-9fe350d4134e")@PathVariable("id")UUID uuid){
 
     return responseService.getSingleResult(placeService.getPartnerByIdService(uuid).orElseThrow(CPartnerNotFoundException::new));
+
+    }
+
+    @ApiOperation(value = "태그에 충족되는 가게 검색", notes = "태그에 충족되는 가게를 조회한다.(태그가 많이 충족되는 순서로 내림차순)")
+    @GetMapping("/place/tags/{tags}")
+    public ListResult<PartnerInfo> getPlaceByTags(@ApiParam(value = "검색할 태그(','로 구분.))",defaultValue = "건강,따뜻한,제주생활")@PathVariable("tags")String tags){
+
+
+        List<String> tagArr = Arrays.asList(tags.split(","));
+
+
+        return responseService.getListResult(placeService.getPartnerInfoListByTagsService(tagArr));
 
     }
 

@@ -7,6 +7,7 @@ import org.springframework.data.cassandra.repository.CassandraRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
@@ -15,6 +16,8 @@ public interface StyleCardRepository extends CassandraRepository<StyleCardInfo, 
 
 
     List<StyleCardInfo> findByCardIdIn(List<UUID> cardId);
+
+    Optional<StyleCardInfo> findByCardId(UUID cardId);
 
 
 

@@ -148,6 +148,7 @@ public class UserController {
     }
 
 
+    @ApiOperation(value = "이메일인증 테스트 API", notes = "인증메일을 보내고 인증키를 서버에 저장한다.")
     @GetMapping("/verify/{key}")
     public CommonResult getVerify(@PathVariable("key") String key){
 
