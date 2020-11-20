@@ -3,6 +3,8 @@ package com.kctv.api.service;
 
 import com.kctv.api.advice.exception.CUserExistException;
 import com.kctv.api.advice.exception.CUserNotFoundException;
+import com.kctv.api.entity.user.UserInterestTag;
+import com.kctv.api.repository.user.UserInterestTagRepository;
 import com.kctv.api.util.RedisUtil;
 import com.kctv.api.entity.user.UserInfo;
 import com.kctv.api.repository.user.UserRepository;
@@ -20,6 +22,7 @@ public class UserService implements UserDetailsService {
     private final RedisUtil redisUtil;
     private final UserRepository userRepository;
     private final EmailService emailService;
+    private final UserInterestTagRepository userInterestTagRepository;
     private final String EMAIL_LINK = "http://localhost:8081/v1/user/verify";
 
     public UserInfo findByUserId(UUID uuid){
@@ -103,6 +106,17 @@ public class UserService implements UserDetailsService {
        userBefore.setUserPhone(userInfo.getUserPhone());
 
         return userRepository.save(userBefore);
+    }
+
+    public UserInterestTag userInterestTagService(UserInterestTag userTags){
+        return userInterestTagRepository.save(userTags).orElseThrow(CUserNotFoundException::new);
+    }
+
+    public UserInterestTag getUserInterestTag(UUID uuid){
+
+        UserInterestTag userTag = userInterestTagRepository.findByUserId(uuid).orElseThrow(CUserNotFoundException::new);
+
+        return userTag;
     }
 
     @Override

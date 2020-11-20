@@ -1,9 +1,12 @@
 package com.kctv.api.controller.v1;
 
 
+import com.google.common.collect.Sets;
 import com.kctv.api.advice.exception.*;
 import com.kctv.api.config.security.JwtTokenProvider;
+import com.kctv.api.entity.tag.Tag;
 import com.kctv.api.entity.user.UserInfo;
+import com.kctv.api.entity.user.UserInterestTag;
 import com.kctv.api.model.response.CommonResult;
 import com.kctv.api.model.response.ListResult;
 import com.kctv.api.model.response.LoginResult;
@@ -20,7 +23,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.WebRequest;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 import java.util.function.Function;
 
@@ -156,6 +161,20 @@ public class UserController {
 
         return responseService.getSuccessResult();
     }
+
+    @ApiOperation(value = "계정에 태그 등록", notes = "token을 통해 계정에 관심사(태그)들을 추가한다.")
+    @PostMapping("/user/tag")
+    public CommonResult userInterestCreateTags(@RequestBody List<Tag> tags){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        UUID userId = UUID.fromString(authentication.getName());
+
+        UserInterestTag saveUser = UserInterestTag.builder().userId(userId).tags(Sets.newHashSet(tags)).build();
+        userService.userInterestTagService(saveUser);
+
+        return responseService.getSuccessResult();
+    }
+
 
 
 

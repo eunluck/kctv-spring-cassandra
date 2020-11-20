@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="AutoImportSettings">
-    <option name="autoReloadType" value="SELECTIVE" />
-  </component>
   <component name="BranchesTreeState">
     <expand>
       <path>
@@ -32,10 +29,22 @@
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d27f99c3-2019-41d6-b9bb-22734cca2a54" name="Default Changelist" comment="styleCard API, PlaceAPI, TagAPI 다수 추가">
+    <list default="true" id="d27f99c3-2019-41d6-b9bb-22734cca2a54" name="Default Changelist" comment="All StyleCard List API 추가">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/controller/v1/TagController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/user/UserInterestTag.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/repository/user/UserInterestTagRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/kctv-spring-cassandra.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/kctv-spring-cassandra.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/controller/v1/StyleCardContoller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/controller/v1/StyleCardContoller.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/controller/v1/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/controller/v1/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/repository/card/TagRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/repository/card/TagRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/service/StyleCardService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/service/StyleCardService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/service/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/i18n/exception_ko.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/i18n/exception_ko.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/kctv/api/controller/v1/LoggingController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/kctv/api/controller/v1/LoggingController.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -114,27 +123,17 @@
     <property name="aspect.path.notification.shown" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../prgrms-web-bjs-7" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="project.structure.last.edited" value="Problems" />
+    <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+    <property name="settings.editor.selected.configurable" value="reference.projectsettings.compiler.javacompiler" />
   </component>
   <component name="ReactorSettings">
     <option name="notificationShown" value="true" />
   </component>
   <component name="RecentsManager">
-    <key name="CreateClassDialog.RecentsKey">
-      <recent name="com.kctv.api.repository.user" />
-    </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
       <recent name="com.kctv.api.controller" />
-    </key>
-    <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="com.kctv.api.repository.partner" />
-      <recent name="com.kctv.api.repository.card" />
-      <recent name="com.kctv.api.repository.ap" />
-      <recent name="com.kctv.api.advice.exception" />
-      <recent name="com.kctv.api.common" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Bruno\IdeaProjects\kctv-spring-cassandra\src\main\resources" />
@@ -142,6 +141,16 @@
       <recent name="C:\Users\Bruno\IdeaProjects\kctv-spring-cassandra\src\main\resources\static" />
       <recent name="C:\Users\Bruno\IdeaProjects\kctv-spring-cassandra\src\main\java\com\kctv\api\advice" />
       <recent name="C:\Users\Bruno\IdeaProjects\kctv-spring-cassandra\src\main\java\com\kctv\api\model\response" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.kctv.api.repository.user" />
+      <recent name="com.kctv.api.repository.partner" />
+      <recent name="com.kctv.api.repository.card" />
+      <recent name="com.kctv.api.repository.ap" />
+      <recent name="com.kctv.api.advice.exception" />
+    </key>
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="com.kctv.api.repository.user" />
     </key>
   </component>
   <component name="RunManager" selected="Application.KctvSpringCassandraApplication">
@@ -176,9 +185,10 @@
     </configuration>
     <list>
       <item itemvalue="Application.KctvSpringCassandraApplication" />
+      <item itemvalue="Spring Boot.KctvSpringCassandraApplication" />
     </list>
   </component>
-  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="SpellCheckerSettings" BundledDictionaries="0" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" Dictionaries="0" CorrectionsLimit="5" DefaultDictionary="application-level" UseSingleDictionary="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -235,6 +245,7 @@
       <workItem from="1605578995654" duration="531000" />
       <workItem from="1605580260625" duration="629000" />
       <workItem from="1605753564112" duration="1002000" />
+      <workItem from="1605834353408" duration="18794000" />
     </task>
     <task id="LOCAL-00001" summary="커밋">
       <created>1603958598568</created>
@@ -271,7 +282,14 @@
       <option name="project" value="LOCAL" />
       <updated>1605775006071</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="All StyleCard List API 추가">
+      <created>1605776625705</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1605776625705</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -309,7 +327,8 @@
     <MESSAGE value="partner 추가 commit" />
     <MESSAGE value="styleCard 태그 검색, 카드검색, 위치기반 가맹점검색 API 추가" />
     <MESSAGE value="styleCard API, PlaceAPI, TagAPI 다수 추가" />
-    <option name="LAST_COMMIT_MESSAGE" value="styleCard API, PlaceAPI, TagAPI 다수 추가" />
+    <MESSAGE value="All StyleCard List API 추가" />
+    <option name="LAST_COMMIT_MESSAGE" value="All StyleCard List API 추가" />
   </component>
   <component name="WindowStateProjectService">
     <state x="872" y="341" key="#Plugins" timestamp="1605759230293">
@@ -375,12 +394,12 @@
       <screen x="2560" y="100" width="1920" height="1040" />
     </state>
     <state x="3686" y="353" key="EnvironmentVariablesDialog/2560.100.1920.1040/0.0.2560.1400@2560.100.1920.1040" timestamp="1605578811565" />
-    <state x="1060" y="454" key="FileChooserDialogImpl" timestamp="1605588328758">
-      <screen x="0" y="0" width="2560" height="1400" />
+    <state x="3355" y="437" key="FileChooserDialogImpl" timestamp="1605851466097">
+      <screen x="2560" y="100" width="1920" height="1040" />
     </state>
     <state x="852" y="605" key="FileChooserDialogImpl/0.0.2560.1400/2560.100.1920.1040@0.0.2560.1400" timestamp="1604286420853" />
     <state x="1060" y="454" key="FileChooserDialogImpl/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1605588328758" />
-    <state x="3355" y="437" key="FileChooserDialogImpl/2560.100.1920.1040/0.0.2560.1400@2560.100.1920.1040" timestamp="1604382096253" />
+    <state x="3355" y="437" key="FileChooserDialogImpl/2560.100.1920.1040/0.0.2560.1400@2560.100.1920.1040" timestamp="1605851466097" />
     <state x="1101" y="601" key="Github.CreateGistDialog" timestamp="1603784693106">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
@@ -393,40 +412,40 @@
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state x="994" y="404" key="Github.UntrackedFilesDialog/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1603955429128" />
-    <state width="2517" height="272" key="GridCell.Tab.0.bottom" timestamp="1605775170089">
+    <state width="2517" height="272" key="GridCell.Tab.0.bottom" timestamp="1605779730879">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state width="1877" height="521" key="GridCell.Tab.0.bottom/-2496.0.1664.1082/2560.101.1920.1040/0.0.2560.1400@2560.101.1920.1040" timestamp="1603350941003" />
     <state width="1621" height="375" key="GridCell.Tab.0.bottom/0.0.1664.1069@0.0.1664.1069" timestamp="1605353513161" />
     <state width="2517" height="141" key="GridCell.Tab.0.bottom/0.0.2560.1400/2560.100.1920.1040@0.0.2560.1400" timestamp="1602496865752" />
-    <state width="2517" height="272" key="GridCell.Tab.0.bottom/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1605775170089" />
+    <state width="2517" height="272" key="GridCell.Tab.0.bottom/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1605779730879" />
     <state width="1877" height="272" key="GridCell.Tab.0.bottom/2560.100.1920.1040/0.0.2560.1400@2560.100.1920.1040" timestamp="1605601280919" />
     <state width="2517" height="521" key="GridCell.Tab.0.bottom/2560.101.1920.1040/-2496.0.1664.1069/0.0.2560.1400@0.0.2560.1400" timestamp="1603340673894" />
-    <state width="2517" height="272" key="GridCell.Tab.0.center" timestamp="1605775170088">
+    <state width="2517" height="272" key="GridCell.Tab.0.center" timestamp="1605779730879">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state width="1877" height="521" key="GridCell.Tab.0.center/-2496.0.1664.1082/2560.101.1920.1040/0.0.2560.1400@2560.101.1920.1040" timestamp="1603350941003" />
     <state width="1621" height="375" key="GridCell.Tab.0.center/0.0.1664.1069@0.0.1664.1069" timestamp="1605353513161" />
     <state width="2517" height="141" key="GridCell.Tab.0.center/0.0.2560.1400/2560.100.1920.1040@0.0.2560.1400" timestamp="1602496865751" />
-    <state width="2517" height="272" key="GridCell.Tab.0.center/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1605775170088" />
+    <state width="2517" height="272" key="GridCell.Tab.0.center/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1605779730879" />
     <state width="1877" height="272" key="GridCell.Tab.0.center/2560.100.1920.1040/0.0.2560.1400@2560.100.1920.1040" timestamp="1605601280919" />
     <state width="2517" height="521" key="GridCell.Tab.0.center/2560.101.1920.1040/-2496.0.1664.1069/0.0.2560.1400@0.0.2560.1400" timestamp="1603340673893" />
-    <state width="2517" height="272" key="GridCell.Tab.0.left" timestamp="1605775170088">
+    <state width="2517" height="272" key="GridCell.Tab.0.left" timestamp="1605779730879">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state width="1877" height="521" key="GridCell.Tab.0.left/-2496.0.1664.1082/2560.101.1920.1040/0.0.2560.1400@2560.101.1920.1040" timestamp="1603350941003" />
     <state width="1621" height="375" key="GridCell.Tab.0.left/0.0.1664.1069@0.0.1664.1069" timestamp="1605353513161" />
     <state width="2517" height="141" key="GridCell.Tab.0.left/0.0.2560.1400/2560.100.1920.1040@0.0.2560.1400" timestamp="1602496865751" />
-    <state width="2517" height="272" key="GridCell.Tab.0.left/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1605775170088" />
+    <state width="2517" height="272" key="GridCell.Tab.0.left/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1605779730879" />
     <state width="1877" height="272" key="GridCell.Tab.0.left/2560.100.1920.1040/0.0.2560.1400@2560.100.1920.1040" timestamp="1605601280919" />
     <state width="2517" height="521" key="GridCell.Tab.0.left/2560.101.1920.1040/-2496.0.1664.1069/0.0.2560.1400@0.0.2560.1400" timestamp="1603340673893" />
-    <state width="2517" height="272" key="GridCell.Tab.0.right" timestamp="1605775170089">
+    <state width="2517" height="272" key="GridCell.Tab.0.right" timestamp="1605779730879">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state width="1877" height="521" key="GridCell.Tab.0.right/-2496.0.1664.1082/2560.101.1920.1040/0.0.2560.1400@2560.101.1920.1040" timestamp="1603350941003" />
     <state width="1621" height="375" key="GridCell.Tab.0.right/0.0.1664.1069@0.0.1664.1069" timestamp="1605353513161" />
     <state width="2517" height="141" key="GridCell.Tab.0.right/0.0.2560.1400/2560.100.1920.1040@0.0.2560.1400" timestamp="1602496865751" />
-    <state width="2517" height="272" key="GridCell.Tab.0.right/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1605775170089" />
+    <state width="2517" height="272" key="GridCell.Tab.0.right/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1605779730879" />
     <state width="1877" height="272" key="GridCell.Tab.0.right/2560.100.1920.1040/0.0.2560.1400@2560.100.1920.1040" timestamp="1605601280919" />
     <state width="2517" height="521" key="GridCell.Tab.0.right/2560.101.1920.1040/-2496.0.1664.1069/0.0.2560.1400@0.0.2560.1400" timestamp="1603340673894" />
     <state width="1877" height="348" key="GridCell.Tab.1.bottom" timestamp="1605262729547">
@@ -485,13 +504,13 @@
     </state>
     <state width="2517" height="492" key="GridCell.Tab.2.right/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1603785359807" />
     <state width="1877" height="348" key="GridCell.Tab.2.right/2560.100.1920.1040/0.0.2560.1400@2560.100.1920.1040" timestamp="1605262729547" />
-    <state x="1227" y="366" key="SettingsEditor" timestamp="1605579701189">
+    <state x="1227" y="366" key="SettingsEditor" timestamp="1605851541078">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state x="494" y="194" key="SettingsEditor/0.0.1664.1069@0.0.1664.1069" timestamp="1605452971956" />
     <state x="760" y="274" key="SettingsEditor/0.0.2560.1400/2560.100.1920.1040@0.0.2560.1400" timestamp="1604282710891" />
     <state x="760" y="274" key="SettingsEditor/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1605579469243" />
-    <state x="1227" y="366" key="SettingsEditor/2560.100.1920.1040/0.0.2560.1400@2560.100.1920.1040" timestamp="1605579701189" />
+    <state x="1227" y="366" key="SettingsEditor/2560.100.1920.1040/0.0.2560.1400@2560.100.1920.1040" timestamp="1605851541078" />
     <state width="254" height="198" key="ShowFilterAction_Filter_Popup" timestamp="1603861120724">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
@@ -554,22 +573,22 @@
     </state>
     <state x="428" y="275" key="new project wizard/0.0.1664.1069@0.0.1664.1069" timestamp="1604810977204" />
     <state x="659" y="360" key="new project wizard/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1605507315431" />
-    <state x="888" y="372" key="refactoring.ChangeSignatureDialog" timestamp="1605606646440">
+    <state x="888" y="372" key="refactoring.ChangeSignatureDialog" timestamp="1605860336499">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state x="888" y="372" key="refactoring.ChangeSignatureDialog/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1605606646440" />
+    <state x="888" y="372" key="refactoring.ChangeSignatureDialog/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1605860336499" />
     <state x="3226" y="376" key="refactoring.ChangeSignatureDialog/2560.100.1920.1040/0.0.2560.1400@2560.100.1920.1040" timestamp="1605082923726" />
-    <state x="3262" y="345" key="run.anything.popup" timestamp="1605594743187">
+    <state x="3262" y="345" key="run.anything.popup" timestamp="1605849567169">
       <screen x="2560" y="100" width="1920" height="1040" />
     </state>
     <state x="608" y="252" width="672" height="677" key="run.anything.popup/0.0.1664.1069@0.0.1664.1069" timestamp="1605353859436" />
     <state x="936" y="330" key="run.anything.popup/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1603853140750" />
-    <state x="3262" y="345" key="run.anything.popup/2560.100.1920.1040/0.0.2560.1400@2560.100.1920.1040" timestamp="1605594743187" />
-    <state x="761" y="306" width="1035" height="889" key="search.everywhere.popup" timestamp="1605770447467">
+    <state x="3262" y="345" key="run.anything.popup/2560.100.1920.1040/0.0.2560.1400@2560.100.1920.1040" timestamp="1605849567169" />
+    <state x="761" y="306" width="1035" height="889" key="search.everywhere.popup" timestamp="1605855686326">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state x="495" y="233" width="672" height="678" key="search.everywhere.popup/0.0.1664.1069@0.0.1664.1069" timestamp="1602313692775" />
-    <state x="761" y="306" width="1035" height="889" key="search.everywhere.popup/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1605770447467" />
+    <state x="761" y="306" width="1035" height="889" key="search.everywhere.popup/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1605855686326" />
     <state x="3131" y="327" width="776" height="660" key="search.everywhere.popup/2560.100.1920.1040/0.0.2560.1400@2560.100.1920.1040" timestamp="1605081635859" />
     <state x="555" y="447" key="vcs.readOnlyHandler.ReadOnlyStatusDialog" timestamp="1602314239274">
       <screen x="0" y="0" width="1664" height="1069" />

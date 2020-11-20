@@ -22,7 +22,7 @@ public class StyleCardService {
     private final StyleByTagsRepository styleByTagsRepository;
     private final TagRepository tagRepository;
 
-
+//TODO 코드 중복 체크 구현,
 
 
     public List<StyleCardInfo> getStyleCardListAllService(){
@@ -31,6 +31,7 @@ public class StyleCardService {
     public List<Tag> getTagListAllService (){
         return tagRepository.findAll();
     }
+    public Optional<Tag> getTagOneService(Tag tag){return tagRepository.findByTagTypeAndTagName(tag);}
     public List<Tag> getTagList (String search){
 
 
@@ -41,6 +42,13 @@ public class StyleCardService {
 
         return styleCardRepository.findByCardId(uuid).orElseThrow(CPartnerNotFoundException::new);
     }
+
+    public Optional<Tag> createTagService(Tag tag){
+        return tagRepository.insert(tag);
+
+    }
+
+
 
     public List<StyleCardInfo> getCardByTagsService(List<String> tags){
 
