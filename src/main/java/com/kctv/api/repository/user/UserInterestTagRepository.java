@@ -12,6 +12,6 @@ public interface UserInterestTagRepository extends CassandraRepository<UserInter
 
     Optional<UserInterestTag>  findByUserId(UUID id);
 
-    Optional<UserInterestTag> save(UserInterestTag userTag);
+
 
 }

@@ -2,6 +2,7 @@ package com.kctv.api.config.security;
 
 
 
+import com.kctv.api.entity.user.UserInfo;
 import com.kctv.api.service.UserService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -56,6 +57,8 @@ public class JwtTokenProvider {
         public Authentication getAuthentication(String token) {
 
             UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserPk(token));
+            UserInfo userInfo = (UserInfo) userDetails;
+            userInfo.getRoles().stream().findAny();
 
             return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
         }

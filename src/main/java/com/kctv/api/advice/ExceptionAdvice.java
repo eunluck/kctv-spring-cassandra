@@ -12,6 +12,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -107,6 +108,13 @@ public class ExceptionAdvice {
     public CommonResult partnerNotFound(HttpServletRequest request, CPartnerNotFoundException e) {
         return responseService.getFailResult(Integer.valueOf(getMessage("partnerNotFound.code")), getMessage("partnerNotFound.msg"));
     }
+
+    @ExceptionHandler(CNotVerifyEmailException.class)
+    @ResponseStatus(HttpStatus.OK)
+    public CommonResult notVerifyEmailException(HttpServletRequest request, CNotVerifyEmailException e) {
+        return responseService.getFailResult(Integer.valueOf(getMessage("notVerifyEmailException.code")), getMessage("notVerifyEmailException.msg"));
+    }
+
 
 
 

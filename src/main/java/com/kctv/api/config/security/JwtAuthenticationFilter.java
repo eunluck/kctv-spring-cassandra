@@ -1,5 +1,6 @@
 package com.kctv.api.config.security;
 
+import com.kctv.api.advice.exception.CAuthenticationEntryPointException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.GenericFilterBean;

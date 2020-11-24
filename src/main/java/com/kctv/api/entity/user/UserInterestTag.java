@@ -13,7 +13,7 @@ import java.util.Date;
 import java.util.Set;
 import java.util.UUID;
 
-@Table
+@Table("user_interest_tags")
 @Builder
 @Getter
 public class UserInterestTag {
@@ -22,6 +22,6 @@ public class UserInterestTag {
     private UUID userId;
     @Column("modify_at")
     private Date modifyAt;
-    private Set<Tag> tags;
+    private Set<String> tags;
 
 }

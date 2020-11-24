@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@Api(tags = {"03. StyleCard And Tag API"})
+@Api(tags = {"03. StyleCardAPI"})
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/v1")
@@ -39,11 +39,11 @@ public class StyleCardContoller {
         UUID uuid = UUID.fromString(authentication.getName());
         UserInterestTag resultUser = userService.getUserInterestTag(uuid);
 
-        List<Tag> tagList = Lists.newArrayList(resultUser.getTags());
+        Set<String> tagList = resultUser.getTags();
         List<String> queryList = Lists.newArrayList();
 
-        for (Tag tag:tagList) {
-            queryList.add(tag.getTagName());
+        for (String tag:tagList) {
+            queryList.add(tag);
         }
 
         return responseService.getListResult(styleCardService.getCardByTagsService(queryList));

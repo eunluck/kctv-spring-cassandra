@@ -18,16 +18,16 @@ import java.util.UUID;
 @Table("style_card_info")
 public class StyleCardInfo {
 
+    private String title;
     @PrimaryKeyColumn(value = "card_id",type = PrimaryKeyType.PARTITIONED)
     private UUID cardId;
-    @Column("cover_image")
-    private String coverImage;
     @Column("create_at")
     private Date createAt;
     @Column("modify_at")
     private Date modifyAt;
-    private String status;
+    @Column("cover_image")
+    private String coverImage;
     private Set<String> tags;
-    private String title;
+    private String status;
 
 }

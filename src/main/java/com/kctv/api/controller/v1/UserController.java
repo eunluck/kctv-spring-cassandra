@@ -4,15 +4,15 @@ package com.kctv.api.controller.v1;
 import com.google.common.collect.Sets;
 import com.kctv.api.advice.exception.*;
 import com.kctv.api.config.security.JwtTokenProvider;
-import com.kctv.api.entity.tag.Tag;
+
 import com.kctv.api.entity.user.UserInfo;
 import com.kctv.api.entity.user.UserInterestTag;
 import com.kctv.api.model.response.CommonResult;
 import com.kctv.api.model.response.ListResult;
 import com.kctv.api.model.response.LoginResult;
 import com.kctv.api.model.response.SingleResult;
-import com.kctv.api.model.swagger.UserUpdateEx;
-import com.kctv.api.service.EmailService;
+
+
 import com.kctv.api.service.ResponseService;
 import com.kctv.api.service.UserService;
 import io.swagger.annotations.*;
@@ -20,17 +20,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.context.request.RequestAttributes;
-import org.springframework.web.context.request.WebRequest;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
+
 import java.util.UUID;
-import java.util.function.Function;
 
 
-@Api(tags = {"01 - User API"})
+
+@Api(tags = {"01. User API"})
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/v1")
@@ -40,11 +38,11 @@ public class UserController {
     private final ResponseService responseService;
     private final UserService userService;
 
-    @ApiOperation(value = "회원가입 API", notes = "회원가입")
+    @ApiOperation(value = "회원가입 API", notes = "회원가입 후 인증메일을 발송한다.")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "userInfo", value = "수정할 데이터 body", dataType = "SignUpEx", required = true),
     })
-    @PostMapping("/signup")
+    @PostMapping(value = "/signup", consumes = "application/json;charset=utf-8", produces = "application/json;charset=utf-8")
     public SingleResult<UserInfo> signUp(@RequestBody UserInfo userInfo){
 
 
@@ -153,21 +151,31 @@ public class UserController {
     }
 
 
-    @ApiOperation(value = "이메일인증 테스트 API", notes = "인증메일을 보내고 인증키를 서버에 저장한다.")
+
+
+    @ApiOperation(value = "이메일인증 API", notes = "메일로 보낸 링크를 통해 이메일을 인증한다.")
     @GetMapping("/verify/{key}")
     public CommonResult getVerify(@PathVariable("key") String key){
 
+        try {
         userService.verifyEmail(key);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
         return responseService.getSuccessResult();
     }
 
     @ApiOperation(value = "계정에 태그 등록", notes = "token을 통해 계정에 관심사(태그)들을 추가한다.")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 token", required = true, dataType = "String", paramType = "header"),
+    })
     @PostMapping("/user/tag")
-    public CommonResult userInterestCreateTags(@RequestBody List<Tag> tags){
+    public CommonResult userInterestCreateTags(@RequestBody List<String> tags){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         UUID userId = UUID.fromString(authentication.getName());
+
 
         UserInterestTag saveUser = UserInterestTag.builder().userId(userId).tags(Sets.newHashSet(tags)).build();
         userService.userInterestTagService(saveUser);

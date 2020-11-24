@@ -1,6 +1,7 @@
 unKnown:
   code: "-9999"
   msg: "알수없는 오류가 발생하였습니다."
+
 userNotFound:
   code: "-1000"
   msg: "존재하지 않는 SNS 회원입니다."
@@ -37,8 +38,11 @@ overlapSnsKey:
   code: "-1010"
   msg: "이미 가입된 sns 회원입니다."
 incorrectPassword:
-  code: "-1010"
+  code: "-1011"
   msg: "패스워드가 틀렸습니다."
 partnerNotFound:
-  code: "-1009"
+  code: "-1012"
   msg: "존재하지 않는 상호입니다."
+notVerifyEmailException:
+  code: "-1013"
+  msg: "이메일 인증을 완료해주세요."

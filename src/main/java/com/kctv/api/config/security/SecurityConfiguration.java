@@ -34,10 +34,22 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // jwt token으로 인증하므로 세션은 필요없으므로 생성안함.
                 .and()
                 .authorizeRequests() // 다음 리퀘스트에 대한 사용권한 체크
-                .antMatchers("/v1/**").permitAll() // v1은 토큰체크 x (임시)
-                .antMatchers("/v1/clk/**","/v1/store/**","/v1/login", "/v1/signup","/v1/check/**").permitAll() // 가입 및 인증 주소는 누구나 접근가능
+                //.antMatchers("/v1/**").permitAll() // v1은 토큰체크 x (임시)
+                .antMatchers("/v1/clk/**").permitAll() //클릭로그
+                .antMatchers("/v1/store/**").permitAll() //상점정보
+                .antMatchers("/v1/login").permitAll() //로그인
+                .antMatchers("/v1/signup").permitAll() // 회원가입
+                .antMatchers("/v1/check/**").permitAll() // 이메일 인증검사
+                .antMatchers("/v1/tags/**").permitAll() // 태그 조회
+                .antMatchers("/v1/verify/**").permitAll() // 태그 조회
+                .antMatchers("/exception/**").permitAll() // 토큰 예외처리
                 .antMatchers(HttpMethod.GET, "helloworld/**").permitAll() // hellowworld로 시작하는 GET요청 리소스는 누구나 접근가능
+                // 위 URL들은 토큰없이 접속 가능
                 .anyRequest().hasRole("USER") // 그외 나머지 요청은 모두 인증된 회원만 접근 가능
+                .and()
+                .exceptionHandling().accessDeniedHandler(new CustomAccessDeniedHandler())
+                .and()
+                .exceptionHandling().authenticationEntryPoint(new CustomAuthenticationEntryPoint()) //authenticationEntryPoint로 필터단에서 나는 예외 처리
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class); // jwt token 필터를 id/password 인증 필터 전에 넣는다
 

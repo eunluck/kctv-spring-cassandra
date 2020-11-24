@@ -23,7 +23,9 @@ public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final EmailService emailService;
     private final UserInterestTagRepository userInterestTagRepository;
-    private final String EMAIL_LINK = "http://localhost:8081/v1/user/verify";
+    private final String EMAIL_LINK = "http://localhost:8081/v1/verify/";
+    //private final String EMAIL_LINK = "http://192.168.0.56:8081/v1/verify/";
+    private final String EMAIL_SUB = "KCTV 회원가입 인증 메일입니다.";
 
     public UserInfo findByUserId(UUID uuid){
         return userRepository.findByUserId(uuid);
@@ -55,9 +57,9 @@ public class UserService implements UserDetailsService {
 
 
         if (result.getUserEmailType().equals("user"))
-        System.out.println("userInfo service2::"+userInfo.toString());
+
             sendVerificationMail(result);
-        System.out.println("userInfo service3::"+userInfo.toString());
+
 
         return result;
 
@@ -66,9 +68,9 @@ public class UserService implements UserDetailsService {
 
     public void sendVerificationMail(UserInfo userInfo){
 
+        redisUtil.setDataExpire(String.valueOf(userInfo.getUserId()),String.valueOf(userInfo.getUserId()),60*30L); // 코드는 3분동안 유지됌
+        emailService.sendMail(userInfo.getUserEmail(),EMAIL_SUB,EMAIL_LINK+String.valueOf(userInfo.getUserId()));
 
-        redisUtil.setDataExpire(String.valueOf(userInfo.getUserId()),userInfo.getUserNickname(),60*30L); // 코드는 3분동안 유지됌
-        emailService.sendMail(userInfo.getUserEmail(),"kctv 회원가입 인증 메일입니다.",EMAIL_LINK+String.valueOf(userInfo.getUserId()));
 
     }
 
@@ -109,7 +111,8 @@ public class UserService implements UserDetailsService {
     }
 
     public UserInterestTag userInterestTagService(UserInterestTag userTags){
-        return userInterestTagRepository.save(userTags).orElseThrow(CUserNotFoundException::new);
+
+        return Optional.ofNullable(userInterestTagRepository.save(userTags)).orElseThrow(CUserNotFoundException::new);
     }
 
     public UserInterestTag getUserInterestTag(UUID uuid){

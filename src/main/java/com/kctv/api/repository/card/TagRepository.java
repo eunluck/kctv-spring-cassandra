@@ -14,7 +14,7 @@ public interface TagRepository extends CassandraRepository<Tag,String> {
 
     List<Tag> findByTagType(String tagType);
 
-    Optional<Tag> insert(Tag tag);
+
     Optional<Tag> findByTagTypeAndTagName(Tag tag);
 
 

@@ -22,8 +22,6 @@ public class StyleCardService {
     private final StyleByTagsRepository styleByTagsRepository;
     private final TagRepository tagRepository;
 
-//TODO 코드 중복 체크 구현,
-
 
     public List<StyleCardInfo> getStyleCardListAllService(){
         return styleCardRepository.findAll();
@@ -32,30 +30,24 @@ public class StyleCardService {
         return tagRepository.findAll();
     }
     public Optional<Tag> getTagOneService(Tag tag){return tagRepository.findByTagTypeAndTagName(tag);}
+
     public List<Tag> getTagList (String search){
-
-
         return tagRepository.findByTagType(search);
     }
 
     public StyleCardInfo getCardById (UUID uuid){
-
         return styleCardRepository.findByCardId(uuid).orElseThrow(CPartnerNotFoundException::new);
     }
 
     public Optional<Tag> createTagService(Tag tag){
-        return tagRepository.insert(tag);
-
+        return Optional.ofNullable(tagRepository.insert(tag));
     }
 
 
 
     public List<StyleCardInfo> getCardByTagsService(List<String> tags){
-
-
         List<StyleCardByTags> result = styleByTagsRepository.findByTagIn(tags); //태그를 조건으로 StyleCard를 검색
         List<UUID> uuidList = SortingTagsUtiil.duplicationMappingList(result);  //검색된 카드의 태그가 중복되는 갯수 순서로 내림차순 정렬
-
 
         List<StyleCardInfo> styleCardInfos = styleCardRepository.findByCardIdIn(uuidList);  // 위 태그에 충족되는 카드들을 UUID를 통해 조회
         return SortingTagsUtiil.SortingToList(styleCardInfos,uuidList); // 중복되는 순서로 내림차순 정렬
