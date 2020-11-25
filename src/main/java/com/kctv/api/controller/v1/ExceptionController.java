@@ -33,8 +33,8 @@ public class ExceptionController {
         if(user.getRoles().stream().anyMatch(s -> s.contains("NOT_VERIFY_EMAIL"))){
 
           throw new CNotVerifyEmailException();
-        }else
+        }else {
             throw new AccessDeniedException("접근 권한이 없습니다.");
-
+        }
     }
 }

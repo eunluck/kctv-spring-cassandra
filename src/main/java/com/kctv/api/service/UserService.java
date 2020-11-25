@@ -1,6 +1,7 @@
 package com.kctv.api.service;
 
 
+import com.kctv.api.advice.exception.CResourceNotExistException;
 import com.kctv.api.advice.exception.CUserExistException;
 import com.kctv.api.advice.exception.CUserNotFoundException;
 import com.kctv.api.entity.user.UserInterestTag;
@@ -27,6 +28,9 @@ public class UserService implements UserDetailsService {
     //private final String EMAIL_LINK = "http://192.168.0.56:8081/v1/verify/";
     private final String EMAIL_SUB = "KCTV 회원가입 인증 메일입니다.";
 
+
+
+
     public UserInfo findByUserId(UUID uuid){
         return userRepository.findByUserId(uuid);
     }
@@ -47,9 +51,8 @@ public class UserService implements UserDetailsService {
 
     public UserInfo userSignUpService(UserInfo userInfo){
 
-        System.out.println("userInfo service::"+userInfo.toString());
-        userInfo.setRoles(Collections.singletonList("ROLE_NOT_VERIFY_EMAIL"));
         userInfo.setUserId(UUID.randomUUID());
+        userInfo.setRoles(Collections.singletonList("ROLE_NOT_VERIFY_EMAIL"));
         userInfo.setUserStatus("NORMAL");
         userInfo.setCreateDate(new Date());
 
@@ -66,6 +69,7 @@ public class UserService implements UserDetailsService {
     }
 
 
+
     public void sendVerificationMail(UserInfo userInfo){
 
         redisUtil.setDataExpire(String.valueOf(userInfo.getUserId()),String.valueOf(userInfo.getUserId()),60*30L); // 코드는 3분동안 유지됌
@@ -73,6 +77,7 @@ public class UserService implements UserDetailsService {
 
 
     }
+
 
     public void verifyEmail(String key) throws CUserNotFoundException {
 
@@ -117,7 +122,7 @@ public class UserService implements UserDetailsService {
 
     public UserInterestTag getUserInterestTag(UUID uuid){
 
-        UserInterestTag userTag = userInterestTagRepository.findByUserId(uuid).orElseThrow(CUserNotFoundException::new);
+        UserInterestTag userTag = userInterestTagRepository.findByUserId(uuid).orElseThrow(CResourceNotExistException::new);
 
         return userTag;
     }

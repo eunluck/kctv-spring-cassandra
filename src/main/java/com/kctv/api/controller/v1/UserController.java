@@ -38,20 +38,19 @@ public class UserController {
     private final ResponseService responseService;
     private final UserService userService;
 
-    @ApiOperation(value = "회원가입 API", notes = "회원가입 후 인증메일을 발송한다.")
+    @ApiOperation(value = "회원가입 API", notes = "회원가입 후 인증메일을 발송한다. (인증링크유효기간3분)")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "userInfo", value = "수정할 데이터 body", dataType = "SignUpEx", required = true),
     })
     @PostMapping(value = "/signup", consumes = "application/json;charset=utf-8", produces = "application/json;charset=utf-8")
     public SingleResult<UserInfo> signUp(@RequestBody UserInfo userInfo){
 
-
-        if (!userInfo.getUserEmailType().equals("user")&&userService.userSnsLoginService(userInfo.getUserSnsKey()).isPresent()){
+        if (!"user".equals(userInfo.getUserEmailType())&&userService.userSnsLoginService(userInfo.getUserSnsKey()).isPresent()){
             throw new COverlapSnsKey();
         }
 
        SingleResult<UserInfo>  result = responseService.getSingleResult(userService.userSignUpService(userInfo));
-        result.setMessage("이메일로 인증 링크를 보내드렸습니다. 회원가입을 완료해주세요.");
+       result.setMessage("이메일로 인증 링크를 보내드렸습니다. 회원가입을 완료해주세요.");
 
     return result;
 
@@ -70,8 +69,6 @@ public class UserController {
 
         UUID uuid = UUID.fromString(authentication.getName());
         UserInfo user = Optional.ofNullable(userService.findByUserId(uuid)).orElseThrow(CUserNotFoundException::new);
-
-
 
         return responseService.getSingleResult(user);
     }
@@ -102,7 +99,7 @@ public class UserController {
     })
     @PostMapping("/login")
     public LoginResult<UserInfo> userLogin(@RequestBody UserInfo loginRequest){
-        
+
         if(loginRequest.getUserEmailType().equals("user")){
             UserInfo user = userService.checkByEmail(loginRequest.getUserEmail(),loginRequest.getUserEmailType()).orElseThrow(CNotFoundEmailException::new);
             UserInfo loginUser = userService.userLoginService(user.getUserEmail(),user.getUserEmailType(),loginRequest.getUserPassword()).orElseThrow(CIncorrectPasswordException::new);
@@ -117,7 +114,6 @@ public class UserController {
 
             return snsUser;
         }
-
     }
 
     @ApiOperation(value = "이메일 중복 검사", notes = "가입된 이메일인지 확인한다. ")
@@ -145,26 +141,9 @@ public class UserController {
     @GetMapping("/users")
     public ListResult<UserInfo> getAllUser(){
 
-
-
         return responseService.getListResult(userService.getAllUserService());
     }
 
-
-
-
-    @ApiOperation(value = "이메일인증 API", notes = "메일로 보낸 링크를 통해 이메일을 인증한다.")
-    @GetMapping("/verify/{key}")
-    public CommonResult getVerify(@PathVariable("key") String key){
-
-        try {
-        userService.verifyEmail(key);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-
-        return responseService.getSuccessResult();
-    }
 
     @ApiOperation(value = "계정에 태그 등록", notes = "token을 통해 계정에 관심사(태그)들을 추가한다.")
     @ApiImplicitParams({
@@ -182,12 +161,5 @@ public class UserController {
 
         return responseService.getSuccessResult();
     }
-
-
-
-
-
-
-
 
 }
