@@ -1,4 +1,10 @@
 spring:
+  servlet:
+    multipart:
+      enabled: true
+      file-size-threshold: 4KB
+      max-file-size: 200MB
+      max-request-size: 215MB
   redis:
     host: localhost
     port: 6379
@@ -10,7 +16,7 @@ spring:
     basename: i18n/exception
     encoding: utf-8
   jwt:
-    secret: kctvjwt
+    secret: kctvjwt!@#
   data:
     cassandra:
       contact-points: 192.168.0.76
@@ -33,8 +39,6 @@ spring:
       auth: true
       starttls.enable: true
       ssl.trust: smtp.gmail.com
-
-
 server:
   port: 8081
 logging:

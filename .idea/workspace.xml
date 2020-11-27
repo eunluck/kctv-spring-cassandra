@@ -29,17 +29,32 @@
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d27f99c3-2019-41d6-b9bb-22734cca2a54" name="Default Changelist" comment="email 인증, 유저 권한 처리, Tag Ap 등등등......">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/controller/v1/UserVerifyController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/successverify.html" afterDir="false" />
+    <list default="true" id="d27f99c3-2019-41d6-b9bb-22734cca2a54" name="Default Changelist" comment="email인증 완료, 인증 완료시 보여줄 html추가">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/model/CardImageInfo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/repository/file/CardImageInfoRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/service/StorageService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/application-dev.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/application-local.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/kctv-spring-cassandra.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/kctv-spring-cassandra.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/controller/v1/ExceptionController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/controller/v1/ExceptionController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/controller/v1/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/controller/v1/UserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/service/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/KctvSpringCassandraApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/KctvSpringCassandraApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/config/WebConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/config/WebConfiguration.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/config/security/JwtTokenProvider.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/config/security/JwtTokenProvider.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/config/security/SecurityConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/config/security/SecurityConfiguration.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/controller/v1/ImageController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/controller/v1/ImageController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/controller/v1/PlaceController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/controller/v1/PlaceController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/controller/v1/StyleCardContoller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/controller/v1/StyleCardContoller.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/controller/v1/TagController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/controller/v1/TagController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/controller/v1/UserVerifyController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/controller/v1/UserVerifyController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/tag/StyleCardInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/tag/StyleCardInfo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/service/StyleCardService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/service/StyleCardService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/kctv/api/KctvSpringCassandraApplication.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/kctv/api/KctvSpringCassandraApplication.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/kctv/api/config/security/JwtTokenProvider.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/kctv/api/config/security/JwtTokenProvider.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/kctv/api/config/security/SecurityConfiguration.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/kctv/api/config/security/SecurityConfiguration.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/kctv/api/controller/v1/UserController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/kctv/api/controller/v1/UserController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/kctv/api/service/UserService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/kctv/api/service/UserService.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,8 +66,8 @@
       <list>
         <option value="Interface" />
         <option value="Enum" />
-        <option value="Class" />
         <option value="HTML File" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -118,7 +133,7 @@
     <property name="ToolWindowEvent Log.ShowToolbar" value="false" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../prgrms-web-bjs-7" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/resources" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.15" />
@@ -129,18 +144,8 @@
     <option name="notificationShown" value="true" />
   </component>
   <component name="RecentsManager">
-    <key name="CreateClassDialog.RecentsKey">
-      <recent name="com.kctv.api.repository.user" />
-    </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
       <recent name="com.kctv.api.controller" />
-    </key>
-    <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="com.kctv.api.config.security" />
-      <recent name="com.kctv.api.advice.exception" />
-      <recent name="com.kctv.api.repository.user" />
-      <recent name="com.kctv.api.repository.partner" />
-      <recent name="com.kctv.api.repository.card" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Bruno\IdeaProjects\kctv-spring-cassandra\src\main\resources" />
@@ -148,6 +153,16 @@
       <recent name="C:\Users\Bruno\IdeaProjects\kctv-spring-cassandra\src\main\resources\static" />
       <recent name="C:\Users\Bruno\IdeaProjects\kctv-spring-cassandra\src\main\java\com\kctv\api\advice" />
       <recent name="C:\Users\Bruno\IdeaProjects\kctv-spring-cassandra\src\main\java\com\kctv\api\model\response" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.kctv.api.repository.file" />
+      <recent name="com.kctv.api.config.security" />
+      <recent name="com.kctv.api.advice.exception" />
+      <recent name="com.kctv.api.repository.user" />
+      <recent name="com.kctv.api.repository.partner" />
+    </key>
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="com.kctv.api.repository.user" />
     </key>
   </component>
   <component name="RunManager" selected="Application.KctvSpringCassandraApplication">
@@ -243,7 +258,7 @@
       <workItem from="1605580260625" duration="629000" />
       <workItem from="1605753564112" duration="1002000" />
       <workItem from="1605834353408" duration="20331000" />
-      <workItem from="1606266115549" duration="14186000" />
+      <workItem from="1606266115549" duration="63597000" />
     </task>
     <task id="LOCAL-00001" summary="커밋">
       <created>1603958598568</created>
@@ -301,7 +316,14 @@
       <option name="project" value="LOCAL" />
       <updated>1606211875407</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="email인증 완료, 인증 완료시 보여줄 html추가">
+      <created>1606291650073</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1606291650073</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -342,7 +364,8 @@
     <MESSAGE value="All StyleCard List API 추가" />
     <MESSAGE value="신규태그 추가 API,  계정에 관심사(태그)를 저장하는 API 추가, 계정에 등록된 관심사로 StyleCard리스트를 추천받는 API 추가 등" />
     <MESSAGE value="email 인증, 유저 권한 처리, Tag Ap 등등등......" />
-    <option name="LAST_COMMIT_MESSAGE" value="email 인증, 유저 권한 처리, Tag Ap 등등등......" />
+    <MESSAGE value="email인증 완료, 인증 완료시 보여줄 html추가" />
+    <option name="LAST_COMMIT_MESSAGE" value="email인증 완료, 인증 완료시 보여줄 html추가" />
   </component>
   <component name="WindowStateProjectService">
     <state x="872" y="341" key="#Plugins" timestamp="1605759230293">
@@ -373,10 +396,10 @@
       <screen x="2560" y="100" width="1920" height="1040" />
     </state>
     <state x="3600" y="312" key="#com.intellij.ide.macro.MacrosDialog/2560.100.1920.1040/0.0.2560.1400@2560.100.1920.1040" timestamp="1605578800308" />
-    <state x="1085" y="405" key="#com.intellij.ide.util.MemberChooser" timestamp="1606210245469">
+    <state x="1085" y="405" key="#com.intellij.ide.util.MemberChooser" timestamp="1606463648897">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state x="1085" y="405" key="#com.intellij.ide.util.MemberChooser/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1606210245469" />
+    <state x="1085" y="405" key="#com.intellij.ide.util.MemberChooser/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1606463648897" />
     <state x="3374" y="401" key="#com.intellij.ide.util.MemberChooser/2560.100.1920.1040/0.0.2560.1400@2560.100.1920.1040" timestamp="1606109377297" />
     <state x="3250" y="395" key="#com.intellij.ide.util.PackageChooserDialog" timestamp="1603264291977">
       <screen x="2560" y="100" width="1920" height="1040" />
@@ -426,44 +449,44 @@
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state x="994" y="404" key="Github.UntrackedFilesDialog/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1603955429128" />
-    <state width="2517" height="406" key="GridCell.Tab.0.bottom" timestamp="1606290733160">
+    <state width="2517" height="393" key="GridCell.Tab.0.bottom" timestamp="1606470184522">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state width="1877" height="521" key="GridCell.Tab.0.bottom/-2496.0.1664.1082/2560.101.1920.1040/0.0.2560.1400@2560.101.1920.1040" timestamp="1603350941003" />
     <state width="1877" height="254" key="GridCell.Tab.0.bottom/0.0.1664.1069/2496.0.1920.1040@2496.0.1920.1040" timestamp="1606201687654" />
     <state width="1621" height="254" key="GridCell.Tab.0.bottom/0.0.1664.1069@0.0.1664.1069" timestamp="1606199282589" />
     <state width="2517" height="141" key="GridCell.Tab.0.bottom/0.0.2560.1400/2560.100.1920.1040@0.0.2560.1400" timestamp="1602496865752" />
-    <state width="2517" height="406" key="GridCell.Tab.0.bottom/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1606290733160" />
+    <state width="2517" height="393" key="GridCell.Tab.0.bottom/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1606470184522" />
     <state width="1877" height="267" key="GridCell.Tab.0.bottom/2560.100.1920.1040/0.0.2560.1400@2560.100.1920.1040" timestamp="1606116725941" />
     <state width="2517" height="521" key="GridCell.Tab.0.bottom/2560.101.1920.1040/-2496.0.1664.1069/0.0.2560.1400@0.0.2560.1400" timestamp="1603340673894" />
-    <state width="2517" height="406" key="GridCell.Tab.0.center" timestamp="1606290733159">
+    <state width="2517" height="393" key="GridCell.Tab.0.center" timestamp="1606470184521">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state width="1877" height="521" key="GridCell.Tab.0.center/-2496.0.1664.1082/2560.101.1920.1040/0.0.2560.1400@2560.101.1920.1040" timestamp="1603350941003" />
     <state width="1877" height="254" key="GridCell.Tab.0.center/0.0.1664.1069/2496.0.1920.1040@2496.0.1920.1040" timestamp="1606201687654" />
     <state width="1621" height="254" key="GridCell.Tab.0.center/0.0.1664.1069@0.0.1664.1069" timestamp="1606199282588" />
     <state width="2517" height="141" key="GridCell.Tab.0.center/0.0.2560.1400/2560.100.1920.1040@0.0.2560.1400" timestamp="1602496865751" />
-    <state width="2517" height="406" key="GridCell.Tab.0.center/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1606290733159" />
+    <state width="2517" height="393" key="GridCell.Tab.0.center/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1606470184521" />
     <state width="1877" height="267" key="GridCell.Tab.0.center/2560.100.1920.1040/0.0.2560.1400@2560.100.1920.1040" timestamp="1606116725941" />
     <state width="2517" height="521" key="GridCell.Tab.0.center/2560.101.1920.1040/-2496.0.1664.1069/0.0.2560.1400@0.0.2560.1400" timestamp="1603340673893" />
-    <state width="2517" height="406" key="GridCell.Tab.0.left" timestamp="1606290733159">
+    <state width="2517" height="393" key="GridCell.Tab.0.left" timestamp="1606470184521">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state width="1877" height="521" key="GridCell.Tab.0.left/-2496.0.1664.1082/2560.101.1920.1040/0.0.2560.1400@2560.101.1920.1040" timestamp="1603350941003" />
     <state width="1877" height="254" key="GridCell.Tab.0.left/0.0.1664.1069/2496.0.1920.1040@2496.0.1920.1040" timestamp="1606201687654" />
     <state width="1621" height="254" key="GridCell.Tab.0.left/0.0.1664.1069@0.0.1664.1069" timestamp="1606199282588" />
     <state width="2517" height="141" key="GridCell.Tab.0.left/0.0.2560.1400/2560.100.1920.1040@0.0.2560.1400" timestamp="1602496865751" />
-    <state width="2517" height="406" key="GridCell.Tab.0.left/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1606290733159" />
+    <state width="2517" height="393" key="GridCell.Tab.0.left/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1606470184521" />
     <state width="1877" height="267" key="GridCell.Tab.0.left/2560.100.1920.1040/0.0.2560.1400@2560.100.1920.1040" timestamp="1606116725941" />
     <state width="2517" height="521" key="GridCell.Tab.0.left/2560.101.1920.1040/-2496.0.1664.1069/0.0.2560.1400@0.0.2560.1400" timestamp="1603340673893" />
-    <state width="2517" height="406" key="GridCell.Tab.0.right" timestamp="1606290733159">
+    <state width="2517" height="393" key="GridCell.Tab.0.right" timestamp="1606470184521">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state width="1877" height="521" key="GridCell.Tab.0.right/-2496.0.1664.1082/2560.101.1920.1040/0.0.2560.1400@2560.101.1920.1040" timestamp="1603350941003" />
     <state width="1877" height="254" key="GridCell.Tab.0.right/0.0.1664.1069/2496.0.1920.1040@2496.0.1920.1040" timestamp="1606201687654" />
     <state width="1621" height="254" key="GridCell.Tab.0.right/0.0.1664.1069@0.0.1664.1069" timestamp="1606199282588" />
     <state width="2517" height="141" key="GridCell.Tab.0.right/0.0.2560.1400/2560.100.1920.1040@0.0.2560.1400" timestamp="1602496865751" />
-    <state width="2517" height="406" key="GridCell.Tab.0.right/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1606290733159" />
+    <state width="2517" height="393" key="GridCell.Tab.0.right/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1606470184521" />
     <state width="1877" height="267" key="GridCell.Tab.0.right/2560.100.1920.1040/0.0.2560.1400@2560.100.1920.1040" timestamp="1606116725941" />
     <state width="2517" height="521" key="GridCell.Tab.0.right/2560.101.1920.1040/-2496.0.1664.1069/0.0.2560.1400@0.0.2560.1400" timestamp="1603340673894" />
     <state width="1877" height="348" key="GridCell.Tab.1.bottom" timestamp="1606211906307">
@@ -537,10 +560,10 @@
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state width="254" height="198" key="ShowFilterAction_Filter_Popup/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1603861120724" />
-    <state x="872" y="433" key="Vcs.Push.Dialog.v2" timestamp="1606211891983">
+    <state x="872" y="433" key="Vcs.Push.Dialog.v2" timestamp="1606291657416">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state x="872" y="433" key="Vcs.Push.Dialog.v2/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1606211891983" />
+    <state x="872" y="433" key="Vcs.Push.Dialog.v2/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1606291657416" />
     <state x="3214" y="422" key="Vcs.Push.Dialog.v2/2560.100.1920.1040/0.0.2560.1400@2560.100.1920.1040" timestamp="1604382542473" />
     <state x="-7" y="3" width="1932" height="1085" key="com.intellij.history.integration.ui.views.DirectoryHistoryDialog" timestamp="1606183932602">
       <screen x="0" y="0" width="2560" height="1400" />
@@ -554,11 +577,11 @@
       <screen x="2560" y="100" width="1920" height="1040" />
     </state>
     <state x="3317" y="309" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/2560.100.1920.1040/0.0.2560.1400@2560.100.1920.1040" timestamp="1604368863738" />
-    <state x="3374" y="555" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1606116487610">
-      <screen x="2560" y="100" width="1920" height="1040" />
+    <state x="1085" y="613" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1606296564847">
+      <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state x="705" y="468" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1664.1069@0.0.1664.1069" timestamp="1605346692703" />
-    <state x="1085" y="613" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1605865928342" />
+    <state x="1085" y="613" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1606296564847" />
     <state x="3374" y="555" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/2560.100.1920.1040/0.0.2560.1400@2560.100.1920.1040" timestamp="1606116487610" />
     <state x="3291" y="427" key="com.intellij.testIntegration.createTest.CreateTestDialog" timestamp="1605261839895">
       <screen x="2560" y="100" width="1920" height="1040" />
@@ -610,11 +633,11 @@
     <state x="608" y="252" width="672" height="677" key="run.anything.popup/0.0.1664.1069@0.0.1664.1069" timestamp="1605353859436" />
     <state x="936" y="330" key="run.anything.popup/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1603853140750" />
     <state x="3262" y="345" key="run.anything.popup/2560.100.1920.1040/0.0.2560.1400@2560.100.1920.1040" timestamp="1605849567169" />
-    <state x="761" y="306" width="1035" height="889" key="search.everywhere.popup" timestamp="1606272834546">
+    <state x="761" y="306" width="1035" height="889" key="search.everywhere.popup" timestamp="1606463390888">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state x="495" y="233" width="672" height="678" key="search.everywhere.popup/0.0.1664.1069@0.0.1664.1069" timestamp="1602313692775" />
-    <state x="761" y="306" width="1035" height="889" key="search.everywhere.popup/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1606272834546" />
+    <state x="761" y="306" width="1035" height="889" key="search.everywhere.popup/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1606463390888" />
     <state x="3131" y="327" width="776" height="660" key="search.everywhere.popup/2560.100.1920.1040/0.0.2560.1400@2560.100.1920.1040" timestamp="1606116120780" />
     <state x="555" y="447" key="vcs.readOnlyHandler.ReadOnlyStatusDialog" timestamp="1602314239274">
       <screen x="0" y="0" width="1664" height="1069" />

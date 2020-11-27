@@ -5,6 +5,7 @@ import com.kctv.api.entity.user.UserInfo;
 import com.kctv.api.model.response.CommonResult;
 import com.kctv.api.service.ResponseService;
 import com.kctv.api.service.UserService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-
+@Api(tags = {"02. UserEmailVerify API"})
 @RequiredArgsConstructor
 @Controller
 @RequestMapping(value = "/v1")

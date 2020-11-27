@@ -30,4 +30,12 @@ public class StyleCardInfo {
     private Set<String> tags;
     private String status;
 
+    public void setCoverImage(String coverImage) {
+        this.coverImage = coverImage;
+    }
+
+    public void CoverImageSrc(){
+
+
+    }
 }

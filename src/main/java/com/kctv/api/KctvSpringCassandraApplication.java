@@ -17,6 +17,7 @@ public class KctvSpringCassandraApplication {
         @Value("application.version")
         private static String appVersion;
 
+
     public static void main(String[] args) {
         SpringApplication.run(KctvSpringCassandraApplication.class, args);
     }

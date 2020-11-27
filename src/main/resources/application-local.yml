@@ -1,0 +1,10 @@
+spring:
+  profiles: local
+costom:
+  path:
+    images : 'C:\data\'
+
+
+
+
+

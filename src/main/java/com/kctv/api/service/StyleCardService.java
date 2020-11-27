@@ -36,7 +36,11 @@ public class StyleCardService {
     }
 
     public StyleCardInfo getCardById (UUID uuid){
-        return styleCardRepository.findByCardId(uuid).orElseThrow(CPartnerNotFoundException::new);
+
+        StyleCardInfo card = styleCardRepository.findByCardId(uuid).orElseThrow(CPartnerNotFoundException::new);
+
+
+        return card;
     }
 
     public Optional<Tag> createTagService(Tag tag){

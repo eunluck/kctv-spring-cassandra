@@ -20,7 +20,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
-@Api(tags = {"02. Places API"})
+@Api(tags = {"03. Places API"})
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/v1")

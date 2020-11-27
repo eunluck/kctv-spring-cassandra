@@ -16,10 +16,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@Api(tags = {"03. StyleCardAPI"})
+@Api(tags = {"04. StyleCardAPI"})
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/v1")

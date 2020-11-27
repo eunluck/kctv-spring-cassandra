@@ -35,13 +35,18 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests() // 다음 리퀘스트에 대한 사용권한 체크
                 //.antMatchers("/v1/**").permitAll() // v1은 토큰체크 x (임시)
+                .antMatchers("/image/**").permitAll()
                 .antMatchers("/v1/clk/**").permitAll() //클릭로그
                 .antMatchers("/v1/store/**").permitAll() //상점정보
                 .antMatchers("/v1/login").permitAll() //로그인
                 .antMatchers("/v1/signup").permitAll() // 회원가입
                 .antMatchers("/v1/check/**").permitAll() // 이메일 인증검사
+                .antMatchers("/v1/place/**").permitAll() // 상점정보
+                .antMatchers("/v1/places").permitAll() // 상점정보
                 .antMatchers("/v1/tags/**").permitAll() // 태그 조회
                 .antMatchers("/v1/verify/**").permitAll() // 태그 조회
+                .antMatchers("/v1/card/**").permitAll() // 태그 조회
+
                 .antMatchers("/exception/**").permitAll() // 토큰 예외처리
                 .antMatchers(HttpMethod.GET, "helloworld/**").permitAll() // hellowworld로 시작하는 GET요청 리소스는 누구나 접근가능
                 // 위 URL들은 토큰없이 접속 가능

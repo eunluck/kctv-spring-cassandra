@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 
-@Api(tags = {"04. Tag API"})
+@Api(tags = {"05. Tag API"})
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/v1")

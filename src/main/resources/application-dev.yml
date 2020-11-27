@@ -1,0 +1,11 @@
+
+spring:
+  profiles: dev
+costom:
+  path:
+    images : /home/biskit/kctv-api/data/
+
+
+
+
+
