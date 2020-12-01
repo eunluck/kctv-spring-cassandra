@@ -40,6 +40,10 @@ public class StyleCardService {
         StyleCardInfo card = styleCardRepository.findByCardId(uuid).orElseThrow(CPartnerNotFoundException::new);
 
 
+
+
+
+
         return card;
     }
 

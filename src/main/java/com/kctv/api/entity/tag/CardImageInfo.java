@@ -1,4 +1,4 @@
-package com.kctv.api.model;
+package com.kctv.api.entity.tag;
 
 import lombok.Builder;
 import lombok.Data;

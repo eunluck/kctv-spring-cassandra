@@ -3,6 +3,7 @@ package com.kctv.api.entity.tag;
 import lombok.*;
 import org.springframework.data.cassandra.core.cql.PrimaryKeyType;
 import org.springframework.data.cassandra.core.mapping.Column;
+import org.springframework.data.cassandra.core.mapping.Embedded;
 import org.springframework.data.cassandra.core.mapping.PrimaryKeyColumn;
 import org.springframework.data.cassandra.core.mapping.Table;
 
@@ -30,12 +31,12 @@ public class StyleCardInfo {
     private Set<String> tags;
     private String status;
 
+    private boolean likeOfMe;
     public void setCoverImage(String coverImage) {
         this.coverImage = coverImage;
     }
 
-    public void CoverImageSrc(){
-
-
+    public void setLikeOfMe(boolean likeOfMe) {
+        this.likeOfMe = likeOfMe;
     }
 }

@@ -30,7 +30,7 @@ public class PlaceController {
     final ResponseService responseService;
 
     @ApiOperation(value = "현재 위치와 가까운 가게 검색", notes = "현재 접속중인 ap의 가게 ID를 통해 주변의 가까운 가게를 검색한다.")
-    @GetMapping("/place/wifi/{partnerId}/{distance}")
+    @GetMapping("/place/{partnerId}/wifi/{distance}")
     public ListResult<WifiInfo> getGeo(@ApiParam(value = "현재 접속중인 AP의 가게ID",defaultValue = "0c888459-3a05-4396-afc6-83ba60b4908c") @PathVariable("partnerId") UUID partnerUuid,
                                        @ApiParam(value = "검색 할 거리(km)",defaultValue = "0.3")@PathVariable("distance")Double distance){
 
@@ -65,6 +65,8 @@ public class PlaceController {
         return responseService.getListResult(placeService.getPartnerInfoListByTagsService(tagArr));
 
     }
+
+
 
 
 

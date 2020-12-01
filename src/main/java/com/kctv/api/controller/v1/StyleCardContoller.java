@@ -47,6 +47,10 @@ public class StyleCardContoller {
             queryList.add(tag);
         }
 
+        List<StyleCardInfo> cardList = styleCardService.getCardByTagsService(queryList);
+        List<UUID> cardId = cardList.stream().map(StyleCardInfo::getCardId).collect(Collectors.toList());
+
+
         return responseService.getListResult(styleCardService.getCardByTagsService(queryList));
     }
 
@@ -79,6 +83,12 @@ public class StyleCardContoller {
         return responseService.getListResult(styleCardService.getStyleCardListAllService());
 
     }
+
+
+
+
+
+
 
 
 

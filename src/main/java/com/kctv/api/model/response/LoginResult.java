@@ -13,5 +13,6 @@ import lombok.Setter;
 @AllArgsConstructor
 public class LoginResult<T> extends CommonResult{
     private String token;
+    private Boolean emailVerify;
     private T data;
 }

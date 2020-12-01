@@ -5,7 +5,9 @@ import com.kctv.api.entity.tag.PartnersByTags;
 import com.kctv.api.entity.tag.StyleCardByTags;
 import com.kctv.api.entity.tag.StyleCardInfo;
 import com.kctv.api.entity.tag.Tag;
+import com.kctv.api.entity.user.UserLikePartner;
 import com.kctv.api.repository.ap.PartnerByTagsRepository;
+import com.kctv.api.repository.user.UserLikeRepository;
 import com.kctv.api.util.GeoOperations;
 import com.kctv.api.entity.ap.PartnerInfo;
 import com.kctv.api.entity.ap.WifiInfo;
@@ -16,16 +18,20 @@ import com.kctv.api.util.sorting.SortingTagsUtiil;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+
+import static com.google.common.base.Preconditions.checkNotNull;
 
 @Service
 @RequiredArgsConstructor
 public class PlaceService {
 
-    final WifiRepository wifiRepository;
-    final PartnerRepository partnerRepository;
-    final PartnerByTagsRepository partnerByTagsRepository;
+    private final WifiRepository wifiRepository;
+    private final PartnerRepository partnerRepository;
+    private final PartnerByTagsRepository partnerByTagsRepository;
+    private final UserLikeRepository userLikeRepository;
 
     public List<WifiInfo> getPartnerWifiService(UUID partnerId, Double distance){
 
@@ -84,6 +90,7 @@ public class PlaceService {
         }
 
     }
+
 
 
 

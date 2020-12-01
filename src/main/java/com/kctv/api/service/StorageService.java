@@ -2,7 +2,7 @@ package com.kctv.api.service;
 
 import com.kctv.api.advice.exception.CNotOwnerException;
 import com.kctv.api.entity.tag.StyleCardInfo;
-import com.kctv.api.model.CardImageInfo;
+import com.kctv.api.entity.tag.CardImageInfo;
 import com.kctv.api.repository.card.StyleCardRepository;
 import com.kctv.api.repository.file.CardImageInfoRepository;
 import org.apache.commons.io.IOUtils;

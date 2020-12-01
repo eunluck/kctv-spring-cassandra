@@ -1,14 +1,9 @@
 package com.kctv.api.entity.ap;
 
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.cassandra.core.cql.PrimaryKeyType;
-import org.springframework.data.cassandra.core.mapping.Column;
-import org.springframework.data.cassandra.core.mapping.PrimaryKeyColumn;
-import org.springframework.data.cassandra.core.mapping.Table;
+import org.springframework.data.cassandra.core.mapping.*;
 
 import java.sql.Time;
 import java.time.LocalTime;
@@ -16,12 +11,10 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
+@Getter
 @Builder
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
-
-
 @Table(value = "partner_info")
 public class PartnerInfo {
 
@@ -59,4 +52,10 @@ public class PartnerInfo {
     @ApiModelProperty(value = "매장 전화번호",readOnly = true)
     @Column("tel_number")
     private String telNumber;
+
+    public void setLikeOfMe(boolean likeOfMe) {
+        this.likeOfMe = likeOfMe;
+    }
+
+    private boolean likeOfMe;
 }

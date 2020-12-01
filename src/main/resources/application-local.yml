@@ -1,6 +1,8 @@
 spring:
   profiles: local
 costom:
+  host:
+    path: http://localhost:8081/v1/verify/
   path:
     images : 'C:\data\'
 
