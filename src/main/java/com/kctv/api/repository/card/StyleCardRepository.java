@@ -11,7 +11,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
-@Repository
+
 public interface StyleCardRepository extends CassandraRepository<StyleCardInfo, UUID> {
 
 

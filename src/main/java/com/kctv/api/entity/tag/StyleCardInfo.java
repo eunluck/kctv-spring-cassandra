@@ -31,12 +31,9 @@ public class StyleCardInfo {
     private Set<String> tags;
     private String status;
 
-    private boolean likeOfMe;
+
     public void setCoverImage(String coverImage) {
         this.coverImage = coverImage;
     }
 
-    public void setLikeOfMe(boolean likeOfMe) {
-        this.likeOfMe = likeOfMe;
-    }
 }

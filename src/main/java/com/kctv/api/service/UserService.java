@@ -28,9 +28,6 @@ import java.util.stream.Collectors;
 @Service
 public class UserService implements UserDetailsService {
 
-    private final StyleCardRepository styleCardRepository;
-    private final UserScrapRepository userScrapRepository;
-    private final PartnerRepository partnerRepository;
     private final RedisUtil redisUtil;
     private final UserRepository userRepository;
     private final EmailService emailService;
@@ -41,10 +38,7 @@ public class UserService implements UserDetailsService {
     private final String EMAIL_SUB = "KCTV 회원가입 인증 메일입니다.";
 
 
-    public UserService(StyleCardRepository styleCardRepository, UserScrapRepository userScrapRepository, PartnerRepository partnerRepository,  RedisUtil redisUtil, UserRepository userRepository, EmailService emailService, UserInterestTagRepository userInterestTagRepository, UserLikeRepository userLikeRepository, @Value("${costom.host.path}") String email_link) {
-        this.styleCardRepository = styleCardRepository;
-        this.userScrapRepository = userScrapRepository;
-        this.partnerRepository = partnerRepository;
+    public UserService(RedisUtil redisUtil, UserRepository userRepository, EmailService emailService, UserInterestTagRepository userInterestTagRepository, UserLikeRepository userLikeRepository, @Value("${costom.host.path}") String email_link) {
         this.redisUtil = redisUtil;
         this.userRepository = userRepository;
         this.emailService = emailService;
@@ -153,68 +147,6 @@ public class UserService implements UserDetailsService {
     public UserDetails loadUserByUsername(String s) throws CUserNotFoundException {
 
         return userRepository.findByUserId(UUID.fromString(s));
-    }
-
-    /*유저 좋아요 기능*/
-    public Optional<UserLikePartner> userLikePartnerService(UUID userId, UUID placeId){
-
-        if(likeCheck(userId,placeId)){
-            userLikeRepository.delete(UserLikePartner.builder().partnerId(placeId).userId(userId).build());
-            return Optional.empty();
-        }else{
-           return Optional.ofNullable(userLikeRepository.save(UserLikePartner.builder().partnerId(placeId).userId(userId).build()));
-        }
-
-    }
-
-    public Boolean likeCheck(UUID userId, UUID placeId){
-
-        return userLikeRepository.findByUserIdAndPartnerId(userId,placeId).isPresent();
-
-    }
-
-    public List<PartnerInfo> likeList(UUID userId){
-
-        List<UserLikePartner> likeList = userLikeRepository.findByUserId(userId);
-
-        List<UUID> partnerList = likeList.stream().map(UserLikePartner::getPartnerId)
-                                                  .collect(Collectors.toList());
-
-        return partnerRepository.findByPartnerIdIn(partnerList);
-    }
-
-
-    /*유저 스크랩 기능*/
-    public Optional<UserScrapCard> userScrapCardService(UUID userId, UUID cardId){
-
-        if(scrapCheck(userId,cardId)){
-            userScrapRepository.delete(UserScrapCard.builder().cardId(cardId).userId(userId).build());
-            return Optional.empty();
-        }else{
-            return Optional.ofNullable(userScrapRepository.save(UserScrapCard.builder().cardId(cardId).userId(userId).build()));
-        }
-
-    }
-
-    public Boolean scrapCheck(UUID userId, UUID cardId){
-
-        return userScrapRepository.findByUserIdAndCardId(userId,cardId).isPresent();
-
-    }
-
-
-
-
-
-
-    public List<StyleCardInfo> scrapList(UUID userId){
-
-        List<UserScrapCard> scrapList = userScrapRepository.findByUserId(userId);
-
-        List<UUID> cardList = scrapList.stream().map(UserScrapCard::getCardId)
-                .collect(Collectors.toList());
-
-        return styleCardRepository.findByCardIdIn(cardList);
     }
 
 

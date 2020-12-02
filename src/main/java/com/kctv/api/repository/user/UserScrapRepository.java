@@ -15,6 +15,6 @@ public interface UserScrapRepository extends CassandraRepository<UserScrapCard, 
 
     Optional<UserScrapCard> findByUserIdAndCardId(UUID userId,UUID cardId); // 스크랩을 했는지?
 
-    List<UserScrapCard> findByUserIdAndCardIdIn(List<UUID> cardIds);
+
 
 }

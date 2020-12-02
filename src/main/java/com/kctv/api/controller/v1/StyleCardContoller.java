@@ -2,7 +2,7 @@ package com.kctv.api.controller.v1;
 
 import com.google.common.collect.Lists;
 import com.kctv.api.entity.tag.StyleCardInfo;
-import com.kctv.api.entity.tag.Tag;
+
 import com.kctv.api.entity.user.UserInterestTag;
 import com.kctv.api.model.response.ListResult;
 import com.kctv.api.model.response.SingleResult;
@@ -11,12 +11,12 @@ import com.kctv.api.service.StyleCardService;
 import com.kctv.api.service.UserService;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
-import org.apache.tinkerpop.gremlin.structure.T;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
+
 import java.util.*;
 import java.util.stream.Collectors;
 

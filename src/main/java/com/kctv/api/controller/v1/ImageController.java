@@ -1,7 +1,7 @@
 package com.kctv.api.controller.v1;
 
 import com.kctv.api.advice.exception.CResourceNotExistException;
-import com.kctv.api.model.response.CommonResult;
+
 import com.kctv.api.model.response.SingleResult;
 import com.kctv.api.service.ResponseService;
 import com.kctv.api.service.StorageService;
@@ -9,27 +9,15 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.io.IOUtils;
-import org.springframework.core.io.Resource;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
 import javax.servlet.http.HttpServletRequest;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 //file:///C:/images
-@Api(tags = {"05. Images API"})
+@Api(tags = {"06. Images API"})
 @RequiredArgsConstructor
 @RestController
 public class ImageController {

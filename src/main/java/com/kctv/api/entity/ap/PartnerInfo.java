@@ -53,9 +53,4 @@ public class PartnerInfo {
     @Column("tel_number")
     private String telNumber;
 
-    public void setLikeOfMe(boolean likeOfMe) {
-        this.likeOfMe = likeOfMe;
-    }
-
-    private boolean likeOfMe;
 }

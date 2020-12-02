@@ -1,6 +1,6 @@
 package com.kctv.api.controller.v1;
 
-import com.kctv.api.config.security.JwtTokenProvider;
+
 import com.kctv.api.entity.user.UserInfo;
 import com.kctv.api.model.response.CommonResult;
 import com.kctv.api.service.ResponseService;

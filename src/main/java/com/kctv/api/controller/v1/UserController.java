@@ -5,11 +5,11 @@ import com.google.common.collect.Sets;
 import com.kctv.api.advice.exception.*;
 import com.kctv.api.config.security.JwtTokenProvider;
 
-import com.kctv.api.entity.ap.PartnerInfo;
-import com.kctv.api.entity.tag.StyleCardInfo;
+
+
 import com.kctv.api.entity.user.UserInfo;
 import com.kctv.api.entity.user.UserInterestTag;
-import com.kctv.api.entity.user.UserLikePartner;
+
 import com.kctv.api.model.response.CommonResult;
 import com.kctv.api.model.response.ListResult;
 import com.kctv.api.model.response.LoginResult;
@@ -21,7 +21,7 @@ import com.kctv.api.service.UserService;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
+
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
@@ -48,6 +48,10 @@ public class UserController {
     })
     @PostMapping(value = "/signup", consumes = "application/json;charset=utf-8", produces = "application/json;charset=utf-8")
     public SingleResult<UserInfo> signUp(@RequestBody UserInfo userInfo){
+
+        Optional<UserInfo> requestUser = userService.checkByEmail(userInfo.getUserEmail(),userInfo.getUserEmailType());
+
+        requestUser.ifPresent(userInfo1 -> new CUserExistException("중복된 이메일입니다."));
 
         if (!"user".equals(userInfo.getUserEmailType())&&userService.userSnsLoginService(userInfo.getUserSnsKey()).isPresent()){
             throw new COverlapSnsKey();
@@ -173,61 +177,7 @@ public class UserController {
     }
 
 
-    @ApiOperation(value = "이 가게 조아요", notes = "좋아요를 추가하거나 삭제한다. (좋아요:true, 좋아요취소:false)")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 token", required = true, dataType = "String", paramType = "header"),
-    })
-    @PutMapping("/user/{placeId}/like")
-    public CommonResult userLikePlace(@ApiParam("가게 UUID")@PathVariable("placeId") UUID placeId){
-
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UUID userId = UUID.fromString(authentication.getName());
-
-
-        return responseService.getSingleResult(userService.userLikePartnerService(userId,placeId).isPresent());
-    }
-
-
-    @ApiOperation(value = "나의 좋아요 리스트", notes = "내가 좋아요 한 가게 리스트 조회")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 token", required = true, dataType = "String", paramType = "header"),
-    })
-    @GetMapping("/user/like")
-    public ListResult<PartnerInfo> likeList(){
-
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UUID userId = UUID.fromString(authentication.getName());
-
-        return responseService.getListResult(userService.likeList(userId));
-
-    }
-
-    @ApiOperation(value = "카드 스크랩", notes = "카드를 스크랩한다. (스크랩:true, 스크랩취소:false)")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 token", required = true, dataType = "String", paramType = "header"),
-    })
-    @GetMapping("/user/{cardId}/scrap")
-    public ListResult<PartnerInfo> scrapList(@ApiParam("스타일카드 UUID")@PathVariable("cardId") UUID cardId){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UUID userId = UUID.fromString(authentication.getName());
-
-
-        return responseService.getListResult(userService.likeList(userId));
-
-    }
-
-
-    @ApiOperation(value = "나의 스크랩 리스트", notes = "내가 스크랩한 스타일카드 리스트 조회")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 token", required = true, dataType = "String", paramType = "header"),
-    })
-    @PutMapping("/user/scrap")
-    public ListResult<StyleCardInfo> userScrapCard(@PathVariable("userId") UUID userId, @PathVariable("cardId") UUID cardId){
-
-        return responseService.getListResult(userService.scrapList(userId));
-    }
-
-
+/*
     @GetMapping("/user/{cardId}/check")
     public SingleResult<Boolean> checkPartnerLike(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -238,6 +188,7 @@ public class UserController {
         return null;
     }
 
+*/
 
 
 
