@@ -68,7 +68,11 @@ public class UserService implements UserDetailsService {
     public UserInfo userSignUpService(UserInfo userInfo){
 
         userInfo.setUserId(UUID.randomUUID());
-        userInfo.setRoles(Collections.singletonList("ROLE_NOT_VERIFY_EMAIL"));
+        if ("user".equals(userInfo.getUserEmailType())) {
+            userInfo.setRoles(Collections.singletonList("ROLE_NOT_VERIFY_EMAIL"));
+        }else{
+            userInfo.setRoles(Collections.singletonList("ROLE_USER"));
+        }
         userInfo.setUserStatus("NORMAL");
         userInfo.setCreateDate(new Date());
 
@@ -88,8 +92,28 @@ public class UserService implements UserDetailsService {
 
     public void sendVerificationMail(UserInfo userInfo){
 
-        redisUtil.setDataExpire(String.valueOf(userInfo.getUserId()),String.valueOf(userInfo.getUserId()),1000L * 60 * 60 * 24 ); // 코드는 5분동안 유지됌
+        redisUtil.setDataExpire(String.valueOf(userInfo.getUserId()),String.valueOf(userInfo.getUserId()),1000L * 60 * 60 * 24 ); // 코드는 24시간  유지됌
         emailService.sendMail(userInfo.getUserEmail(),EMAIL_SUB,EMAIL_LINK+String.valueOf(userInfo.getUserId()));
+
+
+    }
+
+    public void sendTempPassword(String email,String emailType){
+
+        //TODO 수정필요
+
+        UserInfo findUser = userRepository.findByUserEmailAndUserEmailType(email,emailType).orElseThrow(CUserNotFoundException::new);
+
+        String uuid = UUID.randomUUID().toString().replaceAll("-", ""); // -를 제거해 주었다.
+        uuid = uuid.substring(0, 8);
+
+        findUser.setUserPassword(uuid);
+
+        Optional.ofNullable(userRepository.save(findUser)).orElseThrow(CUserNotFoundException::new);
+
+        emailService.sendMail(findUser.getUserEmail(),"임시비밀번호를 발급해드립니다.","임시비밀번호:"+uuid);
+
+        //redisUtil.setDataExpire(uuid,uuid,1000L * 60 * 60 * 24 ); // 코드는 24시간  유지됌
 
 
     }

@@ -33,24 +33,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d27f99c3-2019-41d6-b9bb-22734cca2a54" name="Default Changelist" comment="스타일카드 여러가지">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/controller/v1/UserLikeScrapController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/service/LikeScrapService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/controller/v1/ImageController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/controller/v1/ImageController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/controller/v1/PlaceController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/controller/v1/PlaceController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/controller/v1/StyleCardContoller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/controller/v1/StyleCardContoller.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/controller/v1/TagController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/controller/v1/TagController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/advice/ExceptionAdvice.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/advice/ExceptionAdvice.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/config/security/SecurityConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/config/security/SecurityConfiguration.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/controller/v1/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/controller/v1/UserController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/controller/v1/UserVerifyController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/controller/v1/UserVerifyController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/ap/PartnerInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/ap/PartnerInfo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/tag/StyleCardInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/tag/StyleCardInfo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/model/swagger/LoginEx.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/model/swagger/LoginEx.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/repository/card/StyleCardRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/repository/card/StyleCardRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/repository/user/UserScrapRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/repository/user/UserScrapRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/service/StyleCardService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/service/StyleCardService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/service/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/kctv/api/config/security/SecurityConfiguration.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/kctv/api/config/security/SecurityConfiguration.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/kctv/api/controller/v1/UserController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/kctv/api/controller/v1/UserController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/kctv/api/model/swagger/LoginEx.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/kctv/api/model/swagger/LoginEx.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/kctv/api/service/UserService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/kctv/api/service/UserService.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -333,7 +323,14 @@
       <option name="project" value="LOCAL" />
       <updated>1606810129980</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="스타일카드 여러가지">
+      <created>1606872826322</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1606872826322</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -461,44 +458,44 @@
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state x="994" y="404" key="Github.UntrackedFilesDialog/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1603955429128" />
-    <state width="2517" height="250" key="GridCell.Tab.0.bottom" timestamp="1606813209919">
+    <state width="2517" height="250" key="GridCell.Tab.0.bottom" timestamp="1606975714106">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state width="1877" height="521" key="GridCell.Tab.0.bottom/-2496.0.1664.1082/2560.101.1920.1040/0.0.2560.1400@2560.101.1920.1040" timestamp="1603350941003" />
     <state width="1877" height="254" key="GridCell.Tab.0.bottom/0.0.1664.1069/2496.0.1920.1040@2496.0.1920.1040" timestamp="1606201687654" />
     <state width="1621" height="254" key="GridCell.Tab.0.bottom/0.0.1664.1069@0.0.1664.1069" timestamp="1606199282589" />
     <state width="2517" height="141" key="GridCell.Tab.0.bottom/0.0.2560.1400/2560.100.1920.1040@0.0.2560.1400" timestamp="1602496865752" />
-    <state width="2517" height="250" key="GridCell.Tab.0.bottom/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1606813209919" />
+    <state width="2517" height="250" key="GridCell.Tab.0.bottom/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1606975714106" />
     <state width="1877" height="267" key="GridCell.Tab.0.bottom/2560.100.1920.1040/0.0.2560.1400@2560.100.1920.1040" timestamp="1606116725941" />
     <state width="2517" height="521" key="GridCell.Tab.0.bottom/2560.101.1920.1040/-2496.0.1664.1069/0.0.2560.1400@0.0.2560.1400" timestamp="1603340673894" />
-    <state width="2517" height="250" key="GridCell.Tab.0.center" timestamp="1606813209918">
+    <state width="2517" height="250" key="GridCell.Tab.0.center" timestamp="1606975714106">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state width="1877" height="521" key="GridCell.Tab.0.center/-2496.0.1664.1082/2560.101.1920.1040/0.0.2560.1400@2560.101.1920.1040" timestamp="1603350941003" />
     <state width="1877" height="254" key="GridCell.Tab.0.center/0.0.1664.1069/2496.0.1920.1040@2496.0.1920.1040" timestamp="1606201687654" />
     <state width="1621" height="254" key="GridCell.Tab.0.center/0.0.1664.1069@0.0.1664.1069" timestamp="1606199282588" />
     <state width="2517" height="141" key="GridCell.Tab.0.center/0.0.2560.1400/2560.100.1920.1040@0.0.2560.1400" timestamp="1602496865751" />
-    <state width="2517" height="250" key="GridCell.Tab.0.center/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1606813209918" />
+    <state width="2517" height="250" key="GridCell.Tab.0.center/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1606975714106" />
     <state width="1877" height="267" key="GridCell.Tab.0.center/2560.100.1920.1040/0.0.2560.1400@2560.100.1920.1040" timestamp="1606116725941" />
     <state width="2517" height="521" key="GridCell.Tab.0.center/2560.101.1920.1040/-2496.0.1664.1069/0.0.2560.1400@0.0.2560.1400" timestamp="1603340673893" />
-    <state width="2517" height="250" key="GridCell.Tab.0.left" timestamp="1606813209918">
+    <state width="2517" height="250" key="GridCell.Tab.0.left" timestamp="1606975714106">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state width="1877" height="521" key="GridCell.Tab.0.left/-2496.0.1664.1082/2560.101.1920.1040/0.0.2560.1400@2560.101.1920.1040" timestamp="1603350941003" />
     <state width="1877" height="254" key="GridCell.Tab.0.left/0.0.1664.1069/2496.0.1920.1040@2496.0.1920.1040" timestamp="1606201687654" />
     <state width="1621" height="254" key="GridCell.Tab.0.left/0.0.1664.1069@0.0.1664.1069" timestamp="1606199282588" />
     <state width="2517" height="141" key="GridCell.Tab.0.left/0.0.2560.1400/2560.100.1920.1040@0.0.2560.1400" timestamp="1602496865751" />
-    <state width="2517" height="250" key="GridCell.Tab.0.left/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1606813209918" />
+    <state width="2517" height="250" key="GridCell.Tab.0.left/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1606975714106" />
     <state width="1877" height="267" key="GridCell.Tab.0.left/2560.100.1920.1040/0.0.2560.1400@2560.100.1920.1040" timestamp="1606116725941" />
     <state width="2517" height="521" key="GridCell.Tab.0.left/2560.101.1920.1040/-2496.0.1664.1069/0.0.2560.1400@0.0.2560.1400" timestamp="1603340673893" />
-    <state width="2517" height="250" key="GridCell.Tab.0.right" timestamp="1606813209919">
+    <state width="2517" height="250" key="GridCell.Tab.0.right" timestamp="1606975714106">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state width="1877" height="521" key="GridCell.Tab.0.right/-2496.0.1664.1082/2560.101.1920.1040/0.0.2560.1400@2560.101.1920.1040" timestamp="1603350941003" />
     <state width="1877" height="254" key="GridCell.Tab.0.right/0.0.1664.1069/2496.0.1920.1040@2496.0.1920.1040" timestamp="1606201687654" />
     <state width="1621" height="254" key="GridCell.Tab.0.right/0.0.1664.1069@0.0.1664.1069" timestamp="1606199282588" />
     <state width="2517" height="141" key="GridCell.Tab.0.right/0.0.2560.1400/2560.100.1920.1040@0.0.2560.1400" timestamp="1602496865751" />
-    <state width="2517" height="250" key="GridCell.Tab.0.right/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1606813209919" />
+    <state width="2517" height="250" key="GridCell.Tab.0.right/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1606975714106" />
     <state width="1877" height="267" key="GridCell.Tab.0.right/2560.100.1920.1040/0.0.2560.1400@2560.100.1920.1040" timestamp="1606116725941" />
     <state width="2517" height="521" key="GridCell.Tab.0.right/2560.101.1920.1040/-2496.0.1664.1069/0.0.2560.1400@0.0.2560.1400" timestamp="1603340673894" />
     <state width="1877" height="348" key="GridCell.Tab.1.bottom" timestamp="1606211906307">

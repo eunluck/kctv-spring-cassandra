@@ -5,18 +5,12 @@ import com.kctv.api.entity.user.UserInfo;
 import com.kctv.api.model.response.CommonResult;
 import com.kctv.api.service.ResponseService;
 import com.kctv.api.service.UserService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 @Api(tags = {"02. UserEmailVerify API"})
 @RequiredArgsConstructor
@@ -59,6 +53,23 @@ public class UserVerifyController {
         userService.sendVerificationMail(user);
 
         return responseService.getSuccessResult();
+    }
+
+
+    //TODO // 이메일을 입력한다 > 임시비밀번호가 이메일로 발급된다 (기존 비번 그대로임) > 임시비밀번호로 로그인하면 비밀번호 변경을 한다
+
+
+    @ApiOperation(value = "비밀번호찾기", notes = "입력한 이메일로 임시비밀번호를 발급한다.")
+    @ResponseBody
+    @PutMapping("/find/password/{email}/{emailType}")
+    public CommonResult sendTempPassword(@ApiParam(value = "email",example = "test@gmail.com")@PathVariable("email") String email,
+                                 @ApiParam(value = "emailType",example = "user")@PathVariable("emailType")String emailType){
+
+        userService.sendTempPassword(email,emailType);
+        CommonResult result = responseService.getSuccessResult();
+        result.setMessage("이메일로 임시 비밀번호를 발급했습니다. 로그인 후 비밀번호를 변경해주세요.");
+
+        return result;
     }
 
 

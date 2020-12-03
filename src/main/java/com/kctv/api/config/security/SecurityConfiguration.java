@@ -38,6 +38,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .authorizeRequests() // 다음 리퀘스트에 대한 사용권한 체크
                 //.antMatchers("/v1/**").permitAll() // v1은 토큰체크 x (임시)
                 .antMatchers("/image/**").permitAll()
+                .antMatchers("/v1/find/password/**").permitAll() //이메일찾기
                 .antMatchers("/v1/clk/**").permitAll() //클릭로그
                 .antMatchers("/v1/store/**").permitAll() //상점정보
                 .antMatchers("/v1/login").permitAll() //로그인

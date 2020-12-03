@@ -51,14 +51,17 @@ public class UserController {
 
         Optional<UserInfo> requestUser = userService.checkByEmail(userInfo.getUserEmail(),userInfo.getUserEmailType());
 
-        requestUser.ifPresent(userInfo1 -> new CUserExistException("중복된 이메일입니다."));
-
+        if(requestUser.isPresent()){
+            throw new CUserExistException();
+        }
         if (!"user".equals(userInfo.getUserEmailType())&&userService.userSnsLoginService(userInfo.getUserSnsKey()).isPresent()){
             throw new COverlapSnsKey();
         }
 
+
        SingleResult<UserInfo>  result = responseService.getSingleResult(userService.userSignUpService(userInfo));
-       result.setMessage("이메일로 인증 링크를 보내드렸습니다. 회원가입을 완료해주세요.");
+       if("user".equals(result.getData().getUserEmailType()))
+        result.setMessage("이메일로 인증 링크를 보내드렸습니다. 회원가입을 완료해주세요.");
 
     return result;
 
