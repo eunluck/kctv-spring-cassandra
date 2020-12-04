@@ -52,7 +52,7 @@ public class ExceptionAdvice {
     @ExceptionHandler(CAuthenticationEntryPointException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public CommonResult authenticationEntryPointException(HttpServletRequest request, CAuthenticationEntryPointException e) {
-        log.info(getMessage("entryPointException.msg")+"::{}", e.getMessage(), e);
+        //log.info(getMessage("entryPointException.msg")+"::{}", e.getMessage(), e);
         return responseService.getFailResult(Integer.valueOf(getMessage("entryPointException.code")), getMessage("entryPointException.msg"));
     }
 
