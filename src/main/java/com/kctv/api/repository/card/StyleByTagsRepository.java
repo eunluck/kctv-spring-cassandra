@@ -14,6 +14,7 @@ public interface StyleByTagsRepository extends CassandraRepository<StyleCardByTa
 
 
     List<StyleCardByTags> findByTagIn(List<String> tag);
+    List<StyleCardByTags> findByTag(String tag);
 
 
 

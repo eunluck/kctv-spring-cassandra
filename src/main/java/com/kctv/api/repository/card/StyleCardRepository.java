@@ -3,6 +3,7 @@ package com.kctv.api.repository.card;
 import com.kctv.api.entity.tag.StyleCardByTags;
 import com.kctv.api.entity.tag.StyleCardInfo;
 import com.kctv.api.entity.tag.Tag;
+import org.springframework.data.cassandra.repository.AllowFiltering;
 import org.springframework.data.cassandra.repository.CassandraRepository;
 import org.springframework.stereotype.Repository;
 
@@ -19,6 +20,6 @@ public interface StyleCardRepository extends CassandraRepository<StyleCardInfo, 
 
     Optional<StyleCardInfo> findByCardId(UUID cardId);
 
-
-
+    @AllowFiltering
+    List<StyleCardInfo> findByTitleContaining(String param);
 }

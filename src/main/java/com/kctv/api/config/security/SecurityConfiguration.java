@@ -52,6 +52,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/v1/card/**").permitAll() // 태그 조회
                 .antMatchers("/v1/user/**").permitAll() // 태그 조회
                 .antMatchers("/test/**").permitAll() // 태그 조회
+                .antMatchers("/v1/search/**").permitAll() // 태그 조회
 
                 .antMatchers("/exception/**").permitAll() // 토큰 예외처리
                 .antMatchers(HttpMethod.GET, "helloworld/**").permitAll() // hellowworld로 시작하는 GET요청 리소스는 누구나 접근가능
