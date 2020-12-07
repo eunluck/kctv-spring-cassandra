@@ -51,6 +51,10 @@ public class PartnerInfo {
 
     @ApiModelProperty(value = "매장 전화번호",readOnly = true)
     @Column("tel_number")
-    private String telNumber;
+    private String telNumber; 
+
+    @ApiModelProperty(value = "커버이미지",readOnly = true)
+    @Column("cover_image")
+    private String coverImage;
 
 }

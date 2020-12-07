@@ -26,8 +26,8 @@ import java.util.UUID;
 @RequestMapping(value = "/v1")
 public class PlaceController {
 
-    final PlaceService placeService;
-    final ResponseService responseService;
+    private final PlaceService placeService;
+    private final ResponseService responseService;
 
     @ApiOperation(value = "현재 위치와 가까운 가게 검색", notes = "현재 접속중인 ap의 가게 ID를 통해 주변의 가까운 가게를 검색한다.")
     @GetMapping("/place/{partnerId}/wifi/{distance}")

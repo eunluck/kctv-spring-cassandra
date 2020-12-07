@@ -1,11 +1,14 @@
 package com.kctv.api.controller.v1;
 
 import com.google.common.collect.Lists;
+import com.kctv.api.entity.ap.PartnerInfo;
 import com.kctv.api.entity.tag.StyleCardInfo;
 
 import com.kctv.api.entity.user.UserInterestTag;
 import com.kctv.api.model.response.ListResult;
+import com.kctv.api.model.response.PlaceListResult;
 import com.kctv.api.model.response.SingleResult;
+import com.kctv.api.service.PlaceService;
 import com.kctv.api.service.ResponseService;
 import com.kctv.api.service.StyleCardService;
 import com.kctv.api.service.UserService;
@@ -26,6 +29,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/v1")
 public class StyleCardContoller {
 
+    private final PlaceService placeService;
     private final StyleCardService styleCardService;
     private final UserService userService;
     private final ResponseService responseService;
@@ -81,6 +85,24 @@ public class StyleCardContoller {
     public ListResult<StyleCardInfo> getStyleCardAll(){
 
         return responseService.getListResult(styleCardService.getStyleCardListAllService());
+
+    }
+
+
+    @ApiOperation(value = "card id로 가게리스트 검색", notes = "card uuid를 통해 태그에 충족되는 가게 리스트를 조회한다.")
+    @GetMapping("/card/{cardId}/place")
+    public PlaceListResult getPlaceByTags(@ApiParam(value = "검색할 Card UUID 입력",defaultValue = "fc35a91b-3bb2-4a55-8a45-3b03df9e797d")
+                                              @PathVariable("cardId")UUID cardId){
+
+
+        StyleCardInfo cardInfo = styleCardService.getCardById(cardId);
+
+        List<PartnerInfo> partnerInfoList = placeService.getPartnerInfoListByTagsService(Lists.newArrayList(cardInfo.getTags()));
+
+
+
+
+        return responseService.getPlaceListResult(cardInfo,partnerInfoList);
 
     }
 

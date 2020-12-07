@@ -1,9 +1,8 @@
 package com.kctv.api.service;
 
-import com.kctv.api.model.response.CommonResult;
-import com.kctv.api.model.response.ListResult;
-import com.kctv.api.model.response.LoginResult;
-import com.kctv.api.model.response.SingleResult;
+import com.kctv.api.entity.ap.PartnerInfo;
+import com.kctv.api.entity.tag.StyleCardInfo;
+import com.kctv.api.model.response.*;
 import org.apache.tinkerpop.gremlin.structure.T;
 import org.springframework.stereotype.Service;
 
@@ -43,6 +42,15 @@ public class ResponseService {
     public <T> LoginResult<T> getLoginResult(T user){
         LoginResult<T> result = new LoginResult<>();
         result.setData(user);
+        setSuccessResult(result);
+        return result;
+    }
+
+
+    public PlaceListResult getPlaceListResult(StyleCardInfo cardInfo, List<PartnerInfo> partnerInfoList){
+        PlaceListResult result = new PlaceListResult();
+        result.setData(cardInfo);
+        result.setPlaceList(partnerInfoList);
         setSuccessResult(result);
         return result;
 

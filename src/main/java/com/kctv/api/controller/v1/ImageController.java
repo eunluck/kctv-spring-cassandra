@@ -36,9 +36,9 @@ public class ImageController {
 
     }
 
-    @ApiOperation(value = "커버 사진 저장 API", notes = "라이프스타일카드의 ID를 통해 커버사진을 업로드한다.")
-    @RequestMapping(value = "/image/{id}", method = RequestMethod.POST, produces = "application/json;charset=utf-8", consumes = {"multipart/form-data"})
-    public SingleResult<Boolean> uploadImage(@ApiParam(value = "라이프스타일카드 ID")@PathVariable("id") UUID id, @RequestParam("file") MultipartFile file) throws IOException {
+    @ApiOperation(value = "스타일카드 커버 사진 저장 API", notes = "라이프스타일카드의 ID를 통해 커버사진을 업로드한다.")
+    @RequestMapping(value = "/image/{sourceId}/card", method = RequestMethod.POST, produces = "application/json;charset=utf-8", consumes = {"multipart/form-data"})
+    public SingleResult<Boolean> uploadImageCard(@ApiParam(value = "라이프스타일카드 ID")@PathVariable("sourceId") UUID id, @RequestParam("file") MultipartFile file) throws IOException {
 
         System.out.println(file.getOriginalFilename());
         if (file.getOriginalFilename() != null && !file.getOriginalFilename().endsWith(".png")
@@ -49,7 +49,24 @@ public class ImageController {
 
 
 
-        return responseService.getSingleResult(storageService.saveImage(id,file));
+        return responseService.getSingleResult(storageService.saveImage(id,file,"card"));
+    }
+
+
+    @ApiOperation(value = "가게 커버 사진 저장 API", notes = "가게의 ID를 통해 커버사진을 업로드한다.")
+    @RequestMapping(value = "/image/{sourceId}/place", method = RequestMethod.POST, produces = "application/json;charset=utf-8", consumes = {"multipart/form-data"})
+    public SingleResult<Boolean> uploadImagePlace(@ApiParam(value = "라이프스타일카드 ID")@PathVariable("sourceId") UUID id, @RequestParam("file") MultipartFile file) throws IOException {
+
+        System.out.println(file.getOriginalFilename());
+        if (file.getOriginalFilename() != null && !file.getOriginalFilename().endsWith(".png")
+                && !file.getOriginalFilename().endsWith(".jpg")
+                && !file.getOriginalFilename().endsWith(".gif")) {
+            throw new CResourceNotExistException("Only PNG/GIF/JPG file accepted.");
+        }
+
+
+
+        return responseService.getSingleResult(storageService.saveImage(id,file,"place"));
     }
 }
 
