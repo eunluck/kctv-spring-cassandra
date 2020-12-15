@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/v1")
-public class StyleCardContoller {
+public class StyleCardController {
 
     private final PlaceService placeService;
     private final StyleCardService styleCardService;

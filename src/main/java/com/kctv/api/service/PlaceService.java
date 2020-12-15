@@ -1,11 +1,15 @@
 package com.kctv.api.service;
 
+import com.google.common.collect.Lists;
 import com.kctv.api.advice.exception.CPartnerNotFoundException;
+import com.kctv.api.entity.partner.MenuByPlace;
+import com.kctv.api.entity.partner.MenuVo;
 import com.kctv.api.entity.tag.PartnersByTags;
 import com.kctv.api.entity.tag.StyleCardByTags;
 import com.kctv.api.entity.tag.StyleCardInfo;
 import com.kctv.api.entity.tag.Tag;
 import com.kctv.api.entity.user.UserLikePartner;
+import com.kctv.api.repository.ap.MenuByPartnerRepository;
 import com.kctv.api.repository.ap.PartnerByTagsRepository;
 import com.kctv.api.repository.user.UserLikeRepository;
 import com.kctv.api.util.GeoOperations;
@@ -21,6 +25,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -31,7 +37,20 @@ public class PlaceService {
     private final WifiRepository wifiRepository;
     private final PartnerRepository partnerRepository;
     private final PartnerByTagsRepository partnerByTagsRepository;
-    private final UserLikeRepository userLikeRepository;
+    private final MenuByPartnerRepository menuByPartnerRepository;
+
+    public Map<String, List<MenuByPlace>> getMenuByPartnerId(UUID partnerId){
+
+        List<MenuByPlace> menuList =  menuByPartnerRepository.findByPartnerId(partnerId);
+
+        Map<String, List<MenuByPlace>> list = menuList.stream().collect(Collectors.groupingBy(MenuByPlace::getMenuType));
+
+
+
+        return list;
+
+    }
+
 
     public List<WifiInfo> getPartnerWifiService(UUID partnerId, Double distance){
 

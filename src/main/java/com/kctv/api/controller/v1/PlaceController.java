@@ -4,6 +4,8 @@ package com.kctv.api.controller.v1;
 import com.kctv.api.advice.exception.CPartnerNotFoundException;
 import com.kctv.api.entity.ap.PartnerInfo;
 import com.kctv.api.entity.ap.WifiInfo;
+import com.kctv.api.entity.partner.MenuByPlace;
+import com.kctv.api.entity.partner.PartnerInfoVo;
 import com.kctv.api.model.response.ListResult;
 import com.kctv.api.model.response.SingleResult;
 import com.kctv.api.service.PlaceService;
@@ -16,9 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Api(tags = {"07. Places API"})
 @RestController
@@ -28,6 +28,9 @@ public class PlaceController {
 
     private final PlaceService placeService;
     private final ResponseService responseService;
+
+
+
 
     @ApiOperation(value = "현재 위치와 가까운 가게 검색", notes = "현재 접속중인 ap의 가게 ID를 통해 주변의 가까운 가게를 검색한다.")
     @GetMapping("/place/{partnerId}/wifi/{distance}")
@@ -46,11 +49,15 @@ public class PlaceController {
 
     }
 
-    @ApiOperation(value = "가게 ID를 통해 상세조회", notes = "특정 가게를 상세조회한다.")
+    @ApiOperation(value = "가게 ID를 통해 상세조회 (메뉴 포함)", notes = "특정 가게를 상세조회한다.")
     @GetMapping("/place/{id}")
-    public SingleResult<PartnerInfo> getPlaceById(@ApiParam(value = "검색할 가게 ID",defaultValue = "b3dc4146-2827-47c0-bbc8-9fe350d4134e")@PathVariable("id")UUID uuid){
+    public SingleResult<PartnerInfoVo> getPlaceById(@ApiParam(value = "검색할 가게 ID",defaultValue = "ebe58bff-dd68-434c-9687-cfacda45aefb")@PathVariable("id")UUID uuid){
 
-    return responseService.getSingleResult(placeService.getPartnerByIdService(uuid).orElseThrow(CPartnerNotFoundException::new));
+
+        PartnerInfo partnerInfo = placeService.getPartnerByIdService(uuid).orElseThrow(CPartnerNotFoundException::new);
+        PartnerInfoVo vo = new PartnerInfoVo(partnerInfo, placeService.getMenuByPartnerId(uuid));
+
+    return responseService.getSingleResult(vo);
 
     }
 

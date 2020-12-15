@@ -12,7 +12,7 @@ import java.util.UUID;
 
 public interface UserRepository extends CassandraRepository<UserInfo, UUID> {
 
-    UserInfo findByUserId(UUID id);
+    Optional<UserInfo> findByUserId(UUID id);
 
     @AllowFiltering
     Optional<UserInfo> findByUserEmailAndUserEmailType(String email, String emailType); //이메일중복체크

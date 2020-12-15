@@ -4,30 +4,27 @@ package com.kctv.api.service;
 import com.kctv.api.advice.exception.CResourceNotExistException;
 import com.kctv.api.advice.exception.CUserExistException;
 import com.kctv.api.advice.exception.CUserNotFoundException;
-import com.kctv.api.entity.ap.PartnerInfo;
-import com.kctv.api.entity.tag.StyleCardInfo;
 import com.kctv.api.entity.user.UserInterestTag;
-import com.kctv.api.entity.user.UserLikePartner;
-import com.kctv.api.entity.user.UserScrapCard;
-import com.kctv.api.repository.ap.PartnerRepository;
-import com.kctv.api.repository.card.StyleCardRepository;
 import com.kctv.api.repository.user.UserInterestTagRepository;
 import com.kctv.api.repository.user.UserLikeRepository;
-import com.kctv.api.repository.user.UserScrapRepository;
 import com.kctv.api.util.RedisUtil;
 import com.kctv.api.entity.user.UserInfo;
 import com.kctv.api.repository.user.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class UserService implements UserDetailsService {
 
+    @Autowired
+    private final PasswordEncoder passwordEncoder;
     private final RedisUtil redisUtil;
     private final UserRepository userRepository;
     private final EmailService emailService;
@@ -38,7 +35,8 @@ public class UserService implements UserDetailsService {
     private final String EMAIL_SUB = "KCTV 회원가입 인증 메일입니다.";
 
 
-    public UserService(RedisUtil redisUtil, UserRepository userRepository, EmailService emailService, UserInterestTagRepository userInterestTagRepository, UserLikeRepository userLikeRepository, @Value("${costom.host.path}") String email_link) {
+    public UserService(@Lazy PasswordEncoder passwordEncoder, RedisUtil redisUtil, UserRepository userRepository, EmailService emailService, UserInterestTagRepository userInterestTagRepository, UserLikeRepository userLikeRepository, @Value("${costom.host.path}") String email_link) {
+        this.passwordEncoder = passwordEncoder;
         this.redisUtil = redisUtil;
         this.userRepository = userRepository;
         this.emailService = emailService;
@@ -48,7 +46,7 @@ public class UserService implements UserDetailsService {
     }
 
     public UserInfo findByUserId(UUID uuid){
-        return userRepository.findByUserId(uuid);
+        return userRepository.findByUserId(uuid).orElseThrow(CUserExistException::new);
     }
 
     public Optional<UserInfo> checkByEmail(String email, String emailType){
@@ -57,7 +55,12 @@ public class UserService implements UserDetailsService {
 
 
     public Optional<UserInfo> userLoginService(String email, String emailType, String pwd){
-        return userRepository.findByUserEmailAndUserEmailTypeAndUserPassword(email,emailType,pwd);
+      UserInfo loginUser = userRepository.findByUserEmailAndUserEmailType(email,emailType).orElseThrow(CUserNotFoundException::new);
+
+      if (passwordEncoder.matches(pwd,loginUser.getUserPassword()))
+        return Optional.ofNullable(loginUser);
+      else
+        return Optional.empty();
 
     }
     public Optional<UserInfo> userSnsLoginService(String snsKey){
@@ -73,13 +76,16 @@ public class UserService implements UserDetailsService {
         }else{
             userInfo.setRoles(Collections.singletonList("ROLE_USER"));
         }
+
+        userInfo.setUserPassword(passwordEncoder.encode(userInfo.getUserPassword()));
         userInfo.setUserStatus("NORMAL");
         userInfo.setCreateDate(new Date());
 
         UserInfo result = Optional.ofNullable(userRepository.insert(userInfo)).orElseThrow(CUserExistException::new);
 
 
-        if (result.getUserEmailType().equals("user"))
+        if ("user".equals(result.getUserEmailType()))
+
 
             sendVerificationMail(result);
 
@@ -100,14 +106,13 @@ public class UserService implements UserDetailsService {
 
     public void sendTempPassword(String email,String emailType){
 
-        //TODO 수정필요
 
         UserInfo findUser = userRepository.findByUserEmailAndUserEmailType(email,emailType).orElseThrow(CUserNotFoundException::new);
 
         String uuid = UUID.randomUUID().toString().replaceAll("-", ""); // -를 제거해 주었다.
         uuid = uuid.substring(0, 8);
 
-        findUser.setUserPassword(uuid);
+        findUser.setUserPassword(passwordEncoder.encode(uuid));
 
         Optional.ofNullable(userRepository.save(findUser)).orElseThrow(CUserNotFoundException::new);
 
@@ -122,7 +127,7 @@ public class UserService implements UserDetailsService {
     public void verifyEmail(String key) throws CUserNotFoundException {
 
         UUID userId = UUID.fromString(redisUtil.getData(key));
-        UserInfo user = Optional.ofNullable(userRepository.findByUserId(userId)).orElseThrow(CUserNotFoundException::new);
+        UserInfo user = userRepository.findByUserId(userId).orElseThrow(CUserNotFoundException::new);
 
         modifyUserRole(user,"ROLE_USER");
         redisUtil.deleteData(key);
@@ -145,12 +150,25 @@ public class UserService implements UserDetailsService {
     public UserInfo userUpdateService(UserInfo userInfo) {
 
        UserInfo userBefore = findByUserId(userInfo.getUserId());
-       userBefore.setAccept(userInfo.getAccept());
+       if(userInfo.getAccept() != null && !userInfo.getAccept().isEmpty())
+        userBefore.setAccept(userInfo.getAccept());
+
        userBefore.setUpdateDate(new Date());
-       userBefore.setUserMac(userInfo.getUserMac());
-       userBefore.setUserNickname(userInfo.getUserNickname());
-       userBefore.setUserPassword(userInfo.getUserPassword());
-       userBefore.setUserPhone(userInfo.getUserPhone());
+       if(userInfo.getUserMac() != null && !userInfo.getUserMac().isEmpty())
+        userBefore.setUserMac(userInfo.getUserMac());
+       if(userInfo.getUserNickname() != null && !userInfo.getUserNickname().trim().isEmpty())
+        userBefore.setUserNickname(userInfo.getUserNickname());
+       if(userInfo.getUserPassword() != null && !userInfo.getUserPassword().trim().isEmpty())
+        userBefore.setUserPassword(passwordEncoder.encode(userInfo.getUserPassword()));
+       if(userInfo.getUserPhone() != null && !userInfo.getUserPhone().trim().isEmpty())
+        userBefore.setUserPhone(userInfo.getUserPhone());
+       if(userInfo.getUserAddress() != null && !userInfo.getUserAddress().trim().isEmpty())
+        userBefore.setUserAddress(userInfo.getUserAddress());
+       if(userInfo.getUserGender() != null && !userInfo.getUserGender().trim().isEmpty())
+        userBefore.setUserGender(userInfo.getUserGender());
+       if(userInfo.getUserBirth() != null && !userInfo.getUserBirth().trim().isEmpty())
+        userBefore.setUserBirth(userInfo.getUserBirth());
+
 
         return userRepository.save(userBefore);
     }
@@ -170,7 +188,7 @@ public class UserService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String s) throws CUserNotFoundException {
 
-        return userRepository.findByUserId(UUID.fromString(s));
+        return userRepository.findByUserId(UUID.fromString(s)).orElseThrow(CUserNotFoundException::new);
     }
 
 

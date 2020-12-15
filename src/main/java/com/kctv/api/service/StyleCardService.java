@@ -10,6 +10,7 @@ import com.kctv.api.repository.card.TagRepository;
 import com.kctv.api.util.sorting.SortingTagsUtiil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -48,7 +49,7 @@ public class StyleCardService {
     }
 
 
-
+    @Transactional
     public List<StyleCardInfo> getCardByTagsService(List<String> tags){
         List<StyleCardByTags> result = styleByTagsRepository.findByTagIn(tags); //태그를 조건으로 StyleCard를 검색
         List<UUID> uuidList = SortingTagsUtiil.duplicationMappingList(result);  //검색된 카드의 태그가 중복되는 갯수 순서로 내림차순 정렬

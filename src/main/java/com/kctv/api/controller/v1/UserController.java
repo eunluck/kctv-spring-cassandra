@@ -59,6 +59,7 @@ public class UserController {
         }
 
 
+
        SingleResult<UserInfo>  result = responseService.getSingleResult(userService.userSignUpService(userInfo));
        if("user".equals(result.getData().getUserEmailType()))
         result.setMessage("이메일로 인증 링크를 보내드렸습니다. 회원가입을 완료해주세요.");
@@ -97,9 +98,9 @@ public class UserController {
 
         userInfo.setUserId(UUID.fromString(authentication.getName()));
 
-        userService.userUpdateService(userInfo);
+        UserInfo afterUser = Optional.ofNullable(userService.userUpdateService(userInfo)).orElseThrow(CUserNotFoundException::new);
 
-        return responseService.getSuccessResult();
+        return responseService.getSingleResult(afterUser);
     }
 
 
