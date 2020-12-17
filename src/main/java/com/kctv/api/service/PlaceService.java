@@ -9,6 +9,8 @@ import com.kctv.api.entity.tag.StyleCardByTags;
 import com.kctv.api.entity.tag.StyleCardInfo;
 import com.kctv.api.entity.tag.Tag;
 import com.kctv.api.entity.user.UserLikePartner;
+
+import com.kctv.api.model.request.TagGroup;
 import com.kctv.api.repository.ap.MenuByPartnerRepository;
 import com.kctv.api.repository.ap.PartnerByTagsRepository;
 import com.kctv.api.repository.user.UserLikeRepository;
@@ -77,9 +79,13 @@ public class PlaceService {
     public List<PartnerInfo> getPartnerInfoListByTagsService(List<String> tags){
 
 
+        //  long score = card.getTags().stream().map(s -> TagGroup.findByTagPoint(s)).reduce(0L,Long::sum);
+
+
         List<PartnersByTags> result = partnerByTagsRepository.findByTagIn(tags);
 
-        ArrayList<UUID> idArr = new ArrayList<>();
+
+                ArrayList<UUID> idArr = new ArrayList<>();
         //ArrayList<Map<UUID,Integer>> idArr = new ArrayList<>();
         if(CollectionUtils.isNotEmpty(result)){
             result.forEach(partnerByTags -> idArr.add(partnerByTags.getPartnerId()));
@@ -109,6 +115,22 @@ public class PlaceService {
         }
 
     }
+/*
+
+    public List<PartnerInfo> newGetPartnerInfoListByTagsService(List<String> tags){
+
+
+        //  long score = card.getTags().stream().map(s -> TagGroup.findByTagPoint(s)).reduce(0L,Long::sum);
+
+
+        List<PartnersByTags> result = partnerByTagsRepository.findByTagIn(tags);
+
+        TagGroup.findByTagPoint(result.get(0).getTag());
+
+        List<PartnerInfo> partnerInfos = partnerRepository.findByPartnerIdIn(queryList);
+
+            return null;
+    }*/
 
 
 

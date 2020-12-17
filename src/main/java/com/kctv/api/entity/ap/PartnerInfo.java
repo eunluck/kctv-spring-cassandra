@@ -1,5 +1,6 @@
 package com.kctv.api.entity.ap;
 
+import com.kctv.api.entity.partner.openinghours.CloseOrOpen;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 import org.springframework.data.cassandra.core.cql.PrimaryKeyType;
@@ -51,11 +52,17 @@ public class PartnerInfo {
 
     @ApiModelProperty(value = "매장 전화번호",readOnly = true)
     @Column("tel_number")
-    private String telNumber; 
+    private String telNumber;
 
     @ApiModelProperty(value = "커버이미지",readOnly = true)
     @Column("cover_image")
     private String coverImage;
+
+
+    @ApiModelProperty(value = "영업시간",readOnly = true)
+    @Column("opening_hours")
+    @CassandraType(type = CassandraType.Name.LIST,typeArguments = CassandraType.Name.UDT,userTypeName = "close_or_open")
+    private List<CloseOrOpen> periods;
 
 
 

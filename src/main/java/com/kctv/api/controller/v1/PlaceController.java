@@ -1,10 +1,11 @@
 package com.kctv.api.controller.v1;
 
 
+import com.google.common.collect.Lists;
 import com.kctv.api.advice.exception.CPartnerNotFoundException;
 import com.kctv.api.entity.ap.PartnerInfo;
+import com.kctv.api.entity.ap.TestPartnerInfo;
 import com.kctv.api.entity.ap.WifiInfo;
-import com.kctv.api.entity.partner.MenuByPlace;
 import com.kctv.api.entity.partner.PartnerInfoVo;
 import com.kctv.api.model.response.ListResult;
 import com.kctv.api.model.response.SingleResult;
@@ -73,6 +74,30 @@ public class PlaceController {
 
     }
 
+
+  /*  @ApiOperation(value = "가게 ID를 통해 상세조회 (메뉴,시간 포함)", notes = "특정 가게를 상세조회한다.")
+    @GetMapping("/place/{id}/test")
+    public SingleResult<TestPartnerInfo> getPlaceByIdTest(@ApiParam(value = "검색할 가게 ID",defaultValue = "ebe58bff-dd68-434c-9687-cfacda45aefb")@PathVariable("id")UUID uuid){
+
+
+        PartnerInfo partnerInfo = placeService.getPartnerByIdService(uuid).orElseThrow(CPartnerNotFoundException::new);
+        PartnerInfoVo vo = new PartnerInfoVo(partnerInfo, placeService.getMenuByPartnerId(uuid));
+
+        TestPartnerInfo test = new TestPartnerInfo(vo);
+
+        OpeningHours openingHours = new OpeningHours();
+
+        OpeningHours.CloseOrOpen closeOrOpen = new OpeningHours.CloseOrOpen();
+        OpeningHours.CloseOrOpen.PeriodsTime periodsTimeOpen = new OpeningHours.CloseOrOpen.PeriodsTime(1,"0900");
+        OpeningHours.CloseOrOpen.PeriodsTime periodsTimeClose = new OpeningHours.CloseOrOpen.PeriodsTime(1,"1700");
+        closeOrOpen.setOpen(periodsTimeOpen);
+        closeOrOpen.setClose(periodsTimeClose);
+        openingHours.setPeriods(Lists.newArrayList(closeOrOpen));
+        test.setOpeningHours(openingHours);
+        return responseService.getSingleResult(test);
+
+    }
+*/
 
 
 

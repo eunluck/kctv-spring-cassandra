@@ -4,15 +4,19 @@ import com.kctv.api.advice.exception.CPartnerNotFoundException;
 import com.kctv.api.entity.tag.StyleCardByTags;
 import com.kctv.api.entity.tag.StyleCardInfo;
 import com.kctv.api.entity.tag.Tag;
+import com.kctv.api.model.request.TagGroup;
 import com.kctv.api.repository.card.StyleByTagsRepository;
 import com.kctv.api.repository.card.StyleCardRepository;
 import com.kctv.api.repository.card.TagRepository;
+import com.kctv.api.util.MapUtill;
 import com.kctv.api.util.sorting.SortingTagsUtiil;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -40,7 +44,9 @@ public class StyleCardService {
 
         StyleCardInfo card = styleCardRepository.findByCardId(uuid).orElseThrow(CPartnerNotFoundException::new);
 
+        long score = card.getTags().stream().map(s -> TagGroup.findByTagPoint(s)).reduce(0L,Long::sum);
 
+        System.out.println(score);
         return card;
     }
 
@@ -49,7 +55,7 @@ public class StyleCardService {
     }
 
 
-    @Transactional
+
     public List<StyleCardInfo> getCardByTagsService(List<String> tags){
         List<StyleCardByTags> result = styleByTagsRepository.findByTagIn(tags); //태그를 조건으로 StyleCard를 검색
         List<UUID> uuidList = SortingTagsUtiil.duplicationMappingList(result);  //검색된 카드의 태그가 중복되는 갯수 순서로 내림차순 정렬
@@ -93,6 +99,58 @@ public class StyleCardService {
 */
 
     }
+
+
+
+    public List<StyleCardInfo> newGetCardByTagsService(List<String> tags){
+
+
+        List<StyleCardByTags> result = styleByTagsRepository.findByTagIn(tags);
+/*
+
+        result.stream().
+*/
+
+
+        return null;
+
+    }
+
+        /*
+        List<StyleCardByTags> result = styleByTagsRepository.findByTagIn(tags);
+
+        ArrayList<UUID> idArr = new ArrayList<>();
+        //ArrayList<Map<UUID,Integer>> idArr = new ArrayList<>();
+        if(CollectionUtils.isNotEmpty(result)){
+            result.forEach(styleCardByTags -> idArr.add(styleCardByTags.getCardId()));
+            Map<UUID,Integer> sorting = new HashMap<>();
+
+            for(UUID id:idArr){
+                sorting.put(id,sorting.getOrDefault(id,0)+1);
+            }
+
+            sorting = MapUtill.sortByValueDesc(sorting);
+            List<UUID> queryList = new ArrayList<>();
+            queryList.addAll(sorting.keySet());
+
+            List<StyleCardInfo> styleCardInfos = styleCardRepository.findByCardIdIn(queryList);
+
+            List<StyleCardInfo> resultList = new ArrayList<>();
+            for (int i = 0; i < styleCardInfos.size(); i++) {
+                for (int j = 0; j < styleCardInfos.size(); j++) {
+                   if(styleCardInfos.get(j).getCardId().equals(queryList.get(i)))
+                     resultList.add(styleCardInfos.get(j));
+                }
+            }
+
+            return resultList;
+        } else {
+            return new ArrayList<StyleCardInfo>();
+        }
+
+*/
+
+
 
 
 
