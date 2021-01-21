@@ -1,8 +1,6 @@
 package com.kctv.api.repository.ap;
 
-import com.kctv.api.entity.ap.PartnerInfo;
-import com.kctv.api.entity.tag.PartnersByTags;
-import com.kctv.api.entity.tag.StyleCardByTags;
+import com.kctv.api.entity.stylecard.PartnersByTags;
 import org.springframework.data.cassandra.repository.CassandraRepository;
 import org.springframework.stereotype.Repository;
 

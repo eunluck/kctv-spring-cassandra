@@ -1,7 +1,7 @@
 package com.kctv.api.repository.ap;
 
 
-import com.kctv.api.entity.partner.MenuByPlace;
+import com.kctv.api.entity.place.MenuByPlace;
 
 import org.springframework.data.cassandra.repository.CassandraRepository;
 

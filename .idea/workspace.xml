@@ -29,18 +29,122 @@
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d27f99c3-2019-41d6-b9bb-22734cca2a54" name="Default Changelist" comment="밀린커밋">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/ap/TestPartnerInfo.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/partner/openinghours/CloseOrOpen.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/partner/openinghours/PeriodsTime.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/model/request/TagGroup.java" afterDir="false" />
+    <list default="true" id="d27f99c3-2019-41d6-b9bb-22734cca2a54" name="Default Changelist" comment="영업시간 구현">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/controller/v1/ClientApController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/controller/v1/FaqController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/controller/v1/InviteController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/controller/v1/QnaController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/controller/v1/admin/AdminController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/controller/v1/admin/AdminTagController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/controller/v1/admin/AdminUserController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/controller/v1/admin/captive/CaptiveAdEntity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/controller/v1/admin/captive/CaptiveRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/admin/FaqRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/admin/FaqTable.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/admin/QnaAnswer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/admin/ad/CaptivePortalAdEntity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/ap/VisitHistoryEntity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/place/PlaceInfoVo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/place/PlaceTypeEntity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/qna/QnaByUserEntity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/stylecard/admin/StyleCardVo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/user/InviteFriends.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/user/UserInfoDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/model/ap/FindApRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/model/ap/WakeupPermission.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/model/qna/QnaDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/model/qna/QnaRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/model/request/AttachedFile.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/model/tag/FacilitiesGroup.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/repository/ad/CaptivePortalAdRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/repository/ap/WakeUpPermissionRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/repository/faq/FaqRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/repository/qna/QnaAnswerRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/repository/qna/QnaRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/repository/tag/PlaceTypeRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/repository/user/InviteRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/service/CaptivePortalAdService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/service/FaqService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/service/InviteService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/service/QnaService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/service/WakeupPermissionService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/util/test/actor/ActorByMovieRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/util/test/actor/ActorRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/util/test/actor/entity/Actor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/util/test/actor/entity/ActorByMovie.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/util/test/actor/entity/ActorByMovieKey.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/util/test/movie/MovieConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/util/test/movie/entity/Movie.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/util/test/movie/entity/MovieByActor.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/util/test/movie/entity/MovieByActorKey.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/util/test/movie/entity/MovieByGenre.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/util/test/movie/entity/MovieByGenreKey.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/util/test/movie/entity/MovieByYear.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/util/test/movie/entity/MovieByYearKey.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/util/test/movie/entity/Role.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/util/test/movie/repository/MovieByActorRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/util/test/movie/repository/MovieByGenreRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/util/test/movie/repository/MovieByYearRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/util/test/movie/repository/MovieRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/util/test/movie/repository/MovieRepositoryImpl.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/config/SwaggerConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/config/SwaggerConfiguration.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/config/WebConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/config/WebConfiguration.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/config/database/CassandraConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/config/database/CassandraConfiguration.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/config/security/SecurityConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/config/security/SecurityConfiguration.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/controller/v1/PlaceController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/controller/v1/PlaceController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/ap/PartnerInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/ap/PartnerInfo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/partner/PartnerInfoVo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/partner/PartnerInfoVo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/model/request/TagsCalculatorType.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/controller/v1/SearchController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/controller/v1/SearchController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/controller/v1/StyleCardController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/controller/v1/StyleCardController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/controller/v1/TagController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/controller/v1/TagController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/controller/v1/TestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/controller/v1/TestController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/controller/v1/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/controller/v1/UserController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/controller/v1/UserLikeScrapController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/controller/v1/UserLikeScrapController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/ap/PartnerInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/place/PlaceInfo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/ap/TestPartnerInfo.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/ap/WifiInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/place/WifiInfo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/partner/MenuByPlace.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/place/MenuByPlace.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/partner/MenuVo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/place/MenuVo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/partner/PartnerInfoVo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/place/PlaceInfoDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/partner/openinghours/CloseOrOpen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/place/openinghours/CloseOrOpen.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/partner/openinghours/PeriodsTime.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/place/openinghours/PeriodsTime.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/tag/CardImageInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/stylecard/CardImageInfo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/tag/ImageInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/stylecard/ImageInfo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/tag/PartnersByTags.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/stylecard/PartnersByTags.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/tag/StyleCardByTags.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/stylecard/StyleCardByTags.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/tag/StyleCardInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/stylecard/StyleCardInfo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/tag/Tag.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/stylecard/Tag.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/user/UserInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/user/UserInfo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/user/UserInterestTag.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/user/UserInterestTag.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/model/request/TagGroup.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/model/tag/TagGroup.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/model/response/PlaceListResult.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/model/response/PlaceListResult.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/repository/ap/MenuByPartnerRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/repository/ap/MenuByPartnerRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/repository/ap/PartnerByTagsRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/repository/ap/PartnerByTagsRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/repository/ap/PartnerRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/repository/ap/PartnerRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/repository/ap/WifiRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/repository/ap/WifiRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/repository/card/StyleByTagsRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/repository/card/StyleByTagsRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/repository/card/StyleCardRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/repository/card/StyleCardRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/repository/card/TagRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/repository/tag/TagRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/repository/file/CardImageInfoRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/repository/file/CardImageInfoRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/repository/user/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/repository/user/UserRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/service/LikeScrapService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/service/LikeScrapService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/service/PlaceService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/service/PlaceService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/service/ResponseService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/service/ResponseService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/service/SearchService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/service/SearchService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/service/StorageService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/service/StorageService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/service/StyleCardService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/service/StyleCardService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/service/UserService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/util/sorting/SortingTagsUtiil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/util/sorting/SortingTagsUtiil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application-dev.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application-dev.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/kctv/api/config/SwaggerConfiguration.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/kctv/api/config/SwaggerConfiguration.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/kctv/api/config/security/SecurityConfiguration.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/kctv/api/config/security/SecurityConfiguration.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/kctv/api/controller/v1/UserController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/kctv/api/controller/v1/UserController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/kctv/api/entity/user/UserInfo$UserInfoBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/kctv/api/entity/user/UserInfo$UserInfoBuilder.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/kctv/api/entity/user/UserInfo.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/kctv/api/entity/user/UserInfo.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/kctv/api/repository/user/UserRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/kctv/api/repository/user/UserRepository.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/kctv/api/service/ResponseService$CommonResponse.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/kctv/api/service/ResponseService$CommonResponse.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/kctv/api/service/ResponseService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/kctv/api/service/ResponseService.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/kctv/api/service/UserService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/kctv/api/service/UserService.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -120,9 +224,9 @@
     <property name="ToolWindowEvent Log.ShowToolbar" value="false" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/resources" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/java/com/kctv/api/util/test" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="project.structure.last.edited" value="Project" />
+    <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="reference.projectsettings.compiler.javacompiler" />
@@ -135,18 +239,18 @@
       <recent name="com.kctv.api.controller" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Bruno\IdeaProjects\kctv-spring-cassandra\src\main\java\com\kctv\api\util\test" />
       <recent name="C:\Users\Bruno\IdeaProjects\kctv-spring-cassandra\src\main\resources" />
       <recent name="C:\Users\Bruno\IdeaProjects\kctv-spring-cassandra\src\main\resources\i18n" />
       <recent name="C:\Users\Bruno\IdeaProjects\kctv-spring-cassandra\src\main\resources\static" />
       <recent name="C:\Users\Bruno\IdeaProjects\kctv-spring-cassandra\src\main\java\com\kctv\api\advice" />
-      <recent name="C:\Users\Bruno\IdeaProjects\kctv-spring-cassandra\src\main\java\com\kctv\api\model\response" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="com.kctv.api.entity.ap" />
-      <recent name="com.kctv.api.entity.partner" />
-      <recent name="com.kctv.api.repository.ap" />
-      <recent name="com.kctv.api.entity.tag" />
       <recent name="com.kctv.api.service" />
+      <recent name="com.kctv.api.repository.ad" />
+      <recent name="com.kctv.api.repository.tag" />
+      <recent name="com.kctv.api.controller.v1.admin.captive" />
+      <recent name="com.kctv.api.repository.ap" />
     </key>
     <key name="CreateClassDialog.RecentsKey">
       <recent name="com.kctv.api.repository.user" />
@@ -246,7 +350,20 @@
       <workItem from="1605753564112" duration="1002000" />
       <workItem from="1605834353408" duration="20331000" />
       <workItem from="1606266115549" duration="63653000" />
-      <workItem from="1608180722216" duration="12139000" />
+      <workItem from="1608180722216" duration="16388000" />
+      <workItem from="1608214337283" duration="1541000" />
+      <workItem from="1608268346022" duration="8667000" />
+      <workItem from="1608515065813" duration="15842000" />
+      <workItem from="1608604608867" duration="17240000" />
+      <workItem from="1608690692945" duration="80229000" />
+      <workItem from="1609736895238" duration="3302000" />
+      <workItem from="1609741535471" duration="39181000" />
+      <workItem from="1610078657926" duration="14062000" />
+      <workItem from="1610329457045" duration="463000" />
+      <workItem from="1610423394154" duration="11976000" />
+      <workItem from="1610513947912" duration="37330000" />
+      <workItem from="1610961907824" duration="8682000" />
+      <workItem from="1611023281242" duration="65973000" />
     </task>
     <task id="LOCAL-00001" summary="커밋">
       <created>1603958598568</created>
@@ -367,7 +484,14 @@
       <option name="project" value="LOCAL" />
       <updated>1608013155585</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="영업시간 구현">
+      <created>1608193689144</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1608193689144</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -416,23 +540,24 @@
     <MESSAGE value="검색API 구현" />
     <MESSAGE value="스타일카드 아이디로 플레이스 목록 조회" />
     <MESSAGE value="밀린커밋" />
-    <option name="LAST_COMMIT_MESSAGE" value="밀린커밋" />
+    <MESSAGE value="영업시간 구현" />
+    <option name="LAST_COMMIT_MESSAGE" value="영업시간 구현" />
   </component>
   <component name="WindowStateProjectService">
     <state x="872" y="341" key="#Plugins" timestamp="1605759230293">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state x="872" y="341" key="#Plugins/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1605759230293" />
-    <state x="3130" y="289" key="#Project_Structure" timestamp="1605576602854">
-      <screen x="2560" y="100" width="1920" height="1040" />
+    <state x="760" y="274" key="#Project_Structure" timestamp="1610961572707">
+      <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state x="760" y="274" key="#Project_Structure/0.0.2560.1400/2560.100.1920.1040@0.0.2560.1400" timestamp="1604286430070" />
-    <state x="760" y="274" key="#Project_Structure/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1604301726912" />
+    <state x="760" y="274" key="#Project_Structure/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1610961572707" />
     <state x="3130" y="289" key="#Project_Structure/2560.100.1920.1040/0.0.2560.1400@2560.100.1920.1040" timestamp="1605576602854" />
-    <state x="3274" y="262" width="1092" height="815" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1605580459120">
-      <screen x="2560" y="100" width="1920" height="1040" />
+    <state x="952" y="218" width="1092" height="815" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1610962156438">
+      <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state x="952" y="218" key="#com.intellij.execution.impl.EditConfigurationsDialog/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1605579529213" />
+    <state x="952" y="218" key="#com.intellij.execution.impl.EditConfigurationsDialog/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1610962156438" />
     <state x="3274" y="262" width="1092" height="815" key="#com.intellij.execution.impl.EditConfigurationsDialog/2560.100.1920.1040/0.0.2560.1400@2560.100.1920.1040" timestamp="1605580459120" />
     <state x="653" y="382" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1605354054950">
       <screen x="0" y="0" width="1664" height="1069" />
@@ -447,11 +572,11 @@
       <screen x="2560" y="100" width="1920" height="1040" />
     </state>
     <state x="3600" y="312" key="#com.intellij.ide.macro.MacrosDialog/2560.100.1920.1040/0.0.2560.1400@2560.100.1920.1040" timestamp="1605578800308" />
-    <state x="705" y="309" key="#com.intellij.ide.util.MemberChooser" timestamp="1608185011228">
+    <state x="705" y="309" key="#com.intellij.ide.util.MemberChooser" timestamp="1610611255712">
       <screen x="0" y="0" width="1664" height="1069" />
     </state>
-    <state x="705" y="309" key="#com.intellij.ide.util.MemberChooser/0.0.1664.1069@0.0.1664.1069" timestamp="1608185011228" />
-    <state x="1085" y="405" key="#com.intellij.ide.util.MemberChooser/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1606808959009" />
+    <state x="705" y="309" key="#com.intellij.ide.util.MemberChooser/0.0.1664.1069@0.0.1664.1069" timestamp="1610611255712" />
+    <state x="1085" y="405" key="#com.intellij.ide.util.MemberChooser/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1609314198122" />
     <state x="3374" y="401" key="#com.intellij.ide.util.MemberChooser/2560.100.1920.1040/0.0.2560.1400@2560.100.1920.1040" timestamp="1606109377297" />
     <state x="3250" y="395" key="#com.intellij.ide.util.PackageChooserDialog" timestamp="1603264291977">
       <screen x="2560" y="100" width="1920" height="1040" />
@@ -465,20 +590,28 @@
       <screen x="2560" y="100" width="1920" height="1040" />
     </state>
     <state x="3311" y="500" key="#com.intellij.refactoring.move.moveClassesOrPackages.MoveClassesOrPackagesDialog.packages/2560.100.1920.1040/0.0.2560.1400@2560.100.1920.1040" timestamp="1603261979144" />
-    <state x="657" y="341" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1608189431899">
+    <state x="0" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog" timestamp="1608535541900">
       <screen x="0" y="0" width="1664" height="1069" />
     </state>
-    <state x="657" y="341" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1664.1069@0.0.1664.1069" timestamp="1608189431899" />
+    <state x="0" y="0" key="#com.intellij.refactoring.rename.AutomaticRenamingDialog/0.0.1664.1069@0.0.1664.1069" timestamp="1608535541900" />
+    <state x="657" y="341" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1609136076662">
+      <screen x="0" y="0" width="1664" height="1069" />
+    </state>
+    <state x="657" y="341" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1664.1069@0.0.1664.1069" timestamp="1609136076662" />
     <state x="1010" y="446" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1605606988342" />
     <state x="3318" y="431" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/2560.100.1920.1040/0.0.2560.1400@2560.100.1920.1040" timestamp="1605252567831" />
     <state x="1005" y="550" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1" timestamp="1605579447073">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state x="1005" y="550" key="ANALYSIS_DLG_com.intellij.analysis.BaseAnalysisAction$1/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1605579447073" />
-    <state x="2629" y="168" width="1782" height="904" key="DiffContextDialog" timestamp="1604383272225">
-      <screen x="2560" y="100" width="1920" height="1040" />
+    <state width="417" height="466" key="DebuggerActiveHint" timestamp="1609154516678">
+      <screen x="0" y="0" width="1664" height="1069" />
     </state>
-    <state x="92" y="92" width="2376" height="1216" key="DiffContextDialog/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1603958576170" />
+    <state width="417" height="466" key="DebuggerActiveHint/0.0.1664.1069@0.0.1664.1069" timestamp="1609154516678" />
+    <state x="92" y="92" width="2376" height="1216" key="DiffContextDialog" timestamp="1610961736294">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="92" y="92" width="2376" height="1216" key="DiffContextDialog/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1610961736294" />
     <state x="2629" y="168" width="1782" height="904" key="DiffContextDialog/2560.100.1920.1040/0.0.2560.1400@2560.100.1920.1040" timestamp="1604383272225" />
     <state x="3686" y="353" key="EnvironmentVariablesDialog" timestamp="1605578811565">
       <screen x="2560" y="100" width="1920" height="1040" />
@@ -502,84 +635,84 @@
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state x="994" y="404" key="Github.UntrackedFilesDialog/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1603955429128" />
-    <state width="1621" height="286" key="GridCell.Tab.0.bottom" timestamp="1608193419976">
-      <screen x="0" y="0" width="1664" height="1069" />
+    <state width="2517" height="458" key="GridCell.Tab.0.bottom" timestamp="1611196653552">
+      <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state width="1877" height="521" key="GridCell.Tab.0.bottom/-2496.0.1664.1082/2560.101.1920.1040/0.0.2560.1400@2560.101.1920.1040" timestamp="1603350941003" />
     <state width="1877" height="254" key="GridCell.Tab.0.bottom/0.0.1664.1069/2496.0.1920.1040@2496.0.1920.1040" timestamp="1606201687654" />
-    <state width="1621" height="286" key="GridCell.Tab.0.bottom/0.0.1664.1069@0.0.1664.1069" timestamp="1608193419976" />
+    <state width="1621" height="260" key="GridCell.Tab.0.bottom/0.0.1664.1069@0.0.1664.1069" timestamp="1611055633212" />
     <state width="2517" height="141" key="GridCell.Tab.0.bottom/0.0.2560.1400/2560.100.1920.1040@0.0.2560.1400" timestamp="1602496865752" />
-    <state width="2517" height="241" key="GridCell.Tab.0.bottom/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1607334099356" />
-    <state width="1877" height="267" key="GridCell.Tab.0.bottom/2560.100.1920.1040/0.0.2560.1400@2560.100.1920.1040" timestamp="1606116725941" />
+    <state width="2517" height="458" key="GridCell.Tab.0.bottom/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1611196653552" />
+    <state width="1877" height="183" key="GridCell.Tab.0.bottom/2560.100.1920.1040/0.0.2560.1400@2560.100.1920.1040" timestamp="1611109724106" />
     <state width="2517" height="521" key="GridCell.Tab.0.bottom/2560.101.1920.1040/-2496.0.1664.1069/0.0.2560.1400@0.0.2560.1400" timestamp="1603340673894" />
-    <state width="1621" height="286" key="GridCell.Tab.0.center" timestamp="1608193419976">
-      <screen x="0" y="0" width="1664" height="1069" />
+    <state width="2517" height="458" key="GridCell.Tab.0.center" timestamp="1611196653552">
+      <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state width="1877" height="521" key="GridCell.Tab.0.center/-2496.0.1664.1082/2560.101.1920.1040/0.0.2560.1400@2560.101.1920.1040" timestamp="1603350941003" />
     <state width="1877" height="254" key="GridCell.Tab.0.center/0.0.1664.1069/2496.0.1920.1040@2496.0.1920.1040" timestamp="1606201687654" />
-    <state width="1621" height="286" key="GridCell.Tab.0.center/0.0.1664.1069@0.0.1664.1069" timestamp="1608193419976" />
+    <state width="1621" height="260" key="GridCell.Tab.0.center/0.0.1664.1069@0.0.1664.1069" timestamp="1611055633211" />
     <state width="2517" height="141" key="GridCell.Tab.0.center/0.0.2560.1400/2560.100.1920.1040@0.0.2560.1400" timestamp="1602496865751" />
-    <state width="2517" height="241" key="GridCell.Tab.0.center/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1607334099356" />
-    <state width="1877" height="267" key="GridCell.Tab.0.center/2560.100.1920.1040/0.0.2560.1400@2560.100.1920.1040" timestamp="1606116725941" />
+    <state width="2517" height="458" key="GridCell.Tab.0.center/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1611196653552" />
+    <state width="1877" height="183" key="GridCell.Tab.0.center/2560.100.1920.1040/0.0.2560.1400@2560.100.1920.1040" timestamp="1611109724105" />
     <state width="2517" height="521" key="GridCell.Tab.0.center/2560.101.1920.1040/-2496.0.1664.1069/0.0.2560.1400@0.0.2560.1400" timestamp="1603340673893" />
-    <state width="1621" height="286" key="GridCell.Tab.0.left" timestamp="1608193419976">
-      <screen x="0" y="0" width="1664" height="1069" />
+    <state width="2517" height="458" key="GridCell.Tab.0.left" timestamp="1611196653552">
+      <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state width="1877" height="521" key="GridCell.Tab.0.left/-2496.0.1664.1082/2560.101.1920.1040/0.0.2560.1400@2560.101.1920.1040" timestamp="1603350941003" />
     <state width="1877" height="254" key="GridCell.Tab.0.left/0.0.1664.1069/2496.0.1920.1040@2496.0.1920.1040" timestamp="1606201687654" />
-    <state width="1621" height="286" key="GridCell.Tab.0.left/0.0.1664.1069@0.0.1664.1069" timestamp="1608193419976" />
+    <state width="1621" height="260" key="GridCell.Tab.0.left/0.0.1664.1069@0.0.1664.1069" timestamp="1611055633211" />
     <state width="2517" height="141" key="GridCell.Tab.0.left/0.0.2560.1400/2560.100.1920.1040@0.0.2560.1400" timestamp="1602496865751" />
-    <state width="2517" height="241" key="GridCell.Tab.0.left/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1607334099356" />
-    <state width="1877" height="267" key="GridCell.Tab.0.left/2560.100.1920.1040/0.0.2560.1400@2560.100.1920.1040" timestamp="1606116725941" />
+    <state width="2517" height="458" key="GridCell.Tab.0.left/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1611196653552" />
+    <state width="1877" height="183" key="GridCell.Tab.0.left/2560.100.1920.1040/0.0.2560.1400@2560.100.1920.1040" timestamp="1611109724105" />
     <state width="2517" height="521" key="GridCell.Tab.0.left/2560.101.1920.1040/-2496.0.1664.1069/0.0.2560.1400@0.0.2560.1400" timestamp="1603340673893" />
-    <state width="1621" height="286" key="GridCell.Tab.0.right" timestamp="1608193419976">
-      <screen x="0" y="0" width="1664" height="1069" />
+    <state width="2517" height="458" key="GridCell.Tab.0.right" timestamp="1611196653552">
+      <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state width="1877" height="521" key="GridCell.Tab.0.right/-2496.0.1664.1082/2560.101.1920.1040/0.0.2560.1400@2560.101.1920.1040" timestamp="1603350941003" />
     <state width="1877" height="254" key="GridCell.Tab.0.right/0.0.1664.1069/2496.0.1920.1040@2496.0.1920.1040" timestamp="1606201687654" />
-    <state width="1621" height="286" key="GridCell.Tab.0.right/0.0.1664.1069@0.0.1664.1069" timestamp="1608193419976" />
+    <state width="1621" height="260" key="GridCell.Tab.0.right/0.0.1664.1069@0.0.1664.1069" timestamp="1611055633212" />
     <state width="2517" height="141" key="GridCell.Tab.0.right/0.0.2560.1400/2560.100.1920.1040@0.0.2560.1400" timestamp="1602496865751" />
-    <state width="2517" height="241" key="GridCell.Tab.0.right/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1607334099356" />
-    <state width="1877" height="267" key="GridCell.Tab.0.right/2560.100.1920.1040/0.0.2560.1400@2560.100.1920.1040" timestamp="1606116725941" />
+    <state width="2517" height="458" key="GridCell.Tab.0.right/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1611196653552" />
+    <state width="1877" height="183" key="GridCell.Tab.0.right/2560.100.1920.1040/0.0.2560.1400@2560.100.1920.1040" timestamp="1611109724106" />
     <state width="2517" height="521" key="GridCell.Tab.0.right/2560.101.1920.1040/-2496.0.1664.1069/0.0.2560.1400@0.0.2560.1400" timestamp="1603340673894" />
-    <state width="1621" height="360" key="GridCell.Tab.1.bottom" timestamp="1608027566135">
-      <screen x="0" y="0" width="1664" height="1069" />
+    <state width="2517" height="297" key="GridCell.Tab.1.bottom" timestamp="1611125972976">
+      <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state width="1877" height="521" key="GridCell.Tab.1.bottom/-2496.0.1664.1082/2560.101.1920.1040/0.0.2560.1400@2560.101.1920.1040" timestamp="1603350941003" />
     <state width="1877" height="348" key="GridCell.Tab.1.bottom/0.0.1664.1069/2496.0.1920.1040@2496.0.1920.1040" timestamp="1606201450541" />
-    <state width="1621" height="360" key="GridCell.Tab.1.bottom/0.0.1664.1069@0.0.1664.1069" timestamp="1608027566135" />
+    <state width="1621" height="215" key="GridCell.Tab.1.bottom/0.0.1664.1069@0.0.1664.1069" timestamp="1609736883605" />
     <state width="2517" height="141" key="GridCell.Tab.1.bottom/0.0.2560.1400/2560.100.1920.1040@0.0.2560.1400" timestamp="1602496865752" />
-    <state width="1877" height="348" key="GridCell.Tab.1.bottom/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1606211906307" />
+    <state width="2517" height="297" key="GridCell.Tab.1.bottom/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1611125972976" />
     <state width="1877" height="348" key="GridCell.Tab.1.bottom/2560.100.1920.1040/0.0.2560.1400@2560.100.1920.1040" timestamp="1606112950538" />
     <state width="2517" height="521" key="GridCell.Tab.1.bottom/2560.101.1920.1040/-2496.0.1664.1069/0.0.2560.1400@0.0.2560.1400" timestamp="1603340673894" />
-    <state width="1621" height="360" key="GridCell.Tab.1.center" timestamp="1608027566135">
-      <screen x="0" y="0" width="1664" height="1069" />
+    <state width="2517" height="297" key="GridCell.Tab.1.center" timestamp="1611125972975">
+      <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state width="1877" height="521" key="GridCell.Tab.1.center/-2496.0.1664.1082/2560.101.1920.1040/0.0.2560.1400@2560.101.1920.1040" timestamp="1603350941003" />
     <state width="1877" height="348" key="GridCell.Tab.1.center/0.0.1664.1069/2496.0.1920.1040@2496.0.1920.1040" timestamp="1606201450541" />
-    <state width="1621" height="360" key="GridCell.Tab.1.center/0.0.1664.1069@0.0.1664.1069" timestamp="1608027566135" />
+    <state width="1621" height="215" key="GridCell.Tab.1.center/0.0.1664.1069@0.0.1664.1069" timestamp="1609736883605" />
     <state width="2517" height="141" key="GridCell.Tab.1.center/0.0.2560.1400/2560.100.1920.1040@0.0.2560.1400" timestamp="1602496865752" />
-    <state width="1877" height="348" key="GridCell.Tab.1.center/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1606211906307" />
+    <state width="2517" height="297" key="GridCell.Tab.1.center/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1611125972975" />
     <state width="1877" height="348" key="GridCell.Tab.1.center/2560.100.1920.1040/0.0.2560.1400@2560.100.1920.1040" timestamp="1606112950538" />
     <state width="2517" height="521" key="GridCell.Tab.1.center/2560.101.1920.1040/-2496.0.1664.1069/0.0.2560.1400@0.0.2560.1400" timestamp="1603340673894" />
-    <state width="1621" height="360" key="GridCell.Tab.1.left" timestamp="1608027566135">
-      <screen x="0" y="0" width="1664" height="1069" />
+    <state width="2517" height="297" key="GridCell.Tab.1.left" timestamp="1611125972975">
+      <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state width="1877" height="521" key="GridCell.Tab.1.left/-2496.0.1664.1082/2560.101.1920.1040/0.0.2560.1400@2560.101.1920.1040" timestamp="1603350941003" />
     <state width="1877" height="348" key="GridCell.Tab.1.left/0.0.1664.1069/2496.0.1920.1040@2496.0.1920.1040" timestamp="1606201450541" />
-    <state width="1621" height="360" key="GridCell.Tab.1.left/0.0.1664.1069@0.0.1664.1069" timestamp="1608027566135" />
+    <state width="1621" height="215" key="GridCell.Tab.1.left/0.0.1664.1069@0.0.1664.1069" timestamp="1609736883605" />
     <state width="2517" height="141" key="GridCell.Tab.1.left/0.0.2560.1400/2560.100.1920.1040@0.0.2560.1400" timestamp="1602496865752" />
-    <state width="1877" height="348" key="GridCell.Tab.1.left/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1606211906307" />
+    <state width="2517" height="297" key="GridCell.Tab.1.left/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1611125972975" />
     <state width="1877" height="348" key="GridCell.Tab.1.left/2560.100.1920.1040/0.0.2560.1400@2560.100.1920.1040" timestamp="1606112950538" />
     <state width="2517" height="521" key="GridCell.Tab.1.left/2560.101.1920.1040/-2496.0.1664.1069/0.0.2560.1400@0.0.2560.1400" timestamp="1603340673894" />
-    <state width="1621" height="360" key="GridCell.Tab.1.right" timestamp="1608027566135">
-      <screen x="0" y="0" width="1664" height="1069" />
+    <state width="2517" height="297" key="GridCell.Tab.1.right" timestamp="1611125972976">
+      <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state width="1877" height="521" key="GridCell.Tab.1.right/-2496.0.1664.1082/2560.101.1920.1040/0.0.2560.1400@2560.101.1920.1040" timestamp="1603350941003" />
     <state width="1877" height="348" key="GridCell.Tab.1.right/0.0.1664.1069/2496.0.1920.1040@2496.0.1920.1040" timestamp="1606201450541" />
-    <state width="1621" height="360" key="GridCell.Tab.1.right/0.0.1664.1069@0.0.1664.1069" timestamp="1608027566135" />
+    <state width="1621" height="215" key="GridCell.Tab.1.right/0.0.1664.1069@0.0.1664.1069" timestamp="1609736883605" />
     <state width="2517" height="141" key="GridCell.Tab.1.right/0.0.2560.1400/2560.100.1920.1040@0.0.2560.1400" timestamp="1602496865752" />
-    <state width="1877" height="348" key="GridCell.Tab.1.right/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1606211906307" />
+    <state width="2517" height="297" key="GridCell.Tab.1.right/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1611125972976" />
     <state width="1877" height="348" key="GridCell.Tab.1.right/2560.100.1920.1040/0.0.2560.1400@2560.100.1920.1040" timestamp="1606112950538" />
     <state width="2517" height="521" key="GridCell.Tab.1.right/2560.101.1920.1040/-2496.0.1664.1069/0.0.2560.1400@0.0.2560.1400" timestamp="1603340673894" />
     <state width="1877" height="348" key="GridCell.Tab.2.bottom" timestamp="1605262729547">
@@ -602,39 +735,44 @@
     </state>
     <state width="2517" height="492" key="GridCell.Tab.2.right/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1603785359807" />
     <state width="1877" height="348" key="GridCell.Tab.2.right/2560.100.1920.1040/0.0.2560.1400@2560.100.1920.1040" timestamp="1605262729547" />
-    <state x="1227" y="366" key="SettingsEditor" timestamp="1605851541078">
+    <state x="760" y="274" key="SettingsEditor" timestamp="1610962020674">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state x="494" y="194" key="SettingsEditor/0.0.1664.1069@0.0.1664.1069" timestamp="1605452971956" />
     <state x="760" y="274" key="SettingsEditor/0.0.2560.1400/2560.100.1920.1040@0.0.2560.1400" timestamp="1604282710891" />
-    <state x="760" y="274" key="SettingsEditor/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1605579469243" />
+    <state x="760" y="274" key="SettingsEditor/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1610962020674" />
     <state x="1227" y="366" key="SettingsEditor/2560.100.1920.1040/0.0.2560.1400@2560.100.1920.1040" timestamp="1605851541078" />
     <state width="254" height="198" key="ShowFilterAction_Filter_Popup" timestamp="1603861120724">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state width="254" height="198" key="ShowFilterAction_Filter_Popup/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1603861120724" />
-    <state x="567" y="331" key="Vcs.Push.Dialog.v2" timestamp="1608013161010">
+    <state x="872" y="433" key="Vcs.Push.Dialog.v2" timestamp="1608280767589">
+      <screen x="0" y="0" width="2560" height="1400" />
+    </state>
+    <state x="567" y="331" key="Vcs.Push.Dialog.v2/0.0.1664.1069@0.0.1664.1069" timestamp="1608193694796" />
+    <state x="872" y="433" key="Vcs.Push.Dialog.v2/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1608280767589" />
+    <state x="3214" y="422" key="Vcs.Push.Dialog.v2/2560.100.1920.1040/0.0.2560.1400@2560.100.1920.1040" timestamp="1606699051985" />
+    <state width="839" height="542" key="XDebugger.FullValuePopup" timestamp="1609154453788">
       <screen x="0" y="0" width="1664" height="1069" />
     </state>
-    <state x="567" y="331" key="Vcs.Push.Dialog.v2/0.0.1664.1069@0.0.1664.1069" timestamp="1608013161010" />
-    <state x="872" y="433" key="Vcs.Push.Dialog.v2/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1607057702442" />
-    <state x="3214" y="422" key="Vcs.Push.Dialog.v2/2560.100.1920.1040/0.0.2560.1400@2560.100.1920.1040" timestamp="1606699051985" />
-    <state x="-7" y="3" width="1932" height="1085" key="com.intellij.history.integration.ui.views.DirectoryHistoryDialog" timestamp="1606183932602">
+    <state width="839" height="542" key="XDebugger.FullValuePopup/0.0.1664.1069@0.0.1664.1069" timestamp="1609154453788" />
+    <state x="-7" y="3" width="1932" height="1085" key="com.intellij.history.integration.ui.views.DirectoryHistoryDialog" timestamp="1610962242453">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state x="-7" y="3" width="1932" height="1085" key="com.intellij.history.integration.ui.views.DirectoryHistoryDialog/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1606183932602" />
-    <state x="92" y="92" width="2376" height="1216" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1606988532931">
+    <state x="-7" y="3" width="1932" height="1085" key="com.intellij.history.integration.ui.views.DirectoryHistoryDialog/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1610962242453" />
+    <state x="92" y="92" width="2376" height="1216" key="com.intellij.history.integration.ui.views.FileHistoryDialog" timestamp="1610961142278">
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state x="92" y="92" width="2376" height="1216" key="com.intellij.history.integration.ui.views.FileHistoryDialog/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1606988532931" />
+    <state x="60" y="70" width="1545" height="929" key="com.intellij.history.integration.ui.views.FileHistoryDialog/0.0.1664.1069@0.0.1664.1069" timestamp="1609154055133" />
+    <state x="92" y="92" width="2376" height="1216" key="com.intellij.history.integration.ui.views.FileHistoryDialog/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1610961142278" />
     <state x="3317" y="309" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1604368863738">
       <screen x="2560" y="100" width="1920" height="1040" />
     </state>
     <state x="3317" y="309" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/2560.100.1920.1040/0.0.2560.1400@2560.100.1920.1040" timestamp="1604368863738" />
-    <state x="705" y="468" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1608022244251">
+    <state x="705" y="468" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1610603272443">
       <screen x="0" y="0" width="1664" height="1069" />
     </state>
-    <state x="705" y="468" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1664.1069@0.0.1664.1069" timestamp="1608022244251" />
+    <state x="705" y="468" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1664.1069@0.0.1664.1069" timestamp="1610603272443" />
     <state x="1085" y="613" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1606296564847" />
     <state x="3374" y="555" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/2560.100.1920.1040/0.0.2560.1400@2560.100.1920.1040" timestamp="1606116487610" />
     <state x="3291" y="427" key="com.intellij.testIntegration.createTest.CreateTestDialog" timestamp="1605261839895">
@@ -650,9 +788,14 @@
     </state>
     <state x="0" y="0" width="1619" height="678" key="dock-window-1/0.0.1664.1069@0.0.1664.1069" timestamp="1603530091759" />
     <state x="805" y="609" width="1868" height="659" maximized="true" key="dock-window-1/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1603767584910" />
-    <state x="3301" y="399" width="554" height="536" key="find.popup" timestamp="1604368852533">
-      <screen x="2560" y="100" width="1920" height="1040" />
+    <state x="1010" y="459" key="extract.method.dialog" timestamp="1610971143577">
+      <screen x="0" y="0" width="2560" height="1400" />
     </state>
+    <state x="1010" y="459" key="extract.method.dialog/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1610971143577" />
+    <state x="642" y="265" width="557" height="804" key="find.popup" timestamp="1609232620742">
+      <screen x="0" y="0" width="1664" height="1069" />
+    </state>
+    <state x="642" y="265" width="557" height="804" key="find.popup/0.0.1664.1069@0.0.1664.1069" timestamp="1609232620742" />
     <state x="988" y="403" width="584" height="594" key="find.popup/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1603860922109" />
     <state x="3301" y="399" width="554" height="536" key="find.popup/2560.100.1920.1040/0.0.2560.1400@2560.100.1920.1040" timestamp="1604368852533" />
     <state x="3275" y="407" key="git4idea.merge.GitMergeDialog" timestamp="1604382646973">
@@ -682,21 +825,28 @@
     <state x="577" y="284" key="refactoring.ChangeSignatureDialog/0.0.1664.1069@0.0.1664.1069" timestamp="1608021840442" />
     <state x="888" y="372" key="refactoring.ChangeSignatureDialog/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1605860336499" />
     <state x="3226" y="376" key="refactoring.ChangeSignatureDialog/2560.100.1920.1040/0.0.2560.1400@2560.100.1920.1040" timestamp="1605082923726" />
-    <state x="608" y="252" width="672" height="677" key="run.anything.popup" timestamp="1608017876110">
-      <screen x="0" y="0" width="1664" height="1069" />
+    <state x="936" y="330" key="run.anything.popup" timestamp="1611126362917">
+      <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state x="608" y="252" width="672" height="677" key="run.anything.popup/0.0.1664.1069@0.0.1664.1069" timestamp="1608017876110" />
-    <state x="936" y="330" key="run.anything.popup/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1603853140750" />
+    <state x="608" y="252" width="672" height="677" key="run.anything.popup/0.0.1664.1069@0.0.1664.1069" timestamp="1609924250472" />
+    <state x="936" y="330" key="run.anything.popup/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1611126362917" />
     <state x="3262" y="345" key="run.anything.popup/2560.100.1920.1040/0.0.2560.1400@2560.100.1920.1040" timestamp="1605849567169" />
-    <state x="495" y="233" width="672" height="678" key="search.everywhere.popup" timestamp="1608191559657">
-      <screen x="0" y="0" width="1664" height="1069" />
+    <state x="761" y="306" width="1035" height="889" key="search.everywhere.popup" timestamp="1611202283225">
+      <screen x="0" y="0" width="2560" height="1400" />
     </state>
-    <state x="495" y="233" width="672" height="678" key="search.everywhere.popup/0.0.1664.1069@0.0.1664.1069" timestamp="1608191559657" />
-    <state x="761" y="306" width="1035" height="889" key="search.everywhere.popup/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1607329156317" />
-    <state x="3131" y="327" width="776" height="660" key="search.everywhere.popup/2560.100.1920.1040/0.0.2560.1400@2560.100.1920.1040" timestamp="1606116120780" />
-    <state x="555" y="447" key="vcs.readOnlyHandler.ReadOnlyStatusDialog" timestamp="1602314239274">
-      <screen x="0" y="0" width="1664" height="1069" />
-    </state>
-    <state x="555" y="447" key="vcs.readOnlyHandler.ReadOnlyStatusDialog/0.0.1664.1069@0.0.1664.1069" timestamp="1602314239274" />
+    <state x="495" y="233" width="672" height="678" key="search.everywhere.popup/0.0.1664.1069@0.0.1664.1069" timestamp="1610612499593" />
+    <state x="761" y="306" width="1035" height="889" key="search.everywhere.popup/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1611202283225" />
+    <state x="3131" y="327" width="776" height="660" key="search.everywhere.popup/2560.100.1920.1040/0.0.2560.1400@2560.100.1920.1040" timestamp="1611110812976" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/com/kctv/api/service/QnaService.java</url>
+          <line>36</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

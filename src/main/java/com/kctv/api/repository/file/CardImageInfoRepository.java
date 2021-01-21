@@ -1,6 +1,6 @@
 package com.kctv.api.repository.file;
 
-import com.kctv.api.entity.tag.CardImageInfo;
+import com.kctv.api.entity.stylecard.CardImageInfo;
 import org.springframework.data.cassandra.repository.CassandraRepository;
 import org.springframework.stereotype.Repository;
 

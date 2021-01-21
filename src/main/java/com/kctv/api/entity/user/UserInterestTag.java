@@ -1,6 +1,6 @@
 package com.kctv.api.entity.user;
 
-import com.kctv.api.entity.tag.Tag;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.data.cassandra.core.cql.PrimaryKeyType;
@@ -16,6 +16,7 @@ import java.util.UUID;
 @Table("user_interest_tags")
 @Builder
 @Getter
+@AllArgsConstructor
 public class UserInterestTag {
 
     @PrimaryKeyColumn(value = "user_id",type = PrimaryKeyType.PARTITIONED)

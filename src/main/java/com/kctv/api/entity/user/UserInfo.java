@@ -60,6 +60,10 @@ public class UserInfo implements UserDetails {
     @Column("user_name")
     private String userName;
 
+    @ApiModelProperty(value = "나의 추천 코드",dataType = "String")
+    @Column("invite_code")
+    private String inviteCode;
+
     @ApiModelProperty(value = "사용자 별명",dataType = "String",required = true, example = "가산동총잡이")
     @Column("user_nickname")
     private String userNickname;

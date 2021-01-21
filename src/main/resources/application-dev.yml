@@ -3,6 +3,6 @@ spring:
   profiles: dev
 costom:
   host:
-    path: http://192.168.0.56:8081/v1/verify/
+    path: http://biskitlab.com:18081/v1/verify/
   path:
     images : /home/biskit/kctv-api/data/

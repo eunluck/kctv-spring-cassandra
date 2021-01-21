@@ -1,26 +1,17 @@
 package com.kctv.api.service;
 
 
-import com.kctv.api.advice.exception.CResourceNotExistException;
-import com.kctv.api.advice.exception.CUserExistException;
-import com.kctv.api.advice.exception.CUserNotFoundException;
-import com.kctv.api.entity.ap.PartnerInfo;
-import com.kctv.api.entity.tag.StyleCardInfo;
-import com.kctv.api.entity.user.UserInfo;
-import com.kctv.api.entity.user.UserInterestTag;
+import com.kctv.api.entity.place.PlaceInfo;
+import com.kctv.api.entity.stylecard.StyleCardInfo;
 import com.kctv.api.entity.user.UserLikePartner;
 import com.kctv.api.entity.user.UserScrapCard;
 import com.kctv.api.repository.ap.PartnerRepository;
 import com.kctv.api.repository.card.StyleCardRepository;
-import com.kctv.api.repository.user.UserInterestTagRepository;
 import com.kctv.api.repository.user.UserLikeRepository;
-import com.kctv.api.repository.user.UserRepository;
 import com.kctv.api.repository.user.UserScrapRepository;
-import com.kctv.api.util.RedisUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.data.cassandra.core.CassandraBatchOperations;
+import org.springframework.data.cassandra.core.CassandraTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -52,7 +43,8 @@ public class LikeScrapService {
 
     }
 
-    public List<PartnerInfo> likeList(UUID userId){
+    public List<PlaceInfo> likeList(UUID userId){
+
 
         List<UserLikePartner> likeList = userLikeRepository.findByUserId(userId);
 
@@ -60,7 +52,7 @@ public class LikeScrapService {
                                                   .collect(Collectors.toList());
 
         if (partnerList.isEmpty()){
-            return new ArrayList<PartnerInfo>();
+            return new ArrayList<PlaceInfo>();
         }else {
         return partnerRepository.findByPartnerIdIn(partnerList);
         }
@@ -86,9 +78,11 @@ public class LikeScrapService {
 
     public List<StyleCardInfo> scrapList(UUID userId){
 
+
         List<UserScrapCard> scrapList = userScrapRepository.findByUserId(userId);
         List<UUID> cardList = scrapList.stream().map(UserScrapCard::getCardId)
                 .collect(Collectors.toList());
+
 
         if(cardList.isEmpty()){
             return new ArrayList<StyleCardInfo>();

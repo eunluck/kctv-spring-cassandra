@@ -1,9 +1,8 @@
 package com.kctv.api.service;
 
-import com.kctv.api.entity.ap.PartnerInfo;
-import com.kctv.api.entity.tag.StyleCardInfo;
+import com.kctv.api.entity.place.PlaceInfo;
+import com.kctv.api.entity.stylecard.StyleCardInfo;
 import com.kctv.api.model.response.*;
-import org.apache.tinkerpop.gremlin.structure.T;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -47,10 +46,10 @@ public class ResponseService {
     }
 
 
-    public PlaceListResult getPlaceListResult(StyleCardInfo cardInfo, List<PartnerInfo> partnerInfoList){
+    public PlaceListResult getPlaceListResult(StyleCardInfo cardInfo, List<PlaceInfo> placeInfoList){
         PlaceListResult result = new PlaceListResult();
         result.setData(cardInfo);
-        result.setPlaceList(partnerInfoList);
+        result.setPlaceList(placeInfoList);
         setSuccessResult(result);
         return result;
 

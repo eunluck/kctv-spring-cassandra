@@ -6,8 +6,9 @@ import com.kctv.api.advice.exception.*;
 import com.kctv.api.config.security.JwtTokenProvider;
 
 
-
+import com.kctv.api.entity.user.InviteFriends;
 import com.kctv.api.entity.user.UserInfo;
+import com.kctv.api.entity.user.UserInfoDto;
 import com.kctv.api.entity.user.UserInterestTag;
 
 import com.kctv.api.model.response.CommonResult;
@@ -20,16 +21,20 @@ import com.kctv.api.service.ResponseService;
 import com.kctv.api.service.UserService;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.cassandra.core.cql.keyspace.UserTypeSpecification;
 import org.springframework.security.core.Authentication;
 
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 import java.util.UUID;
 
+import static java.util.stream.Collectors.toList;
 
 
 @Api(tags = {"01. User API"})
@@ -70,20 +75,24 @@ public class UserController {
 
 
 
-    @ApiOperation(value = "Header에 실린 TOKEN정보로 로그인한 회원 정보 출력", notes = "추가정보 수정")
+    @ApiOperation(value = "내 정보 API(태그포함)", notes = "Header에 실린 TOKEN정보로 로그인한 회원 정보 출력")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 token", required = true, dataType = "String", paramType = "header"),
     })
     @GetMapping("/user")
-    public SingleResult<UserInfo> getUserByUUID(){
+    public SingleResult<UserInfoDto> getUserByUUID(){
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         UUID uuid = UUID.fromString(authentication.getName());
         UserInfo user = Optional.ofNullable(userService.findByUserId(uuid)).orElseThrow(CUserNotFoundException::new);
+        UserInterestTag userInterestTag = userService.getUserInterestTag(uuid).orElse(new UserInterestTag(user.getUserId(),null,Sets.newHashSet()));
+        List<String> userTags = userInterestTag.getTags().stream().collect(toList());
 
-        return responseService.getSingleResult(user);
+        return responseService.getSingleResult(new UserInfoDto(user,userTags));
     }
+
+
 
 
     @ApiOperation(value = "회원가입 후 추가정보 입력(업데이트)API", notes = "추가정보 수정")
@@ -92,15 +101,17 @@ public class UserController {
             @ApiImplicitParam(name = "userInfo", value = "수정할 데이터 body", dataType = "UserUpdateEx", required = true)
     })
     @PutMapping("/user")
-    public CommonResult userUpdate(@ApiParam(hidden = true)@RequestBody UserInfo userInfo){
+    public CommonResult userUpdate(@ApiIgnore @RequestBody UserInfo userInfo){
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         userInfo.setUserId(UUID.fromString(authentication.getName()));
 
         UserInfo afterUser = Optional.ofNullable(userService.userUpdateService(userInfo)).orElseThrow(CUserNotFoundException::new);
+        UserInterestTag userInterestTag = userService.getUserInterestTag(afterUser.getUserId()).orElse(new UserInterestTag(afterUser.getUserId(),null,Sets.newHashSet()));
+        List<String> userTags = userInterestTag.getTags().stream().collect(toList());
 
-        return responseService.getSingleResult(afterUser);
+        return responseService.getSingleResult(new UserInfoDto(afterUser,userTags));
     }
 
 
@@ -152,15 +163,7 @@ public class UserController {
         }
     }
 
-    @ApiOperation(value = "토큰테스트용 유저 LIST", notes = "Header에 토큰을 검사하여 유저리스트를 호출한다.")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 token", required = true, dataType = "String", paramType = "header")
-    })
-    @GetMapping("/users")
-    public ListResult<UserInfo> getAllUser(){
 
-        return responseService.getListResult(userService.getAllUserService());
-    }
 
 
     @ApiOperation(value = "계정에 태그 등록", notes = "token을 통해 계정에 관심사(태그)들을 추가한다.")
@@ -181,6 +184,23 @@ public class UserController {
     }
 
 
+    @ApiOperation(value = "계정에 등록 된 태그 조회", notes = "token을 통해 계정에 관심사(태그)들을 조회한다.")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 token", required = true, dataType = "String", paramType = "header"),
+    })
+    @GetMapping("/user/tag/me")
+    public SingleResult<UserInterestTag> getUserInterestTags(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        UUID userId = UUID.fromString(authentication.getName());
+
+         UserInterestTag interestTag = userService.getUserInterestTag(userId).orElseGet(() -> new UserInterestTag(userId,null,Sets.newHashSet()));
+
+        return responseService.getSingleResult(interestTag);
+    }
+
+
+
 /*
     @GetMapping("/user/{cardId}/check")
     public SingleResult<Boolean> checkPartnerLike(){
@@ -193,8 +213,6 @@ public class UserController {
     }
 
 */
-
-
 
 
 

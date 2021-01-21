@@ -43,7 +43,7 @@ server:
   port: 8081
 logging:
   level:
-    sql: trace
+    sql: info
 application:
   appVersion: v1
 

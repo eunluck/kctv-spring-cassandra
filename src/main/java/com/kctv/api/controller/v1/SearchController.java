@@ -1,8 +1,7 @@
 package com.kctv.api.controller.v1;
 
-import com.google.common.collect.Lists;
-import com.kctv.api.entity.ap.PartnerInfo;
-import com.kctv.api.entity.tag.StyleCardInfo;
+import com.kctv.api.entity.place.PlaceInfo;
+import com.kctv.api.entity.stylecard.StyleCardInfo;
 import com.kctv.api.model.response.ListResult;
 import com.kctv.api.service.ResponseService;
 import com.kctv.api.service.SearchService;
@@ -15,9 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Collections;
-
-@Api(tags = {"08. Search API"})
+@Api(tags = {"10. Search API"})
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/v1")
@@ -40,7 +37,7 @@ public class SearchController {
 
     @ApiOperation(value = "가게 검색", notes = "검색어를 입력하여 가게를 검색한다.(제목,태그)")
     @GetMapping("/search/{param}/place")
-    public ListResult<PartnerInfo> searchPlace(@ApiParam("검색어") @PathVariable("param")String param){
+    public ListResult<PlaceInfo> searchPlace(@ApiParam("검색어") @PathVariable("param")String param){
 
 
 

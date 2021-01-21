@@ -1,8 +1,6 @@
 package com.kctv.api.repository.card;
 
-import com.kctv.api.entity.tag.StyleCardByTags;
-import com.kctv.api.entity.tag.StyleCardInfo;
-import org.apache.tinkerpop.gremlin.structure.T;
+import com.kctv.api.entity.stylecard.StyleCardByTags;
 import org.springframework.data.cassandra.repository.CassandraRepository;
 import org.springframework.stereotype.Repository;
 

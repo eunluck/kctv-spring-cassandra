@@ -3,6 +3,7 @@ package com.kctv.api.config;
 
 import com.fasterxml.classmate.TypeResolver;
 
+import com.kctv.api.entity.place.PlaceInfoVo;
 import com.kctv.api.model.swagger.LoginEx;
 import com.kctv.api.model.swagger.SignUpEx;
 import com.kctv.api.model.swagger.UserUpdateEx;
@@ -26,7 +27,10 @@ public class SwaggerConfiguration {
                 .paths(PathSelectors.any())
                 .build()
                 .useDefaultResponseMessages(false)// 기본으로 세팅되는 200,401,403,404 메시지를 표시 하지 않음
-                .additionalModels(resolver.resolve(UserUpdateEx.class)).additionalModels(resolver.resolve(SignUpEx.class)).additionalModels(resolver.resolve(LoginEx.class)); // request parameter Eample을 정의한 클래스 파일 로딩
+                .additionalModels(resolver.resolve(UserUpdateEx.class))
+                .additionalModels(resolver.resolve(SignUpEx.class))
+                .additionalModels(resolver.resolve(LoginEx.class))
+                .additionalModels(resolver.resolve(PlaceInfoVo.class)); // request parameter Eample을 정의한 클래스 파일 로딩
     }
 
     private ApiInfo swaggerInfo() {

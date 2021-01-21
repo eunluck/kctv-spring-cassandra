@@ -1,7 +1,6 @@
 package com.kctv.api.repository.ap;
 
-import com.kctv.api.entity.ap.WifiInfo;
-import com.kctv.api.entity.user.UserInfo;
+import com.kctv.api.entity.place.WifiInfo;
 import org.springframework.data.cassandra.repository.AllowFiltering;
 import org.springframework.data.cassandra.repository.CassandraRepository;
 

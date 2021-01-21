@@ -1,9 +1,8 @@
 package com.kctv.api.util.sorting;
 
-import com.kctv.api.entity.tag.StyleCardByTags;
-import com.kctv.api.entity.tag.StyleCardInfo;
+import com.kctv.api.entity.stylecard.StyleCardByTags;
+import com.kctv.api.entity.stylecard.StyleCardInfo;
 import com.kctv.api.util.MapUtill;
-import org.apache.commons.collections.CollectionUtils;
 
 import java.util.*;
 

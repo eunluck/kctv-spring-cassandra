@@ -1,13 +1,12 @@
 package com.kctv.api.controller.v1;
 
 
-import com.kctv.api.entity.ap.PartnerInfo;
-import com.kctv.api.entity.tag.StyleCardInfo;
+import com.kctv.api.entity.place.PlaceInfo;
+import com.kctv.api.entity.stylecard.StyleCardInfo;
 import com.kctv.api.model.response.CommonResult;
 import com.kctv.api.model.response.ListResult;
 import com.kctv.api.service.LikeScrapService;
 import com.kctv.api.service.ResponseService;
-import com.kctv.api.service.UserService;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -47,7 +46,7 @@ public class UserLikeScrapController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 token", required = true, dataType = "String", paramType = "header"),
     })
     @GetMapping("/user/like")
-    public ListResult<PartnerInfo> likeList(){
+    public ListResult<PlaceInfo> likeList(){
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UUID userId = UUID.fromString(authentication.getName());
@@ -67,9 +66,9 @@ public class UserLikeScrapController {
         UUID userId = UUID.fromString(authentication.getName());
 
 
-        List<PartnerInfo> list = likeScrapService.likeList(userId);
+        List<PlaceInfo> list = likeScrapService.likeList(userId);
 
-        return responseService.getListResult(list.stream().map(PartnerInfo::getPartnerId).collect(Collectors.toList()));
+        return responseService.getListResult(list.stream().map(PlaceInfo::getPartnerId).collect(Collectors.toList()));
 
     }
 

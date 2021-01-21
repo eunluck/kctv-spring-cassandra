@@ -25,4 +25,8 @@ public interface UserRepository extends CassandraRepository<UserInfo, UUID> {
     Optional<UserInfo> findByUserSnsKey(String SnsKey);
 
 
+    @AllowFiltering
+    Optional<UserInfo> findByInviteCode(String code);
+
+
 }

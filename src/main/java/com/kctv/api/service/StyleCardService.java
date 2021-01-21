@@ -1,17 +1,17 @@
 package com.kctv.api.service;
 
 import com.kctv.api.advice.exception.CPartnerNotFoundException;
-import com.kctv.api.entity.tag.StyleCardByTags;
-import com.kctv.api.entity.tag.StyleCardInfo;
-import com.kctv.api.entity.tag.Tag;
-import com.kctv.api.model.request.TagGroup;
+import com.kctv.api.entity.stylecard.StyleCardByTags;
+import com.kctv.api.entity.stylecard.StyleCardInfo;
+import com.kctv.api.entity.stylecard.Tag;
+import com.kctv.api.entity.stylecard.admin.StyleCardVo;
+import com.kctv.api.model.tag.TagGroup;
+import com.kctv.api.repository.ap.PartnerByTagsRepository;
 import com.kctv.api.repository.card.StyleByTagsRepository;
 import com.kctv.api.repository.card.StyleCardRepository;
-import com.kctv.api.repository.card.TagRepository;
-import com.kctv.api.util.MapUtill;
+import com.kctv.api.repository.tag.TagRepository;
 import com.kctv.api.util.sorting.SortingTagsUtiil;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,7 +26,7 @@ public class StyleCardService {
     private final StyleCardRepository styleCardRepository;
     private final StyleByTagsRepository styleByTagsRepository;
     private final TagRepository tagRepository;
-
+    private final PartnerByTagsRepository partnerByTagsRepository;
 
     public List<StyleCardInfo> getStyleCardListAllService(){
         return styleCardRepository.findAll();
@@ -34,7 +34,7 @@ public class StyleCardService {
     public List<Tag> getTagListAllService (){
         return tagRepository.findAll();
     }
-    public Optional<Tag> getTagOneService(Tag tag){return tagRepository.findByTagTypeAndTagName(tag);}
+    public Optional<Tag> getTagOneService(Tag tag){return tagRepository.findByTagTypeAndTagName(tag.getTagType(),tag.getTagName());}
 
     public List<Tag> getTagList (String search){
         return tagRepository.findByTagType(search);
@@ -53,6 +53,9 @@ public class StyleCardService {
     public Optional<Tag> createTagService(Tag tag){
         return Optional.ofNullable(tagRepository.insert(tag));
     }
+
+
+
 
 
 
@@ -102,58 +105,35 @@ public class StyleCardService {
 
 
 
-    public List<StyleCardInfo> newGetCardByTagsService(List<String> tags){
+//admin
+    @Transactional
+    public StyleCardInfo createStyleCard(StyleCardVo styleCardVo){
+        StyleCardInfo styleCardInfo = new StyleCardInfo(styleCardVo);
 
+        List<StyleCardByTags> list = styleCardInfo.getTags()
+                                    .stream()
+                                    .map(s -> new StyleCardByTags(s,styleCardInfo.getCardId()))
+                                    .collect(Collectors.toList());
 
-        List<StyleCardByTags> result = styleByTagsRepository.findByTagIn(tags);
-/*
+        styleByTagsRepository.saveAll(list);
 
-        result.stream().
-*/
-
-
-        return null;
-
+        return Optional.ofNullable(styleCardRepository.save(styleCardInfo)).orElseThrow(RuntimeException::new);
     }
 
-        /*
-        List<StyleCardByTags> result = styleByTagsRepository.findByTagIn(tags);
 
-        ArrayList<UUID> idArr = new ArrayList<>();
-        //ArrayList<Map<UUID,Integer>> idArr = new ArrayList<>();
-        if(CollectionUtils.isNotEmpty(result)){
-            result.forEach(styleCardByTags -> idArr.add(styleCardByTags.getCardId()));
-            Map<UUID,Integer> sorting = new HashMap<>();
+    public Optional<StyleCardInfo> updateCard(StyleCardInfo styleCardInfo){
+        return Optional.ofNullable(styleCardRepository.save(styleCardInfo));
+    }
 
-            for(UUID id:idArr){
-                sorting.put(id,sorting.getOrDefault(id,0)+1);
-            }
+    public boolean deleteTag(Tag tag){
 
-            sorting = MapUtill.sortByValueDesc(sorting);
-            List<UUID> queryList = new ArrayList<>();
-            queryList.addAll(sorting.keySet());
-
-            List<StyleCardInfo> styleCardInfos = styleCardRepository.findByCardIdIn(queryList);
-
-            List<StyleCardInfo> resultList = new ArrayList<>();
-            for (int i = 0; i < styleCardInfos.size(); i++) {
-                for (int j = 0; j < styleCardInfos.size(); j++) {
-                   if(styleCardInfos.get(j).getCardId().equals(queryList.get(i)))
-                     resultList.add(styleCardInfos.get(j));
-                }
-            }
-
-            return resultList;
-        } else {
-            return new ArrayList<StyleCardInfo>();
+        if (partnerByTagsRepository.findByTag(tag.getTagName()).size() != 0) {
+            return false;
+        }else {
+            tagRepository.delete(tag);
+            return true;
         }
-
-*/
-
-
-
-
-
+    }
 
 
 }

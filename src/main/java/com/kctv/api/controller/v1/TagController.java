@@ -1,7 +1,7 @@
 package com.kctv.api.controller.v1;
 
 import com.kctv.api.advice.exception.CCommunicationException;
-import com.kctv.api.entity.tag.Tag;
+import com.kctv.api.entity.stylecard.Tag;
 import com.kctv.api.model.response.CommonResult;
 import com.kctv.api.model.response.SingleResult;
 import com.kctv.api.service.ResponseService;

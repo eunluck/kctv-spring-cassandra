@@ -1,8 +1,9 @@
 package com.kctv.api.controller.v1;
 
 import com.google.common.collect.Lists;
-import com.kctv.api.entity.ap.PartnerInfo;
-import com.kctv.api.entity.tag.StyleCardInfo;
+import com.google.common.collect.Sets;
+import com.kctv.api.entity.place.PlaceInfo;
+import com.kctv.api.entity.stylecard.StyleCardInfo;
 
 import com.kctv.api.entity.user.UserInterestTag;
 import com.kctv.api.model.response.ListResult;
@@ -17,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -34,7 +36,7 @@ public class StyleCardController {
     private final UserService userService;
     private final ResponseService responseService;
 
-    @ApiOperation(value = "계정에 등록된 태그를 통해 styleCard를 조회", notes = "태그에 충족하는 스타일카드를 검색한다.")
+    @ApiOperation(value = "계정에 등록된 태그를 통해 styleCard를 조회", notes = "태그에 충족하는 스타일카드를 검색한다. 태그를 등록하지 않았을 시 랜덤으로 생성된다.")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 token", required = true, dataType = "String", paramType = "header"),
     })
@@ -42,20 +44,30 @@ public class StyleCardController {
     public ListResult<StyleCardInfo> getStyleCardMyList(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UUID uuid = UUID.fromString(authentication.getName());
-        UserInterestTag resultUser = userService.getUserInterestTag(uuid);
 
-        Set<String> tagList = resultUser.getTags();
-        List<String> queryList = Lists.newArrayList();
+        UserInterestTag connectionUser = userService.getUserInterestTag(uuid).orElse(new UserInterestTag(uuid,null,Sets.newHashSet()));
 
-        for (String tag:tagList) {
-            queryList.add(tag);
+        if (!CollectionUtils.isEmpty(connectionUser.getTags())){
+            return responseService.getListResult(styleCardService.getCardByTagsService(connectionUser.getTags().stream().collect(Collectors.toList())));
+        }else {
+            List<StyleCardInfo> randomList = styleCardService.getStyleCardListAllService();
+            Collections.shuffle(randomList);
+            return responseService.getListResult(randomList);
         }
+    }
 
-        List<StyleCardInfo> cardList = styleCardService.getCardByTagsService(queryList);
-        List<UUID> cardId = cardList.stream().map(StyleCardInfo::getCardId).collect(Collectors.toList());
-
-
-        return responseService.getListResult(styleCardService.getCardByTagsService(queryList));
+    @ApiOperation(value = "관련된 스타일카드", notes = "해당 카드와 관련된 스타일카드 리스트 조회한다")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 token", required = true, dataType = "String", paramType = "header"),
+    })
+    @GetMapping("/card/{cardId}/relevant")
+    public ListResult<StyleCardInfo> getStyleCardRelevant(@PathVariable("cardId") UUID cardId){
+        
+        //TODO 정직하게 구현 필요
+        List<StyleCardInfo> randomList = styleCardService.getStyleCardListAllService();
+        Collections.shuffle(randomList);
+        return responseService.getListResult(randomList);
+        
     }
 
     /* tag를 통해 작성되어 있는 style Card 목록을 가져옴*/
@@ -92,17 +104,29 @@ public class StyleCardController {
     @ApiOperation(value = "card id로 가게리스트 검색", notes = "card uuid를 통해 태그에 충족되는 가게 리스트를 조회한다.")
     @GetMapping("/card/{cardId}/place")
     public PlaceListResult getPlaceByTags(@ApiParam(value = "검색할 Card UUID 입력",defaultValue = "fc35a91b-3bb2-4a55-8a45-3b03df9e797d")
-                                              @PathVariable("cardId")UUID cardId){
+                                          @PathVariable("cardId")UUID cardId,
+                                          @RequestParam(required = false,value = "type",defaultValue = "id")String type){
+
+        //타입을 입력받게되면 tag기반으로 검색된 플레이스 리스트가 나타난다.
 
 
         StyleCardInfo cardInfo = styleCardService.getCardById(cardId);
+        if (CollectionUtils.isEmpty(cardInfo.getPlaceId())){
+            type = "tag";
+        }
 
-        List<PartnerInfo> partnerInfoList = placeService.getPartnerInfoListByTagsService(Lists.newArrayList(cardInfo.getTags()));
+        List<PlaceInfo> placeInfoList = Lists.newArrayList();
+
+
+        if("tag".equals(type)) {
+            placeInfoList.addAll(placeService.getPartnerInfoListByTagsService(Lists.newArrayList(cardInfo.getTags())));
+        }else if("id".equals(type)){
+            placeInfoList.addAll(placeService.getPlaceListByIdIn(Lists.newArrayList(cardInfo.getPlaceId())));
+        }
 
 
 
-
-        return responseService.getPlaceListResult(cardInfo,partnerInfoList);
+        return responseService.getPlaceListResult(cardInfo, placeInfoList);
 
     }
 
