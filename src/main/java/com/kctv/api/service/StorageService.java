@@ -34,7 +34,7 @@ public class StorageService {
     private final String basePath;
     private final String cardImagePath = "images/cover/card";
     private final String placeImagePath = "images/cover/place";
-    private final String AdImagePath = "images/ad";
+    private final String adImagePath = "images/ad";
 
     private final CardImageInfoRepository cardImageInfoRepository;
     private final StyleCardRepository styleCardRepository;
@@ -127,7 +127,7 @@ public class StorageService {
     }
 
     public CaptivePortalAdEntity saveAdImgOutput(MultipartFile multipartFile, UUID adId) throws IOException {
-        Path directory = Paths.get(basePath + AdImagePath).normalize();
+        Path directory = Paths.get(basePath + adImagePath).normalize();
         Files.createDirectories(directory);
 
 
@@ -151,8 +151,10 @@ public class StorageService {
 
         if ("card".equals(type)) {
             directory = Paths.get(basePath + cardImagePath).normalize();  // parent directory를 찾는다. C~~ data/
-        } else{
+        } else if("place".equals(type)){
             directory = Paths.get(basePath + placeImagePath).normalize();  // parent directory를 찾는다. C~~ data/
+        } else if("ad".equals(type)){
+            directory = Paths.get(basePath + adImagePath).normalize();
         }
 
         Files.createDirectories(directory);  // directory 해당 경로까지 디렉토리를 모두 만든다.

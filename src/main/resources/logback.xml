@@ -24,9 +24,8 @@
     </encoder>
   </appender>
 
-  <logger name="io.undertow" level="OFF"/>
-
   <root level="INFO">
     <appender-ref ref="console"/>
+    <appender-ref ref="file"/>
   </root>
 </configuration>

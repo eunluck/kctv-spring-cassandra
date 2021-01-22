@@ -29,123 +29,30 @@
     </select>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d27f99c3-2019-41d6-b9bb-22734cca2a54" name="Default Changelist" comment="영업시간 구현">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/controller/v1/ClientApController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/controller/v1/FaqController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/controller/v1/InviteController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/controller/v1/QnaController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/controller/v1/admin/AdminController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/controller/v1/admin/AdminTagController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/controller/v1/admin/AdminUserController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/controller/v1/admin/captive/CaptiveAdEntity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/controller/v1/admin/captive/CaptiveRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/admin/FaqRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/admin/FaqTable.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/admin/QnaAnswer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/admin/ad/CaptivePortalAdEntity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/ap/VisitHistoryEntity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/place/PlaceInfoVo.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/place/PlaceTypeEntity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/qna/QnaByUserEntity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/stylecard/admin/StyleCardVo.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/user/InviteFriends.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/user/UserInfoDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/model/ap/FindApRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/model/ap/WakeupPermission.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/model/qna/QnaDto.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/model/qna/QnaRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/model/request/AttachedFile.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/model/tag/FacilitiesGroup.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/repository/ad/CaptivePortalAdRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/repository/ap/WakeUpPermissionRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/repository/faq/FaqRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/repository/qna/QnaAnswerRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/repository/qna/QnaRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/repository/tag/PlaceTypeRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/repository/user/InviteRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/service/CaptivePortalAdService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/service/FaqService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/service/InviteService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/service/QnaService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/service/WakeupPermissionService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/util/test/actor/ActorByMovieRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/util/test/actor/ActorRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/util/test/actor/entity/Actor.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/util/test/actor/entity/ActorByMovie.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/util/test/actor/entity/ActorByMovieKey.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/util/test/movie/MovieConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/util/test/movie/entity/Movie.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/util/test/movie/entity/MovieByActor.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/util/test/movie/entity/MovieByActorKey.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/util/test/movie/entity/MovieByGenre.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/util/test/movie/entity/MovieByGenreKey.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/util/test/movie/entity/MovieByYear.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/util/test/movie/entity/MovieByYearKey.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/util/test/movie/entity/Role.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/util/test/movie/repository/MovieByActorRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/util/test/movie/repository/MovieByGenreRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/util/test/movie/repository/MovieByYearRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/util/test/movie/repository/MovieRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/util/test/movie/repository/MovieRepositoryImpl.java" afterDir="false" />
+    <list default="true" id="d27f99c3-2019-41d6-b9bb-22734cca2a54" name="Default Changelist" comment="오랜만">
+      <change afterPath="$PROJECT_DIR$/log/2020-12/debug.2020-12-09.0.log.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/log/2021-01/debug.2021-01-22.0.log.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/log/2021-01/debug.2021-01-22.1.log.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/log/2021-01/debug.2021-01-22.2.log.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/log/2021-01/debug.2021-01-22.3.log.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/log/2021-01/debug.2021-01-22.4.log.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/log/2021-01/debug.2021-01-22.5.log.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/log/2021-01/debug.2021-01-22.6.log.gz" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/controller/v1/UserVisitController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/visit/PlaceUserVisitHistoryViewEntity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/visit/UserVisitHistoryEntity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/visit/VisitCount.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/model/visit/UserVisitHistoryDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/model/visit/VisitCountDto.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/repository/visit/VisitHistoryRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/service/UserVisitHistoryService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/config/SwaggerConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/config/SwaggerConfiguration.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/config/WebConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/config/WebConfiguration.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/config/database/CassandraConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/config/database/CassandraConfiguration.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/config/security/SecurityConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/config/security/SecurityConfiguration.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/controller/v1/PlaceController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/controller/v1/PlaceController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/controller/v1/SearchController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/controller/v1/SearchController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/controller/v1/StyleCardController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/controller/v1/StyleCardController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/controller/v1/TagController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/controller/v1/TagController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/controller/v1/TestController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/controller/v1/TestController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/controller/v1/UserController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/controller/v1/UserController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/controller/v1/UserLikeScrapController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/controller/v1/UserLikeScrapController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/ap/PartnerInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/place/PlaceInfo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/ap/TestPartnerInfo.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/ap/WifiInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/place/WifiInfo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/partner/MenuByPlace.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/place/MenuByPlace.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/partner/MenuVo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/place/MenuVo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/partner/PartnerInfoVo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/place/PlaceInfoDto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/partner/openinghours/CloseOrOpen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/place/openinghours/CloseOrOpen.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/partner/openinghours/PeriodsTime.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/place/openinghours/PeriodsTime.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/tag/CardImageInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/stylecard/CardImageInfo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/tag/ImageInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/stylecard/ImageInfo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/tag/PartnersByTags.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/stylecard/PartnersByTags.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/tag/StyleCardByTags.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/stylecard/StyleCardByTags.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/tag/StyleCardInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/stylecard/StyleCardInfo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/tag/Tag.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/stylecard/Tag.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/user/UserInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/user/UserInfo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/user/UserInterestTag.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/user/UserInterestTag.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/model/request/TagGroup.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/model/tag/TagGroup.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/model/response/PlaceListResult.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/model/response/PlaceListResult.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/repository/ap/MenuByPartnerRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/repository/ap/MenuByPartnerRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/repository/ap/PartnerByTagsRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/repository/ap/PartnerByTagsRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/repository/ap/PartnerRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/repository/ap/PartnerRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/repository/ap/WifiRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/repository/ap/WifiRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/repository/card/StyleByTagsRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/repository/card/StyleByTagsRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/repository/card/StyleCardRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/repository/card/StyleCardRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/repository/card/TagRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/repository/tag/TagRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/repository/file/CardImageInfoRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/repository/file/CardImageInfoRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/repository/user/UserRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/repository/user/UserRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/service/LikeScrapService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/service/LikeScrapService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/service/PlaceService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/service/PlaceService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/service/ResponseService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/service/ResponseService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/service/SearchService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/service/SearchService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/log/debug.log" beforeDir="false" afterPath="$PROJECT_DIR$/log/debug.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/controller/v1/admin/AdminController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/controller/v1/admin/AdminController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/controller/v1/admin/AdminTagController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/controller/v1/admin/AdminTagController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/place/PlaceInfoDto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/entity/place/PlaceInfoDto.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/service/StorageService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/service/StorageService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/service/StyleCardService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/service/StyleCardService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/service/UserService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/service/UserService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/kctv/api/util/sorting/SortingTagsUtiil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/kctv/api/util/sorting/SortingTagsUtiil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application-dev.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application-dev.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/kctv/api/config/SwaggerConfiguration.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/kctv/api/config/SwaggerConfiguration.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/kctv/api/config/security/SecurityConfiguration.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/kctv/api/config/security/SecurityConfiguration.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/kctv/api/controller/v1/UserController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/kctv/api/controller/v1/UserController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/kctv/api/entity/user/UserInfo$UserInfoBuilder.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/kctv/api/entity/user/UserInfo$UserInfoBuilder.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/kctv/api/entity/user/UserInfo.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/kctv/api/entity/user/UserInfo.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/kctv/api/repository/user/UserRepository.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/kctv/api/repository/user/UserRepository.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/kctv/api/service/ResponseService$CommonResponse.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/kctv/api/service/ResponseService$CommonResponse.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/kctv/api/service/ResponseService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/kctv/api/service/ResponseService.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/kctv/api/service/UserService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/kctv/api/service/UserService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/logback.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/logback.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -235,8 +142,18 @@
     <option name="notificationShown" value="true" />
   </component>
   <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="com.kctv.api.repository.user" />
+    </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
       <recent name="com.kctv.api.controller" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.kctv.api.model.visit" />
+      <recent name="com.kctv.api.repository.visit" />
+      <recent name="com.kctv.api.entity.visit" />
+      <recent name="com.kctv.api.service" />
+      <recent name="com.kctv.api.repository.ad" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Bruno\IdeaProjects\kctv-spring-cassandra\src\main\java\com\kctv\api\util\test" />
@@ -244,16 +161,6 @@
       <recent name="C:\Users\Bruno\IdeaProjects\kctv-spring-cassandra\src\main\resources\i18n" />
       <recent name="C:\Users\Bruno\IdeaProjects\kctv-spring-cassandra\src\main\resources\static" />
       <recent name="C:\Users\Bruno\IdeaProjects\kctv-spring-cassandra\src\main\java\com\kctv\api\advice" />
-    </key>
-    <key name="CopyClassDialog.RECENTS_KEY">
-      <recent name="com.kctv.api.service" />
-      <recent name="com.kctv.api.repository.ad" />
-      <recent name="com.kctv.api.repository.tag" />
-      <recent name="com.kctv.api.controller.v1.admin.captive" />
-      <recent name="com.kctv.api.repository.ap" />
-    </key>
-    <key name="CreateClassDialog.RecentsKey">
-      <recent name="com.kctv.api.repository.user" />
     </key>
   </component>
   <component name="RunManager" selected="Application.KctvSpringCassandraApplication">
@@ -363,7 +270,8 @@
       <workItem from="1610423394154" duration="11976000" />
       <workItem from="1610513947912" duration="37330000" />
       <workItem from="1610961907824" duration="8682000" />
-      <workItem from="1611023281242" duration="65973000" />
+      <workItem from="1611023281242" duration="78297000" />
+      <workItem from="1611290860123" duration="8153000" />
     </task>
     <task id="LOCAL-00001" summary="커밋">
       <created>1603958598568</created>
@@ -491,7 +399,14 @@
       <option name="project" value="LOCAL" />
       <updated>1608193689144</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="오랜만">
+      <created>1611219225395</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1611219225396</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -541,7 +456,8 @@
     <MESSAGE value="스타일카드 아이디로 플레이스 목록 조회" />
     <MESSAGE value="밀린커밋" />
     <MESSAGE value="영업시간 구현" />
-    <option name="LAST_COMMIT_MESSAGE" value="영업시간 구현" />
+    <MESSAGE value="오랜만" />
+    <option name="LAST_COMMIT_MESSAGE" value="오랜만" />
   </component>
   <component name="WindowStateProjectService">
     <state x="872" y="341" key="#Plugins" timestamp="1605759230293">
@@ -635,44 +551,40 @@
       <screen x="0" y="0" width="2560" height="1400" />
     </state>
     <state x="994" y="404" key="Github.UntrackedFilesDialog/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1603955429128" />
-    <state width="2517" height="458" key="GridCell.Tab.0.bottom" timestamp="1611196653552">
-      <screen x="0" y="0" width="2560" height="1400" />
+    <state width="1621" height="333" key="GridCell.Tab.0.bottom" timestamp="1611303849178">
+      <screen x="0" y="0" width="1664" height="1069" />
     </state>
     <state width="1877" height="521" key="GridCell.Tab.0.bottom/-2496.0.1664.1082/2560.101.1920.1040/0.0.2560.1400@2560.101.1920.1040" timestamp="1603350941003" />
     <state width="1877" height="254" key="GridCell.Tab.0.bottom/0.0.1664.1069/2496.0.1920.1040@2496.0.1920.1040" timestamp="1606201687654" />
-    <state width="1621" height="260" key="GridCell.Tab.0.bottom/0.0.1664.1069@0.0.1664.1069" timestamp="1611055633212" />
-    <state width="2517" height="141" key="GridCell.Tab.0.bottom/0.0.2560.1400/2560.100.1920.1040@0.0.2560.1400" timestamp="1602496865752" />
-    <state width="2517" height="458" key="GridCell.Tab.0.bottom/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1611196653552" />
+    <state width="1621" height="333" key="GridCell.Tab.0.bottom/0.0.1664.1069@0.0.1664.1069" timestamp="1611303849178" />
+    <state width="2517" height="457" key="GridCell.Tab.0.bottom/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1611235280836" />
     <state width="1877" height="183" key="GridCell.Tab.0.bottom/2560.100.1920.1040/0.0.2560.1400@2560.100.1920.1040" timestamp="1611109724106" />
     <state width="2517" height="521" key="GridCell.Tab.0.bottom/2560.101.1920.1040/-2496.0.1664.1069/0.0.2560.1400@0.0.2560.1400" timestamp="1603340673894" />
-    <state width="2517" height="458" key="GridCell.Tab.0.center" timestamp="1611196653552">
-      <screen x="0" y="0" width="2560" height="1400" />
+    <state width="1621" height="333" key="GridCell.Tab.0.center" timestamp="1611303849177">
+      <screen x="0" y="0" width="1664" height="1069" />
     </state>
     <state width="1877" height="521" key="GridCell.Tab.0.center/-2496.0.1664.1082/2560.101.1920.1040/0.0.2560.1400@2560.101.1920.1040" timestamp="1603350941003" />
     <state width="1877" height="254" key="GridCell.Tab.0.center/0.0.1664.1069/2496.0.1920.1040@2496.0.1920.1040" timestamp="1606201687654" />
-    <state width="1621" height="260" key="GridCell.Tab.0.center/0.0.1664.1069@0.0.1664.1069" timestamp="1611055633211" />
-    <state width="2517" height="141" key="GridCell.Tab.0.center/0.0.2560.1400/2560.100.1920.1040@0.0.2560.1400" timestamp="1602496865751" />
-    <state width="2517" height="458" key="GridCell.Tab.0.center/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1611196653552" />
+    <state width="1621" height="333" key="GridCell.Tab.0.center/0.0.1664.1069@0.0.1664.1069" timestamp="1611303849177" />
+    <state width="2517" height="457" key="GridCell.Tab.0.center/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1611235280835" />
     <state width="1877" height="183" key="GridCell.Tab.0.center/2560.100.1920.1040/0.0.2560.1400@2560.100.1920.1040" timestamp="1611109724105" />
     <state width="2517" height="521" key="GridCell.Tab.0.center/2560.101.1920.1040/-2496.0.1664.1069/0.0.2560.1400@0.0.2560.1400" timestamp="1603340673893" />
-    <state width="2517" height="458" key="GridCell.Tab.0.left" timestamp="1611196653552">
-      <screen x="0" y="0" width="2560" height="1400" />
+    <state width="1621" height="333" key="GridCell.Tab.0.left" timestamp="1611303849177">
+      <screen x="0" y="0" width="1664" height="1069" />
     </state>
     <state width="1877" height="521" key="GridCell.Tab.0.left/-2496.0.1664.1082/2560.101.1920.1040/0.0.2560.1400@2560.101.1920.1040" timestamp="1603350941003" />
     <state width="1877" height="254" key="GridCell.Tab.0.left/0.0.1664.1069/2496.0.1920.1040@2496.0.1920.1040" timestamp="1606201687654" />
-    <state width="1621" height="260" key="GridCell.Tab.0.left/0.0.1664.1069@0.0.1664.1069" timestamp="1611055633211" />
-    <state width="2517" height="141" key="GridCell.Tab.0.left/0.0.2560.1400/2560.100.1920.1040@0.0.2560.1400" timestamp="1602496865751" />
-    <state width="2517" height="458" key="GridCell.Tab.0.left/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1611196653552" />
+    <state width="1621" height="333" key="GridCell.Tab.0.left/0.0.1664.1069@0.0.1664.1069" timestamp="1611303849177" />
+    <state width="2517" height="457" key="GridCell.Tab.0.left/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1611235280835" />
     <state width="1877" height="183" key="GridCell.Tab.0.left/2560.100.1920.1040/0.0.2560.1400@2560.100.1920.1040" timestamp="1611109724105" />
     <state width="2517" height="521" key="GridCell.Tab.0.left/2560.101.1920.1040/-2496.0.1664.1069/0.0.2560.1400@0.0.2560.1400" timestamp="1603340673893" />
-    <state width="2517" height="458" key="GridCell.Tab.0.right" timestamp="1611196653552">
-      <screen x="0" y="0" width="2560" height="1400" />
+    <state width="1621" height="333" key="GridCell.Tab.0.right" timestamp="1611303849178">
+      <screen x="0" y="0" width="1664" height="1069" />
     </state>
     <state width="1877" height="521" key="GridCell.Tab.0.right/-2496.0.1664.1082/2560.101.1920.1040/0.0.2560.1400@2560.101.1920.1040" timestamp="1603350941003" />
     <state width="1877" height="254" key="GridCell.Tab.0.right/0.0.1664.1069/2496.0.1920.1040@2496.0.1920.1040" timestamp="1606201687654" />
-    <state width="1621" height="260" key="GridCell.Tab.0.right/0.0.1664.1069@0.0.1664.1069" timestamp="1611055633212" />
-    <state width="2517" height="141" key="GridCell.Tab.0.right/0.0.2560.1400/2560.100.1920.1040@0.0.2560.1400" timestamp="1602496865751" />
-    <state width="2517" height="458" key="GridCell.Tab.0.right/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1611196653552" />
+    <state width="1621" height="333" key="GridCell.Tab.0.right/0.0.1664.1069@0.0.1664.1069" timestamp="1611303849178" />
+    <state width="2517" height="457" key="GridCell.Tab.0.right/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1611235280836" />
     <state width="1877" height="183" key="GridCell.Tab.0.right/2560.100.1920.1040/0.0.2560.1400@2560.100.1920.1040" timestamp="1611109724106" />
     <state width="2517" height="521" key="GridCell.Tab.0.right/2560.101.1920.1040/-2496.0.1664.1069/0.0.2560.1400@0.0.2560.1400" timestamp="1603340673894" />
     <state width="2517" height="297" key="GridCell.Tab.1.bottom" timestamp="1611125972976">
@@ -681,7 +593,6 @@
     <state width="1877" height="521" key="GridCell.Tab.1.bottom/-2496.0.1664.1082/2560.101.1920.1040/0.0.2560.1400@2560.101.1920.1040" timestamp="1603350941003" />
     <state width="1877" height="348" key="GridCell.Tab.1.bottom/0.0.1664.1069/2496.0.1920.1040@2496.0.1920.1040" timestamp="1606201450541" />
     <state width="1621" height="215" key="GridCell.Tab.1.bottom/0.0.1664.1069@0.0.1664.1069" timestamp="1609736883605" />
-    <state width="2517" height="141" key="GridCell.Tab.1.bottom/0.0.2560.1400/2560.100.1920.1040@0.0.2560.1400" timestamp="1602496865752" />
     <state width="2517" height="297" key="GridCell.Tab.1.bottom/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1611125972976" />
     <state width="1877" height="348" key="GridCell.Tab.1.bottom/2560.100.1920.1040/0.0.2560.1400@2560.100.1920.1040" timestamp="1606112950538" />
     <state width="2517" height="521" key="GridCell.Tab.1.bottom/2560.101.1920.1040/-2496.0.1664.1069/0.0.2560.1400@0.0.2560.1400" timestamp="1603340673894" />
@@ -691,7 +602,6 @@
     <state width="1877" height="521" key="GridCell.Tab.1.center/-2496.0.1664.1082/2560.101.1920.1040/0.0.2560.1400@2560.101.1920.1040" timestamp="1603350941003" />
     <state width="1877" height="348" key="GridCell.Tab.1.center/0.0.1664.1069/2496.0.1920.1040@2496.0.1920.1040" timestamp="1606201450541" />
     <state width="1621" height="215" key="GridCell.Tab.1.center/0.0.1664.1069@0.0.1664.1069" timestamp="1609736883605" />
-    <state width="2517" height="141" key="GridCell.Tab.1.center/0.0.2560.1400/2560.100.1920.1040@0.0.2560.1400" timestamp="1602496865752" />
     <state width="2517" height="297" key="GridCell.Tab.1.center/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1611125972975" />
     <state width="1877" height="348" key="GridCell.Tab.1.center/2560.100.1920.1040/0.0.2560.1400@2560.100.1920.1040" timestamp="1606112950538" />
     <state width="2517" height="521" key="GridCell.Tab.1.center/2560.101.1920.1040/-2496.0.1664.1069/0.0.2560.1400@0.0.2560.1400" timestamp="1603340673894" />
@@ -701,7 +611,6 @@
     <state width="1877" height="521" key="GridCell.Tab.1.left/-2496.0.1664.1082/2560.101.1920.1040/0.0.2560.1400@2560.101.1920.1040" timestamp="1603350941003" />
     <state width="1877" height="348" key="GridCell.Tab.1.left/0.0.1664.1069/2496.0.1920.1040@2496.0.1920.1040" timestamp="1606201450541" />
     <state width="1621" height="215" key="GridCell.Tab.1.left/0.0.1664.1069@0.0.1664.1069" timestamp="1609736883605" />
-    <state width="2517" height="141" key="GridCell.Tab.1.left/0.0.2560.1400/2560.100.1920.1040@0.0.2560.1400" timestamp="1602496865752" />
     <state width="2517" height="297" key="GridCell.Tab.1.left/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1611125972975" />
     <state width="1877" height="348" key="GridCell.Tab.1.left/2560.100.1920.1040/0.0.2560.1400@2560.100.1920.1040" timestamp="1606112950538" />
     <state width="2517" height="521" key="GridCell.Tab.1.left/2560.101.1920.1040/-2496.0.1664.1069/0.0.2560.1400@0.0.2560.1400" timestamp="1603340673894" />
@@ -711,7 +620,6 @@
     <state width="1877" height="521" key="GridCell.Tab.1.right/-2496.0.1664.1082/2560.101.1920.1040/0.0.2560.1400@2560.101.1920.1040" timestamp="1603350941003" />
     <state width="1877" height="348" key="GridCell.Tab.1.right/0.0.1664.1069/2496.0.1920.1040@2496.0.1920.1040" timestamp="1606201450541" />
     <state width="1621" height="215" key="GridCell.Tab.1.right/0.0.1664.1069@0.0.1664.1069" timestamp="1609736883605" />
-    <state width="2517" height="141" key="GridCell.Tab.1.right/0.0.2560.1400/2560.100.1920.1040@0.0.2560.1400" timestamp="1602496865752" />
     <state width="2517" height="297" key="GridCell.Tab.1.right/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1611125972976" />
     <state width="1877" height="348" key="GridCell.Tab.1.right/2560.100.1920.1040/0.0.2560.1400@2560.100.1920.1040" timestamp="1606112950538" />
     <state width="2517" height="521" key="GridCell.Tab.1.right/2560.101.1920.1040/-2496.0.1664.1069/0.0.2560.1400@0.0.2560.1400" timestamp="1603340673894" />
@@ -831,11 +739,11 @@
     <state x="608" y="252" width="672" height="677" key="run.anything.popup/0.0.1664.1069@0.0.1664.1069" timestamp="1609924250472" />
     <state x="936" y="330" key="run.anything.popup/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1611126362917" />
     <state x="3262" y="345" key="run.anything.popup/2560.100.1920.1040/0.0.2560.1400@2560.100.1920.1040" timestamp="1605849567169" />
-    <state x="761" y="306" width="1035" height="889" key="search.everywhere.popup" timestamp="1611202283225">
-      <screen x="0" y="0" width="2560" height="1400" />
+    <state x="495" y="233" width="672" height="678" key="search.everywhere.popup" timestamp="1611304094810">
+      <screen x="0" y="0" width="1664" height="1069" />
     </state>
-    <state x="495" y="233" width="672" height="678" key="search.everywhere.popup/0.0.1664.1069@0.0.1664.1069" timestamp="1610612499593" />
-    <state x="761" y="306" width="1035" height="889" key="search.everywhere.popup/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1611202283225" />
+    <state x="495" y="233" width="672" height="678" key="search.everywhere.popup/0.0.1664.1069@0.0.1664.1069" timestamp="1611304094810" />
+    <state x="761" y="306" width="1035" height="889" key="search.everywhere.popup/2560.100.1920.1040/0.0.2560.1400@0.0.2560.1400" timestamp="1611234491149" />
     <state x="3131" y="327" width="776" height="660" key="search.everywhere.popup/2560.100.1920.1040/0.0.2560.1400@2560.100.1920.1040" timestamp="1611110812976" />
   </component>
   <component name="XDebuggerManager">

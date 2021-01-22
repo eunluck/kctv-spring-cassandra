@@ -57,7 +57,6 @@ public class AdminController {
     private final StyleCardService styleCardService;
     private final StorageService storageService;
     private final FaqService faqService;
-
     private final QnaService qnaService;
 
 
@@ -371,7 +370,7 @@ public class AdminController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 token", required = true, dataType = "String", paramType = "header")
     })
-    @PostMapping(value = "/cative/ad")
+    @PostMapping(value = "/captive/ad")
     public CommonResult captiveImgPost(@RequestPart CaptiveRequest request){
 
         MultipartFile file = request.getImgFile();
@@ -379,6 +378,7 @@ public class AdminController {
 
         // save(파일저장)
         // 디비저장
+
 
 
 

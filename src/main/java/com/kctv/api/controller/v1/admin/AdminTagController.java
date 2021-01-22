@@ -84,7 +84,7 @@ public class AdminTagController {
 
     }
 
-    @ApiOperation(value = "태그 삭제", notes = "태그를 삭제한다.")
+    @ApiOperation(value = "장소 타입 삭제", notes = "장소 타입을 삭제한다.")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 token", required = true, dataType = "String", paramType = "header")
     })
@@ -92,7 +92,7 @@ public class AdminTagController {
     public CommonResult deletePlaceType(@RequestBody PlaceTypeEntity placeTypeEntity){
 
         if(placeService.deleteTag(placeTypeEntity)){
-            return responseService.getSuccessResult();
+            return responseService.getSingleResult(placeTypeEntity);
         }else {
             return responseService.getFailResult(-1,"이미 사용중이거나 중복되는 업종명입니다.");
         }
@@ -123,7 +123,7 @@ public class AdminTagController {
 
 
         if(styleCardService.deleteTag(keyword)){
-            return responseService.getSuccessResult();
+            return responseService.getSingleResult(keyword);
         }else {
             return responseService.getFailResult(-1,"이미 사용중이거나 중복되는 태그입니다.");
         }

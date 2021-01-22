@@ -43,8 +43,6 @@ public class PlaceInfoDto {
     @ApiModelProperty(value = "매장 분류(ex:카페,음식점..)",readOnly = true)
     private String storeType;
 
-
-    @Column("store_parent_type")
     @ApiModelProperty(value = "매장 대분류(ex:사업장,관광지)", readOnly = true)
     private String storeParentType;
 
@@ -66,7 +64,7 @@ public class PlaceInfoDto {
     @ApiModelProperty(value = "영업시간 텍스트",readOnly = true)
     private Map<String,String> weekday_text;
     @ApiModelProperty(value = "편의시설",readOnly = true)
-    private List<String> facilities;
+    private Set<String> facilities;
     @ApiModelProperty(value = "연령대", readOnly = true)
     private Set<String> ages;
 
@@ -77,7 +75,6 @@ public class PlaceInfoDto {
 
         if(CollectionUtils.isEmpty(placeInfo.getPeriods()))
         weekday_text = weekText(placeInfo.getPeriods());
-
     }
     public Map<String,String> weekText(List<CloseOrOpen> original){
 
