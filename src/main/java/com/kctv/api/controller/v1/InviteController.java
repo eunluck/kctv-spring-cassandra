@@ -42,12 +42,19 @@ public class InviteController {
         Optional<UserInfo> user = inviteService.findUserByCode(code);
 
         if (!user.isPresent()){
-            return responseService.getFailResult(-1,"유효하지 않는 코드입니다.");
+            return responseService.getFailResult(-11,"유효하지 않는 코드입니다.");
+        }else if(inviteService.inviteDoubleCheck(uuid,user.get().getUserId())) {
+            return responseService.getFailResult(-12,"이미 추천했던 사용자입니다.");
         }else {
             if (inviteService.saveInviteCode(new InviteFriends(uuid,user.get().getUserId(),new Date()))) {
+                //추천인 코드는 여러명을 입력할 수 있다.(완)
+                //한번 추천한 사람에게 중복 추천할 수 없다. (완)
+                //추천인과 추천등록한사람은 100MB씩 제공받는다.(완)
+                //TODO 이곳에  100메가 추가 로직만 추가하면된다.
                 return responseService.getSuccessResult();
-            }else
-                return responseService.getFailResult(-2,"친구 추천이 실패했습니다. 관리자에게 문의바랍니다.");
+            }else{
+                return responseService.getFailResult(-19,"친구 추천이 실패했습니다. 관리자에게 문의바랍니다.");
+            }
         }
     }
 

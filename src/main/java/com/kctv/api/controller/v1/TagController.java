@@ -3,7 +3,9 @@ package com.kctv.api.controller.v1;
 import com.kctv.api.advice.exception.CCommunicationException;
 import com.kctv.api.entity.stylecard.Tag;
 import com.kctv.api.model.response.CommonResult;
+import com.kctv.api.model.response.ListResult;
 import com.kctv.api.model.response.SingleResult;
+import com.kctv.api.model.tag.Facilities;
 import com.kctv.api.service.ResponseService;
 import com.kctv.api.service.StyleCardService;
 import io.swagger.annotations.Api;
@@ -44,17 +46,6 @@ public class TagController {
         return responseService.getSingleResult(styleCardService.getTagListAllService());
     }
 
-    @ApiOperation(value = "신규 태그 추가",notes = "신규 태그를 추가한다.(관리자용)")
-    @PostMapping("/tags")
-    public CommonResult createTags(List<Tag> tags){
-
-        for (Tag tag : tags){
-            styleCardService.createTagService(tag).orElseThrow(CCommunicationException::new);
-        }
-
-        return responseService.getSuccessResult();
-    }
-
 
     //tag가 중복되는지 단건 검사.
     @ApiOperation(value = "태그 중복 검사(true = 중복, false = 비중복)",notes = "이미 존재하는 태그인지 체크한다.")
@@ -69,5 +60,14 @@ public class TagController {
 
 
     }
+
+    @ApiOperation(value = "편의시설 태그 목록 조회",notes = "장소를 추가할때 사용한다.")
+    @GetMapping("/tags/facilities")
+    public ListResult<String> getFacilities(){
+
+        return responseService.getListResult(Facilities.facilities.getFacilitiesName());
+    }
+
+
 
 }

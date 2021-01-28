@@ -11,6 +11,7 @@ import com.kctv.api.service.PlaceService;
 import com.kctv.api.service.ResponseService;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -66,8 +67,12 @@ public class PlaceController {
 
         List<String> tagArr = Arrays.asList(tags.split(","));
 
+        if(CollectionUtils.isNotEmpty(tagArr)){
 
         return responseService.getListResult(placeService.getPartnerInfoListByTagsService(tagArr));
+        }else{
+            return responseService.getListResult(placeService.getPartnerInfoListService());
+        }
 
     }
 

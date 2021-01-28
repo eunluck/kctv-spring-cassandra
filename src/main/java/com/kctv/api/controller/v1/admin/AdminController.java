@@ -2,12 +2,14 @@ package com.kctv.api.controller.v1.admin;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.io.Files;
 import com.kctv.api.advice.exception.CResourceNotExistException;
 import com.kctv.api.advice.exception.CUserExistException;
 import com.kctv.api.controller.v1.admin.captive.CaptiveRequest;
 import com.kctv.api.entity.admin.FaqRequest;
 import com.kctv.api.entity.admin.FaqTable;
 import com.kctv.api.entity.admin.QnaAnswer;
+import com.kctv.api.entity.admin.ad.CaptivePortalAdEntity;
 import com.kctv.api.entity.place.MenuByPlace;
 import com.kctv.api.entity.place.PlaceInfo;
 import com.kctv.api.entity.place.PlaceInfoDto;
@@ -30,15 +32,13 @@ import org.springframework.data.cassandra.core.query.CassandraPageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import springfox.documentation.annotations.ApiIgnore;
 
 import java.io.IOException;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static java.util.concurrent.CompletableFuture.supplyAsync;
@@ -47,7 +47,7 @@ import static java.util.concurrent.CompletableFuture.supplyAsync;
 @Api(tags = {"11. Admin API"})
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value =  "/v1/admin")
+@RequestMapping(value = "/v1/admin")
 public class AdminController {
 
 
@@ -75,27 +75,28 @@ public class AdminController {
     }*/
 
 
-
-
-
     @ApiOperation(value = "신규 카드 추가", notes = "카드를 생성한다.")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "request",value = "요청 본문", dataType = "String", paramType = "form",defaultValue = "{     \"title\": \"브라이언의 주말여행\",     \"ages\":[\"20대\",\"30대\",\"40대\"],     \"tags\": [         \"따뜻한\",         \"제주여행\",         \"가족\",         \"디자이너\"     ],     \"gender\":[\"남\",\"여\"],     \"placeId\": [\"8196a739-6a56-4d11-aced-22950a4a6bfa\",\"0c888459-3a05-4396-afc6-83ba60b4908c\",\"b3dc4146-2827-47c0-bbc8-9fe350d4134e\"],     \"status\":\"MD추천\" }"),
-            @ApiImplicitParam(name = "file",value = "이미지(여러개)",dataType = "file", paramType = "form"),
+            @ApiImplicitParam(name = "request", value = "요청 본문", dataType = "String", paramType = "form", defaultValue = "{     \"title\": \"브라이언의 주말여행\",     \"ages\":[\"20대\",\"30대\",\"40대\"],     \"tags\": [         \"따뜻한\",         \"제주여행\",         \"가족\",         \"디자이너\"     ],     \"gender\":[\"남\",\"여\"],     \"placeId\": [\"8196a739-6a56-4d11-aced-22950a4a6bfa\",\"0c888459-3a05-4396-afc6-83ba60b4908c\",\"b3dc4146-2827-47c0-bbc8-9fe350d4134e\"],     \"status\":\"MD추천\" }"),
+            @ApiImplicitParam(name = "file", value = "이미지(여러개)", dataType = "file", paramType = "form"),
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 token", required = true, dataType = "String", paramType = "header")
     })
-    @PostMapping(value = "/card",consumes = MediaType.MULTIPART_FORM_DATA_VALUE,produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/card", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public SingleResult<StyleCardInfo> createCard(@RequestPart String request,
-                                                  @RequestPart(value = "file",required = false) MultipartFile file) throws JsonProcessingException {
+                                                  @RequestPart(value = "file", required = false) MultipartFile file) throws JsonProcessingException {
 
-        StyleCardVo cardVoRequest = new ObjectMapper().readValue(request,StyleCardVo.class);
+        StyleCardVo cardVoRequest = new ObjectMapper().readValue(request, StyleCardVo.class);
 
         StyleCardInfo card = styleCardService.createStyleCard(cardVoRequest);
 
-        try {
-        storageService.saveImage(card.getCardId(),file,"card");
-        }catch (IOException e){
-            logger.warn("파일 첨부 에러 발생");
+        if(file != null){
+
+            try {
+                String resultPath = storageService.saveImage(card.getCardId(), file, "card");
+                card.setCoverImage(resultPath);
+            } catch (IOException e) {
+                logger.warn("파일 첨부 에러 발생");
+            }
         }
 
 
@@ -103,12 +104,11 @@ public class AdminController {
     }
 
 
-
     @ApiOperation(value = "신규 장소 추가", notes = "신규 장소를 추가한다.")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 token", required = true, dataType = "String", paramType = "header"),
-            @ApiImplicitParam(name = "file",value = "이미지(여러개)",dataType = "file", paramType = "form"),
-            @ApiImplicitParam(name = "request", value = "요청 본문", dataType = "String",paramType = "form", defaultValue = "{\n" +
+            @ApiImplicitParam(name = "file", value = "이미지(여러개)", dataType = "file", paramType = "form"),
+            @ApiImplicitParam(name = "request", value = "요청 본문", dataType = "String", paramType = "form", defaultValue = "{\n" +
                     "    \"businessName\": \"맛순이뼈해장국\",\n" +
                     "    \"storeType\": \"음식점\",\n" +
                     "    \"tags\": [\n" +
@@ -198,56 +198,150 @@ public class AdminController {
                     "    ]\n" +
                     "}")
     })
-    @PostMapping(value = "/place",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(value = "/place", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public SingleResult<PlaceInfo> createPlace(@ApiIgnore @RequestPart String request,
-                                               @ApiIgnore @RequestPart(value = "file",required = false) List<MultipartFile> file) throws JsonProcessingException {
+                                               @ApiIgnore @RequestPart(value = "file", required = false) List<MultipartFile> file) throws JsonProcessingException {
 
 
-        System.out.println(request);
-        PlaceInfoVo placeRequest = new ObjectMapper().readValue(request,PlaceInfoVo.class);
+        PlaceInfoVo placeRequest = new ObjectMapper().readValue(request, PlaceInfoVo.class);
 
-        PlaceInfo place = placeService.createPlace(new PlaceInfo(placeRequest),placeRequest.getMenuList());
+        PlaceInfo place = placeService.createPlace(new PlaceInfo(placeRequest), placeRequest.getMenuList());
 
+
+        if(CollectionUtils.isNotEmpty(file)){
         try {
-            storageService.saveImage(place.getPartnerId(),file,"place");
-        }catch (IOException e){
+            List<String> afterPath = storageService.saveImage(place.getPartnerId(), file, "place");
+            place.setImages(afterPath);
+        } catch (IOException e) {
             logger.warn("파일 첨부 에러 발생");
+        }
+
         }
 
 
         return responseService.getSingleResult(place);
     }
-    @ApiOperation(value = "장소 정보 수정", notes = "등록된 장소를 수정한다.")
+   /*
+
+
+    @ApiOperation(value = "장소 이미지 추가", notes = "기존 이미지에 새로운 이미지를 추가한다.")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 token", required = true, dataType = "String", paramType = "header")
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 token", required = true, dataType = "String", paramType = "header"),
+            @ApiImplicitParam(name = "request", value = "요청 본문", dataType = "String", paramType = "form", defaultValue = ""),
+            @ApiImplicitParam(name = "file", value = "커버 이미지", dataType = "file", paramType = "form")
     })
-    @PutMapping(value = "/place")
-    public SingleResult<PlaceInfo> modifyPlace(@ApiIgnore @RequestPart String request,
-                                               @ApiIgnore @RequestPart(value = "file",required = false) List<MultipartFile> file) throws JsonProcessingException {
-
-        PlaceInfo placeRequest = new ObjectMapper().readValue(request,PlaceInfo.class);
-
-        PlaceInfo afterPlace = Optional.ofNullable(placeService.modifyPlace(placeRequest)).orElseThrow(CResourceNotExistException::new);
+ @PutMapping(value = "/place/{placeId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @Transactional
+    public SingleResult<PlaceInfoDto> appendImage(@PathVariable("placeId") UUID placeId,
+                                                  @ApiIgnore @RequestPart(value = "file", required = false) List<MultipartFile> file) throws IOException {
 
 
+        TODO 이미지 추가 api
+
+        storageService.
+        return null;
+    }*/
+
+
+
+        @ApiOperation(value = "장소 정보 수정", notes = "등록된 장소를 수정한다.")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 token", required = true, dataType = "String", paramType = "header"),
+            @ApiImplicitParam(name = "request", value = "요청 본문", dataType = "String", paramType = "form"),
+            @ApiImplicitParam(name = "file", value = "커버 이미지", dataType = "file", paramType = "form")
+    })
+    @PutMapping(value = "/place/{placeId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @Transactional
+    public SingleResult<PlaceInfoDto> modifyPlace(@PathVariable("placeId") UUID placeId,
+                                                  @ApiIgnore @RequestPart String request,
+                                                  @ApiIgnore @RequestPart(value = "file", required = false) List<MultipartFile> file) throws IOException {
+
+        PlaceInfoVo placeRequest = new ObjectMapper().readValue(request, PlaceInfoVo.class);
+
+
+        if (file == null ||file.isEmpty()) {
+            PlaceInfoDto afterPlace = Optional.ofNullable(placeService.modifyPlace(placeId, new PlaceInfo(placeRequest), placeRequest.getMenuList())).orElseThrow(CResourceNotExistException::new);
+            return responseService.getSingleResult(afterPlace);
+        } else {
+        for (MultipartFile multipartFile : file) {
+            storageService.checkImgType(multipartFile);
+        }
+            PlaceInfo beforePlace = placeService.getPartnerByIdService(placeId).orElseThrow(CResourceNotExistException::new);
+
+            List<UUID> imgUrlList = beforePlace.getImages()
+                    .stream()
+                    .map(s -> UUID.fromString(storageService.getImgIdByImgUrl(s)))
+                    .collect(Collectors.toList());
+
+            if (storageService.deleteFile(imgUrlList)) {
+                try {
+                    List<String> resultList = storageService.saveImage(beforePlace.getPartnerId(), file, "place");
+                    beforePlace.setImages(resultList);
+                } catch (IOException e) {
+                    logger.warn("파일 첨부 에러 발생");
+                }
+                PlaceInfoDto afterPlace = Optional.ofNullable(placeService.modifyPlace(placeId, new PlaceInfo(placeRequest,beforePlace.getImages()), placeRequest.getMenuList())).orElseThrow(CResourceNotExistException::new);
+
+                return responseService.getSingleResult(afterPlace);
+
+            } else {
+                throw new IOException("장소 수정 중 파일 첨부 에러 발생");
+            }
+        }
         //TODO 파일 수정 로직 필요
-        return responseService.getSingleResult(afterPlace);
     }
+
+    @ApiOperation(value = "스타일 카드 수정", notes = "등록된 스타일카드를 수정한다.")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 token", required = true, dataType = "String", paramType = "header"),
+            @ApiImplicitParam(name = "request", value = "요청 본문", dataType = "String", paramType = "form"),
+            @ApiImplicitParam(name = "file", value = "커버 이미지", dataType = "file", paramType = "form")
+    })
+    @PutMapping(value = "/card/{cardId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @Transactional
+    public SingleResult<StyleCardInfo> modifyStyleCard(@ApiIgnore @RequestPart String request,
+                                                       @PathVariable("cardId") UUID cardId,
+                                                       @ApiIgnore @RequestPart(value = "file", required = false) MultipartFile file) throws IOException {
+
+        StyleCardInfo cardRequest = new ObjectMapper().readValue(request, StyleCardInfo.class);
+
+        if (file == null || file.isEmpty()) {
+            StyleCardInfo afterPlace = styleCardService.modifyStyleCard(cardId, cardRequest);
+
+            return responseService.getSingleResult(afterPlace);
+        } else {
+        storageService.checkImgType(file);
+            StyleCardInfo beforeCard = Optional.ofNullable(styleCardService.getCardById(cardId)).orElseThrow(CResourceNotExistException::new);
+
+            if (storageService.deleteFile(UUID.fromString(storageService.getImgIdByImgUrl(beforeCard.getCoverImage())))) {
+                try {
+                    String resultPath = storageService.saveImage(beforeCard.getCardId(), file, "card");
+                    cardRequest.setCoverImage(resultPath);
+                } catch (IOException e) {
+                    logger.warn("파일 첨부 에러 발생");
+                }
+                StyleCardInfo afterStyleCard = Optional.ofNullable(styleCardService.modifyStyleCard(beforeCard.getCardId(), cardRequest)).orElseThrow(CResourceNotExistException::new);
+                return responseService.getSingleResult(afterStyleCard);
+            } else {
+                throw new IOException("카드 수정 중 파일 첨부 에러 발생");
+            }
+        }
+        //TODO 파일 수정 로직 필요
+    }
+
 
     @ApiOperation(value = "장소가 속한 스타일카드 조회", notes = "장소가 속한 스타일카드 리스트를 조회한다.")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 token", required = true, dataType = "String", paramType = "header")
     })
     @GetMapping(value = "/place/{placeId}/card")
-    public ListResult<StyleCardInfo> placeByStyleCard(@PathVariable("placeId")UUID placeUuid){
+    public ListResult<StyleCardInfo> placeByStyleCard(@PathVariable("placeId") UUID placeUuid) {
 
         List<StyleCardInfo> searchResult = styleCardService.getStyleCardListAllService()
                 .stream()
                 .filter(styleCardInfo -> CollectionUtils.isNotEmpty(styleCardInfo.getPlaceId()))
                 .filter(styleCardInfo -> styleCardInfo.getPlaceId().contains(placeUuid))
                 .collect(Collectors.toList());
-
-
 
 
         return responseService.getListResult(searchResult);
@@ -260,9 +354,9 @@ public class AdminController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 token", required = true, dataType = "String", paramType = "header")
     })
     @PostMapping(value = "/faq")
-    public SingleResult<FaqTable> createFaq(@RequestBody FaqRequest request){
+    public SingleResult<FaqTable> createFaq(@RequestBody FaqRequest request) {
 
-        return responseService.getSingleResult(faqService.postFaq(request.getQuestion(),request.getAnswer()));
+        return responseService.getSingleResult(faqService.postFaq(request.getQuestion(), request.getAnswer()));
     }
 
     @ApiOperation(value = "FAQ 수정", notes = "faq를 수정한다.")
@@ -270,7 +364,7 @@ public class AdminController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 token", required = true, dataType = "String", paramType = "header")
     })
     @PutMapping(value = "/faq")
-    public SingleResult<FaqTable> modifyFaq(@RequestBody FaqTable faqTable){
+    public SingleResult<FaqTable> modifyFaq(@RequestBody FaqTable faqTable) {
 
         FaqTable beforeFaq = faqService.findById(faqTable.getFaqId());
         beforeFaq.setAnswer(faqTable.getAnswer());
@@ -286,7 +380,7 @@ public class AdminController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 token", required = true, dataType = "String", paramType = "header")
     })
     @DeleteMapping(value = "/faq/{uuid}")
-    public CommonResult deleteFaq(@PathVariable("uuid") UUID uuid){
+    public CommonResult deleteFaq(@PathVariable("uuid") UUID uuid) {
 
         faqService.deleteFaq(Optional.ofNullable(faqService.findById(uuid)).orElseThrow(CResourceNotExistException::new));
 
@@ -294,48 +388,44 @@ public class AdminController {
     }
 
 
-
     @ApiOperation(value = "QNA 목록 조회", notes = "QNA를 조회한다.")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 token", required = true, dataType = "String", paramType = "header")
     })
     @GetMapping(value = "/qna")
-    public ListResult<QnaByUserEntity> AdminQnaList(@RequestParam(value = "status",required = false) String status,
-                                                    @RequestParam(value = "type",required = false)String type){
+    public ListResult<QnaByUserEntity> AdminQnaList(@RequestParam(value = "status", required = false) String status,
+                                                    @RequestParam(value = "type", required = false) String type) {
 
 
         //TODO 하드코딩수정필요
 
         String typeSetter = "";
-        if("as".equals(type)){
+        if ("as".equals(type)) {
             typeSetter = "WiFi A/S";
-        }else if ("zone".equals(type)){
+        } else if ("zone".equals(type)) {
             typeSetter = "WiFi Zone";
-        }else if ("app".equals(type)){
+        } else if ("app".equals(type)) {
             typeSetter = "WakeUf 앱 문의";
-        }else if ("etc".equals(type)){
+        } else if ("etc".equals(type)) {
             typeSetter = "기타 문의";
         }
 
 
-        if(!"".equals(typeSetter)){
+        if (!"".equals(typeSetter)) {
 
-        String finalTypeSetter = typeSetter;
+            String finalTypeSetter = typeSetter;
             return responseService.getListResult(qnaService.getAllQnaList(status)
                     .stream()
                     .filter(qnaByUserEntity ->
                             qnaByUserEntity.getQuestionType().equals(finalTypeSetter))
                     .collect(Collectors.toList()));
 
-        }else{
+        } else {
             return responseService.getListResult(qnaService.getAllQnaList(status));
         }
 
 
-
     }
-
-
 
 
     @ApiOperation(value = "QNA 답변등록", notes = "답변을 등록한다.")
@@ -343,8 +433,7 @@ public class AdminController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 token", required = true, dataType = "String", paramType = "header")
     })
     @PostMapping(value = "/qna")
-    public CommonResult adminAnswer(@RequestBody QnaAnswer qnaAnswer){
-
+    public CommonResult adminAnswer(@RequestBody QnaAnswer qnaAnswer) {
 
 
         qnaAnswer.setCreateDt(new Date());
@@ -362,38 +451,5 @@ public class AdminController {
         return responseService.getSuccessResult();
 
     }
-
-
-
-
-    @ApiOperation(value = "캡티브 포탈 관리", notes = "캡티브포탈이미지를 등록한다.")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 token", required = true, dataType = "String", paramType = "header")
-    })
-    @PostMapping(value = "/captive/ad")
-    public CommonResult captiveImgPost(@RequestPart CaptiveRequest request){
-
-        MultipartFile file = request.getImgFile();
-
-
-        // save(파일저장)
-        // 디비저장
-
-
-
-
-
-
-
-
-
-
-        return responseService.getSuccessResult();
-
-    }
-
-
-
-
 
 }

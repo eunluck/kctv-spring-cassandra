@@ -25,21 +25,17 @@ public class PlaceInfo {
     @ApiModelProperty(value = "자동으로 생성되는 고유ID", readOnly = true)
     private UUID partnerId;
 
-    @Column("closing_time")
-    @ApiModelProperty(value = "매장 마감시간", readOnly = true)
-    private LocalTime closingTime;
-
     @Column("business_name")
     @ApiModelProperty(value = "상호명", readOnly = true)
     private String businessName;
 
-    @Column("opening_time")
-    @ApiModelProperty(value = "매장 오픈시간", readOnly = true)
-    private LocalTime openingTime;
-
     @Column("partner_address")
     @ApiModelProperty(value = "매장 주소", readOnly = true)
     private String partnerAddress;
+
+    @ApiModelProperty(value = "상세주소", readOnly = true)
+    @Column("detailed_address")
+    private String detailed_address;
 
     @Column("partner_homepage")
     @ApiModelProperty(value = "매장 관련 홈페이지", readOnly = true)
@@ -65,7 +61,6 @@ public class PlaceInfo {
     @Column("cover_image")
     private String coverImage;
 
-
     @ApiModelProperty(value = "영업시간", readOnly = true)
     @Column("opening_hours")
     @CassandraType(type = CassandraType.Name.LIST, typeArguments = CassandraType.Name.UDT, userTypeName = "close_or_open")
@@ -82,9 +77,22 @@ public class PlaceInfo {
     @Column("images")
     private List<String> images;
 
+    @ApiModelProperty(value = "위도", readOnly = true)
+    private Long latitude;
+    @ApiModelProperty(value = "경도", readOnly = true)
+    private Long longitude;
+
+
+
+
     public PlaceInfo(PlaceInfoVo placeInfoVo) {
         copyProperties(placeInfoVo, this);
 
+    }
+
+    public PlaceInfo(PlaceInfoVo placeInfoVo,List<String> images) {
+        copyProperties(placeInfoVo, this);
+        this.images = images;
     }
 
 

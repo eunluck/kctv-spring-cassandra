@@ -14,6 +14,8 @@ public interface CaptivePortalAdRepository extends CassandraRepository<CaptivePo
 
     CaptivePortalAdEntity findByAdId(UUID uuid);
 
+    void deleteByAdId(UUID uuid);
+
 
 
 }

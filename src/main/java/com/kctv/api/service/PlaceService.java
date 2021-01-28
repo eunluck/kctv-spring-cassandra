@@ -3,8 +3,7 @@ package com.kctv.api.service;
 import com.google.common.base.Strings;
 import com.kctv.api.advice.exception.CPartnerNotFoundException;
 import com.kctv.api.advice.exception.CResourceNotExistException;
-import com.kctv.api.entity.place.MenuByPlace;
-import com.kctv.api.entity.place.PlaceTypeEntity;
+import com.kctv.api.entity.place.*;
 import com.kctv.api.entity.stylecard.PartnersByTags;
 
 import com.kctv.api.entity.stylecard.Tag;
@@ -12,8 +11,6 @@ import com.kctv.api.repository.ap.MenuByPartnerRepository;
 import com.kctv.api.repository.ap.PartnerByTagsRepository;
 import com.kctv.api.repository.tag.PlaceTypeRepository;
 import com.kctv.api.util.GeoOperations;
-import com.kctv.api.entity.place.PlaceInfo;
-import com.kctv.api.entity.place.WifiInfo;
 import com.kctv.api.repository.ap.PartnerRepository;
 import com.kctv.api.repository.ap.WifiRepository;
 import com.kctv.api.util.MapUtill;
@@ -75,11 +72,8 @@ public class PlaceService {
 
         List<MenuByPlace> menuList =  menuByPartnerRepository.findByPartnerId(partnerId);
 
-        Map<String, List<MenuByPlace>> list = menuList.stream().collect(Collectors.groupingBy(MenuByPlace::getMenuType));
 
-
-
-        return list;
+        return menuList.stream().collect(Collectors.groupingBy(MenuByPlace::getMenuType));
 
     }
 
@@ -126,22 +120,21 @@ public class PlaceService {
             }
 
             sorting = MapUtill.sortByValueDesc(sorting);
-            List<UUID> queryList = new ArrayList<>();
-            queryList.addAll(sorting.keySet());
+            List<UUID> queryList = new ArrayList<>(sorting.keySet());
 
             List<PlaceInfo> placeInfos = partnerRepository.findByPartnerIdIn(queryList);
 
             List<PlaceInfo> resultList = new ArrayList<>();
             for (int i = 0; i < placeInfos.size(); i++) {
-                for (int j = 0; j < placeInfos.size(); j++) {
-                    if(placeInfos.get(j).getPartnerId().equals(queryList.get(i)))
-                        resultList.add(placeInfos.get(j));
+                for (PlaceInfo placeInfo : placeInfos) {
+                    if (placeInfo.getPartnerId().equals(queryList.get(i)))
+                        resultList.add(placeInfo);
                 }
             }
 
             return resultList;
         } else {
-            return new ArrayList<PlaceInfo>();
+            return new ArrayList<>();
         }
 
     }
@@ -190,9 +183,10 @@ public class PlaceService {
 
 
     @Transactional
-    public PlaceInfo modifyPlace(PlaceInfo requestPlace){
+    public PlaceInfoDto modifyPlace(UUID placeId,PlaceInfo requestPlace, List<MenuByPlace> menuByPlaceList){
 
-        PlaceInfo beforePlace = partnerRepository.findByPartnerId(requestPlace.getPartnerId()).orElseThrow(CResourceNotExistException::new);
+        PlaceInfo beforePlace = partnerRepository.findByPartnerId(placeId).orElseThrow(CResourceNotExistException::new);
+
 
         if(CollectionUtils.isNotEmpty(requestPlace.getAges()))
         beforePlace.setAges(requestPlace.getAges());
@@ -214,17 +208,33 @@ public class PlaceService {
         beforePlace.setTelNumber(requestPlace.getTelNumber());
         if(!Strings.isNullOrEmpty(requestPlace.getStoreParentType()))
         beforePlace.setStoreParentType(requestPlace.getStoreParentType());
+        if(!Strings.isNullOrEmpty(requestPlace.getDetailed_address()))
+        beforePlace.setDetailed_address(requestPlace.getDetailed_address());
+        if(requestPlace.getLatitude() != null && requestPlace.getLatitude() != 0)
+        beforePlace.setLatitude(requestPlace.getLatitude());
+        if(requestPlace.getLongitude() != null && requestPlace.getLongitude() != 0)
+        beforePlace.setLongitude(requestPlace.getLongitude());
+        if(CollectionUtils.isNotEmpty(menuByPlaceList)){
+            menuByPartnerRepository.deleteAll(menuByPartnerRepository.findByPartnerId(beforePlace.getPartnerId()));
+            menuByPlaceList.forEach(menuByPlace -> menuByPlace.setPartnerId(beforePlace.getPartnerId()));
+            menuByPartnerRepository.saveAll(menuByPlaceList);
+        }
 
 
-        PlaceInfo afterPlace = Optional.ofNullable(partnerRepository.save(beforePlace)).orElseThrow(CResourceNotExistException::new);
-
-        partnerByTagsRepository.saveAll(
-                afterPlace.getTags().stream()
-                        .map(s -> new PartnersByTags(s,afterPlace.getPartnerId()))
-                        .collect(Collectors.toList()));
 
 
-        return afterPlace;
+
+        PlaceInfo afterPlace = Optional.of(partnerRepository.save(beforePlace)).orElseThrow(CResourceNotExistException::new);
+
+        if(CollectionUtils.isNotEmpty(requestPlace.getTags())){
+            partnerByTagsRepository.saveAll(
+                    afterPlace.getTags().stream()
+                            .map(s -> new PartnersByTags(s,afterPlace.getPartnerId()))
+                            .collect(Collectors.toList()));
+        }
+
+        return new PlaceInfoDto(afterPlace,getMenuByPartnerId(afterPlace.getPartnerId()));
+
 
     }
 
@@ -239,7 +249,7 @@ public class PlaceService {
     }
 
     public Optional<PlaceTypeEntity> createTagService(PlaceTypeEntity tag){
-        return Optional.ofNullable(placeTypeRepository.insert(tag));
+        return Optional.of(placeTypeRepository.insert(tag));
     }
 
 

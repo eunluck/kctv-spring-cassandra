@@ -11,6 +11,7 @@ import com.kctv.api.entity.user.UserInfo;
 import com.kctv.api.entity.user.UserInfoDto;
 import com.kctv.api.entity.user.UserInterestTag;
 
+import com.kctv.api.model.ap.WakeupPermission;
 import com.kctv.api.model.response.CommonResult;
 import com.kctv.api.model.response.ListResult;
 import com.kctv.api.model.response.LoginResult;
@@ -19,6 +20,7 @@ import com.kctv.api.model.response.SingleResult;
 
 import com.kctv.api.service.ResponseService;
 import com.kctv.api.service.UserService;
+import com.kctv.api.service.WakeupPermissionService;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.cassandra.core.cql.keyspace.UserTypeSpecification;
@@ -28,11 +30,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-
-import java.util.UUID;
+import java.util.*;
 
 import static java.util.stream.Collectors.toList;
 
@@ -46,6 +44,7 @@ public class UserController {
     private final JwtTokenProvider jwtTokenProvider;
     private final ResponseService responseService;
     private final UserService userService;
+    private final WakeupPermissionService wakeupPermissionService;
 
     @ApiOperation(value = "회원가입 API", notes = "회원가입 후 인증메일을 발송한다. (인증링크유효기간3분)")
     @ApiImplicitParams({
@@ -75,7 +74,7 @@ public class UserController {
 
 
 
-    @ApiOperation(value = "내 정보 API(태그포함)", notes = "Header에 실린 TOKEN정보로 로그인한 회원 정보 출력")
+    @ApiOperation(value = "내 정보 API(태그,permission 정보 포함)", notes = "Header에 실린 TOKEN정보로 로그인한 회원 정보 출력")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 token", required = true, dataType = "String", paramType = "header"),
     })
@@ -87,9 +86,11 @@ public class UserController {
         UUID uuid = UUID.fromString(authentication.getName());
         UserInfo user = Optional.ofNullable(userService.findByUserId(uuid)).orElseThrow(CUserNotFoundException::new);
         UserInterestTag userInterestTag = userService.getUserInterestTag(uuid).orElse(new UserInterestTag(user.getUserId(),null,Sets.newHashSet()));
-        List<String> userTags = userInterestTag.getTags().stream().collect(toList());
+        List<String> userTags = new ArrayList<>(userInterestTag.getTags());
 
-        return responseService.getSingleResult(new UserInfoDto(user,userTags));
+        WakeupPermission wakeupPermission = wakeupPermissionService.findPermissionByUserId(user.getUserId()).orElseGet(WakeupPermission::new);
+
+        return responseService.getSingleResult(new UserInfoDto(user,userTags,wakeupPermission));
     }
 
 
@@ -108,8 +109,8 @@ public class UserController {
         userInfo.setUserId(UUID.fromString(authentication.getName()));
 
         UserInfo afterUser = Optional.ofNullable(userService.userUpdateService(userInfo)).orElseThrow(CUserNotFoundException::new);
-        UserInterestTag userInterestTag = userService.getUserInterestTag(afterUser.getUserId()).orElse(new UserInterestTag(afterUser.getUserId(),null,Sets.newHashSet()));
-        List<String> userTags = userInterestTag.getTags().stream().collect(toList());
+        UserInterestTag userInterestTag = userService.getUserInterestTag(afterUser.getUserId()).orElseGet( () -> new UserInterestTag(afterUser.getUserId(),null,Sets.newHashSet()));
+        List<String> userTags = new ArrayList<>(userInterestTag.getTags());
 
         return responseService.getSingleResult(new UserInfoDto(afterUser,userTags));
     }
@@ -128,9 +129,7 @@ public class UserController {
             UserInfo loginUser = userService.userLoginService(user.getUserEmail(),user.getUserEmailType(),loginRequest.getUserPassword()).orElseThrow(CIncorrectPasswordException::new);
             LoginResult<UserInfo> resultUser = responseService.getLoginResult(loginUser);
 
-            if (loginUser.getRoles().stream().anyMatch(s -> s.contains("NOT_VERIFY_EMAIL")))
-                resultUser.setEmailVerify(false);
-            else resultUser.setEmailVerify(true);
+            resultUser.setEmailVerify(loginUser.getRoles().stream().noneMatch(s -> s.contains("NOT_VERIFY_EMAIL")));
 
 
             resultUser.setToken(jwtTokenProvider.createToken(String.valueOf(loginUser.getUserId()),loginUser.getRoles()));
@@ -166,7 +165,7 @@ public class UserController {
 
 
 
-    @ApiOperation(value = "계정에 태그 등록", notes = "token을 통해 계정에 관심사(태그)들을 추가한다.")
+    @ApiOperation(value = "계정에 태그 등록", notes = "token을 통해 계정에 관심사(태그)들을 추가(수정)한다.")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 token", required = true, dataType = "String", paramType = "header"),
     })

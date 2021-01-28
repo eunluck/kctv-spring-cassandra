@@ -2,11 +2,13 @@ package com.kctv.api.service;
 
 import com.google.common.collect.Lists;
 import com.kctv.api.advice.exception.CNotOwnerException;
+import com.kctv.api.advice.exception.CResourceNotExistException;
 import com.kctv.api.controller.v1.admin.captive.CaptiveRequest;
 import com.kctv.api.entity.admin.ad.CaptivePortalAdEntity;
 import com.kctv.api.entity.place.PlaceInfo;
 import com.kctv.api.entity.stylecard.StyleCardInfo;
 import com.kctv.api.entity.stylecard.CardImageInfo;
+import com.kctv.api.repository.ad.CaptivePortalAdRepository;
 import com.kctv.api.repository.ap.PartnerRepository;
 import com.kctv.api.repository.card.StyleCardRepository;
 import com.kctv.api.repository.file.CardImageInfoRepository;
@@ -24,13 +26,13 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
-import java.util.stream.Collectors;
 
 
 @Service
 public class StorageService {
 
     private final String REQUEST_URL = "/image/";
+    private final String AD_REQUEST_URL = "/image/ad/";
     private final String basePath;
     private final String cardImagePath = "images/cover/card";
     private final String placeImagePath = "images/cover/place";
@@ -39,12 +41,14 @@ public class StorageService {
     private final CardImageInfoRepository cardImageInfoRepository;
     private final StyleCardRepository styleCardRepository;
     private final PartnerRepository partnerRepository;
+    private final CaptivePortalAdRepository captivePortalAdRepository;
 
-    public StorageService(@Value("${costom.path.images}") String basePath, CardImageInfoRepository cardImageInfoRepository, StyleCardRepository styleCardRepository, PartnerRepository partnerRepository) {
+    public StorageService(@Value("${costom.path.images}") String basePath, CardImageInfoRepository cardImageInfoRepository, StyleCardRepository styleCardRepository, PartnerRepository partnerRepository, CaptivePortalAdRepository captivePortalAdRepository) {
         this.basePath = basePath;
         this.cardImageInfoRepository = cardImageInfoRepository;
         this.styleCardRepository = styleCardRepository;
         this.partnerRepository = partnerRepository;
+        this.captivePortalAdRepository = captivePortalAdRepository;
     }
 
     public byte[] getImage(UUID uuid) throws IOException {
@@ -61,8 +65,28 @@ public class StorageService {
         return imageByteArray;
     }
 
-    public boolean saveImage(UUID uuid, MultipartFile file,String type) throws IOException {
+    public byte[] getAdImage(UUID uuid) throws IOException {
 
+        CaptivePortalAdEntity image = Optional.ofNullable(captivePortalAdRepository.findByAdId(uuid)).orElseThrow(CNotOwnerException::new);
+
+
+        Path filePath = Paths.get(basePath+image.getImgPath()).normalize();
+
+        InputStream imageStream = new FileInputStream(filePath.toString());
+
+        byte[] imageByteArray = IOUtils.toByteArray(imageStream);
+        imageStream.close();
+
+        return imageByteArray;
+    }
+
+   /* public List<String> appendPlaceImage(MultipartFile file, UUID uuid){
+
+       TODO 이미지추가 필요
+
+    }*/
+
+    public String saveImage(UUID uuid, MultipartFile file,String type) throws IOException {
 
         UUID imageId = UUID.randomUUID();//이미지 아이디 생성
         saveFileIO(file,type,imageId); //실제 파일 저장
@@ -80,70 +104,116 @@ public class StorageService {
             newImage.setPath(cardImagePath);
             StyleCardInfo styleCardInfo = styleCardRepository.findByCardId(uuid).orElseThrow(IOException::new);
             styleCardInfo.setCoverImage(REQUEST_URL+imageId);
-            Optional.ofNullable(styleCardRepository.save(styleCardInfo)).orElseThrow(IOException::new);
+            Optional.of(styleCardRepository.save(styleCardInfo)).orElseThrow(IOException::new);
 
         }else if("place".equals(type)){
             newImage.setPath(placeImagePath);
             PlaceInfo placeInfo = partnerRepository.findByPartnerId(uuid).orElseThrow(IOException::new);
             placeInfo.setImages(Lists.newArrayList(REQUEST_URL+imageId));
-            Optional.ofNullable(partnerRepository.save(placeInfo)).orElseThrow(IOException::new);
+            Optional.of(partnerRepository.save(placeInfo)).orElseThrow(IOException::new);
         }
 
-        Optional.ofNullable(cardImageInfoRepository.save(newImage)).orElseThrow(IOException::new);
+        CardImageInfo afterImg = Optional.of(cardImageInfoRepository.save(newImage)).orElseThrow(IOException::new);
 
-        return true;
+        return afterImg.getPath();
 
     }
 
 
 
-    public boolean saveImage(UUID uuid, List<MultipartFile> file, String type) throws IOException {
+    public List<String> saveImage(UUID uuid, List<MultipartFile> file, String type) throws IOException {
 
 
         List<String> filePathList = new ArrayList<>();
-        for (int i = 0; i < file.size(); i++) {
+        for (MultipartFile multipartFile : file) {
+            checkImgType(multipartFile);
 
-        UUID imageId = UUID.randomUUID();//이미지 아이디 생성
-        saveFileIO(file.get(i),type,imageId); //실제 파일 저장
+            UUID imageId = UUID.randomUUID();//이미지 아이디 생성
+            saveFileIO(multipartFile, type, imageId); //실제 파일 저장
 
 
             CardImageInfo newImage = CardImageInfo.builder()
                     .imageId(imageId)
                     .cardId(uuid)
                     .createAt(new Date())
-                    .fileName(StringUtils.cleanPath(imageId.toString()+"_"+file.get(i).getOriginalFilename()))
+                    .fileName(StringUtils.cleanPath(imageId.toString() + "_" + multipartFile.getOriginalFilename()))
                     .build();
 
             newImage.setPath(placeImagePath);
-            Optional.ofNullable(cardImageInfoRepository.save(newImage)).orElseThrow(IOException::new);
-            filePathList.add(REQUEST_URL+imageId);
+            Optional.of(cardImageInfoRepository.save(newImage)).orElseThrow(IOException::new);
+            filePathList.add(REQUEST_URL + imageId);
         }
             PlaceInfo placeInfo = partnerRepository.findByPartnerId(uuid).orElseThrow(IOException::new);
             placeInfo.setImages(filePathList);
-            Optional.ofNullable(partnerRepository.save(placeInfo)).orElseThrow(IOException::new);
+            Optional.of(partnerRepository.save(placeInfo)).orElseThrow(IOException::new);
 
+        return filePathList;
+
+    }
+
+    public CaptivePortalAdEntity saveAdImg(CaptiveRequest request) throws IOException {
+
+        checkImgType(request.getImgFile());
+
+        UUID randomAdId = UUID.randomUUID();
+
+        CaptivePortalAdEntity saveAd = CaptivePortalAdEntity.builder().adCreateDt(new Date())
+                .adId(randomAdId)
+                .adStatus(request.getStatus())
+                .adStartDt(request.getStartDate())
+                .adEndDt(request.getEndDate())
+                .adLink(request.getLink())
+                .imgName(request.getImgFile().getOriginalFilename())
+                .imgPath(StringUtils.cleanPath(adImagePath+"/"+randomAdId.toString()+"_"+request.getImgFile().getOriginalFilename()))
+                .imgUrl(AD_REQUEST_URL+randomAdId)
+                .build();
+
+
+
+        saveFileIO(request.getImgFile(),"ad",randomAdId);
+        return captivePortalAdRepository.save(saveAd);
+
+    }
+
+    public String getImgIdByImgUrl(String imgUrl){
+
+        return imgUrl.replace(REQUEST_URL,"");
+    }
+
+    public boolean deleteAdFile(CaptivePortalAdEntity adEntity) throws IOException {
+        Path directory = Paths.get(basePath+adEntity.getImgPath()).normalize();
+        return Files.deleteIfExists(directory);
+    }
+
+    public boolean deleteFile(UUID imgId) throws IOException {
+        CardImageInfo cardImageInfo = cardImageInfoRepository.findByImageId(imgId).orElseThrow(CResourceNotExistException::new);
+
+        Path directory = Paths.get(basePath+cardImageInfo.getPath()+"/"+cardImageInfo.getFileName()).normalize();
+
+        if (Files.deleteIfExists(directory)){
+            cardImageInfoRepository.delete(cardImageInfo);
+            return true;
+        }else {
+            return false;
+        }
+
+
+    }
+
+    public boolean deleteFile(List<UUID> imgIds) throws IOException {
+        for (UUID imgId : imgIds) {
+
+            CardImageInfo cardImageInfo = cardImageInfoRepository.findByImageId(imgId).orElseThrow(CResourceNotExistException::new);
+            Path directory = Paths.get(basePath+cardImageInfo.getPath()+"/"+cardImageInfo.getFileName()).normalize();
+            if (Files.deleteIfExists(directory)) {
+                cardImageInfoRepository.delete(cardImageInfo);
+            }else {
+                return false;
+            }
+        }
         return true;
-
     }
 
-    public CaptivePortalAdEntity saveAdImgOutput(MultipartFile multipartFile, UUID adId) throws IOException {
-        Path directory = Paths.get(basePath + adImagePath).normalize();
-        Files.createDirectories(directory);
-
-
-
-
-
-/*
-
-
-        String fileName = StringUtils.cleanPath(adId.toString()+"_"+file.getOriginalFilename());  // 파일명을 바르게 수정한다.
-*/
-
-        return null;
-
-
-    }
 
     public void saveFileIO(MultipartFile file,String type,UUID imageId) throws IOException{
 
@@ -171,6 +241,17 @@ public class StorageService {
 
         file.transferTo(targetPath);
 
+    }
+
+
+
+    public void checkImgType(MultipartFile file){
+        if (file.getOriginalFilename() != null && !file.getOriginalFilename().endsWith(".png")
+                && !file.getOriginalFilename().endsWith(".jpg")
+                && !file.getOriginalFilename().endsWith(".jpeg")
+                && !file.getOriginalFilename().endsWith(".gif")) {
+            throw new CResourceNotExistException("Only PNG/GIF/JPG file accepted.");
+        }
     }
 
 

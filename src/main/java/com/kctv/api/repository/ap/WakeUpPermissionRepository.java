@@ -11,6 +11,6 @@ import java.util.UUID;
 
 public interface WakeUpPermissionRepository extends CassandraRepository<WakeupPermission, UUID> {
 
-    WakeupPermission findByUserId(UUID id);
+    Optional<WakeupPermission> findByUserId(UUID id);
 
 }

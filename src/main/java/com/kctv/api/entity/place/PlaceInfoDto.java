@@ -37,6 +37,10 @@ public class PlaceInfoDto {
     @ApiModelProperty(value = "매장 주소",readOnly = true)
     private String partnerAddress;
 
+    @ApiModelProperty(value = "상세주소", readOnly = true)
+    @Column("detailed_address")
+    private String detailed_address;
+
     @ApiModelProperty(value = "매장 관련 홈페이지",readOnly = true)
     private List<String> partnerHomepage;
 
@@ -67,6 +71,12 @@ public class PlaceInfoDto {
     private Set<String> facilities;
     @ApiModelProperty(value = "연령대", readOnly = true)
     private Set<String> ages;
+    @ApiModelProperty(value = "위도", readOnly = true)
+    private Long latitude;
+    @ApiModelProperty(value = "경도", readOnly = true)
+    private Long longitude;
+
+
 
 
     public PlaceInfoDto(PlaceInfo placeInfo, Map<String,List<MenuByPlace>> menu) {

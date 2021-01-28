@@ -34,6 +34,7 @@ public class StyleCardInfo {
     private String coverImage;
     private Set<String> tags;
     private Set<String> ages;
+    private Set<String> gender;
     private String status;
     @Column("place_id")
     private Set<UUID> placeId;

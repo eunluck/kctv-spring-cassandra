@@ -110,7 +110,7 @@ public class AdminTagController {
         if (styleCardService.getTagOneService(keyword).isPresent())
             return responseService.getFailResult(200,"이미 존재하는 태그입니다.");
         else
-            return responseService.getSingleResult(styleCardService.createTagService(keyword).orElseThrow(CUserExistException::new));
+            return responseService.getSingleResult(styleCardService.createTagService(keyword));
     }
 
 

@@ -32,5 +32,14 @@ public class CaptivePortalAdEntity {
     private String imgName;
     @Column("img_path")
     private String imgPath;
+    @Column("ad_link")
+    private String adLink;
+    @Column("ad_start_dt")
+    private Date adStartDt;
+    @Column("ad_end_dt")
+    private Date adEndDt;
+    @Column("img_url")
+    private String imgUrl;
+
 
 }

@@ -5,6 +5,7 @@ import com.google.common.collect.Sets;
 import com.kctv.api.entity.place.PlaceInfo;
 import com.kctv.api.entity.stylecard.StyleCardInfo;
 
+import com.kctv.api.entity.user.UserInfoDto;
 import com.kctv.api.entity.user.UserInterestTag;
 import com.kctv.api.model.response.ListResult;
 import com.kctv.api.model.response.PlaceListResult;
@@ -45,10 +46,12 @@ public class StyleCardController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UUID uuid = UUID.fromString(authentication.getName());
 
-        UserInterestTag connectionUser = userService.getUserInterestTag(uuid).orElse(new UserInterestTag(uuid,null,Sets.newHashSet()));
+        UserInterestTag connectionUser = userService.getUserInterestTag(uuid).orElseGet(() -> new UserInterestTag(uuid,null,Sets.newHashSet()));
+        //UserInfoDto userDto = new UserInfoDto(userService.findByUserId(uuid), new ArrayList<>(connectionUser.getTags()));
 
         if (!CollectionUtils.isEmpty(connectionUser.getTags())){
-            return responseService.getListResult(styleCardService.getCardByTagsService(connectionUser.getTags().stream().collect(Collectors.toList())));
+
+            return responseService.getListResult(styleCardService.getCardByTagsService(new ArrayList<>(connectionUser.getTags())));
         }else {
             List<StyleCardInfo> randomList = styleCardService.getStyleCardListAllService();
             Collections.shuffle(randomList);

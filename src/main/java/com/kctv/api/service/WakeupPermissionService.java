@@ -29,9 +29,15 @@ public class WakeupPermissionService {
 
 
 
-    public WakeupPermission saveMac(FindApRequest apRequest) {
+    public WakeupPermission saveUserIdToWakeUfPermission(FindApRequest apRequest) {
 
         return wakeUpPermissionRepository.save(new WakeupPermission(apRequest,new Date()));
+
+    }
+
+    public Optional<WakeupPermission> findPermissionByUserId(UUID uuid){
+
+        return wakeUpPermissionRepository.findByUserId(uuid);
 
     }
 

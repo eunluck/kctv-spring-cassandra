@@ -1,6 +1,7 @@
 package com.kctv.api.entity.user;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.kctv.api.model.ap.WakeupPermission;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -73,9 +74,22 @@ public class UserInfoDto {
     private String ages;
     private List<String> tags;
 
+    private WakeupPermission myPermission;
+
+    public UserInfoDto (UserInfo userInfo,List<String> tags,WakeupPermission permission){
+        copyProperties(userInfo, this);
+        this.tags = tags;
+        this.myPermission = permission;
+        if (userInfo.getUserBirth() != null && !userInfo.getUserBirth().equals("")) {
+            int accAge = ageAcc(userInfo.getUserBirth());
+            this.age = accAge;
+            this.ages = ages(accAge);
+        }
+    }
+
     public UserInfoDto(UserInfo userInfo){
         copyProperties(userInfo,this);
-        if(userInfo.getUserBirth() != null && userInfo.getUserBirth() != "") {
+        if(userInfo.getUserBirth() != null && !userInfo.getUserBirth().equals("")) {
             int accAge = ageAcc(userInfo.getUserBirth());
             this.age = accAge;
             this.ages = ages(accAge);
@@ -86,7 +100,7 @@ public class UserInfoDto {
     public UserInfoDto(UserInfo userInfo,List<String> tags) {
         copyProperties(userInfo, this);
             this.tags = tags;
-        if (userInfo.getUserBirth() != null && userInfo.getUserBirth() != "") {
+        if (userInfo.getUserBirth() != null && !userInfo.getUserBirth().equals("")) {
             int accAge = ageAcc(userInfo.getUserBirth());
             this.age = accAge;
             this.ages = ages(accAge);

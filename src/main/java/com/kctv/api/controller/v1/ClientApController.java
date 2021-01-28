@@ -44,7 +44,7 @@ public class ClientApController {
 
 
 
-        return responseService.getSingleResult(wakeupPermissionService.saveMac(findApRequest));
+        return responseService.getSingleResult(wakeupPermissionService.saveUserIdToWakeUfPermission(findApRequest));
     }
 
 

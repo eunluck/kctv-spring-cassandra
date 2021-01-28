@@ -1,6 +1,8 @@
 package com.kctv.api.service;
 
+import com.google.common.base.Strings;
 import com.kctv.api.advice.exception.CPartnerNotFoundException;
+import com.kctv.api.advice.exception.CResourceNotExistException;
 import com.kctv.api.entity.stylecard.StyleCardByTags;
 import com.kctv.api.entity.stylecard.StyleCardInfo;
 import com.kctv.api.entity.stylecard.Tag;
@@ -12,6 +14,7 @@ import com.kctv.api.repository.card.StyleCardRepository;
 import com.kctv.api.repository.tag.TagRepository;
 import com.kctv.api.util.sorting.SortingTagsUtiil;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,14 +47,45 @@ public class StyleCardService {
 
         StyleCardInfo card = styleCardRepository.findByCardId(uuid).orElseThrow(CPartnerNotFoundException::new);
 
-        long score = card.getTags().stream().map(s -> TagGroup.findByTagPoint(s)).reduce(0L,Long::sum);
+        long score = card.getTags().stream().map(TagGroup::findByTagPoint).reduce(0L,Long::sum);
 
         System.out.println(score);
         return card;
     }
 
-    public Optional<Tag> createTagService(Tag tag){
-        return Optional.ofNullable(tagRepository.insert(tag));
+    public Tag createTagService(Tag tag){
+        return tagRepository.insert(tag);
+    }
+
+    public StyleCardInfo modifyStyleCard(UUID cardId,StyleCardInfo request){
+
+        StyleCardInfo beforeCard = styleCardRepository.findByCardId(cardId).orElseThrow(CResourceNotExistException::new);
+
+        if (CollectionUtils.isNotEmpty(request.getAges()))
+        beforeCard.setAges(request.getAges());
+        if (!Strings.isNullOrEmpty(request.getCuratorSaying()))
+        beforeCard.setCuratorSaying(request.getCuratorSaying());
+        if (CollectionUtils.isNotEmpty(request.getGender()))
+        beforeCard.setGender(request.getGender());
+        if (CollectionUtils.isNotEmpty(request.getPlaceId()))
+        beforeCard.setPlaceId(request.getPlaceId());
+        if (CollectionUtils.isNotEmpty(request.getTags()))
+        beforeCard.setTags(request.getTags());
+        if (!Strings.isNullOrEmpty(request.getTitle()))
+        beforeCard.setTitle(request.getTitle());
+        beforeCard.setModifyAt(new Date());
+        beforeCard.setStatus("업데이트");
+
+        StyleCardInfo afterCard = Optional.of(styleCardRepository.save(beforeCard)).orElseThrow(CResourceNotExistException::new);
+
+        if (CollectionUtils.isNotEmpty(request.getTags())){
+            styleByTagsRepository.saveAll(
+                    request.getTags()
+                            .stream()
+                            .map(s -> new StyleCardByTags(s,afterCard.getCardId()))
+                            .collect(Collectors.toList()));
+        }
+        return afterCard;
     }
 
 
@@ -117,13 +151,10 @@ public class StyleCardService {
 
         styleByTagsRepository.saveAll(list);
 
-        return Optional.ofNullable(styleCardRepository.save(styleCardInfo)).orElseThrow(RuntimeException::new);
+        return Optional.of(styleCardRepository.save(styleCardInfo)).orElseThrow(RuntimeException::new);
     }
 
 
-    public Optional<StyleCardInfo> updateCard(StyleCardInfo styleCardInfo){
-        return Optional.ofNullable(styleCardRepository.save(styleCardInfo));
-    }
 
     public boolean deleteTag(Tag tag){
 

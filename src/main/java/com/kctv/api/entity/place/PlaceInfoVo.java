@@ -29,6 +29,10 @@ public class PlaceInfoVo {
     @ApiModelProperty(value = "매장 주소")
     private String partnerAddress;
 
+    @ApiModelProperty(value = "상세주소", readOnly = true)
+    @Column("detailed_address")
+    private String detailed_address;
+
     @ApiModelProperty(value = "매장 관련 홈페이지")
     private List<String> partnerHomepage;
 
@@ -52,10 +56,18 @@ public class PlaceInfoVo {
     @ApiModelProperty(value = "편의시설")
     private Set<String> facilities;
 
+    @ApiModelProperty(value = "메뉴리스트")
     private List<MenuByPlace> menuList;
 
     @ApiModelProperty(value = "연령대", readOnly = true)
     private Set<String> ages;
+
+    @ApiModelProperty(value = "위도", readOnly = true)
+    private Long latitude;
+    @ApiModelProperty(value = "경도", readOnly = true)
+    private Long longitude;
+
+
 
 
 

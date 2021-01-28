@@ -1,5 +1,6 @@
 package com.kctv.api.service;
 
+import com.kctv.api.advice.exception.CResourceNotExistException;
 import com.kctv.api.entity.user.InviteFriends;
 import com.kctv.api.entity.user.UserInfo;
 import com.kctv.api.repository.user.InviteRepository;
@@ -8,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -20,11 +22,19 @@ public class InviteService {
 
         return userRepository.findByInviteCode(code);
     }
+    
+    public boolean inviteDoubleCheck(UUID userId, UUID friendId){
+
+        return inviteRepository.findByUserIdAndFriendId(userId,friendId).isPresent();
+    }
+
 
     public boolean saveInviteCode(InviteFriends inviteFriends){
 
 
-        return Optional.ofNullable(inviteRepository.save(inviteFriends)).isPresent();
+        Optional.of(inviteRepository.save(inviteFriends)).orElseThrow(CResourceNotExistException::new);
+
+        return true;
 
     }
 
