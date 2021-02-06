@@ -1,6 +1,7 @@
 package com.kctv.api.entity.user;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.base.Strings;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -8,6 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.data.cassandra.core.cql.PrimaryKeyType;
 import org.springframework.data.cassandra.core.mapping.Column;
 import org.springframework.data.cassandra.core.mapping.PrimaryKeyColumn;
@@ -138,5 +140,31 @@ public class UserInfo implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+
+    public void modifyUser(UserInfo userInfo,String pwd){
+        if  (!Strings.isNullOrEmpty(userInfo.getUserEmail()))
+            this.userEmail = userInfo.getUserEmail();
+        if (userInfo.getAccept() != null && !userInfo.getAccept().isEmpty())
+            this.accept = userInfo.getAccept();
+        if (CollectionUtils.isNotEmpty(userInfo.getUserMac()))
+            this.userMac = userInfo.getUserMac();
+        if (!Strings.isNullOrEmpty(userInfo.getUserNickname()))
+            this.userNickname = userInfo.getUserNickname();
+        if (!Strings.isNullOrEmpty(userInfo.getUserPassword())) {
+            this.userPassword = pwd;
+            this.roles = this.roles.stream().filter(s -> !s.equals("ROLE_TEMP_PASSWORD")).collect(Collectors.toList());
+        }
+        if (!Strings.isNullOrEmpty(userInfo.getUserPhone()))
+            this.userPhone = userInfo.getUserPhone();
+        if (!Strings.isNullOrEmpty(userInfo.getUserAddress()))
+            this.userAddress = userInfo.getUserAddress();
+        if (!Strings.isNullOrEmpty(userInfo.getUserGender()))
+            this.userGender = userInfo.getUserGender();
+        if (!Strings.isNullOrEmpty(userInfo.getUserBirth()))
+            this.userBirth = userInfo.getUserBirth();
+            this.updateDate = new Date();
+
     }
 }

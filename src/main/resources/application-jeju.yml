@@ -21,14 +21,12 @@ spring:
       auth: true
       starttls.enable: true
       ssl.trust: smtp.gmail.com
-  redis:
-    host: 192.168.161.170
-    port: 6379
-  cache:
-    type: redis
   data:
     cassandra:
-      contact-points: 192.168.161.170
+
+      contact-points:
+      - 192.168.161.170
+      - 192.168.161.172
       port: 9042
       keyspace-name: kctv
       local-datacenter: jeju-dc

@@ -81,8 +81,9 @@ public class PlaceInfo {
     private Long latitude;
     @ApiModelProperty(value = "경도", readOnly = true)
     private Long longitude;
-
-
+    @ApiModelProperty(value = "서비스타입", readOnly = true)
+    @Column("service_type")
+    private String serviceType;
 
 
     public PlaceInfo(PlaceInfoVo placeInfoVo) {

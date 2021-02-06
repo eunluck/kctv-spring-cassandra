@@ -108,11 +108,12 @@ public class UserController {
 
         userInfo.setUserId(UUID.fromString(authentication.getName()));
 
-        UserInfo afterUser = Optional.ofNullable(userService.userUpdateService(userInfo)).orElseThrow(CUserNotFoundException::new);
+        UserInfo afterUser = userService.userUpdateService(userInfo);
         UserInterestTag userInterestTag = userService.getUserInterestTag(afterUser.getUserId()).orElseGet( () -> new UserInterestTag(afterUser.getUserId(),null,Sets.newHashSet()));
         List<String> userTags = new ArrayList<>(userInterestTag.getTags());
+        WakeupPermission permission = wakeupPermissionService.findPermissionByUserId(afterUser.getUserId()).orElseGet(WakeupPermission::new);
 
-        return responseService.getSingleResult(new UserInfoDto(afterUser,userTags));
+        return responseService.getSingleResult(new UserInfoDto(afterUser,userTags,permission));
     }
 
 

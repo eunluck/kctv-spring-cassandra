@@ -2,10 +2,12 @@ package com.kctv.api.service;
 
 
 import com.kctv.api.entity.place.PlaceInfo;
+import com.kctv.api.entity.stylecard.StyleCardCounter;
 import com.kctv.api.entity.stylecard.StyleCardInfo;
 import com.kctv.api.entity.user.UserLikePartner;
 import com.kctv.api.entity.user.UserScrapCard;
 import com.kctv.api.repository.ap.PartnerRepository;
+import com.kctv.api.repository.card.StyleCardCounterRepository;
 import com.kctv.api.repository.card.StyleCardRepository;
 import com.kctv.api.repository.user.UserLikeRepository;
 import com.kctv.api.repository.user.UserScrapRepository;
@@ -25,14 +27,16 @@ public class LikeScrapService {
     private final PartnerRepository partnerRepository;
     private final UserScrapRepository userScrapRepository;
     private final StyleCardRepository styleCardRepository;
-
+    private final StyleCardCounterRepository counterRepository;
     /* 좋아요 기능*/
     public Optional<UserLikePartner> userLikePartnerService(UUID userId, UUID placeId){
 
         if(likeCheck(userId,placeId)){
             userLikeRepository.delete(UserLikePartner.builder().partnerId(placeId).userId(userId).build());
+
             return Optional.empty();
         }else{
+
             return Optional.ofNullable(userLikeRepository.save(UserLikePartner.builder().partnerId(placeId).userId(userId).build()));
         }
     }
@@ -64,8 +68,10 @@ public class LikeScrapService {
 
         if(scrapCheck(userId,cardId)){
             userScrapRepository.delete(UserScrapCard.builder().cardId(cardId).userId(userId).build());
+            counterRepository.decrementScrapCountByCardId(cardId);
             return Optional.empty();
         }else{
+            counterRepository.incrementScrapCountByCardId(cardId);
             return Optional.ofNullable(userScrapRepository.save(UserScrapCard.builder().cardId(cardId).userId(userId).build()));
         }
     }

@@ -2,21 +2,18 @@ package com.kctv.api.service;
 
 
 import com.google.common.base.Charsets;
+import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
 import com.google.common.hash.HashCode;
 import com.google.common.hash.Hashing;
+import com.kctv.api.advice.exception.CNotFoundEmailException;
 import com.kctv.api.advice.exception.CResourceNotExistException;
 import com.kctv.api.advice.exception.CUserExistException;
 import com.kctv.api.advice.exception.CUserNotFoundException;
-import com.kctv.api.entity.user.UserInterestTag;
-import com.kctv.api.entity.user.UserUniqueCode;
+import com.kctv.api.entity.user.*;
 import com.kctv.api.model.ap.WakeupPermission;
 import com.kctv.api.repository.ap.WakeUpPermissionRepository;
-import com.kctv.api.repository.user.UserInterestTagRepository;
-import com.kctv.api.repository.user.UserLikeRepository;
-import com.kctv.api.repository.user.UserUniqueCodeRepository;
-import com.kctv.api.util.RedisUtil;
-import com.kctv.api.entity.user.UserInfo;
-import com.kctv.api.repository.user.UserRepository;
+import com.kctv.api.repository.user.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.mail.SimpleMailMessage;
@@ -25,6 +22,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -36,25 +35,25 @@ public class UserService implements UserDetailsService {
     private final UserUniqueCodeRepository userUniqueCodeRepository;
     private final WakeUpPermissionRepository wakeUpPermissionRepository;
     private final PasswordEncoder passwordEncoder;
-    private final RedisUtil redisUtil;
     private final UserRepository userRepository;
     private final JavaMailSender emailSender;
     private final UserInterestTagRepository userInterestTagRepository;
     private final UserLikeRepository userLikeRepository;
+    private final UserEmailVerifyRepository userEmailVerifyRepository;
     private final String EMAIL_LINK;
     //private final String EMAIL_LINK = "http://192.168.0.56:8081/v1/verify/";
     private final String EMAIL_SUB = "KCTV 회원가입 인증 메일입니다.";
 
 
-    public UserService(UserUniqueCodeRepository userUniqueCodeRepository, WakeUpPermissionRepository wakeUpPermissionRepository, @Lazy PasswordEncoder passwordEncoder, RedisUtil redisUtil, UserRepository userRepository, JavaMailSender emailSender, UserInterestTagRepository userInterestTagRepository, UserLikeRepository userLikeRepository, @Value("${costom.host.path}") String email_link) {
+    public UserService(UserUniqueCodeRepository userUniqueCodeRepository, WakeUpPermissionRepository wakeUpPermissionRepository, @Lazy PasswordEncoder passwordEncoder, UserRepository userRepository, JavaMailSender emailSender, UserInterestTagRepository userInterestTagRepository, UserLikeRepository userLikeRepository, UserEmailVerifyRepository userEmailVerifyRepository, @Value("${costom.host.path}") String email_link) {
         this.userUniqueCodeRepository = userUniqueCodeRepository;
         this.wakeUpPermissionRepository = wakeUpPermissionRepository;
         this.passwordEncoder = passwordEncoder;
-        this.redisUtil = redisUtil;
         this.userRepository = userRepository;
         this.emailSender = emailSender;
         this.userInterestTagRepository = userInterestTagRepository;
         this.userLikeRepository = userLikeRepository;
+        this.userEmailVerifyRepository = userEmailVerifyRepository;
         this.EMAIL_LINK = email_link;
 
     }
@@ -71,11 +70,8 @@ public class UserService implements UserDetailsService {
     public Optional<UserInfo> userLoginService(String email, String emailType, String pwd) {
         UserInfo loginUser = userRepository.findByUserEmailAndUserEmailType(email, emailType).orElseThrow(CUserNotFoundException::new);
 
-        if (passwordEncoder.matches(pwd, loginUser.getUserPassword()))
-            return Optional.of(loginUser);
-        else
-            return Optional.empty();
 
+        return passwordEncoder.matches(pwd, loginUser.getUserPassword()) ? Optional.of(loginUser) : Optional.empty();
     }
 
     public Optional<UserInfo> userSnsLoginService(String snsKey) {
@@ -101,9 +97,10 @@ public class UserService implements UserDetailsService {
 
         String code = UUID.randomUUID().toString().replaceAll("-", ""); // -를 제거해 주었다.
         code = code.substring(0, 6);
-
-
+        String userUniqueCode = createUniqueCode(userInfo.getUserId());
         userInfo.setUserId(UUID.randomUUID());
+
+        WakeupPermission wakeupPermission = null;
 
         if ("user".equals(userInfo.getUserEmailType())) {
             userInfo.setRoles(Collections.singletonList("ROLE_NOT_VERIFY_EMAIL"));
@@ -111,7 +108,7 @@ public class UserService implements UserDetailsService {
         } else {
             userInfo.setRoles(Collections.singletonList("ROLE_USER"));
 
-            wakeUpPermissionRepository.save(new WakeupPermission(userInfo, createUniqueCode(userInfo.getUserId())));
+            wakeupPermission = wakeUpPermissionRepository.save(new WakeupPermission(userInfo, userUniqueCode));
         }
 
         userInfo.setUserStatus("NORMAL");
@@ -121,13 +118,43 @@ public class UserService implements UserDetailsService {
         UserInfo result = Optional.of(userRepository.insert(userInfo)).orElseThrow(CUserExistException::new);
 
 
-        if ("user".equals(result.getUserEmailType()))
+        if ("user".equals(result.getUserEmailType())){
+            //TODO 여기에 이메일인증로직 추가
+            try {
+                userEmailVerifySave(userUniqueCode,userInfo.getUserId(),userInfo.getUserEmail());
 
-
-            sendVerificationMail(result);
-
+            }catch (Exception e){
+                e.printStackTrace();
+                userRepository.delete(result);
+                wakeUpPermissionRepository.delete(wakeupPermission);
+                throw new CUserNotFoundException();
+            }
+        }
 
         return result;
+
+    }
+
+    public boolean userEmailVerifySave(String uniqueCode, UUID userId, String email){
+
+
+
+        userEmailVerifyRepository.save(new UserEmailVerify(uniqueCode,new Date(),email, userId));
+
+        sendMailMessage(email, EMAIL_SUB, EMAIL_LINK + uniqueCode); //메일전송
+
+
+        return true;
+
+    }
+
+    public void userVerifyEmailResend(UserInfo userInfo){
+
+         userEmailVerifyRepository.findByUserId(userInfo.getUserId())
+                 .ifPresent(beforeUserEmailVerify -> userEmailVerifyRepository.delete(beforeUserEmailVerify));
+
+
+        userEmailVerifySave(createUniqueCode(userInfo.getUserId()),userInfo.getUserId(),userInfo.getUserEmail());
 
     }
 
@@ -142,14 +169,15 @@ public class UserService implements UserDetailsService {
         emailSender.send(sender);
     }
 
-
+/*
     public void sendVerificationMail(UserInfo userInfo) {
 
         redisUtil.setDataExpire(String.valueOf(userInfo.getUserId()), String.valueOf(userInfo.getUserId()), 1000L * 60 * 60 * 24); // 코드는 24시간  유지됌
 
         sendMailMessage(userInfo.getUserEmail(), EMAIL_SUB, EMAIL_LINK + userInfo.getUserId());
 
-    }
+    }*/
+
 
     public void sendTempPassword(String email, String emailType) {
 
@@ -174,7 +202,24 @@ public class UserService implements UserDetailsService {
     }
 
 
-    public void verifyEmail(String key) throws CUserNotFoundException {
+    @Transactional
+    public void newVerifyEmail(String uniqueCode){
+
+        UserEmailVerify userEmailVerify = userEmailVerifyRepository.findByUniqueCode(uniqueCode).orElseThrow(CUserNotFoundException::new);
+        UserInfo userInfo = userRepository.findByUserId(userEmailVerify.getUserId()).orElseThrow(CUserNotFoundException::new);
+        userInfo.setRoles(Collections.singletonList("ROLE_USER"));
+        UserInfo saveAfterUser = userRepository.save(userInfo);
+        userEmailVerifyRepository.delete(userEmailVerify);
+
+        Optional.of(wakeUpPermissionRepository.save(new WakeupPermission(saveAfterUser, uniqueCode))).orElseThrow(CResourceNotExistException::new);
+
+
+
+    }
+
+  /*  public void verifyEmail(String key) throws CUserNotFoundException {
+
+
 
         UUID userId = UUID.fromString(redisUtil.getData(key));
         UserInfo user = userRepository.findByUserId(userId).orElseThrow(CUserNotFoundException::new);
@@ -185,11 +230,11 @@ public class UserService implements UserDetailsService {
         redisUtil.deleteData(key);
 
 
-        /* wakeuf permission테이블에 userId를 저장해준다.*/
+        *//* wakeuf permission테이블에 userId를 저장해준다.*//*
         Optional.of(wakeUpPermissionRepository.save(new WakeupPermission(saveAfterUser, createUniqueCode(user.getUserId())))).orElseThrow(CResourceNotExistException::new);
 
 
-    }
+    }*/
 
     public UserInfo modifyUserRole(UserInfo userInfo, String role) {
 
@@ -207,31 +252,14 @@ public class UserService implements UserDetailsService {
 
     public UserInfo userUpdateService(UserInfo userInfo) {
 
-        UserInfo userBefore = findByUserId(userInfo.getUserId());
-        if (userInfo.getAccept() != null && !userInfo.getAccept().isEmpty())
-            userBefore.setAccept(userInfo.getAccept());
-
-        userBefore.setUpdateDate(new Date());
-        if (userInfo.getUserMac() != null && !userInfo.getUserMac().isEmpty())
-            userBefore.setUserMac(userInfo.getUserMac());
-        if (userInfo.getUserNickname() != null && !userInfo.getUserNickname().trim().isEmpty())
-            userBefore.setUserNickname(userInfo.getUserNickname());
-        if (userInfo.getUserPassword() != null && !userInfo.getUserPassword().trim().isEmpty()) {
-            userBefore.setUserPassword(passwordEncoder.encode(userInfo.getUserPassword()));
-            List<String> role = userBefore.getRoles().stream().filter(s -> !s.equals("ROLE_TEMP_PASSWORD")).collect(Collectors.toList());
-            userBefore.setRoles(role);
+        if (!Strings.isNullOrEmpty(userInfo.getPassword())){
+        userInfo.setUserPassword(passwordEncoder.encode(userInfo.getUserPassword()));
         }
-        if (userInfo.getUserPhone() != null && !userInfo.getUserPhone().trim().isEmpty())
-            userBefore.setUserPhone(userInfo.getUserPhone());
 
-        if (userInfo.getUserAddress() != null && !userInfo.getUserAddress().trim().isEmpty())
-            userBefore.setUserAddress(userInfo.getUserAddress());
-        if (userInfo.getUserGender() != null && !userInfo.getUserGender().trim().isEmpty())
-            userBefore.setUserGender(userInfo.getUserGender());
-        if (userInfo.getUserBirth() != null && !userInfo.getUserBirth().trim().isEmpty())
-            userBefore.setUserBirth(userInfo.getUserBirth());
+        UserInfo findUser = Optional.of(findByUserId(userInfo.getUserId())).orElseThrow(CUserNotFoundException::new);
+                 findUser.modifyUser(userInfo,userInfo.getUserPassword());
 
-        return userRepository.save(userBefore);
+        return userRepository.save(findUser);
     }
 
     public UserInterestTag userInterestTagService(UserInterestTag userTags) {
@@ -245,12 +273,43 @@ public class UserService implements UserDetailsService {
 
     }
 
+    public UserInfoDto createManager(){
+
+
+        //TODO
+
+        return null;
+    }
+
 
     @Override
     public UserDetails loadUserByUsername(String s) throws CUserNotFoundException {
 
         return userRepository.findByUserId(UUID.fromString(s)).orElseThrow(CUserNotFoundException::new);
     }
+
+    public UserInfo addManager(UserInfo userInfo){
+        Preconditions.checkNotNull(userInfo.getUserEmail(),"아이디를 입력해주세요.");
+        Preconditions.checkNotNull(userInfo.getUserPassword(),"비밀번호를 입력해주세요.");
+        Preconditions.checkNotNull(userInfo.getUserAddress(),"이메일을 입력해주세요.");
+
+        userInfo.setUserPassword(passwordEncoder.encode(userInfo.getUserPassword()));
+
+        return userRepository.insert(userInfo);
+
+    }
+
+
+    public UserInfo modifyManager(UserInfo userInfo){
+
+        userInfo.setUserPassword(passwordEncoder.encode(userInfo.getUserPassword()));
+
+        findByUserId(userInfo.getUserId()).modifyUser(userInfo,userInfo.getUserPassword());
+
+        return userRepository.save(userInfo);
+
+    }
+
 
 
 }

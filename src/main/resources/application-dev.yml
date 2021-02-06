@@ -5,4 +5,9 @@ costom:
   host:
     path: http://biskitlab.com:18081/v1/verify/
   path:
-    images : /home/biskit/kctv-api/data/
+    images : ./data/
+  wakeuf:
+    bryan:
+      path: http://192.168.0.91:8099
+server:
+  port: 8101

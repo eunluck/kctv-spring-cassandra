@@ -1,0 +1,1586 @@
+#
+# There is insufficient memory for the Java Runtime Environment to continue.
+# Native memory allocation (malloc) failed to allocate 670576 bytes for Chunk::new
+# Possible reasons:
+#   The system is out of physical RAM or swap space
+#   The process is running with CompressedOops enabled, and the Java Heap may be blocking the growth of the native heap
+# Possible solutions:
+#   Reduce memory load on the system
+#   Increase physical memory or swap space
+#   Check if swap backing store is full
+#   Decrease Java heap size (-Xmx/-Xms)
+#   Decrease number of Java threads
+#   Decrease Java thread stack sizes (-Xss)
+#   Set larger code cache with -XX:ReservedCodeCacheSize=
+#   JVM is running with Zero Based Compressed Oops mode in which the Java heap is
+#     placed in the first 32GB address space. The Java Heap base address is the
+#     maximum limit for the native heap growth. Please use -XX:HeapBaseMinAddress
+#     to set the Java Heap base and to place the Java Heap above 32GB virtual address.
+# This output file may be truncated or incomplete.
+#
+#  Out of Memory Error (allocation.cpp:389), pid=23744, tid=0x00000000000050e8
+#
+# JRE version: OpenJDK Runtime Environment (8.0_275-b01) (build 1.8.0_275-b01)
+# Java VM: OpenJDK 64-Bit Server VM (25.275-b01 mixed mode windows-amd64 compressed oops)
+# Failed to write core dump. Minidumps are not enabled by default on client versions of Windows
+#
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x000000001ebc6000):  JavaThread "C2 CompilerThread2" daemon [_thread_in_native, id=20712, stack(0x000000001f350000,0x000000001f450000)]
+
+Stack: [0x000000001f350000,0x000000001f450000]
+[error occurred during error reporting (printing stack bounds), id 0xc0000005]
+
+Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
+
+
+Current CompileTask:
+C2:  22838 5853       4       org.springframework.core.annotation.TypeMappedAnnotations$MergedAnnotationFinder::doWithAnnotations (10 bytes)
+
+
+---------------  P R O C E S S  ---------------
+
+Java Threads: ( => current thread )
+  0x000000001eb1f800 JavaThread "s1-io-7" [_thread_in_native, id=33104, stack(0x0000000035b90000,0x0000000035c90000)]
+  0x000000001eb1c000 JavaThread "s1-io-6" [_thread_in_native, id=33032, stack(0x0000000034a10000,0x0000000034b10000)]
+  0x000000001eb22000 JavaThread "s0-io-7" [_thread_in_native, id=19300, stack(0x0000000031720000,0x0000000031820000)]
+  0x000000001eb20000 JavaThread "s0-io-6" [_thread_in_native, id=25828, stack(0x0000000031620000,0x0000000031720000)]
+  0x000000001eb1b800 JavaThread "s1-io-5" [_thread_in_native, id=26588, stack(0x0000000030510000,0x0000000030610000)]
+  0x000000001eb1e800 JavaThread "s1-io-4" [_thread_in_native, id=36872, stack(0x0000000030410000,0x0000000030510000)]
+  0x000000001eb18000 JavaThread "s1-io-3" [_thread_in_native, id=38160, stack(0x0000000030310000,0x0000000030410000)]
+  0x000000001eb16800 JavaThread "s1-io-2" [_thread_in_native, id=21464, stack(0x000000002f200000,0x000000002f300000)]
+  0x000000001eb15800 JavaThread "s1-io-1" [_thread_in_native, id=23780, stack(0x000000002e0f0000,0x000000002e1f0000)]
+  0x000000001eb15000 JavaThread "s1-io-0" [_thread_in_native, id=26240, stack(0x000000002cfe0000,0x000000002d0e0000)]
+  0x000000001eb17000 JavaThread "s1-admin-1" [_thread_blocked, id=27636, stack(0x000000002cee0000,0x000000002cfe0000)]
+  0x000000001eb1a800 JavaThread "s1-admin-0" [_thread_blocked, id=13004, stack(0x000000002cde0000,0x000000002cee0000)]
+  0x000000001eb14000 JavaThread "s0-io-5" [_thread_in_native, id=11848, stack(0x0000000029cb0000,0x0000000029db0000)]
+  0x000000001eb19800 JavaThread "s0-io-4" [_thread_in_native, id=36712, stack(0x0000000029bb0000,0x0000000029cb0000)]
+  0x000000001eb19000 JavaThread "s0-io-3" [_thread_in_native, id=37112, stack(0x0000000029ab0000,0x0000000029bb0000)]
+  0x000000001f875800 JavaThread "s0-io-2" [_thread_in_native, id=20548, stack(0x00000000287a0000,0x00000000288a0000)]
+  0x000000002158c000 JavaThread "s0-io-1" [_thread_in_native, id=25884, stack(0x0000000027690000,0x0000000027790000)]
+  0x000000002183f000 JavaThread "s0-io-0" [_thread_in_native, id=7448, stack(0x0000000026370000,0x0000000026470000)]
+  0x00000000232d1800 JavaThread "s0-admin-1" [_thread_blocked, id=26768, stack(0x0000000025f70000,0x0000000026070000)]
+  0x00000000205b5000 JavaThread "s0-admin-0" [_thread_blocked, id=37760, stack(0x0000000025c70000,0x0000000025d70000)]
+  0x000000001ff46800 JavaThread "container-0" [_thread_blocked, id=25744, stack(0x0000000025370000,0x0000000025470000)]
+  0x000000001fc61000 JavaThread "Catalina-utility-2" [_thread_blocked, id=30376, stack(0x0000000025270000,0x0000000025370000)]
+  0x000000001ee88000 JavaThread "Catalina-utility-1" [_thread_blocked, id=31192, stack(0x0000000020e00000,0x0000000020f00000)]
+  0x000000001ebfe800 JavaThread "Service Thread" daemon [_thread_blocked, id=32944, stack(0x000000001f550000,0x000000001f650000)]
+  0x000000001ebc9800 JavaThread "C1 CompilerThread3" daemon [_thread_in_native, id=15732, stack(0x000000001f450000,0x000000001f550000)]
+=>0x000000001ebc6000 JavaThread "C2 CompilerThread2" daemon [_thread_in_native, id=20712, stack(0x000000001f350000,0x000000001f450000)]
+  0x000000001ebc9000 JavaThread "C2 CompilerThread1" daemon [_thread_in_native, id=38804, stack(0x000000001f250000,0x000000001f350000)]
+  0x000000001eb8b000 JavaThread "C2 CompilerThread0" daemon [_thread_in_native, id=26364, stack(0x000000001f150000,0x000000001f250000)]
+  0x000000001eb8a000 JavaThread "Monitor Ctrl-Break" daemon [_thread_in_native, id=39856, stack(0x000000001f050000,0x000000001f150000)]
+  0x000000001d108800 JavaThread "Attach Listener" daemon [_thread_blocked, id=19736, stack(0x000000001e750000,0x000000001e850000)]
+  0x000000001d107800 JavaThread "Signal Dispatcher" daemon [_thread_blocked, id=37124, stack(0x000000001e650000,0x000000001e750000)]
+  0x000000001c1db000 JavaThread "Finalizer" daemon [_thread_blocked, id=12100, stack(0x000000001e4c0000,0x000000001e5c0000)]
+  0x000000001c1d4000 JavaThread "Reference Handler" daemon [_thread_blocked, id=30804, stack(0x000000001e3c0000,0x000000001e4c0000)]
+  0x00000000036c2800 JavaThread "main" [_thread_in_vm, id=8748, stack(0x00000000035c0000,0x00000000036c0000)]
+
+Other Threads:
+  0x000000001c1d0800 VMThread [stack: 0x000000001e2c0000,0x000000001e3c0000] [id=37076]
+  0x000000001ec8b000 WatcherThread [stack: 0x000000001f650000,0x000000001f750000] [id=3108]
+
+VM state:not at safepoint (normal execution)
+
+VM Mutex/Monitor currently owned by a thread: None
+
+heap address: 0x00000006e0600000, size: 3578 MB, Compressed Oops mode: Zero based, Oop shift amount: 3
+Narrow klass base: 0x0000000000000000, Narrow klass shift: 3
+Compressed class space size: 1073741824 Address: 0x00000007c0000000
+
+Heap:
+ PSYoungGen      total 203264K, used 47318K [0x0000000775780000, 0x0000000783600000, 0x00000007c0000000)
+  eden space 186880K, 16% used [0x0000000775780000,0x00000007775b60b8,0x0000000780e00000)
+  from space 16384K, 99% used [0x0000000782500000,0x00000007834ff8f0,0x0000000783500000)
+  to   space 20480K, 0% used [0x0000000780e00000,0x0000000780e00000,0x0000000782200000)
+ ParOldGen       total 146432K, used 23694K [0x00000006e0600000, 0x00000006e9500000, 0x0000000775780000)
+  object space 146432K, 16% used [0x00000006e0600000,0x00000006e1d23b40,0x00000006e9500000)
+ Metaspace       used 54736K, capacity 58272K, committed 58584K, reserved 1099776K
+  class space    used 7054K, capacity 7610K, committed 7680K, reserved 1048576K
+
+Card table byte_map: [0x0000000012d70000,0x0000000013470000] byte_map_base: 0x000000000f66d000
+
+Marking Bits: (ParMarkBitMap*) 0x000000007061ef20
+ Begin Bits: [0x0000000014120000, 0x0000000017908000)
+ End Bits:   [0x0000000017908000, 0x000000001b0f0000)
+
+Polling page: 0x0000000003030000
+
+CodeCache: size=245760Kb used=16956Kb max_used=16956Kb free=228803Kb
+ bounds [0x00000000039b0000, 0x0000000004a50000, 0x00000000129b0000]
+ total_blobs=5642 nmethods=5045 adapters=510
+ compilation: enabled
+
+Compilation events (250 events):
+Event: 22.537 Thread 0x000000001ebc9800 5770       3       java.io.FileInputStream::<init> (110 bytes)
+Event: 22.538 Thread 0x000000001ebc9800 nmethod 5770 0x00000000049c8a10 code [0x00000000049c8c20, 0x00000000049c9718]
+Event: 22.540 Thread 0x000000001ebc9800 5772       3       java.util.logging.Logger::isLoggable (25 bytes)
+Event: 22.541 Thread 0x000000001ebc9800 nmethod 5772 0x00000000049c8550 code [0x00000000049c86c0, 0x00000000049c8950]
+Event: 22.541 Thread 0x000000001ebc9800 5773       3       java.io.BufferedReader::readLine (6 bytes)
+Event: 22.541 Thread 0x000000001ebc9800 nmethod 5773 0x00000000049c81d0 code [0x00000000049c8340, 0x00000000049c84c8]
+Event: 22.541 Thread 0x000000001ebc9800 5774       3       com.sun.activation.registries.MimeTypeFile::parseEntry (355 bytes)
+Event: 22.547 Thread 0x000000001ebc9800 nmethod 5774 0x00000000049d3210 code [0x00000000049d3a60, 0x00000000049d9bb8]
+Event: 22.547 Thread 0x000000001ebc9800 5775       3       org.springframework.core.annotation.TypeMappedAnnotations::get (8 bytes)
+Event: 22.547 Thread 0x000000001ebc9800 nmethod 5775 0x00000000049c6890 code [0x00000000049c6a00, 0x00000000049c6c28]
+Event: 22.548 Thread 0x000000001ebc9800 5776       1       org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory::getParameterNameDiscoverer (5 bytes)
+Event: 22.548 Thread 0x000000001ebc9800 nmethod 5776 0x00000000049c65d0 code [0x00000000049c6720, 0x00000000049c6830]
+Event: 22.550 Thread 0x000000001ebc9800 5777       1       org.springframework.beans.factory.support.AbstractBeanFactory::getCustomTypeConverter (5 bytes)
+Event: 22.551 Thread 0x000000001ebc9800 nmethod 5777 0x00000000049c6250 code [0x00000000049c63a0, 0x00000000049c64b0]
+Event: 22.553 Thread 0x000000001ebc9800 5778       3       org.springframework.core.convert.TypeDescriptor::getObjectType (8 bytes)
+Event: 22.553 Thread 0x000000001ebc9800 nmethod 5778 0x00000000049dce50 code [0x00000000049dcfc0, 0x00000000049dd1e8]
+Event: 22.554 Thread 0x000000001ebc9800 5779       3       org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory::applyBeanPostProcessorsBeforeInstantiation (69 bytes)
+Event: 22.554 Thread 0x000000001ebc9000 nmethod 5579 0x00000000049dd290 code [0x00000000049dd8c0, 0x00000000049e3620]
+Event: 22.555 Thread 0x000000001ebc9000 5769       4       org.springframework.util.ConcurrentReferenceHashMap$Segment::restructureIfNecessary (56 bytes)
+Event: 22.555 Thread 0x000000001ebc9800 nmethod 5779 0x00000000049c7450 code [0x00000000049c7620, 0x00000000049c7f78]
+Event: 22.555 Thread 0x000000001ebc6000 nmethod 5761 0x00000000049ce310 code [0x00000000049ce560, 0x00000000049cf020]
+Event: 22.555 Thread 0x000000001ebc6000 5669       4       org.springframework.core.annotation.AnnotationsScanner::hasPlainJavaAnnotationsOnly (24 bytes)
+Event: 22.557 Thread 0x000000001ebc6000 nmethod 5669 0x00000000049cc9d0 code [0x00000000049ccb20, 0x00000000049ccc88]
+Event: 22.557 Thread 0x000000001ebc6000 5525       4       java.lang.Class::getDeclaredAnnotations (11 bytes)
+Event: 22.558 Thread 0x000000001ebc9800 5781       3       java.util.TreeMap$ValueIterator::next (8 bytes)
+Event: 22.558 Thread 0x000000001ebc9800 nmethod 5781 0x00000000049cc590 code [0x00000000049cc700, 0x00000000049cc908]
+Event: 22.559 Thread 0x000000001ebc9000 nmethod 5769 0x00000000049cbdd0 code [0x00000000049cbf40, 0x00000000049cc388]
+Event: 22.559 Thread 0x000000001ebc9000 5753       4       java.lang.Character::isBmpCodePoint (13 bytes)
+Event: 22.559 Thread 0x000000001ebc9000 nmethod 5753 0x0000000004268310 code [0x0000000004268440, 0x0000000004268498]
+Event: 22.559 Thread 0x000000001ebc9000 5631       4       java.util.stream.AbstractPipeline::wrapAndCopyInto (18 bytes)
+Event: 22.560 Thread 0x000000001ebc9800 5782       1       java.util.Optional::empty (6 bytes)
+Event: 22.560 Thread 0x000000001ebc9800 nmethod 5782 0x00000000049a1610 code [0x00000000049a1760, 0x00000000049a1850]
+Event: 22.560 Thread 0x000000001ebc9800 5783       3       java.util.regex.Pattern$BnM::optimize (179 bytes)
+Event: 22.561 Thread 0x000000001ebc9800 nmethod 5783 0x00000000049ccf10 code [0x00000000049cd120, 0x00000000049cdd48]
+Event: 22.561 Thread 0x000000001ebc9800 5784       3       java.util.Optional::ifPresent (18 bytes)
+Event: 22.561 Thread 0x000000001ebc9800 nmethod 5784 0x00000000049d2d90 code [0x00000000049d2f00, 0x00000000049d3168]
+Event: 22.563 Thread 0x000000001ebc6000 nmethod 5525 0x00000000049ed650 code [0x00000000049ed800, 0x00000000049edcc8]
+Event: 22.563 Thread 0x000000001ebc9800 5785       1       org.springframework.util.ConcurrentReferenceHashMap::access$200 (5 bytes)
+Event: 22.563 Thread 0x000000001ebc6000 5759       4       java.util.stream.Sink$ChainedReference::end (10 bytes)
+Event: 22.563 Thread 0x000000001ebc9800 nmethod 5785 0x00000000049c6e10 code [0x00000000049c6f60, 0x00000000049c7050]
+Event: 22.563 Thread 0x000000001ebc6000 nmethod 5759 0x00000000048e9290 code [0x00000000048e93c0, 0x00000000048e9458]
+Event: 22.563 Thread 0x000000001ebc6000 5758       4       java.util.stream.ReferencePipeline$3$1::accept (23 bytes)
+Event: 22.564 Thread 0x000000001ebc6000 nmethod 5758 0x00000000049cfdd0 code [0x00000000049cff20, 0x00000000049cffd8]
+Event: 22.564 Thread 0x000000001ebc6000 5675       4       org.springframework.beans.factory.support.DefaultSingletonBeanRegistry::isSingletonCurrentlyInCreation (11 bytes)
+Event: 22.564 Thread 0x000000001ebc9800 5787       3       java.util.Collections$2::forEachRemaining (7 bytes)
+Event: 22.564 Thread 0x000000001ebc9800 nmethod 5787 0x00000000049d2990 code [0x00000000049d2b00, 0x00000000049d2d08]
+Event: 22.564 Thread 0x000000001ebc9800 5788       3       java.util.Collections$2::tryAdvance (38 bytes)
+Event: 22.565 Thread 0x000000001ebc9800 nmethod 5788 0x00000000049d22d0 code [0x00000000049d2460, 0x00000000049d2838]
+Event: 22.565 Thread 0x000000001ebc9800 5789       3       org.springframework.data.util.TypeDiscoverer::createInfo (158 bytes)
+Event: 22.565 Thread 0x000000001ebc9000 nmethod 5631 0x00000000049d00d0 code [0x00000000049d0260, 0x00000000049d0658]
+Event: 22.565 Thread 0x000000001ebc9000 5523       4       org.springframework.core.BridgeMethodResolver::findBridgedMethod (117 bytes)
+Event: 22.567 Thread 0x000000001ebc9800 nmethod 5789 0x00000000049f1310 code [0x00000000049f16c0, 0x00000000049f3af8]
+Event: 22.568 Thread 0x000000001ebc9800 5790       3       sun.util.locale.provider.JRELocaleProviderAdapter::getLocaleResources (51 bytes)
+Event: 22.568 Thread 0x000000001ebc9800 nmethod 5790 0x00000000049d1990 code [0x00000000049d1b40, 0x00000000049d2148]
+Event: 22.568 Thread 0x000000001ebc9800 5791       3       sun.util.locale.provider.LocaleResources::removeEmptyReferences (33 bytes)
+Event: 22.569 Thread 0x000000001ebc9800 nmethod 5791 0x00000000049d0dd0 code [0x00000000049d0f80, 0x00000000049d1678]
+Event: 22.574 Thread 0x000000001ebc6000 nmethod 5675 0x0000000004a00810 code [0x0000000004a00980, 0x0000000004a00f58]
+Event: 22.574 Thread 0x000000001ebc6000 5786       4       java.lang.reflect.Method::getDeclaredAnnotations (5 bytes)
+Event: 22.582 Thread 0x000000001ebc6000 nmethod 5786 0x0000000004a013d0 code [0x0000000004a01560, 0x0000000004a01a08]
+Event: 22.582 Thread 0x000000001ebc6000 5729       4       java.util.Formatter$Conversion::isGeneral (64 bytes)
+Event: 22.583 Thread 0x000000001ebc6000 nmethod 5729 0x00000000049eea90 code [0x00000000049eedc0, 0x00000000049eee38]
+Event: 22.587 Thread 0x000000001ebc9800 5792       3       org.springframework.beans.factory.config.BeanPostProcessor::postProcessAfterInitialization (2 bytes)
+Event: 22.587 Thread 0x000000001ebc9800 nmethod 5792 0x00000000049ee750 code [0x00000000049ee8a0, 0x00000000049ee9f0]
+Event: 22.588 Thread 0x000000001ebc6000 5793       4       org.springframework.core.annotation.MergedAnnotationPredicates$$Lambda$340/393549265::apply (5 bytes)
+Event: 22.589 Thread 0x000000001ebc6000 nmethod 5793 0x00000000049ee3d0 code [0x00000000049ee520, 0x00000000049ee608]
+Event: 22.589 Thread 0x000000001ebc6000 5795       4       org.springframework.core.annotation.TypeMappedAnnotations$AggregatesSpliterator::tryAdvance (64 bytes)
+Event: 22.590 Thread 0x000000001ebc9800 5797       3       org.springframework.beans.factory.support.DefaultListableBeanFactory::getBeanNamesForType (101 bytes)
+Event: 22.591 Thread 0x000000001ebc9800 nmethod 5797 0x0000000004a025d0 code [0x0000000004a027e0, 0x0000000004a032e8]
+Event: 22.592 Thread 0x000000001eb8b000 nmethod 5492 0x0000000004a03790 code [0x0000000004a04400, 0x0000000004a0caf8]
+Event: 22.593 Thread 0x000000001eb8b000 5796       4       java.util.Spliterators$IteratorSpliterator::tryAdvance (77 bytes)
+Event: 22.594 Thread 0x000000001ebc9800 5799       3       org.springframework.beans.factory.config.InstantiationAwareBeanPostProcessorAdapter::postProcessAfterInitialization (2 bytes)
+Event: 22.594 Thread 0x000000001ebc9800 nmethod 5799 0x0000000004a02290 code [0x0000000004a023e0, 0x0000000004a02530]
+Event: 22.594 Thread 0x000000001ebc6000 nmethod 5795 0x00000000049ef790 code [0x00000000049ef900, 0x00000000049efb28]
+Event: 22.595 Thread 0x000000001ebc6000 5794       4       org.springframework.core.annotation.MergedAnnotationPredicates$$Lambda$341/1392482765::test (12 bytes)
+Event: 22.595 Thread 0x000000001ebc9800 5800       1       org.springframework.web.context.support.GenericWebApplicationContext::getServletContext (5 bytes)
+Event: 22.595 Thread 0x000000001ebc9800 nmethod 5800 0x00000000049cfb10 code [0x00000000049cfc60, 0x00000000049cfd70]
+Event: 22.595 Thread 0x000000001ebc9800 5801       3       java.util.stream.Collectors::toList (26 bytes)
+Event: 22.596 Thread 0x000000001ebc9800 nmethod 5801 0x00000000049f0450 code [0x00000000049f0640, 0x00000000049f0f68]
+Event: 22.596 Thread 0x000000001ebc9800 5802       3       java.util.stream.Collectors$$Lambda$58/1427651360::get (8 bytes)
+Event: 22.596 Thread 0x000000001ebc9800 nmethod 5802 0x00000000049efe10 code [0x00000000049eff80, 0x00000000049f02d0]
+Event: 22.597 Thread 0x000000001ebc6000 nmethod 5794 0x00000000049ef190 code [0x00000000049ef2e0, 0x00000000049ef548]
+Event: 22.597 Thread 0x000000001ebc6000 5798       4       org.springframework.core.ResolvableType::<init> (47 bytes)
+Event: 22.598 Thread 0x000000001ebc6000 nmethod 5798 0x0000000004a01fd0 code [0x0000000004a02100, 0x0000000004a021b8]
+Event: 22.598 Thread 0x000000001eb8b000 nmethod 5796 0x0000000004a00150 code [0x0000000004a002c0, 0x0000000004a00518]
+Event: 22.602 Thread 0x000000001ebc9800 5803   !   3       com.sun.proxy.$Proxy136::annotationType (29 bytes)
+Event: 22.602 Thread 0x000000001ebc9800 nmethod 5803 0x00000000049ff9d0 code [0x00000000049ffb60, 0x00000000049fff98]
+Event: 22.602 Thread 0x000000001ebc9800 5804       3       org.springframework.data.mapping.model.AnnotationBasedPersistentProperty$$Lambda$921/1363296771::apply (12 bytes)
+Event: 22.604 Thread 0x000000001ebc9800 nmethod 5804 0x00000000049fd750 code [0x00000000049fda20, 0x00000000049fee88]
+Event: 22.604 Thread 0x000000001ebc9800 5805       3       org.springframework.data.mapping.model.AnnotationBasedPersistentProperty::lambda$doFindAnnotation$9 (31 bytes)
+Event: 22.605 Thread 0x000000001ebc6000 5807       4       java.util.stream.AbstractPipeline::spliterator (116 bytes)
+Event: 22.606 Thread 0x000000001eb8b000 5810       4       java.util.stream.ReferencePipeline$2$1::begin (13 bytes)
+Event: 22.606 Thread 0x000000001ebc9800 nmethod 5805 0x00000000049fb910 code [0x00000000049fbbc0, 0x00000000049fce28]
+Event: 22.606 Thread 0x000000001ebc9800 5808       3       org.springframework.data.repository.core.support.RepositoryComposition$RepositoryFragments$$Lambda$956/178737851::get$Lambda (10 bytes)
+Event: 22.606 Thread 0x000000001eb8b000 nmethod 5810 0x00000000049cbb90 code [0x00000000049cbcc0, 0x00000000049cbd58]
+Event: 22.606 Thread 0x000000001ebc9800 nmethod 5808 0x00000000049fb410 code [0x00000000049fb580, 0x00000000049fb7f0]
+Event: 22.606 Thread 0x000000001ebc9800 5809       3       org.springframework.data.repository.core.support.RepositoryComposition$RepositoryFragments$$Lambda$956/178737851::<init> (15 bytes)
+Event: 22.606 Thread 0x000000001ebc9800 nmethod 5809 0x00000000049fb010 code [0x00000000049fb160, 0x00000000049fb350]
+Event: 22.606 Thread 0x000000001ebc9800 5806       3       java.util.stream.Sink$ChainedInt::<init> (16 bytes)
+Event: 22.607 Thread 0x000000001ebc9800 nmethod 5806 0x00000000049faa10 code [0x00000000049fab80, 0x00000000049faea8]
+Event: 22.607 Thread 0x000000001ebc6000 nmethod 5807 0x00000000049f7890 code [0x00000000049f79e0, 0x00000000049f7b28]
+Event: 22.607 Thread 0x000000001eb8b000 5811       4       java.lang.Character::codePointAtImpl (41 bytes)
+Event: 22.608 Thread 0x000000001ebc9800 5812       3       java.util.stream.IntStream::range (24 bytes)
+Event: 22.608 Thread 0x000000001eb8b000 nmethod 5811 0x00000000049eee90 code [0x00000000049eefc0, 0x00000000049ef058]
+Event: 22.609 Thread 0x000000001ebc9800 nmethod 5812 0x00000000049f9b50 code [0x00000000049f9d40, 0x00000000049fa558]
+Event: 22.609 Thread 0x000000001ebc9800 5813       3       java.util.stream.Streams$RangeIntSpliterator::<init> (16 bytes)
+Event: 22.609 Thread 0x000000001ebc9800 nmethod 5813 0x00000000049f9690 code [0x00000000049f9800, 0x00000000049f9a70]
+Event: 22.609 Thread 0x000000001ebc9800 5814       3       java.util.stream.Streams$RangeIntSpliterator::estimateSize (18 bytes)
+Event: 22.609 Thread 0x000000001ebc9800 nmethod 5814 0x00000000049f9350 code [0x00000000049f94a0, 0x00000000049f9610]
+Event: 22.609 Thread 0x000000001ebc6000 5815       4       sun.misc.ProxyGenerator::codeLocalLoadStore (90 bytes)
+Event: 22.609 Thread 0x000000001ebc9800 5816       3       sun.misc.ProxyGenerator$ProxyMethod::codeWrapArgument (171 bytes)
+Event: 22.611 Thread 0x000000001ebc6000 nmethod 5815 0x00000000049f5a90 code [0x00000000049f5c20, 0x00000000049f5db0]
+Event: 22.612 Thread 0x000000001ebc9800 nmethod 5816 0x0000000004a24290 code [0x0000000004a24680, 0x0000000004a265e8]
+Event: 22.629 Thread 0x000000001ebc9800 5817       3       java.lang.ThreadLocal$ThreadLocalMap::cleanSomeSlots (60 bytes)
+Event: 22.630 Thread 0x000000001ebc9800 nmethod 5817 0x00000000049f52d0 code [0x00000000049f5460, 0x00000000049f58a8]
+Event: 22.630 Thread 0x000000001eb8b000 5820       4       java.util.Arrays::sort (47 bytes)
+Event: 22.630 Thread 0x000000001ebc6000 5821       4       java.util.stream.MatchOps$1MatchSink::accept (44 bytes)
+Event: 22.630 Thread 0x000000001ebc9800 5818       3       java.net.InetSocketAddress::getAddress (8 bytes)
+Event: 22.631 Thread 0x000000001ebc9800 nmethod 5818 0x0000000003b39ed0 code [0x0000000003b3a040, 0x0000000003b3a210]
+Event: 22.631 Thread 0x000000001ebc6000 nmethod 5821 0x0000000003b8f6d0 code [0x0000000003b8f820, 0x0000000003b8f8f8]
+Event: 22.631 Thread 0x000000001ebc6000 5822       4       org.springframework.core.annotation.TypeMappedAnnotations::<init> (36 bytes)
+Event: 22.632 Thread 0x000000001ebc6000 nmethod 5822 0x00000000049f5090 code [0x00000000049f51c0, 0x00000000049f5258]
+Event: 22.632 Thread 0x000000001ebc6000 5823       4       java.util.stream.ReferencePipeline::collect (124 bytes)
+Event: 22.633 Thread 0x000000001ebc9800 5819       3       java.net.InetSocketAddress$InetSocketAddressHolder::access$500 (5 bytes)
+Event: 22.633 Thread 0x000000001ebc9800 nmethod 5819 0x0000000003c0d250 code [0x0000000003c0d3a0, 0x0000000003c0d4f0]
+Event: 22.634 Thread 0x000000001ebc9800 5826       3       org.springframework.core.convert.support.GenericConversionService$ConverterCacheKey::equals (55 bytes)
+Event: 22.634 Thread 0x000000001ebc9800 nmethod 5826 0x0000000003c3c9d0 code [0x0000000003c3cb60, 0x0000000003c3d158]
+Event: 22.635 Thread 0x000000001ebc9800 5827       3       org.springframework.aop.framework.autoproxy.ProxyCreationContext::setCurrentProxiedBeanName (21 bytes)
+Event: 22.636 Thread 0x000000001ebc9800 nmethod 5827 0x0000000003c97550 code [0x0000000003c97720, 0x0000000003c98008]
+Event: 22.637 Thread 0x000000001ebc9800 5828       1       org.springframework.cache.interceptor.BeanFactoryCacheOperationSourceAdvisor::getPointcut (5 bytes)
+Event: 22.637 Thread 0x000000001ebc9800 nmethod 5828 0x0000000003c60110 code [0x0000000003c60260, 0x0000000003c60370]
+Event: 22.638 Thread 0x000000001ebc9800 5832       3       java.util.WeakHashMap$EntryIterator::next (5 bytes)
+Event: 22.638 Thread 0x000000001ebc9800 nmethod 5832 0x0000000003c4e310 code [0x0000000003c4e480, 0x0000000003c4e6e8]
+Event: 22.639 Thread 0x000000001ebc9800 5833       3       java.util.WeakHashMap$EntryIterator::next (5 bytes)
+Event: 22.639 Thread 0x000000001ebc9800 nmethod 5833 0x0000000003be8e50 code [0x0000000003be8fc0, 0x0000000003be91c8]
+Event: 22.639 Thread 0x000000001ebc6000 nmethod 5823 0x0000000003c53590 code [0x0000000003c53740, 0x0000000003c53c08]
+Event: 22.639 Thread 0x000000001ebc6000 5825       4       java.lang.reflect.Method::equals (69 bytes)
+Event: 22.639 Thread 0x000000001ebc9800 5830       3       org.springframework.data.util.TypeDiscoverer$$Lambda$264/2098830440::get (12 bytes)
+Event: 22.640 Thread 0x000000001ebc9800 nmethod 5830 0x00000000049f8090 code [0x00000000049f8280, 0x00000000049f8d38]
+Event: 22.641 Thread 0x000000001ebc9800 5831       3       org.springframework.data.util.TypeDiscoverer::lambda$new$0 (6 bytes)
+Event: 22.642 Thread 0x000000001ebc9800 nmethod 5831 0x0000000003c7bd90 code [0x0000000003c7bf80, 0x0000000003c7c9b8]
+Event: 22.642 Thread 0x000000001ebc6000 nmethod 5825 0x00000000041a2f50 code [0x00000000041a30a0, 0x00000000041a3218]
+Event: 22.642 Thread 0x000000001ebc6000 5824       4       java.util.stream.ReduceOps::makeRef (42 bytes)
+Event: 22.642 Thread 0x000000001ebc9800 5829       1       org.springframework.aop.support.StaticMethodMatcherPointcut::getClassFilter (5 bytes)
+Event: 22.643 Thread 0x000000001ebc9800 nmethod 5829 0x0000000003c53290 code [0x0000000003c533e0, 0x0000000003c534f0]
+Event: 22.644 Thread 0x000000001ebc6000 nmethod 5824 0x0000000004283890 code [0x00000000042839e0, 0x0000000004283b78]
+Event: 22.647 Thread 0x000000001ebc6000 5834       4       java.util.stream.ReferencePipeline$7$1::cancellationRequested (15 bytes)
+Event: 22.647 Thread 0x000000001ebc9800 5835       3       org.springframework.data.mapping.model.BasicPersistentEntity::getType (10 bytes)
+Event: 22.647 Thread 0x000000001ebc9800 nmethod 5835 0x00000000044360d0 code [0x0000000004436240, 0x0000000004436468]
+Event: 22.647 Thread 0x000000001ebc6000 nmethod 5834 0x0000000004435a50 code [0x0000000004435b80, 0x0000000004435c18]
+Event: 22.648 Thread 0x000000001ebc9800 5836   !   3       java.util.regex.Pattern::<init> (98 bytes)
+Event: 22.648 Thread 0x000000001ebc9800 nmethod 5836 0x0000000003cc3cd0 code [0x0000000003cc3ec0, 0x0000000003cc4888]
+Event: 22.649 Thread 0x000000001ebc9800 5837       3       sun.reflect.generics.reflectiveObjects.WildcardTypeImpl::hashCode (20 bytes)
+Event: 22.650 Thread 0x000000001ebc9800 nmethod 5837 0x0000000004105d50 code [0x0000000004105ee0, 0x0000000004106118]
+Event: 22.650 Thread 0x000000001eb8b000 nmethod 5820 0x00000000044da210 code [0x00000000044da400, 0x00000000044db240]
+Event: 22.650 Thread 0x000000001ebc9800 5839       3       sun.util.locale.provider.LocaleResources::getDecimalFormatSymbolsData (213 bytes)
+Event: 22.652 Thread 0x000000001eb8b000 5842       4       java.util.stream.ReduceOps$3::getOpFlags (28 bytes)
+Event: 22.652 Thread 0x000000001ebc6000 5841       4       java.util.stream.ReduceOps$ReduceOp::evaluateSequential (18 bytes)
+Event: 22.653 Thread 0x000000001eb8b000 nmethod 5842 0x00000000044d9e90 code [0x00000000044d9fe0, 0x00000000044da0d8]
+Event: 22.654 Thread 0x000000001ebc9800 nmethod 5839 0x0000000004a27d50 code [0x0000000004a28200, 0x0000000004a2ba98]
+Event: 22.654 Thread 0x000000001ebc9800 5840       3       org.springframework.util.ConcurrentReferenceHashMap::<init> (176 bytes)
+Event: 22.654 Thread 0x000000001eb8b000 5843       4       java.util.stream.ReduceOps$3::makeSink (5 bytes)
+Event: 22.655 Thread 0x000000001eb8b000 nmethod 5843 0x0000000003c60bd0 code [0x0000000003c60d20, 0x0000000003c60df8]
+Event: 22.655 Thread 0x000000001eb8b000 5844       4       java.util.stream.ReduceOps$3ReducingSink::begin (14 bytes)
+Event: 22.655 Thread 0x000000001ebc9800 nmethod 5840 0x0000000003edd510 code [0x0000000003edd7a0, 0x0000000003ede878]
+Event: 22.655 Thread 0x000000001ebc9800 5845       1       org.springframework.data.repository.core.support.AbstractRepositoryMetadata::getRepositoryInterface (5 bytes)
+Event: 22.655 Thread 0x000000001eb8b000 nmethod 5844 0x0000000003e09250 code [0x0000000003e09380, 0x0000000003e09438]
+Event: 22.655 Thread 0x000000001ebc9800 nmethod 5845 0x00000000049f7dd0 code [0x00000000049f7f20, 0x00000000049f8030]
+Event: 22.655 Thread 0x000000001ebc9800 5838       3       java.util.regex.Pattern::compile (10 bytes)
+Event: 22.656 Thread 0x000000001ebc9800 nmethod 5838 0x0000000004355b10 code [0x0000000004355c80, 0x0000000004355e68]
+Event: 22.656 Thread 0x000000001ebc6000 nmethod 5841 0x00000000042166d0 code [0x0000000004216840, 0x0000000004216a48]
+Event: 22.656 Thread 0x000000001ebc9800 5846       3       sun.reflect.generics.reflectiveObjects.ParameterizedTypeImpl::equals (81 bytes)
+Event: 22.656 Thread 0x000000001ebc9800 nmethod 5846 0x00000000046d3650 code [0x00000000046d3840, 0x00000000046d4428]
+Event: 22.656 Thread 0x000000001ebc9800 5848       3       org.springframework.util.ReflectionUtils::isEqualsMethod (45 bytes)
+Event: 22.658 Thread 0x000000001ebc9800 nmethod 5848 0x0000000003c78e90 code [0x0000000003c79040, 0x0000000003c79798]
+Event: 22.658 Thread 0x000000001ebc9800 5847       3       java.util.regex.Pattern::group0 (994 bytes)
+Event: 22.662 Thread 0x000000001eb8b000 5850       4       java.util.AbstractCollection::addAll (42 bytes)
+Event: 22.664 Thread 0x000000001eb8b000 nmethod 5850 0x0000000003c3e610 code [0x0000000003c3e760, 0x0000000003c3e878]
+Event: 22.664 Thread 0x000000001eb8b000 5851       4       org.springframework.core.MethodClassKey::hashCode (30 bytes)
+Event: 22.664 Thread 0x000000001ebc9800 nmethod 5847 0x0000000004a2d190 code [0x0000000004a2d960, 0x0000000004a327e8]
+Event: 22.664 Thread 0x000000001ebc9800 5849       3       org.springframework.core.annotation.AnnotationsScanner::process (43 bytes)
+Event: 22.664 Thread 0x000000001ebc9800 nmethod 5849 0x00000000044d9090 code [0x00000000044d9240, 0x00000000044d9848]
+Event: 22.667 Thread 0x000000001ebc9000 nmethod 5523 0x0000000004a39650 code [0x0000000004a39b00, 0x0000000004a3bf88]
+Event: 22.697 Thread 0x000000001eb8b000 nmethod 5851 0x0000000004248410 code [0x0000000004248580, 0x0000000004248a98]
+Event: 22.706 Thread 0x000000001ebc9800 5852       3       com.typesafe.config.impl.ConfigImplUtil::unicodeTrim (162 bytes)
+Event: 22.706 Thread 0x000000001ebc6000 5853       4       org.springframework.core.annotation.TypeMappedAnnotations$MergedAnnotationFinder::doWithAnnotations (10 bytes)
+Event: 22.706 Thread 0x000000001ebc9000 5854       4       org.springframework.core.annotation.TypeMappedAnnotations$MergedAnnotationFinder::doWithAnnotations (75 bytes)
+Event: 22.707 Thread 0x000000001ebc9800 nmethod 5852 0x00000000049f6190 code [0x00000000049f63e0, 0x00000000049f72d8]
+Event: 22.716 Thread 0x000000001ebc9800 5855       3       org.springframework.aop.framework.autoproxy.AutoProxyUtils::isOriginalInstance (55 bytes)
+Event: 22.717 Thread 0x000000001ebc9800 nmethod 5855 0x0000000003ced690 code [0x0000000003ced8a0, 0x0000000003cee678]
+Event: 22.733 Thread 0x000000001ebc9800 5856       3       java.util.Formatter::<init> (23 bytes)
+Event: 22.734 Thread 0x000000001ebc9800 nmethod 5856 0x0000000003f6e350 code [0x0000000003f6e4e0, 0x0000000003f6e8d8]
+Event: 22.734 Thread 0x000000001ebc9800 5857       3       java.util.Formatter::getZero (27 bytes)
+Event: 22.734 Thread 0x000000001ebc9800 nmethod 5857 0x0000000003edcfd0 code [0x0000000003edd140, 0x0000000003edd418]
+Event: 22.734 Thread 0x000000001ebc9800 5858       3       java.util.Formatter::format (11 bytes)
+Event: 22.734 Thread 0x000000001ebc9800 nmethod 5858 0x0000000004017510 code [0x0000000004017680, 0x00000000040178a8]
+Event: 22.734 Thread 0x000000001ebc9800 5859       3       java.util.Formatter::toString (12 bytes)
+Event: 22.735 Thread 0x000000001ebc9800 nmethod 5859 0x0000000004515410 code [0x00000000045155a0, 0x00000000045158d8]
+Event: 22.736 Thread 0x000000001eb8b000 5862       4       org.springframework.asm.MethodVisitor::<init> (7 bytes)
+Event: 22.736 Thread 0x000000001ebc9800 5860       3       org.springframework.asm.ClassWriter::visitField (53 bytes)
+Event: 22.736 Thread 0x000000001ebc9800 nmethod 5860 0x0000000003c37850 code [0x0000000003c379c0, 0x0000000003c37ca8]
+Event: 22.736 Thread 0x000000001ebc9800 5861       3       org.springframework.asm.FieldWriter::<init> (69 bytes)
+Event: 22.737 Thread 0x000000001eb8b000 nmethod 5862 0x00000000049f4d10 code [0x00000000049f4e60, 0x00000000049f4f58]
+Event: 22.737 Thread 0x000000001ebc9800 nmethod 5861 0x0000000004258ad0 code [0x0000000004258c80, 0x0000000004259248]
+Event: 22.737 Thread 0x000000001ebc9800 5863       3       org.springframework.asm.Frame::setInputFrameFromDescriptor (175 bytes)
+Event: 22.738 Thread 0x000000001ebc9800 nmethod 5863 0x0000000003cec5d0 code [0x0000000003cec7a0, 0x0000000003ced098]
+Event: 22.738 Thread 0x000000001ebc9800 5864       3       org.springframework.cglib.core.ReflectUtils$6::getClassInfo (28 bytes)
+Event: 22.739 Thread 0x000000001ebc9800 nmethod 5864 0x0000000004842dd0 code [0x0000000004842fa0, 0x0000000004843688]
+Event: 22.739 Thread 0x000000001ebc9800 5865       3       org.springframework.cglib.core.ReflectUtils::getClassInfo (35 bytes)
+Event: 22.739 Thread 0x000000001ebc9800 nmethod 5865 0x0000000003c95b90 code [0x0000000003c95d40, 0x0000000003c96278]
+Event: 22.739 Thread 0x000000001ebc9800 5866       3       org.springframework.cglib.core.CodeEmitter::skipArgs (32 bytes)
+Event: 22.740 Thread 0x000000001ebc9800 nmethod 5866 0x0000000003cebf10 code [0x0000000003cec080, 0x0000000003cec3a8]
+Event: 22.740 Thread 0x000000001ebc9800 5867       3       org.springframework.cglib.core.CodeEmitter::getfield (47 bytes)
+Event: 22.741 Thread 0x000000001ebc9800 nmethod 5867 0x0000000003c94c10 code [0x0000000003c94de0, 0x0000000003c95748]
+Event: 22.741 Thread 0x000000001ebc9800 5868       3       org.springframework.cglib.core.CodeEmitter::load_this (35 bytes)
+Event: 22.742 Thread 0x000000001ebc9800 nmethod 5868 0x0000000003cdac10 code [0x0000000003cdada0, 0x0000000003cdb198]
+Event: 22.742 Thread 0x000000001eb8b000 5869       4       org.springframework.asm.SymbolTable::put (150 bytes)
+Event: 22.742 Thread 0x000000001ebc9800 5870       3       org.springframework.asm.Type::equals (147 bytes)
+Event: 22.743 Thread 0x000000001ebc9800 nmethod 5870 0x0000000003c93b10 code [0x0000000003c93d00, 0x0000000003c94778]
+Event: 22.743 Thread 0x000000001ebc9800 5871       3       org.springframework.cglib.core.CodeEmitter::emit_type (30 bytes)
+Event: 22.743 Thread 0x000000001ebc9800 nmethod 5871 0x0000000003bcfd10 code [0x0000000003bcfec0, 0x0000000003bd0568]
+Event: 22.743 Thread 0x000000001ebc9800 5872       3       org.springframework.asm.MethodWriter::visitTypeInsn (116 bytes)
+Event: 22.744 Thread 0x000000001ebc9800 nmethod 5872 0x0000000003bcf350 code [0x0000000003bcf500, 0x0000000003bcfac8]
+Event: 22.744 Thread 0x000000001ebc9800 5874   !   3       org.springframework.cglib.core.CodeEmitter::process_switch (301 bytes)
+Event: 22.746 Thread 0x000000001ebc9800 nmethod 5874 0x0000000004a40850 code [0x0000000004a40bc0, 0x0000000004a42e08]
+Event: 22.746 Thread 0x000000001ebc9800 5873       3       org.springframework.cglib.core.CodeEmitter::process_switch (48 bytes)
+Event: 22.746 Thread 0x000000001ebc9800 nmethod 5873 0x0000000003c93550 code [0x0000000003c936e0, 0x0000000003c93a08]
+Event: 22.747 Thread 0x000000001ebc9800 5875       3       org.springframework.asm.Frame::merge (317 bytes)
+Event: 22.747 Thread 0x000000001ebc9800 nmethod 5875 0x0000000003bce390 code [0x0000000003bce560, 0x0000000003bcf048]
+Event: 22.747 Thread 0x000000001ebc9800 5876       3       org.springframework.cglib.proxy.Enhancer::getCallbackField (21 bytes)
+Event: 22.748 Thread 0x000000001ebc9800 nmethod 5876 0x0000000003bcd810 code [0x0000000003bcd9c0, 0x0000000003bce0c8]
+Event: 22.748 Thread 0x000000001ebc9800 5878       3       org.springframework.asm.FieldWriter::computeFieldInfoSize (86 bytes)
+Event: 22.748 Thread 0x000000001eb8b000 nmethod 5869 0x0000000004a35f10 code [0x0000000004a36060, 0x0000000004a363f8]
+Event: 22.749 Thread 0x000000001ebc9800 nmethod 5878 0x0000000004a38dd0 code [0x0000000004a38f80, 0x0000000004a394b8]
+Event: 22.749 Thread 0x000000001ebc9800 5877       3       org.springframework.cglib.core.CodeEmitter::checkcast (19 bytes)
+Event: 22.749 Thread 0x000000001ebc9800 nmethod 5877 0x0000000004a38110 code [0x0000000004a382e0, 0x0000000004a38af8]
+Event: 22.794 Thread 0x000000001ebc9800 5879   !   3       org.springframework.util.ClassUtils::isVisible (26 bytes)
+Event: 22.796 Thread 0x000000001ebc9800 nmethod 5879 0x0000000004a368d0 code [0x0000000004a36b00, 0x0000000004a37958]
+Event: 22.797 Thread 0x000000001ebc9800 5880       3       java.lang.reflect.Type::getTypeName (5 bytes)
+Event: 22.798 Thread 0x000000001ebc9800 nmethod 5880 0x00000000049f48d0 code [0x00000000049f4a40, 0x00000000049f4c48]
+Event: 22.798 Thread 0x000000001ebc9800 5881       3       io.netty.util.concurrent.SingleThreadEventExecutor::pollTask (29 bytes)
+Event: 22.798 Thread 0x000000001ebc9800 nmethod 5881 0x0000000004a448d0 code [0x0000000004a44a60, 0x0000000004a44ea8]
+Event: 22.800 Thread 0x000000001ebc9800 5882  s    3       java.beans.PropertyDescriptor::setWriteMethod (61 bytes)
+Event: 22.803 Thread 0x000000001ebc9800 nmethod 5882 0x0000000004a45010 code [0x0000000004a453c0, 0x0000000004a47838]
+Event: 22.804 Thread 0x000000001ebc9800 5883   !   3       org.springframework.core.SerializableTypeWrapper$TypeProxyInvocationHandler::invoke (239 bytes)
+Event: 22.806 Thread 0x000000001ebc9800 nmethod 5883 0x0000000004a48890 code [0x0000000004a48c00, 0x0000000004a4ab38]
+Event: 22.812 Thread 0x000000001ebc9800 5884       3       java.lang.reflect.Modifier::isFinal (13 bytes)
+Event: 22.812 Thread 0x000000001ebc9800 nmethod 5884 0x0000000003bcd4d0 code [0x0000000003bcd620, 0x0000000003bcd7b0]
+Event: 22.813 Thread 0x000000001eb8b000 5885       4       org.springframework.beans.factory.support.AbstractBeanFactory::isTypeMatch (607 bytes)
+Event: 22.822 Thread 0x000000001ebc9800 5888       3       org.springframework.beans.factory.support.AbstractBeanFactory::isPrototypeCurrentlyInCreation (46 bytes)
+Event: 22.822 Thread 0x000000001ebc9800 nmethod 5888 0x0000000004a4b5d0 code [0x0000000004a4b780, 0x0000000004a4be48]
+
+GC Heap History (20 events):
+Event: 1.380 GC heap before
+{Heap before GC invocations=1 (full 0):
+ PSYoungGen      total 67072K, used 57856K [0x0000000775780000, 0x000000077a200000, 0x00000007c0000000)
+  eden space 57856K, 100% used [0x0000000775780000,0x0000000779000000,0x0000000779000000)
+  from space 9216K, 0% used [0x0000000779900000,0x0000000779900000,0x000000077a200000)
+  to   space 9216K, 0% used [0x0000000779000000,0x0000000779000000,0x0000000779900000)
+ ParOldGen       total 153088K, used 0K [0x00000006e0600000, 0x00000006e9b80000, 0x0000000775780000)
+  object space 153088K, 0% used [0x00000006e0600000,0x00000006e0600000,0x00000006e9b80000)
+ Metaspace       used 13304K, capacity 13734K, committed 13952K, reserved 1060864K
+  class space    used 1535K, capacity 1641K, committed 1664K, reserved 1048576K
+Event: 1.388 GC heap after
+Heap after GC invocations=1 (full 0):
+ PSYoungGen      total 67072K, used 7261K [0x0000000775780000, 0x000000077a200000, 0x00000007c0000000)
+  eden space 57856K, 0% used [0x0000000775780000,0x0000000775780000,0x0000000779000000)
+  from space 9216K, 78% used [0x0000000779000000,0x0000000779717790,0x0000000779900000)
+  to   space 9216K, 0% used [0x0000000779900000,0x0000000779900000,0x000000077a200000)
+ ParOldGen       total 153088K, used 80K [0x00000006e0600000, 0x00000006e9b80000, 0x0000000775780000)
+  object space 153088K, 0% used [0x00000006e0600000,0x00000006e0614010,0x00000006e9b80000)
+ Metaspace       used 13304K, capacity 13734K, committed 13952K, reserved 1060864K
+  class space    used 1535K, capacity 1641K, committed 1664K, reserved 1048576K
+}
+Event: 2.089 GC heap before
+{Heap before GC invocations=2 (full 0):
+ PSYoungGen      total 67072K, used 65117K [0x0000000775780000, 0x000000077a200000, 0x00000007c0000000)
+  eden space 57856K, 100% used [0x0000000775780000,0x0000000779000000,0x0000000779000000)
+  from space 9216K, 78% used [0x0000000779000000,0x0000000779717790,0x0000000779900000)
+  to   space 9216K, 0% used [0x0000000779900000,0x0000000779900000,0x000000077a200000)
+ ParOldGen       total 153088K, used 80K [0x00000006e0600000, 0x00000006e9b80000, 0x0000000775780000)
+  object space 153088K, 0% used [0x00000006e0600000,0x00000006e0614010,0x00000006e9b80000)
+ Metaspace       used 18912K, capacity 19488K, committed 19840K, reserved 1067008K
+  class space    used 2233K, capacity 2352K, committed 2432K, reserved 1048576K
+Event: 2.101 GC heap after
+Heap after GC invocations=2 (full 0):
+ PSYoungGen      total 67072K, used 9152K [0x0000000775780000, 0x000000077da80000, 0x00000007c0000000)
+  eden space 57856K, 0% used [0x0000000775780000,0x0000000775780000,0x0000000779000000)
+  from space 9216K, 99% used [0x0000000779900000,0x000000077a1f0300,0x000000077a200000)
+  to   space 9216K, 0% used [0x0000000779000000,0x0000000779000000,0x0000000779900000)
+ ParOldGen       total 153088K, used 88K [0x00000006e0600000, 0x00000006e9b80000, 0x0000000775780000)
+  object space 153088K, 0% used [0x00000006e0600000,0x00000006e0616010,0x00000006e9b80000)
+ Metaspace       used 18912K, capacity 19488K, committed 19840K, reserved 1067008K
+  class space    used 2233K, capacity 2352K, committed 2432K, reserved 1048576K
+}
+Event: 2.254 GC heap before
+{Heap before GC invocations=3 (full 0):
+ PSYoungGen      total 67072K, used 27723K [0x0000000775780000, 0x000000077da80000, 0x00000007c0000000)
+  eden space 57856K, 32% used [0x0000000775780000,0x00000007769a2c50,0x0000000779000000)
+  from space 9216K, 99% used [0x0000000779900000,0x000000077a1f0300,0x000000077a200000)
+  to   space 9216K, 0% used [0x0000000779000000,0x0000000779000000,0x0000000779900000)
+ ParOldGen       total 153088K, used 88K [0x00000006e0600000, 0x00000006e9b80000, 0x0000000775780000)
+  object space 153088K, 0% used [0x00000006e0600000,0x00000006e0616010,0x00000006e9b80000)
+ Metaspace       used 20597K, capacity 21152K, committed 21248K, reserved 1069056K
+  class space    used 2425K, capacity 2544K, committed 2560K, reserved 1048576K
+Event: 2.260 GC heap after
+Heap after GC invocations=3 (full 0):
+ PSYoungGen      total 67072K, used 6667K [0x0000000775780000, 0x000000077da80000, 0x00000007c0000000)
+  eden space 57856K, 0% used [0x0000000775780000,0x0000000775780000,0x0000000779000000)
+  from space 9216K, 72% used [0x0000000779000000,0x0000000779682dc0,0x0000000779900000)
+  to   space 9216K, 0% used [0x000000077d180000,0x000000077d180000,0x000000077da80000)
+ ParOldGen       total 153088K, used 96K [0x00000006e0600000, 0x00000006e9b80000, 0x0000000775780000)
+  object space 153088K, 0% used [0x00000006e0600000,0x00000006e0618010,0x00000006e9b80000)
+ Metaspace       used 20597K, capacity 21152K, committed 21248K, reserved 1069056K
+  class space    used 2425K, capacity 2544K, committed 2560K, reserved 1048576K
+}
+Event: 2.260 GC heap before
+{Heap before GC invocations=4 (full 1):
+ PSYoungGen      total 67072K, used 6667K [0x0000000775780000, 0x000000077da80000, 0x00000007c0000000)
+  eden space 57856K, 0% used [0x0000000775780000,0x0000000775780000,0x0000000779000000)
+  from space 9216K, 72% used [0x0000000779000000,0x0000000779682dc0,0x0000000779900000)
+  to   space 9216K, 0% used [0x000000077d180000,0x000000077d180000,0x000000077da80000)
+ ParOldGen       total 153088K, used 96K [0x00000006e0600000, 0x00000006e9b80000, 0x0000000775780000)
+  object space 153088K, 0% used [0x00000006e0600000,0x00000006e0618010,0x00000006e9b80000)
+ Metaspace       used 20597K, capacity 21152K, committed 21248K, reserved 1069056K
+  class space    used 2425K, capacity 2544K, committed 2560K, reserved 1048576K
+Event: 2.294 GC heap after
+Heap after GC invocations=4 (full 1):
+ PSYoungGen      total 67072K, used 0K [0x0000000775780000, 0x000000077da80000, 0x00000007c0000000)
+  eden space 57856K, 0% used [0x0000000775780000,0x0000000775780000,0x0000000779000000)
+  from space 9216K, 0% used [0x0000000779000000,0x0000000779000000,0x0000000779900000)
+  to   space 9216K, 0% used [0x000000077d180000,0x000000077d180000,0x000000077da80000)
+ ParOldGen       total 88576K, used 6463K [0x00000006e0600000, 0x00000006e5c80000, 0x0000000775780000)
+  object space 88576K, 7% used [0x00000006e0600000,0x00000006e0c4fee8,0x00000006e5c80000)
+ Metaspace       used 20597K, capacity 21152K, committed 21248K, reserved 1069056K
+  class space    used 2425K, capacity 2544K, committed 2560K, reserved 1048576K
+}
+Event: 3.395 GC heap before
+{Heap before GC invocations=5 (full 1):
+ PSYoungGen      total 67072K, used 57856K [0x0000000775780000, 0x000000077da80000, 0x00000007c0000000)
+  eden space 57856K, 100% used [0x0000000775780000,0x0000000779000000,0x0000000779000000)
+  from space 9216K, 0% used [0x0000000779000000,0x0000000779000000,0x0000000779900000)
+  to   space 9216K, 0% used [0x000000077d180000,0x000000077d180000,0x000000077da80000)
+ ParOldGen       total 88576K, used 6463K [0x00000006e0600000, 0x00000006e5c80000, 0x0000000775780000)
+  object space 88576K, 7% used [0x00000006e0600000,0x00000006e0c4fee8,0x00000006e5c80000)
+ Metaspace       used 24185K, capacity 24988K, committed 25216K, reserved 1071104K
+  class space    used 2878K, capacity 3074K, committed 3200K, reserved 1048576K
+Event: 3.406 GC heap after
+Heap after GC invocations=5 (full 1):
+ PSYoungGen      total 96256K, used 5899K [0x0000000775780000, 0x000000077d780000, 0x00000007c0000000)
+  eden space 90112K, 0% used [0x0000000775780000,0x0000000775780000,0x000000077af80000)
+  from space 6144K, 96% used [0x000000077d180000,0x000000077d742f20,0x000000077d780000)
+  to   space 9216K, 0% used [0x000000077c580000,0x000000077c580000,0x000000077ce80000)
+ ParOldGen       total 88576K, used 6471K [0x00000006e0600000, 0x00000006e5c80000, 0x0000000775780000)
+  object space 88576K, 7% used [0x00000006e0600000,0x00000006e0c51ee8,0x00000006e5c80000)
+ Metaspace       used 24185K, capacity 24988K, committed 25216K, reserved 1071104K
+  class space    used 2878K, capacity 3074K, committed 3200K, reserved 1048576K
+}
+Event: 4.216 GC heap before
+{Heap before GC invocations=6 (full 1):
+ PSYoungGen      total 96256K, used 96011K [0x0000000775780000, 0x000000077d780000, 0x00000007c0000000)
+  eden space 90112K, 100% used [0x0000000775780000,0x000000077af80000,0x000000077af80000)
+  from space 6144K, 96% used [0x000000077d180000,0x000000077d742f20,0x000000077d780000)
+  to   space 9216K, 0% used [0x000000077c580000,0x000000077c580000,0x000000077ce80000)
+ ParOldGen       total 88576K, used 6471K [0x00000006e0600000, 0x00000006e5c80000, 0x0000000775780000)
+  object space 88576K, 7% used [0x00000006e0600000,0x00000006e0c51ee8,0x00000006e5c80000)
+ Metaspace       used 26768K, capacity 27680K, committed 27776K, reserved 1073152K
+  class space    used 3210K, capacity 3422K, committed 3456K, reserved 1048576K
+Event: 4.225 GC heap after
+Heap after GC invocations=6 (full 1):
+ PSYoungGen      total 121856K, used 9204K [0x0000000775780000, 0x000000077f500000, 0x00000007c0000000)
+  eden space 112640K, 0% used [0x0000000775780000,0x0000000775780000,0x000000077c580000)
+  from space 9216K, 99% used [0x000000077c580000,0x000000077ce7d378,0x000000077ce80000)
+  to   space 11776K, 0% used [0x000000077e980000,0x000000077e980000,0x000000077f500000)
+ ParOldGen       total 88576K, used 8078K [0x00000006e0600000, 0x00000006e5c80000, 0x0000000775780000)
+  object space 88576K, 9% used [0x00000006e0600000,0x00000006e0de3b38,0x00000006e5c80000)
+ Metaspace       used 26768K, capacity 27680K, committed 27776K, reserved 1073152K
+  class space    used 3210K, capacity 3422K, committed 3456K, reserved 1048576K
+}
+Event: 6.079 GC heap before
+{Heap before GC invocations=7 (full 1):
+ PSYoungGen      total 121856K, used 117548K [0x0000000775780000, 0x000000077f500000, 0x00000007c0000000)
+  eden space 112640K, 96% used [0x0000000775780000,0x000000077c14dfa0,0x000000077c580000)
+  from space 9216K, 99% used [0x000000077c580000,0x000000077ce7d378,0x000000077ce80000)
+  to   space 11776K, 0% used [0x000000077e980000,0x000000077e980000,0x000000077f500000)
+ ParOldGen       total 88576K, used 8078K [0x00000006e0600000, 0x00000006e5c80000, 0x0000000775780000)
+  object space 88576K, 9% used [0x00000006e0600000,0x00000006e0de3b38,0x00000006e5c80000)
+ Metaspace       used 33539K, capacity 35282K, committed 35416K, reserved 1081344K
+  class space    used 4186K, capacity 4475K, committed 4480K, reserved 1048576K
+Event: 6.093 GC heap after
+Heap after GC invocations=7 (full 1):
+ PSYoungGen      total 146432K, used 11753K [0x0000000775780000, 0x0000000781900000, 0x00000007c0000000)
+  eden space 134656K, 0% used [0x0000000775780000,0x0000000775780000,0x000000077db00000)
+  from space 11776K, 99% used [0x000000077e980000,0x000000077f4fa408,0x000000077f500000)
+  to   space 14848K, 0% used [0x000000077db00000,0x000000077db00000,0x000000077e980000)
+ ParOldGen       total 88576K, used 10984K [0x00000006e0600000, 0x00000006e5c80000, 0x0000000775780000)
+  object space 88576K, 12% used [0x00000006e0600000,0x00000006e10ba140,0x00000006e5c80000)
+ Metaspace       used 33539K, capacity 35282K, committed 35416K, reserved 1081344K
+  class space    used 4186K, capacity 4475K, committed 4480K, reserved 1048576K
+}
+Event: 6.093 GC heap before
+{Heap before GC invocations=8 (full 2):
+ PSYoungGen      total 146432K, used 11753K [0x0000000775780000, 0x0000000781900000, 0x00000007c0000000)
+  eden space 134656K, 0% used [0x0000000775780000,0x0000000775780000,0x000000077db00000)
+  from space 11776K, 99% used [0x000000077e980000,0x000000077f4fa408,0x000000077f500000)
+  to   space 14848K, 0% used [0x000000077db00000,0x000000077db00000,0x000000077e980000)
+ ParOldGen       total 88576K, used 10984K [0x00000006e0600000, 0x00000006e5c80000, 0x0000000775780000)
+  object space 88576K, 12% used [0x00000006e0600000,0x00000006e10ba140,0x00000006e5c80000)
+ Metaspace       used 33539K, capacity 35282K, committed 35416K, reserved 1081344K
+  class space    used 4186K, capacity 4475K, committed 4480K, reserved 1048576K
+Event: 6.154 GC heap after
+Heap after GC invocations=8 (full 2):
+ PSYoungGen      total 146432K, used 0K [0x0000000775780000, 0x0000000781900000, 0x00000007c0000000)
+  eden space 134656K, 0% used [0x0000000775780000,0x0000000775780000,0x000000077db00000)
+  from space 11776K, 0% used [0x000000077e980000,0x000000077e980000,0x000000077f500000)
+  to   space 14848K, 0% used [0x000000077db00000,0x000000077db00000,0x000000077e980000)
+ ParOldGen       total 146432K, used 19215K [0x00000006e0600000, 0x00000006e9500000, 0x0000000775780000)
+  object space 146432K, 13% used [0x00000006e0600000,0x00000006e18c3ec0,0x00000006e9500000)
+ Metaspace       used 33539K, capacity 35282K, committed 35416K, reserved 1081344K
+  class space    used 4186K, capacity 4475K, committed 4480K, reserved 1048576K
+}
+Event: 8.437 GC heap before
+{Heap before GC invocations=9 (full 2):
+ PSYoungGen      total 146432K, used 134656K [0x0000000775780000, 0x0000000781900000, 0x00000007c0000000)
+  eden space 134656K, 100% used [0x0000000775780000,0x000000077db00000,0x000000077db00000)
+  from space 11776K, 0% used [0x000000077e980000,0x000000077e980000,0x000000077f500000)
+  to   space 14848K, 0% used [0x000000077db00000,0x000000077db00000,0x000000077e980000)
+ ParOldGen       total 146432K, used 19215K [0x00000006e0600000, 0x00000006e9500000, 0x0000000775780000)
+  object space 146432K, 13% used [0x00000006e0600000,0x00000006e18c3ec0,0x00000006e9500000)
+ Metaspace       used 43792K, capacity 46182K, committed 46424K, reserved 1089536K
+  class space    used 5503K, capacity 5901K, committed 6016K, reserved 1048576K
+Event: 8.449 GC heap after
+Heap after GC invocations=9 (full 2):
+ PSYoungGen      total 149504K, used 12718K [0x0000000775780000, 0x0000000783500000, 0x00000007c0000000)
+  eden space 134656K, 0% used [0x0000000775780000,0x0000000775780000,0x000000077db00000)
+  from space 14848K, 85% used [0x000000077db00000,0x000000077e76bb60,0x000000077e980000)
+  to   space 16384K, 0% used [0x0000000782500000,0x0000000782500000,0x0000000783500000)
+ ParOldGen       total 146432K, used 19223K [0x00000006e0600000, 0x00000006e9500000, 0x0000000775780000)
+  object space 146432K, 13% used [0x00000006e0600000,0x00000006e18c5ec0,0x00000006e9500000)
+ Metaspace       used 43792K, capacity 46182K, committed 46424K, reserved 1089536K
+  class space    used 5503K, capacity 5901K, committed 6016K, reserved 1048576K
+}
+Event: 22.167 GC heap before
+{Heap before GC invocations=10 (full 2):
+ PSYoungGen      total 149504K, used 147374K [0x0000000775780000, 0x0000000783500000, 0x00000007c0000000)
+  eden space 134656K, 100% used [0x0000000775780000,0x000000077db00000,0x000000077db00000)
+  from space 14848K, 85% used [0x000000077db00000,0x000000077e76bb60,0x000000077e980000)
+  to   space 16384K, 0% used [0x0000000782500000,0x0000000782500000,0x0000000783500000)
+ ParOldGen       total 146432K, used 19223K [0x00000006e0600000, 0x00000006e9500000, 0x0000000775780000)
+  object space 146432K, 13% used [0x00000006e0600000,0x00000006e18c5ec0,0x00000006e9500000)
+ Metaspace       used 53257K, capacity 56382K, committed 56536K, reserved 1097728K
+  class space    used 6826K, capacity 7351K, committed 7424K, reserved 1048576K
+Event: 22.201 GC heap after
+Heap after GC invocations=10 (full 2):
+ PSYoungGen      total 203264K, used 16382K [0x0000000775780000, 0x0000000783600000, 0x00000007c0000000)
+  eden space 186880K, 0% used [0x0000000775780000,0x0000000775780000,0x0000000780e00000)
+  from space 16384K, 99% used [0x0000000782500000,0x00000007834ff8f0,0x0000000783500000)
+  to   space 20480K, 0% used [0x0000000780e00000,0x0000000780e00000,0x0000000782200000)
+ ParOldGen       total 146432K, used 23694K [0x00000006e0600000, 0x00000006e9500000, 0x0000000775780000)
+  object space 146432K, 16% used [0x00000006e0600000,0x00000006e1d23b40,0x00000006e9500000)
+ Metaspace       used 53257K, capacity 56382K, committed 56536K, reserved 1097728K
+  class space    used 6826K, capacity 7351K, committed 7424K, reserved 1048576K
+}
+
+Deoptimization events (197 events):
+Event: 0.598 Thread 0x00000000036c2800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x0000000003b514bc method=sun.misc.MetaIndex.mayContain(Ljava/lang/String;)Z @ 13
+Event: 0.784 Thread 0x00000000036c2800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x0000000003bbd0b4 method=sun.misc.MetaIndex.mayContain(Ljava/lang/String;)Z @ 38
+Event: 0.831 Thread 0x00000000036c2800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x0000000003b84424 method=java.io.WinNTFileSystem.normalize(Ljava/lang/String;II)Ljava/lang/String; @ 8
+Event: 0.997 Thread 0x00000000036c2800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x0000000003c7d408 method=java.util.HashMap.getNode(ILjava/lang/Object;)Ljava/util/HashMap$Node; @ 62
+Event: 1.123 Thread 0x00000000036c2800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x0000000003b3bfb4 method=java.lang.String.indexOf([CII[CIII)I @ 3
+Event: 1.157 Thread 0x00000000036c2800 Uncommon trap: reason=range_check action=make_not_entrant pc=0x0000000003cd4aa8 method=sun.reflect.generics.parser.SignatureParser.current()C @ 34
+Event: 1.437 Thread 0x00000000036c2800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x0000000003c91e5c method=java.util.HashMap.hash(Ljava/lang/Object;)I @ 1
+Event: 1.437 Thread 0x00000000036c2800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x0000000003c6c634 method=java.util.HashMap.hash(Ljava/lang/Object;)I @ 1
+Event: 2.162 Thread 0x00000000200b2000 Uncommon trap: reason=unstable_if action=reinterpret pc=0x0000000003de0fec method=java.util.concurrent.ConcurrentHashMap.addCount(JI)V @ 34
+Event: 2.184 Thread 0x00000000036c2800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x0000000003bf53f8 method=java.lang.reflect.Method.equals(Ljava/lang/Object;)Z @ 49
+Event: 2.344 Thread 0x00000000200b2000 Uncommon trap: reason=unstable_if action=reinterpret pc=0x0000000003d947f4 method=jdk.internal.org.objectweb.asm.Type.getArgumentsAndReturnSizes(Ljava/lang/String;)I @ 47
+Event: 2.547 Thread 0x00000000036c2800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x0000000003dd047c method=java.util.HashMap.getNode(ILjava/lang/Object;)Ljava/util/HashMap$Node; @ 129
+Event: 2.547 Thread 0x00000000036c2800 Uncommon trap: reason=class_check action=maybe_recompile pc=0x0000000003d93bec method=java.util.HashMap.putVal(ILjava/lang/Object;Ljava/lang/Object;ZZ)Ljava/lang/Object; @ 203
+Event: 2.547 Thread 0x00000000036c2800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x0000000003d84614 method=java.util.HashMap.getNode(ILjava/lang/Object;)Ljava/util/HashMap$Node; @ 129
+Event: 2.551 Thread 0x00000000036c2800 Uncommon trap: reason=class_check action=maybe_recompile pc=0x0000000003d93bec method=java.util.HashMap.putVal(ILjava/lang/Object;Ljava/lang/Object;ZZ)Ljava/lang/Object; @ 203
+Event: 2.578 Thread 0x00000000036c2800 Uncommon trap: reason=class_check action=maybe_recompile pc=0x0000000003d93bec method=java.util.HashMap.putVal(ILjava/lang/Object;Ljava/lang/Object;ZZ)Ljava/lang/Object; @ 203
+Event: 2.586 Thread 0x00000000036c2800 Uncommon trap: reason=class_check action=maybe_recompile pc=0x0000000003d93bec method=java.util.HashMap.putVal(ILjava/lang/Object;Ljava/lang/Object;ZZ)Ljava/lang/Object; @ 203
+Event: 2.810 Thread 0x00000000036c2800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x0000000003e2db98 method=java.io.WinNTFileSystem.normalize(Ljava/lang/String;)Ljava/lang/String; @ 128
+Event: 2.919 Thread 0x00000000036c2800 Uncommon trap: reason=class_check action=maybe_recompile pc=0x0000000003d88268 method=java.util.HashMap.putVal(ILjava/lang/Object;Ljava/lang/Object;ZZ)Ljava/lang/Object; @ 203
+Event: 3.425 Thread 0x00000000036c2800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x0000000003fea1e4 method=org.springframework.asm.ClassReader.readUtf(II[C)Ljava/lang/String; @ 69
+Event: 3.425 Thread 0x00000000036c2800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x0000000003fe5c30 method=org.springframework.asm.ClassReader.readUtf(II[C)Ljava/lang/String; @ 69
+Event: 3.521 Thread 0x00000000036c2800 Uncommon trap: reason=bimorphic action=maybe_recompile pc=0x000000000410d328 method=java.util.HashMap.putVal(ILjava/lang/Object;Ljava/lang/Object;ZZ)Ljava/lang/Object; @ 203
+Event: 3.607 Thread 0x00000000036c2800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x0000000004153ac8 method=java.util.Hashtable$Enumerator.nextElement()Ljava/lang/Object; @ 71
+Event: 3.607 Thread 0x00000000036c2800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x0000000004153dc8 method=java.util.Hashtable$Enumerator.nextElement()Ljava/lang/Object; @ 71
+Event: 3.748 Thread 0x00000000036c2800 Uncommon trap: reason=bimorphic action=maybe_recompile pc=0x000000000410d328 method=java.util.HashMap.putVal(ILjava/lang/Object;Ljava/lang/Object;ZZ)Ljava/lang/Object; @ 203
+Event: 3.909 Thread 0x00000000036c2800 Uncommon trap: reason=bimorphic action=maybe_recompile pc=0x000000000410d328 method=java.util.HashMap.putVal(ILjava/lang/Object;Ljava/lang/Object;ZZ)Ljava/lang/Object; @ 203
+Event: 3.929 Thread 0x00000000036c2800 Uncommon trap: reason=class_check action=maybe_recompile pc=0x0000000003f44db0 method=java.util.regex.Pattern$CharProperty.match(Ljava/util/regex/Matcher;ILjava/lang/CharSequence;)Z @ 18
+Event: 3.929 Thread 0x00000000036c2800 Uncommon trap: reason=class_check action=maybe_recompile pc=0x0000000003f44db0 method=java.util.regex.Pattern$CharProperty.match(Ljava/util/regex/Matcher;ILjava/lang/CharSequence;)Z @ 18
+Event: 3.929 Thread 0x00000000036c2800 Uncommon trap: reason=class_check action=maybe_recompile pc=0x0000000003f44db0 method=java.util.regex.Pattern$CharProperty.match(Ljava/util/regex/Matcher;ILjava/lang/CharSequence;)Z @ 18
+Event: 3.929 Thread 0x00000000036c2800 Uncommon trap: reason=class_check action=maybe_recompile pc=0x0000000003f44db0 method=java.util.regex.Pattern$CharProperty.match(Ljava/util/regex/Matcher;ILjava/lang/CharSequence;)Z @ 18
+Event: 4.006 Thread 0x00000000036c2800 Uncommon trap: reason=predicate action=maybe_recompile pc=0x0000000004218cc0 method=java.util.AbstractCollection.toArray([Ljava/lang/Object;)[Ljava/lang/Object; @ 49
+Event: 4.015 Thread 0x00000000036c2800 Uncommon trap: reason=array_check action=maybe_recompile pc=0x0000000004229f70 method=java.util.AbstractCollection.toArray([Ljava/lang/Object;)[Ljava/lang/Object; @ 119
+Event: 4.015 Thread 0x00000000036c2800 Uncommon trap: reason=array_check action=maybe_recompile pc=0x0000000004229f70 method=java.util.AbstractCollection.toArray([Ljava/lang/Object;)[Ljava/lang/Object; @ 119
+Event: 4.015 Thread 0x00000000036c2800 Uncommon trap: reason=array_check action=maybe_recompile pc=0x0000000004229f70 method=java.util.AbstractCollection.toArray([Ljava/lang/Object;)[Ljava/lang/Object; @ 119
+Event: 4.017 Thread 0x00000000036c2800 Uncommon trap: reason=array_check action=maybe_recompile pc=0x0000000004229f70 method=java.util.AbstractCollection.toArray([Ljava/lang/Object;)[Ljava/lang/Object; @ 119
+Event: 4.017 Thread 0x00000000036c2800 Uncommon trap: reason=class_check action=maybe_recompile pc=0x0000000003ac4c18 method=java.lang.String.equals(Ljava/lang/Object;)Z @ 8
+Event: 4.017 Thread 0x00000000036c2800 Uncommon trap: reason=class_check action=maybe_recompile pc=0x0000000003ac4c18 method=java.lang.String.equals(Ljava/lang/Object;)Z @ 8
+Event: 4.018 Thread 0x00000000036c2800 Uncommon trap: reason=class_check action=maybe_recompile pc=0x0000000003ac4c18 method=java.lang.String.equals(Ljava/lang/Object;)Z @ 8
+Event: 4.018 Thread 0x00000000036c2800 Uncommon trap: reason=class_check action=maybe_recompile pc=0x0000000003ac4c18 method=java.lang.String.equals(Ljava/lang/Object;)Z @ 8
+Event: 4.044 Thread 0x00000000036c2800 Uncommon trap: reason=bimorphic action=maybe_recompile pc=0x000000000410d328 method=java.util.HashMap.putVal(ILjava/lang/Object;Ljava/lang/Object;ZZ)Ljava/lang/Object; @ 203
+Event: 4.044 Thread 0x00000000036c2800 Uncommon trap: reason=bimorphic action=maybe_recompile pc=0x0000000003f69f40 method=java.util.HashMap.putVal(ILjava/lang/Object;Ljava/lang/Object;ZZ)Ljava/lang/Object; @ 203
+Event: 4.107 Thread 0x00000000036c2800 Uncommon trap: reason=bimorphic action=maybe_recompile pc=0x0000000003f6ae18 method=java.util.HashMap.putVal(ILjava/lang/Object;Ljava/lang/Object;ZZ)Ljava/lang/Object; @ 203
+Event: 4.130 Thread 0x00000000036c2800 Uncommon trap: reason=class_check action=maybe_recompile pc=0x00000000041ea68c method=java.util.regex.Pattern$CharProperty.match(Ljava/util/regex/Matcher;ILjava/lang/CharSequence;)Z @ 37
+Event: 4.135 Thread 0x00000000036c2800 Uncommon trap: reason=class_check action=maybe_recompile pc=0x00000000041ea68c method=java.util.regex.Pattern$CharProperty.match(Ljava/util/regex/Matcher;ILjava/lang/CharSequence;)Z @ 37
+Event: 4.295 Thread 0x00000000036c2800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x00000000042670ac method=org.springframework.core.annotation.MergedAnnotationsCollection.isMappingForType(Lorg/springframework/core/annotation/AnnotationTypeMapping;Ljava/lang/Object;)Z @ 13
+Event: 4.295 Thread 0x00000000036c2800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x00000000042ba704 method=org.springframework.core.annotation.MergedAnnotationsCollection.isMappingForType(Lorg/springframework/core/annotation/AnnotationTypeMapping;Ljava/lang/Object;)Z @ 13
+Event: 4.366 Thread 0x00000000036c2800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x00000000041f5c00 method=java.util.Arrays.equals([Ljava/lang/Object;[Ljava/lang/Object;)Z @ 65
+Event: 4.380 Thread 0x00000000036c2800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x00000000040f0fe0 method=org.springframework.core.annotation.MergedAnnotationsCollection.isMappingForType(Lorg/springframework/core/annotation/AnnotationTypeMapping;Ljava/lang/Object;)Z @ 13
+Event: 4.742 Thread 0x00000000036c2800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x000000000438c868 method=org.springframework.core.ResolvableType$1.isAssignableFrom(Ljava/lang/Class;)Z @ 15
+Event: 4.745 Thread 0x00000000036c2800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x000000000435212c method=org.springframework.core.ResolvableType$1.isAssignableFrom(Ljava/lang/Class;)Z @ 15
+Event: 4.775 Thread 0x00000000036c2800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x00000000043174dc method=org.springframework.beans.factory.support.AbstractBeanFactory.getMergedLocalBeanDefinition(Ljava/lang/String;)Lorg/springframework/beans/factory/support/RootBeanDefinition; 
+Event: 4.786 Thread 0x00000000036c2800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x0000000004324e10 method=org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(Ljava/lang/String;Z)Ljava/lang/Object; @ 20
+Event: 4.787 Thread 0x00000000036c2800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x00000000042f1b64 method=org.springframework.util.StringUtils.cleanPath(Ljava/lang/String;)Ljava/lang/String; @ 25
+Event: 4.877 Thread 0x00000000036c2800 Uncommon trap: reason=class_check action=maybe_recompile pc=0x00000000040c75e0 method=org.springframework.util.ConcurrentReferenceHashMap$Segment.findInChain(Lorg/springframework/util/ConcurrentReferenceHashMap$Reference;Ljava/lang/Object;I)Lorg/springfra
+Event: 4.880 Thread 0x00000000036c2800 Uncommon trap: reason=bimorphic action=maybe_recompile pc=0x00000000043d8de4 method=org.springframework.core.ResolvableType.calculateHashCode()I @ 48
+Event: 4.883 Thread 0x00000000036c2800 Uncommon trap: reason=bimorphic action=maybe_recompile pc=0x00000000043d8de4 method=org.springframework.core.ResolvableType.calculateHashCode()I @ 48
+Event: 4.883 Thread 0x00000000036c2800 Uncommon trap: reason=bimorphic action=maybe_recompile pc=0x00000000043f2438 method=org.springframework.core.ResolvableType.equals(Ljava/lang/Object;)Z @ 117
+Event: 4.883 Thread 0x00000000036c2800 Uncommon trap: reason=bimorphic action=maybe_recompile pc=0x00000000043d8de4 method=org.springframework.core.ResolvableType.calculateHashCode()I @ 48
+Event: 4.883 Thread 0x00000000036c2800 Uncommon trap: reason=bimorphic action=maybe_recompile pc=0x00000000043d8de4 method=org.springframework.core.ResolvableType.calculateHashCode()I @ 48
+Event: 4.883 Thread 0x00000000036c2800 Uncommon trap: reason=bimorphic action=maybe_recompile pc=0x00000000043f2438 method=org.springframework.core.ResolvableType.equals(Ljava/lang/Object;)Z @ 117
+Event: 4.883 Thread 0x00000000036c2800 Uncommon trap: reason=bimorphic action=maybe_recompile pc=0x00000000043f2438 method=org.springframework.core.ResolvableType.equals(Ljava/lang/Object;)Z @ 117
+Event: 4.894 Thread 0x00000000036c2800 Uncommon trap: reason=class_check action=maybe_recompile pc=0x00000000040c75e0 method=org.springframework.util.ConcurrentReferenceHashMap$Segment.findInChain(Lorg/springframework/util/ConcurrentReferenceHashMap$Reference;Ljava/lang/Object;I)Lorg/springfra
+Event: 4.894 Thread 0x00000000036c2800 Uncommon trap: reason=bimorphic action=maybe_recompile pc=0x00000000043f2438 method=org.springframework.core.ResolvableType.equals(Ljava/lang/Object;)Z @ 117
+Event: 4.897 Thread 0x00000000036c2800 Uncommon trap: reason=class_check action=maybe_recompile pc=0x00000000040c75e0 method=org.springframework.util.ConcurrentReferenceHashMap$Segment.findInChain(Lorg/springframework/util/ConcurrentReferenceHashMap$Reference;Ljava/lang/Object;I)Lorg/springfra
+Event: 4.900 Thread 0x00000000036c2800 Uncommon trap: reason=class_check action=maybe_recompile pc=0x00000000040c75e0 method=org.springframework.util.ConcurrentReferenceHashMap$Segment.findInChain(Lorg/springframework/util/ConcurrentReferenceHashMap$Reference;Ljava/lang/Object;I)Lorg/springfra
+Event: 4.902 Thread 0x00000000036c2800 Uncommon trap: reason=class_check action=maybe_recompile pc=0x00000000040cd888 method=org.springframework.util.ConcurrentReferenceHashMap$Segment.findInChain(Lorg/springframework/util/ConcurrentReferenceHashMap$Reference;Ljava/lang/Object;I)Lorg/springfra
+Event: 4.904 Thread 0x00000000036c2800 Uncommon trap: reason=class_check action=maybe_recompile pc=0x00000000040c02a0 method=org.springframework.util.ConcurrentReferenceHashMap$Segment.findInChain(Lorg/springframework/util/ConcurrentReferenceHashMap$Reference;Ljava/lang/Object;I)Lorg/springfra
+Event: 5.166 Thread 0x00000000036c2800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x00000000042e6460 method=org.springframework.beans.factory.support.AbstractBeanDefinition.isLazyInit()Z @ 14
+Event: 5.442 Thread 0x00000000036c2800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x00000000042bd288 method=java.util.LinkedList.node(I)Ljava/util/LinkedList$Node; @ 49
+Event: 5.459 Thread 0x00000000036c2800 Uncommon trap: reason=class_check action=maybe_recompile pc=0x00000000045078a4 method=org.springframework.core.ResolvableType.resolveType()Lorg/springframework/core/ResolvableType; @ 101
+Event: 5.487 Thread 0x00000000036c2800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x0000000004584ee0 method=org.springframework.beans.factory.support.AbstractBeanFactory.isTypeMatch(Ljava/lang/String;Lorg/springframework/core/ResolvableType;Z)Z @ 99
+Event: 5.487 Thread 0x00000000036c2800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x000000000433fa48 method=org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.predictBeanType(Ljava/lang/String;Lorg/springframework/beans/factory/support/RootBeanDefinition;
+Event: 5.522 Thread 0x00000000036c2800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x000000000432cc38 method=org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.predictBeanType(Ljava/lang/String;Lorg/springframework/beans/factory/support/RootBeanDefinition;
+Event: 5.611 Thread 0x00000000036c2800 Uncommon trap: reason=null_check action=make_not_entrant pc=0x00000000045783cc method=java.lang.Class.isAnnotation()Z @ 1
+Event: 5.619 Thread 0x00000000036c2800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x0000000003e6621c method=java.lang.reflect.Method.equals(Ljava/lang/Object;)Z @ 1
+Event: 5.661 Thread 0x00000000036c2800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x000000000447b628 method=org.springframework.util.ConcurrentReferenceHashMap$Segment.findInChain(Lorg/springframework/util/ConcurrentReferenceHashMap$Reference;Ljava/lang/Object;I)Lorg/springframewo
+Event: 5.706 Thread 0x00000000036c2800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x0000000004359e64 method=sun.reflect.annotation.AnnotationInvocationHandler.invoke(Ljava/lang/Object;Ljava/lang/reflect/Method;[Ljava/lang/Object;)Ljava/lang/Object; @ 19
+Event: 5.726 Thread 0x00000000036c2800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x0000000003f3d51c method=java.util.concurrent.ConcurrentHashMap.get(Ljava/lang/Object;)Ljava/lang/Object; @ 76
+Event: 5.727 Thread 0x00000000036c2800 Uncommon trap: reason=class_check action=maybe_recompile pc=0x0000000004249ad0 method=java.util.concurrent.ConcurrentHashMap.putVal(Ljava/lang/Object;Ljava/lang/Object;Z)Ljava/lang/Object; @ 192
+Event: 5.728 Thread 0x00000000036c2800 Uncommon trap: reason=class_check action=maybe_recompile pc=0x0000000004249ad0 method=java.util.concurrent.ConcurrentHashMap.putVal(Ljava/lang/Object;Ljava/lang/Object;Z)Ljava/lang/Object; @ 192
+Event: 5.729 Thread 0x00000000036c2800 Uncommon trap: reason=class_check action=maybe_recompile pc=0x0000000004249ad0 method=java.util.concurrent.ConcurrentHashMap.putVal(Ljava/lang/Object;Ljava/lang/Object;Z)Ljava/lang/Object; @ 192
+Event: 5.729 Thread 0x00000000036c2800 Uncommon trap: reason=class_check action=maybe_recompile pc=0x0000000004249ad0 method=java.util.concurrent.ConcurrentHashMap.putVal(Ljava/lang/Object;Ljava/lang/Object;Z)Ljava/lang/Object; @ 192
+Event: 5.779 Thread 0x00000000036c2800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x000000000416650c method=java.util.Properties$LineReader.readLine()I @ 252
+Event: 5.779 Thread 0x00000000036c2800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x0000000004165254 method=java.util.Properties$LineReader.readLine()I @ 252
+Event: 5.856 Thread 0x00000000036c2800 Uncommon trap: reason=null_check action=make_not_entrant pc=0x0000000004532d2c method=org.springframework.beans.factory.support.DefaultListableBeanFactory.getBeanDefinition(Ljava/lang/String;)Lorg/springframework/beans/factory/config/BeanDefinition; @ 10
+Event: 6.028 Thread 0x00000000036c2800 Uncommon trap: reason=bimorphic action=maybe_recompile pc=0x0000000004514db8 method=java.util.Collections$SetFromMap.contains(Ljava/lang/Object;)Z @ 5
+Event: 6.029 Thread 0x00000000036c2800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x00000000044d5b60 method=java.util.regex.Pattern$Curly.match0(Ljava/util/regex/Matcher;IILjava/lang/CharSequence;)Z @ 66
+Event: 6.037 Thread 0x00000000036c2800 Uncommon trap: reason=class_check action=maybe_recompile pc=0x00000000045078a4 method=org.springframework.core.ResolvableType.resolveType()Lorg/springframework/core/ResolvableType; @ 101
+Event: 6.056 Thread 0x00000000036c2800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x00000000041a5f88 method=java.util.LinkedHashMap.get(Ljava/lang/Object;)Ljava/lang/Object; @ 20
+Event: 6.065 Thread 0x00000000036c2800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x0000000004161b00 method=java.util.Properties.loadConvert([CII[C)Ljava/lang/String; @ 57
+Event: 6.839 Thread 0x00000000036c2800 Uncommon trap: reason=class_check action=maybe_recompile pc=0x0000000004776148 method=java.util.Hashtable.get(Ljava/lang/Object;)Ljava/lang/Object; @ 6
+Event: 6.850 Thread 0x00000000036c2800 Uncommon trap: reason=class_check action=maybe_recompile pc=0x0000000004776148 method=java.util.Hashtable.get(Ljava/lang/Object;)Ljava/lang/Object; @ 6
+Event: 6.851 Thread 0x00000000036c2800 Uncommon trap: reason=class_check action=maybe_recompile pc=0x0000000004776148 method=java.util.Hashtable.get(Ljava/lang/Object;)Ljava/lang/Object; @ 6
+Event: 6.854 Thread 0x00000000036c2800 Uncommon trap: reason=class_check action=maybe_recompile pc=0x0000000004776148 method=java.util.Hashtable.get(Ljava/lang/Object;)Ljava/lang/Object; @ 6
+Event: 6.958 Thread 0x00000000036c2800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x00000000044ff2cc method=java.io.WinNTFileSystem.resolve(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; @ 19
+Event: 6.967 Thread 0x00000000036c2800 Uncommon trap: reason=class_check action=maybe_recompile pc=0x0000000003f2a420 method=java.util.zip.InflaterInputStream.read([BII)I @ 100
+Event: 6.967 Thread 0x00000000036c2800 Uncommon trap: reason=class_check action=maybe_recompile pc=0x0000000003f2a420 method=java.util.zip.InflaterInputStream.read([BII)I @ 100
+Event: 6.968 Thread 0x00000000036c2800 Uncommon trap: reason=class_check action=maybe_recompile pc=0x0000000003f2a420 method=java.util.zip.InflaterInputStream.read([BII)I @ 100
+Event: 6.968 Thread 0x00000000036c2800 Uncommon trap: reason=class_check action=maybe_recompile pc=0x0000000003f2a420 method=java.util.zip.InflaterInputStream.read([BII)I @ 100
+Event: 7.002 Thread 0x00000000036c2800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x0000000003c143f8 method=sun.nio.cs.UTF_8$Decoder.decode([BII[C)I @ 30
+Event: 7.170 Thread 0x00000000036c2800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x0000000003e77824 method=java.lang.String.lastIndexOf([CII[CIII)I @ 118
+Event: 7.170 Thread 0x00000000036c2800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x0000000003e819d8 method=sun.net.www.protocol.jar.Handler.parseURL(Ljava/net/URL;Ljava/lang/String;II)V @ 116
+Event: 7.287 Thread 0x00000000036c2800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x000000000482f3b0 method=java.lang.Class.cast(Ljava/lang/Object;)Ljava/lang/Object; @ 9
+Event: 7.292 Thread 0x00000000036c2800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x00000000044ec188 method=jdk.internal.org.objectweb.asm.Type.getArgumentsAndReturnSizes(Ljava/lang/String;)I @ 41
+Event: 7.307 Thread 0x00000000036c2800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x0000000003f3af80 method=java.util.regex.Pattern$LastNode.match(Ljava/util/regex/Matcher;ILjava/lang/CharSequence;)Z @ 5
+Event: 7.325 Thread 0x00000000036c2800 Uncommon trap: reason=class_check action=maybe_recompile pc=0x00000000045078a4 method=org.springframework.core.ResolvableType.resolveType()Lorg/springframework/core/ResolvableType; @ 101
+Event: 7.359 Thread 0x00000000036c2800 Uncommon trap: reason=class_check action=maybe_recompile pc=0x00000000044e4418 method=org.springframework.core.SerializableTypeWrapper.unwrap(Ljava/lang/reflect/Type;)Ljava/lang/reflect/Type; @ 18
+Event: 7.359 Thread 0x00000000036c2800 Uncommon trap: reason=class_check action=maybe_recompile pc=0x00000000044e4418 method=org.springframework.core.SerializableTypeWrapper.unwrap(Ljava/lang/reflect/Type;)Ljava/lang/reflect/Type; @ 18
+Event: 7.359 Thread 0x00000000036c2800 Uncommon trap: reason=class_check action=maybe_recompile pc=0x00000000044e4418 method=org.springframework.core.SerializableTypeWrapper.unwrap(Ljava/lang/reflect/Type;)Ljava/lang/reflect/Type; @ 18
+Event: 7.362 Thread 0x00000000036c2800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x000000000474851c method=org.springframework.beans.factory.support.AbstractBeanFactory.isTypeMatch(Ljava/lang/String;Lorg/springframework/core/ResolvableType;Z)Z @ 559
+Event: 7.546 Thread 0x00000000036c2800 Uncommon trap: reason=bimorphic action=maybe_recompile pc=0x000000000478405c method=java.util.Hashtable.get(Ljava/lang/Object;)Ljava/lang/Object; @ 6
+Event: 7.546 Thread 0x00000000036c2800 Uncommon trap: reason=bimorphic action=maybe_recompile pc=0x000000000478405c method=java.util.Hashtable.get(Ljava/lang/Object;)Ljava/lang/Object; @ 6
+Event: 7.622 Thread 0x00000000036c2800 Uncommon trap: reason=class_check action=maybe_recompile pc=0x00000000045078a4 method=org.springframework.core.ResolvableType.resolveType()Lorg/springframework/core/ResolvableType; @ 101
+Event: 7.627 Thread 0x00000000036c2800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x00000000042839b8 method=java.util.WeakHashMap.remove(Ljava/lang/Object;)Ljava/lang/Object; @ 94
+Event: 7.633 Thread 0x00000000036c2800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x0000000004341cf4 method=org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.determineTargetType(Ljava/lang/String;Lorg/springframework/beans/factory/support/RootBeanDefinit
+Event: 7.837 Thread 0x00000000036c2800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x000000000471a3d0 method=java.util.Properties.load0(Ljava/util/Properties$LineReader;)V @ 56
+Event: 7.837 Thread 0x00000000036c2800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x000000000476d8e8 method=java.util.Properties$LineReader.readLine()I @ 328
+Event: 7.838 Thread 0x00000000036c2800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x00000000046d3c0c method=java.util.Properties.load0(Ljava/util/Properties$LineReader;)V @ 56
+Event: 7.839 Thread 0x00000000036c2800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x00000000044375fc method=java.util.StringTokenizer.nextToken()Ljava/lang/String; @ 5
+Event: 7.839 Thread 0x00000000036c2800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x0000000003c378b4 method=java.lang.AbstractStringBuilder.append(Ljava/lang/String;)Ljava/lang/AbstractStringBuilder; @ 1
+Event: 7.839 Thread 0x00000000036c2800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x0000000003bc00b8 method=java.lang.AbstractStringBuilder.append(Ljava/lang/String;)Ljava/lang/AbstractStringBuilder; @ 1
+Event: 7.913 Thread 0x00000000036c2800 Uncommon trap: reason=bimorphic action=maybe_recompile pc=0x0000000004514db8 method=java.util.Collections$SetFromMap.contains(Ljava/lang/Object;)Z @ 5
+Event: 7.915 Thread 0x00000000036c2800 Uncommon trap: reason=bimorphic action=maybe_recompile pc=0x0000000004514db8 method=java.util.Collections$SetFromMap.contains(Ljava/lang/Object;)Z @ 5
+Event: 7.915 Thread 0x00000000036c2800 Uncommon trap: reason=bimorphic action=maybe_recompile pc=0x0000000004514db8 method=java.util.Collections$SetFromMap.contains(Ljava/lang/Object;)Z @ 5
+Event: 8.228 Thread 0x00000000036c2800 Uncommon trap: reason=bimorphic action=maybe_recompile pc=0x0000000004435f7c method=java.util.regex.Pattern$CharProperty.match(Ljava/util/regex/Matcher;ILjava/lang/CharSequence;)Z @ 18
+Event: 8.228 Thread 0x00000000036c2800 Uncommon trap: reason=bimorphic action=maybe_recompile pc=0x0000000004435f7c method=java.util.regex.Pattern$CharProperty.match(Ljava/util/regex/Matcher;ILjava/lang/CharSequence;)Z @ 18
+Event: 8.228 Thread 0x00000000036c2800 Uncommon trap: reason=bimorphic action=maybe_recompile pc=0x0000000004435f7c method=java.util.regex.Pattern$CharProperty.match(Ljava/util/regex/Matcher;ILjava/lang/CharSequence;)Z @ 18
+Event: 8.228 Thread 0x00000000036c2800 Uncommon trap: reason=bimorphic action=maybe_recompile pc=0x0000000004435f7c method=java.util.regex.Pattern$CharProperty.match(Ljava/util/regex/Matcher;ILjava/lang/CharSequence;)Z @ 18
+Event: 8.239 Thread 0x00000000036c2800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x0000000004126cd0 method=java.io.WinNTFileSystem.prefixLength(Ljava/lang/String;)I @ 42
+Event: 8.466 Thread 0x000000001ebfe800 Uncommon trap: reason=class_check action=maybe_recompile pc=0x00000000044e5438 method=java.util.stream.StreamOpFlag.fromCharacteristics(Ljava/util/Spliterator;)I @ 14
+Event: 8.468 Thread 0x000000001ebfe800 Uncommon trap: reason=class_check action=maybe_recompile pc=0x00000000044e5438 method=java.util.stream.StreamOpFlag.fromCharacteristics(Ljava/util/Spliterator;)I @ 14
+Event: 8.468 Thread 0x000000001ebfe800 Uncommon trap: reason=class_check action=maybe_recompile pc=0x00000000044e5438 method=java.util.stream.StreamOpFlag.fromCharacteristics(Ljava/util/Spliterator;)I @ 14
+Event: 8.477 Thread 0x000000001ebfe800 Uncommon trap: reason=bimorphic action=maybe_recompile pc=0x0000000003e1bebc method=java.util.concurrent.ConcurrentHashMap.computeIfAbsent(Ljava/lang/Object;Ljava/util/function/Function;)Ljava/lang/Object; @ 17
+Event: 8.480 Thread 0x00000000036c2800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x0000000004584184 method=java.lang.invoke.MethodType.checkPtypes([Ljava/lang/Class;)I @ 40
+Event: 8.519 Thread 0x00000000036c2800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x00000000043207ac method=java.util.EnumSet.typeCheck(Ljava/lang/Enum;)V @ 10
+Event: 8.862 Thread 0x00000000205b5000 Uncommon trap: reason=unstable_if action=reinterpret pc=0x0000000004830768 method=java.lang.Class.arrayContentsEq([Ljava/lang/Object;[Ljava/lang/Object;)Z @ 1
+Event: 8.919 Thread 0x00000000205b5000 Uncommon trap: reason=unstable_if action=reinterpret pc=0x0000000003f11820 method=java.lang.ClassLoader.getClassLoadingLock(Ljava/lang/String;)Ljava/lang/Object; @ 6
+Event: 8.969 Thread 0x00000000205b5000 Uncommon trap: reason=class_check action=maybe_recompile pc=0x000000000447b228 method=java.lang.reflect.Executable.getAnnotation(Ljava/lang/Class;)Ljava/lang/annotation/Annotation; @ 19
+Event: 8.972 Thread 0x00000000205b5000 Uncommon trap: reason=class_check action=maybe_recompile pc=0x000000000447b228 method=java.lang.reflect.Executable.getAnnotation(Ljava/lang/Class;)Ljava/lang/annotation/Annotation; @ 19
+Event: 8.975 Thread 0x00000000205b5000 Uncommon trap: reason=unstable_if action=reinterpret pc=0x0000000003bf1128 method=java.lang.ClassLoader.preDefineClass(Ljava/lang/String;Ljava/security/ProtectionDomain;)Ljava/security/ProtectionDomain; @ 86
+Event: 8.978 Thread 0x00000000205b5000 Uncommon trap: reason=class_check action=maybe_recompile pc=0x000000000447b228 method=java.lang.reflect.Executable.getAnnotation(Ljava/lang/Class;)Ljava/lang/annotation/Annotation; @ 19
+Event: 8.981 Thread 0x00000000205b5000 Uncommon trap: reason=class_check action=maybe_recompile pc=0x000000000447b228 method=java.lang.reflect.Executable.getAnnotation(Ljava/lang/Class;)Ljava/lang/annotation/Annotation; @ 19
+Event: 9.017 Thread 0x00000000205b5000 Uncommon trap: reason=unstable_if action=reinterpret pc=0x00000000044243a0 method=java.util.regex.Pattern$Dot.isSatisfiedBy(I)Z @ 9
+Event: 10.385 Thread 0x000000002183f000 Uncommon trap: reason=unstable_if action=reinterpret pc=0x0000000004330ea0 method=java.util.HashMap.putVal(ILjava/lang/Object;Ljava/lang/Object;ZZ)Ljava/lang/Object; @ 162
+Event: 10.385 Thread 0x000000002183f000 Uncommon trap: reason=unstable_if action=reinterpret pc=0x00000000043d1ac8 method=java.util.HashMap.putVal(ILjava/lang/Object;Ljava/lang/Object;ZZ)Ljava/lang/Object; @ 162
+Event: 10.385 Thread 0x000000002183f000 Uncommon trap: reason=unstable_if action=reinterpret pc=0x000000000418a760 method=java.util.HashMap.getNode(ILjava/lang/Object;)Ljava/util/HashMap$Node; @ 84
+Event: 10.385 Thread 0x000000002183f000 Uncommon trap: reason=unstable_if action=reinterpret pc=0x0000000003ec7b30 method=java.util.HashMap.getNode(ILjava/lang/Object;)Ljava/util/HashMap$Node; @ 84
+Event: 10.510 Thread 0x000000001f875800 Uncommon trap: reason=predicate action=maybe_recompile pc=0x0000000003d654e0 method=java.lang.String.regionMatches(ZILjava/lang/String;II)Z @ 63
+Event: 11.105 Thread 0x00000000232d1800 Uncommon trap: reason=bimorphic action=maybe_recompile pc=0x0000000003e1bebc method=java.util.concurrent.ConcurrentHashMap.computeIfAbsent(Ljava/lang/Object;Ljava/util/function/Function;)Ljava/lang/Object; @ 17
+Event: 11.105 Thread 0x00000000232d1800 Uncommon trap: reason=bimorphic action=maybe_recompile pc=0x0000000003e1bebc method=java.util.concurrent.ConcurrentHashMap.computeIfAbsent(Ljava/lang/Object;Ljava/util/function/Function;)Ljava/lang/Object; @ 17
+Event: 11.117 Thread 0x000000001f875800 Uncommon trap: reason=bimorphic action=maybe_recompile pc=0x0000000003e1bebc method=java.util.concurrent.ConcurrentHashMap.computeIfAbsent(Ljava/lang/Object;Ljava/util/function/Function;)Ljava/lang/Object; @ 17
+Event: 11.311 Thread 0x00000000205b5000 Uncommon trap: reason=unstable_if action=reinterpret pc=0x0000000003c6d6dc method=com.datastax.oss.driver.internal.core.metadata.token.Murmur3Token.equals(Ljava/lang/Object;)Z @ 28
+Event: 16.481 Thread 0x000000001eb1a800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x0000000003fda520 method=com.datastax.oss.driver.shaded.guava.common.primitives.Longs.compare(JJ)I @ 13
+Event: 16.490 Thread 0x000000001eb16800 Uncommon trap: reason=class_check action=maybe_recompile pc=0x00000000042d7510 method=com.datastax.oss.driver.internal.core.adminrequest.AdminRow.contains(Ljava/lang/String;)Z @ 5
+Event: 16.536 Thread 0x000000001eb1a800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x0000000003d69420 method=com.datastax.oss.driver.shaded.guava.common.primitives.Longs.compare(JJ)I @ 13
+Event: 16.541 Thread 0x000000001eb1a800 Uncommon trap: reason=bimorphic action=maybe_recompile pc=0x00000000041c2564 method=com.datastax.oss.driver.shaded.guava.common.collect.ImmutableSet$RegularSetBuilderImpl.add(Ljava/lang/Object;)Lcom/datastax/oss/driver/shaded/guava/common/collect/Immutabl
+Event: 16.541 Thread 0x000000001eb1a800 Uncommon trap: reason=bimorphic action=maybe_recompile pc=0x00000000041c2564 method=com.datastax.oss.driver.shaded.guava.common.collect.ImmutableSet$RegularSetBuilderImpl.add(Ljava/lang/Object;)Lcom/datastax/oss/driver/shaded/guava/common/collect/Immutabl
+Event: 16.541 Thread 0x000000001eb1a800 Uncommon trap: reason=bimorphic action=maybe_recompile pc=0x00000000041c2564 method=com.datastax.oss.driver.shaded.guava.common.collect.ImmutableSet$RegularSetBuilderImpl.add(Ljava/lang/Object;)Lcom/datastax/oss/driver/shaded/guava/common/collect/Immutabl
+Event: 16.541 Thread 0x000000001eb1a800 Uncommon trap: reason=bimorphic action=maybe_recompile pc=0x00000000041c2564 method=com.datastax.oss.driver.shaded.guava.common.collect.ImmutableSet$RegularSetBuilderImpl.add(Ljava/lang/Object;)Lcom/datastax/oss/driver/shaded/guava/common/collect/Immutabl
+Event: 21.586 Thread 0x000000001f875800 Uncommon trap: reason=class_check action=maybe_recompile pc=0x00000000042d7510 method=com.datastax.oss.driver.internal.core.adminrequest.AdminRow.contains(Ljava/lang/String;)Z @ 5
+Event: 21.586 Thread 0x000000001f875800 Uncommon trap: reason=null_check action=make_not_entrant pc=0x000000000481340c method=com.datastax.oss.driver.internal.core.adminrequest.AdminResult$1.computeNext()Lcom/datastax/oss/driver/internal/core/adminrequest/AdminRow; @ 24
+Event: 21.648 Thread 0x000000001eb16800 Uncommon trap: reason=predicate action=maybe_recompile pc=0x000000000458643c method=com.datastax.oss.driver.shaded.guava.common.collect.RegularImmutableMap.fromEntryArray(I[Ljava/util/Map$Entry;)Lcom/datastax/oss/driver/shaded/guava/common/collect/Immutab
+Event: 21.648 Thread 0x000000001eb16800 Uncommon trap: reason=class_check action=maybe_recompile pc=0x00000000042d7510 method=com.datastax.oss.driver.internal.core.adminrequest.AdminRow.contains(Ljava/lang/String;)Z @ 5
+Event: 21.697 Thread 0x00000000036c2800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x00000000044751c0 method=java.lang.Class$MethodArray.addIfNotPresent(Ljava/lang/reflect/Method;)V @ 19
+Event: 21.699 Thread 0x00000000036c2800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x0000000004880cdc method=java.lang.Class$MethodArray.removeLessSpecifics()V @ 78
+Event: 21.702 Thread 0x00000000036c2800 Uncommon trap: reason=class_check action=maybe_recompile pc=0x0000000004004680 method=org.springframework.beans.factory.support.AbstractBeanFactory.isTypeMatch(Ljava/lang/String;Lorg/springframework/core/ResolvableType;Z)Z @ 53
+Event: 21.702 Thread 0x00000000036c2800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x0000000004003ba8 method=org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.getSingletonFactoryBeanForTypeCheck(Ljava/lang/String;Lorg/springframework/beans/factory/support
+Event: 21.796 Thread 0x00000000036c2800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x0000000004788ee4 method=java.util.WeakHashMap.put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object; @ 72
+Event: 21.908 Thread 0x00000000036c2800 Uncommon trap: reason=class_check action=maybe_recompile pc=0x000000000446df6c method=sun.reflect.generics.reflectiveObjects.TypeVariableImpl.hashCode()I @ 4
+Event: 21.908 Thread 0x00000000036c2800 Uncommon trap: reason=class_check action=maybe_recompile pc=0x000000000446df6c method=sun.reflect.generics.reflectiveObjects.TypeVariableImpl.hashCode()I @ 4
+Event: 21.908 Thread 0x00000000036c2800 Uncommon trap: reason=class_check action=maybe_recompile pc=0x000000000446df6c method=sun.reflect.generics.reflectiveObjects.TypeVariableImpl.hashCode()I @ 4
+Event: 21.908 Thread 0x00000000036c2800 Uncommon trap: reason=class_check action=maybe_recompile pc=0x000000000446df6c method=sun.reflect.generics.reflectiveObjects.TypeVariableImpl.hashCode()I @ 4
+Event: 21.909 Thread 0x00000000036c2800 Uncommon trap: reason=class_check action=maybe_recompile pc=0x00000000048c7b2c method=org.springframework.core.ResolvableType.resolveType()Lorg/springframework/core/ResolvableType; @ 131
+Event: 21.975 Thread 0x000000001eb16800 Uncommon trap: reason=array_check action=maybe_recompile pc=0x00000000048b3eec method=com.datastax.oss.driver.shaded.guava.common.collect.RegularImmutableMap.fromEntryArray(I[Ljava/util/Map$Entry;)Lcom/datastax/oss/driver/shaded/guava/common/collect/Immut
+Event: 21.975 Thread 0x000000001eb16800 Uncommon trap: reason=class_check action=maybe_recompile pc=0x00000000042d7510 method=com.datastax.oss.driver.internal.core.adminrequest.AdminRow.contains(Ljava/lang/String;)Z @ 5
+Event: 21.982 Thread 0x000000001eb16800 Uncommon trap: reason=array_check action=maybe_recompile pc=0x00000000048b3eec method=com.datastax.oss.driver.shaded.guava.common.collect.RegularImmutableMap.fromEntryArray(I[Ljava/util/Map$Entry;)Lcom/datastax/oss/driver/shaded/guava/common/collect/Immut
+Event: 21.982 Thread 0x000000001eb16800 Uncommon trap: reason=array_check action=maybe_recompile pc=0x00000000048b3eec method=com.datastax.oss.driver.shaded.guava.common.collect.RegularImmutableMap.fromEntryArray(I[Ljava/util/Map$Entry;)Lcom/datastax/oss/driver/shaded/guava/common/collect/Immut
+Event: 21.986 Thread 0x000000001eb16800 Uncommon trap: reason=array_check action=maybe_recompile pc=0x00000000048b3eec method=com.datastax.oss.driver.shaded.guava.common.collect.RegularImmutableMap.fromEntryArray(I[Ljava/util/Map$Entry;)Lcom/datastax/oss/driver/shaded/guava/common/collect/Immut
+Event: 22.126 Thread 0x00000000036c2800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x00000000047278a8 method=org.springframework.util.ConcurrentReferenceHashMap$Segment.restructureIfNecessary(Z)V @ 41
+Event: 22.127 Thread 0x00000000036c2800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x0000000003b208dc method=org.springframework.util.ConcurrentReferenceHashMap$Segment.restructureIfNecessary(Z)V @ 41
+Event: 22.142 Thread 0x00000000036c2800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x0000000003eea1c4 method=org.springframework.util.ConcurrentReferenceHashMap$Segment.restructureIfNecessary(Z)V @ 41
+Event: 22.205 Thread 0x000000001ebfe800 Uncommon trap: reason=class_check action=maybe_recompile pc=0x00000000044e5438 method=java.util.stream.StreamOpFlag.fromCharacteristics(Ljava/util/Spliterator;)I @ 14
+Event: 22.231 Thread 0x00000000036c2800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x00000000044c3ccc method=java.util.stream.MatchOps$1MatchSink.accept(Ljava/lang/Object;)V @ 24
+Event: 22.247 Thread 0x00000000036c2800 Uncommon trap: reason=bimorphic action=maybe_recompile pc=0x0000000003b6ddbc method=org.springframework.util.ReflectionUtils.doWithMethods(Ljava/lang/Class;Lorg/springframework/util/ReflectionUtils$MethodCallback;Lorg/springframework/util/ReflectionUtils$
+Event: 22.247 Thread 0x00000000036c2800 Uncommon trap: reason=bimorphic action=maybe_recompile pc=0x0000000003b6ddbc method=org.springframework.util.ReflectionUtils.doWithMethods(Ljava/lang/Class;Lorg/springframework/util/ReflectionUtils$MethodCallback;Lorg/springframework/util/ReflectionUtils$
+Event: 22.267 Thread 0x00000000036c2800 Uncommon trap: reason=bimorphic action=maybe_recompile pc=0x0000000003b6ddbc method=org.springframework.util.ReflectionUtils.doWithMethods(Ljava/lang/Class;Lorg/springframework/util/ReflectionUtils$MethodCallback;Lorg/springframework/util/ReflectionUtils$
+Event: 22.267 Thread 0x00000000036c2800 Uncommon trap: reason=bimorphic action=maybe_recompile pc=0x0000000003b6ddbc method=org.springframework.util.ReflectionUtils.doWithMethods(Ljava/lang/Class;Lorg/springframework/util/ReflectionUtils$MethodCallback;Lorg/springframework/util/ReflectionUtils$
+Event: 22.421 Thread 0x00000000036c2800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x0000000003b40e48 method=org.springframework.core.annotation.AnnotationsScanner.processClassHierarchy(Ljava/lang/Object;[ILjava/lang/Class;Lorg/springframework/core/annotation/AnnotationsProcessor;Z
+Event: 22.496 Thread 0x00000000036c2800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x0000000003b58bb4 method=org.springframework.core.annotation.AnnotationsScanner.isWithoutHierarchy(Ljava/lang/reflect/AnnotatedElement;Lorg/springframework/core/annotation/MergedAnnotations$SearchSt
+Event: 22.497 Thread 0x00000000036c2800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x000000000485e924 method=org.springframework.core.annotation.AnnotationsScanner.processMethodHierarchy(Ljava/lang/Object;[ILjava/lang/Class;Lorg/springframework/core/annotation/AnnotationsProcessor;
+Event: 22.498 Thread 0x00000000036c2800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x00000000049765f8 method=org.springframework.core.annotation.AnnotationsScanner.processMethodHierarchy(Ljava/lang/Object;[ILjava/lang/Class;Lorg/springframework/core/annotation/AnnotationsProcessor;
+Event: 22.540 Thread 0x00000000036c2800 Uncommon trap: reason=bimorphic action=maybe_recompile pc=0x00000000045e2884 method=java.nio.charset.CharsetDecoder.replaceWith(Ljava/lang/String;)Ljava/nio/charset/CharsetDecoder; @ 63
+Event: 22.540 Thread 0x00000000036c2800 Uncommon trap: reason=class_check action=maybe_recompile pc=0x0000000003bbfd9c method=java.nio.charset.CharsetDecoder.reset()Ljava/nio/charset/CharsetDecoder; @ 1
+Event: 22.541 Thread 0x00000000036c2800 Uncommon trap: reason=bimorphic action=maybe_recompile pc=0x00000000045e2884 method=java.nio.charset.CharsetDecoder.replaceWith(Ljava/lang/String;)Ljava/nio/charset/CharsetDecoder; @ 63
+Event: 22.542 Thread 0x00000000036c2800 Uncommon trap: reason=class_check action=maybe_recompile pc=0x0000000003bbfd9c method=java.nio.charset.CharsetDecoder.reset()Ljava/nio/charset/CharsetDecoder; @ 1
+Event: 22.652 Thread 0x00000000036c2800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x0000000004a09108 method=org.springframework.core.annotation.AnnotationsScanner.processMethodHierarchy(Ljava/lang/Object;[ILjava/lang/Class;Lorg/springframework/core/annotation/AnnotationsProcessor;
+Event: 22.746 Thread 0x00000000036c2800 Uncommon trap: reason=unstable_if action=reinterpret pc=0x000000000465a9ec method=org.springframework.asm.Frame.merge(Lorg/springframework/asm/SymbolTable;I[II)Z @ 22
+
+Classes redefined (0 events):
+No events
+
+Internal exceptions (250 events):
+Event: 8.943 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000777eb0dc8) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.944 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000777ebd0b8) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.945 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000777ecf078) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.946 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000777ede070) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.948 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000777f00c30) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.949 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000777f0bb50) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.949 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000777f165f0) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.949 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000777f1c130) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.950 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000777f27910) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.950 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000777f339f0) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.951 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000777f39498) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.951 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000777f41a48) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.951 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000777f47010) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.951 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000777f474a0) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.952 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000777f49138) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.952 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000777f495c8) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.964 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x000000077800c2a0) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.964 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x000000077800c730) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.965 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000778015c08) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.965 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000778016098) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.966 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000778025dc8) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.966 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000778026258) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.966 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000778028430) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.966 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x00000007780288c0) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.966 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x000000077802a640) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.966 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x000000077802aad0) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.966 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x000000077802cc20) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.966 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x000000077802d0b0) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.977 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x00000007780d9ed8) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.977 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x00000007780da368) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.977 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x00000007780dbb88) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.977 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x00000007780dc018) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.977 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x00000007780dd8c8) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.977 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x00000007780ddd58) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.978 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x00000007780ea178) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.978 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x00000007780ea608) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.978 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x00000007780ebe28) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.978 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x00000007780ec2b8) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.978 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x00000007780ede00) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.978 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x00000007780ee290) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.978 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x00000007780f0150) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.978 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x00000007780f05e0) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.978 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x00000007780f1e00) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.978 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x00000007780f2290) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.979 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x00000007780f3ab0) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.979 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x00000007780f3f40) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.979 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x00000007780f5bf8) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.979 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x00000007780f6088) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.979 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x00000007780f78a8) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.979 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x00000007780f7d38) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.979 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x00000007780f95e8) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.979 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x00000007780f9a78) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.979 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x00000007780fb3e0) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.979 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x00000007780fb870) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.979 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x00000007780fd090) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.979 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x00000007780fd520) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.979 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x00000007780fee60) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.979 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x00000007780ff2f0) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.979 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000778100d00) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.979 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000778101190) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.979 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000778103428) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.979 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x00000007781038b8) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.979 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x00000007781058f8) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.979 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000778105d88) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.979 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000778107668) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.979 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000778107af8) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.979 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x00000007781095a8) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.979 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000778109a38) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.980 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x000000077810bd90) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.980 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x000000077810c220) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.980 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x000000077810e378) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.980 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x000000077810e808) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.980 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x00000007781104e0) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.980 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000778110970) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.980 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000778112428) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.980 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x00000007781128b8) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.980 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000778114318) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.980 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x00000007781147a8) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.980 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000778115fc8) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.980 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000778116458) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.980 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000778117c78) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.980 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000778118108) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.980 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x000000077811be90) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.980 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x000000077811c320) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.980 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x000000077811df58) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.980 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x000000077811e3e8) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.981 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x00000007781246c8) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.981 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000778124b58) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.981 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000778126408) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.981 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000778126898) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.981 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000778128080) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.981 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000778128510) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.981 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000778129f48) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.981 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x000000077812a3d8) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.981 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x000000077812bec8) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.981 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x000000077812c358) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.981 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x000000077812df90) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.981 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x000000077812e420) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.981 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000778130058) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.981 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x00000007781304e8) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.981 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000778131d98) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.981 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000778132228) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.981 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000778134048) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.981 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x00000007781344d8) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.982 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000778136ba0) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.982 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000778137030) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.982 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000778138850) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.982 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000778138ce0) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.982 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x000000077813ae18) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.982 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x000000077813b2a8) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.982 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x000000077813d4a8) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.982 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x000000077813d938) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.982 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x000000077813f278) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.982 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x000000077813f708) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.982 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x00000007781414b0) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.982 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000778141940) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.982 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x00000007781435e0) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.982 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000778143a70) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.983 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000778145800) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.983 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000778145c90) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.983 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x00000007781475d0) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.983 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000778147a60) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.983 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000778149788) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.983 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000778149c18) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.983 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x000000077814b848) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.983 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x000000077814bcd8) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.983 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x000000077814da10) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.983 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x000000077814dea0) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.983 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x000000077814fe98) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.983 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000778150328) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.985 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x000000077815c880) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.985 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x000000077815cd10) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.985 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x000000077815e6b0) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.985 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x000000077815eb40) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.985 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000778160568) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.985 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x00000007781609f8) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.985 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000778162668) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.985 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000778162af8) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.985 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000778164ec0) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.985 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000778165350) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.985 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x00000007781678e0) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.986 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000778167d70) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.986 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x00000007781697f0) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.986 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000778169c80) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.986 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x000000077816b6f8) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.986 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x000000077816bb88) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.986 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x000000077816d940) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.986 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x000000077816ddd0) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.986 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x000000077816fb88) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.986 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000778170018) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.986 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x00000007781721f0) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.986 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000778172680) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.986 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000778174ba0) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.986 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000778175030) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.988 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000778186e28) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.988 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x00000007781872b8) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.989 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000778188fb8) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.989 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000778189448) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.989 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x000000077818b470) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.989 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x000000077818b900) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.989 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x000000077818d120) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.989 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x000000077818d5b0) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.990 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000778194140) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.990 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x00000007781945d0) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.990 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000778195f70) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.990 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000778196400) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.990 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000778197cb0) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.990 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000778198140) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.991 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000778199bd0) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.991 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x000000077819a060) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.992 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000778233ab8) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.992 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000778233f48) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.992 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x000000077823b668) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.992 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x000000077823baf8) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.993 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000778248e68) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.993 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x00000007782492f8) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.993 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x000000077824b050) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.993 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x000000077824b4e0) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.994 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x000000077824fb48) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.994 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x000000077824ffd8) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.994 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x00000007782520c0) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.994 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000778252550) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.994 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x00000007782547c8) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.994 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000778254c58) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.994 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x000000077825e8d8) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.995 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x000000077825ed68) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.995 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000778261638) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.995 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000778261ac8) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.995 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000778263c10) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.995 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x00000007782640a0) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.995 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x00000007782660c8) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.995 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000778266558) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.995 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000778267d78) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.995 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000778268208) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.995 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000778269ab8) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.995 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000778269f48) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.995 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x000000077826e838) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.995 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x000000077826ecc8) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.996 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000778270608) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.996 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000778270a98) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.996 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x00000007782723d8) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.996 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000778272868) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.996 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000778274118) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.996 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x00000007782745a8) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.996 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000778276000) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.996 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000778276490) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.996 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000778277e30) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 8.996 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x00000007782782c0) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 9.009 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000778322c88) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 9.009 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x0000000778323118) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 9.021 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x000000077839fdf0) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 9.021 Thread 0x00000000205b5000 Exception <a 'java/lang/UnsatisfiedLinkError': 지정된 프로시저를 찾을 수 없습니다.
+> (0x00000007783a2720) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 738]
+Event: 11.330 Thread 0x00000000205b5000 Exception <a 'java/lang/NoSuchMethodError': java.lang.Object.lambda$static$0(Lcom/datastax/oss/driver/api/core/metadata/Node;)Z> (0x000000077a9868b0) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\interpreter\linkResolver.cpp, l
+Event: 21.586 Thread 0x000000001f875800 Implicit null exception at 0x00000000048132ff to 0x0000000004813401
+Event: 21.734 Thread 0x00000000036c2800 Exception <a 'java/lang/NoSuchMethodError': java.lang.Object.lambda$static$0(Ljava/lang/Object;)Lorg/springframework/expression/EvaluationContext;> (0x000000077c84e100) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\interpreter\
+Event: 21.800 Thread 0x00000000036c2800 Exception <a 'java/lang/IncompatibleClassChangeError': Found class java.lang.Object, but interface was expected> (0x000000077cbc4618) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\interpreter\linkResolver.cpp, line 653]
+Event: 22.022 Thread 0x00000000036c2800 Exception <a 'java/lang/NoSuchMethodError': java.lang.Object.lambda$none$0(Lcom/datastax/oss/driver/api/core/cql/Statement;)Lcom/datastax/oss/driver/api/core/cql/Statement;> (0x000000077cf8a130) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot
+Event: 22.111 Thread 0x00000000036c2800 Exception <a 'java/lang/NoSuchMethodError': java.lang.Object.lambda$map$1(Ljava/util/function/Function;)Ljava/util/stream/Stream;> (0x000000077d901510) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\interpreter\linkResolver.cpp,
+Event: 22.156 Thread 0x00000000036c2800 Exception <a 'java/lang/ClassNotFoundException': java/lang/ObjectCustomizer> (0x000000077da933f8) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\classfile\systemDictionary.cpp, line 217]
+Event: 22.157 Thread 0x00000000036c2800 Exception <a 'java/lang/ClassNotFoundException': com/kctv/api/entity/user/UserUniqueCodeCustomizer> (0x000000077dab68b8) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\classfile\systemDictionary.cpp, line 217]
+Event: 22.249 Thread 0x00000000036c2800 Exception <a 'java/lang/NoSuchMethodError': java.lang.Object.lambda$toStream$0(Ljava/util/Optional;)Ljava/util/stream/Stream;> (0x00000007759e5400) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\interpreter\linkResolver.cpp, lin
+Event: 22.250 Thread 0x00000000036c2800 Exception <a 'java/lang/NoSuchMethodError': java.lang.Object.of(Ljava/lang/Object;)Ljava/util/stream/Stream;> (0x00000007759ec3f8) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\interpreter\linkResolver.cpp, line 620]
+Event: 22.250 Thread 0x00000000036c2800 Exception <a 'java/lang/NoSuchMethodError': java.lang.Object.empty()Ljava/util/stream/Stream;> (0x00000007759ef418) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\interpreter\linkResolver.cpp, line 620]
+Event: 22.258 Thread 0x00000000036c2800 Exception <a 'java/lang/NoSuchMethodError': java.lang.Object.fromNullable(Ljava/lang/Object;)Ljava/util/stream/Stream;> (0x0000000775a44140) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\interpreter\linkResolver.cpp, line 620]
+Event: 22.297 Thread 0x00000000036c2800 Exception <a 'java/lang/NoSuchMethodError': java.lang.Object.lambda$direct$0(Lorg/springframework/data/repository/core/support/MethodLookup$InvokedMethod;Ljava/lang/reflect/Method;)Z> (0x0000000775b85218) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openj
+Event: 22.298 Thread 0x00000000036c2800 Exception <a 'java/lang/NoSuchMethodError': java.lang.Object.lambda$direct$1(Lorg/springframework/data/repository/core/support/MethodLookup$MethodPredicate;)Ljava/util/List;> (0x0000000775b885c8) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspo
+Event: 22.300 Thread 0x00000000036c2800 Exception <a 'java/lang/NoSuchMethodError': java.lang.Object.lambda$and$0(Lorg/springframework/data/repository/core/support/MethodLookup;)Ljava/util/List;> (0x0000000775ba1f20) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\inte
+Event: 22.312 Thread 0x00000000036c2800 Exception <a 'java/lang/IncompatibleClassChangeError': Found class java.lang.Object, but interface was expected> (0x0000000775c27a38) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\interpreter\linkResolver.cpp, line 653]
+Event: 22.432 Thread 0x00000000036c2800 Exception <a 'java/lang/ClassNotFoundException': java/lang/ObjectCustomizer> (0x00000007763e3328) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\classfile\systemDictionary.cpp, line 217]
+Event: 22.433 Thread 0x00000000036c2800 Exception <a 'java/lang/ClassNotFoundException': com/kctv/api/model/ap/WakeupPermissionCustomizer> (0x0000000776406758) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\classfile\systemDictionary.cpp, line 217]
+Event: 22.466 Thread 0x00000000036c2800 Exception <a 'java/lang/ClassNotFoundException': java/lang/ObjectCustomizer> (0x000000077666a938) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\classfile\systemDictionary.cpp, line 217]
+Event: 22.468 Thread 0x00000000036c2800 Exception <a 'java/lang/ClassNotFoundException': com/kctv/api/entity/user/UserInfoCustomizer> (0x000000077668b678) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\classfile\systemDictionary.cpp, line 217]
+Event: 22.474 Thread 0x00000000036c2800 Exception <a 'java/lang/ClassNotFoundException': org/springframework/security/core/userdetails/UserDetailsCustomizer> (0x000000077672b0a8) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\classfile\systemDictionary.cpp, line 217]
+Event: 22.537 Thread 0x00000000036c2800 Exception <a 'java/io/FileNotFoundException'> (0x0000000776a258f8) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 711]
+Event: 22.538 Thread 0x00000000036c2800 Exception <a 'java/io/FileNotFoundException'> (0x0000000776a266e0) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\prims\jni.cpp, line 711]
+Event: 22.558 Thread 0x00000000036c2800 Exception <a 'java/lang/ClassNotFoundException': java/lang/ObjectCustomizer> (0x0000000776af4010) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\classfile\systemDictionary.cpp, line 217]
+Event: 22.559 Thread 0x00000000036c2800 Exception <a 'java/lang/ClassNotFoundException': com/kctv/api/entity/user/UserInterestTagCustomizer> (0x0000000776b16940) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\classfile\systemDictionary.cpp, line 217]
+Event: 22.599 Thread 0x00000000036c2800 Exception <a 'java/lang/ClassNotFoundException': java/lang/ObjectCustomizer> (0x0000000776c49950) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\classfile\systemDictionary.cpp, line 217]
+Event: 22.601 Thread 0x00000000036c2800 Exception <a 'java/lang/ClassNotFoundException': com/kctv/api/entity/user/UserLikePartnerCustomizer> (0x0000000776c6c280) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\classfile\systemDictionary.cpp, line 217]
+Event: 22.640 Thread 0x00000000036c2800 Exception <a 'java/lang/ClassNotFoundException': java/lang/ObjectCustomizer> (0x0000000776da7300) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\classfile\systemDictionary.cpp, line 217]
+Event: 22.641 Thread 0x00000000036c2800 Exception <a 'java/lang/ClassNotFoundException': com/kctv/api/entity/user/UserEmailVerifyCustomizer> (0x0000000776dc9c30) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\classfile\systemDictionary.cpp, line 217]
+Event: 22.796 Thread 0x00000000036c2800 Exception <a 'java/lang/ClassNotFoundException': java/lang/ObjectCustomizer> (0x000000077724a850) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\classfile\systemDictionary.cpp, line 217]
+Event: 22.800 Thread 0x00000000036c2800 Exception <a 'java/lang/ClassNotFoundException': org/springframework/security/config/annotation/web/configuration/WebSecurityConfigurerAdapterCustomizer> (0x0000000777284098) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\classf
+Event: 22.802 Thread 0x00000000036c2800 Exception <a 'java/lang/ClassNotFoundException': com/kctv/api/config/security/SecurityConfigurationCustomizer> (0x00000007772b7720) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\classfile\systemDictionary.cpp, line 217]
+Event: 22.804 Thread 0x00000000036c2800 Exception <a 'java/lang/ClassNotFoundException': com/kctv/api/config/security/SecurityConfiguration$$EnhancerBySpringCGLIB$$90840ed9Customizer> (0x00000007773456c8) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\classfile\system
+Event: 22.806 Thread 0x00000000036c2800 Exception <a 'java/lang/ClassNotFoundException': org/springframework/context/annotation/ConfigurationClassEnhancer$EnhancedConfigurationCustomizer> (0x000000077738afa8) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\classfile\sy
+Event: 22.807 Thread 0x00000000036c2800 Exception <a 'java/lang/ClassNotFoundException': org/springframework/beans/factory/BeanFactoryAwareCustomizer> (0x00000007773aeab8) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\classfile\systemDictionary.cpp, line 217]
+Event: 22.808 Thread 0x00000000036c2800 Exception <a 'java/lang/ClassNotFoundException': org/springframework/beans/factory/AwareCustomizer> (0x00000007773ce9c0) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\classfile\systemDictionary.cpp, line 217]
+Event: 22.810 Thread 0x00000000036c2800 Exception <a 'java/lang/ClassNotFoundException': org/springframework/security/config/annotation/web/WebSecurityConfigurerCustomizer> (0x00000007773fae88) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\classfile\systemDictionary.
+Event: 22.811 Thread 0x00000000036c2800 Exception <a 'java/lang/ClassNotFoundException': org/springframework/security/config/annotation/SecurityConfigurerCustomizer> (0x0000000777425b78) thrown at [C:\ojdkbuild\lookaside\java-1.8.0-openjdk\hotspot\src\share\vm\classfile\systemDictionary.cpp, li
+
+Events (250 events):
+Event: 22.542 loading class org/springframework/mail/javamail/MimeMessagePreparator done
+Event: 22.543 loading class org/springframework/mail/SimpleMailMessage
+Event: 22.543 loading class org/springframework/mail/SimpleMailMessage done
+Event: 22.544 loading class javax/mail/Transport
+Event: 22.544 loading class javax/mail/Transport done
+Event: 22.545 loading class javax/mail/Service
+Event: 22.545 loading class javax/mail/Service done
+Event: 22.546 loading class javax/mail/NoSuchProviderException
+Event: 22.546 loading class javax/mail/NoSuchProviderException done
+Event: 22.556 loading class com/kctv/api/entity/user/UserInterestTag$UserInterestTagBuilder
+Event: 22.556 loading class com/kctv/api/entity/user/UserInterestTag$UserInterestTagBuilder done
+Event: 22.558 loading class java/lang/ObjectCustomizer
+Event: 22.558 loading class java/lang/ObjectCustomizer done
+Event: 22.558 loading class java/lang/ObjectCustomizer
+Event: 22.558 loading class java/lang/ObjectCustomizer done
+Event: 22.558 loading class com/kctv/api/entity/user/UserInterestTagCustomizer
+Event: 22.558 loading class com/kctv/api/entity/user/UserInterestTagCustomizer done
+Event: 22.559 loading class com/kctv/api/entity/user/UserInterestTagCustomizer
+Event: 22.559 loading class com/kctv/api/entity/user/UserInterestTagCustomizer done
+Event: 22.559 loading class com/kctv/api/entity/user/UserInterestTagCustomizer
+Event: 22.559 loading class com/kctv/api/entity/user/UserInterestTagCustomizer done
+Event: 22.597 loading class com/kctv/api/entity/user/UserLikePartner$UserLikePartnerBuilder
+Event: 22.597 loading class com/kctv/api/entity/user/UserLikePartner$UserLikePartnerBuilder done
+Event: 22.599 loading class java/lang/ObjectCustomizer
+Event: 22.599 loading class java/lang/ObjectCustomizer done
+Event: 22.599 loading class java/lang/ObjectCustomizer
+Event: 22.599 loading class java/lang/ObjectCustomizer done
+Event: 22.600 loading class com/kctv/api/entity/user/UserLikePartnerCustomizer
+Event: 22.600 loading class com/kctv/api/entity/user/UserLikePartnerCustomizer done
+Event: 22.600 loading class com/kctv/api/entity/user/UserLikePartnerCustomizer
+Event: 22.600 loading class com/kctv/api/entity/user/UserLikePartnerCustomizer done
+Event: 22.601 loading class com/kctv/api/entity/user/UserLikePartnerCustomizer
+Event: 22.601 loading class com/kctv/api/entity/user/UserLikePartnerCustomizer done
+Event: 22.627 Thread 0x000000001eb1c000 Thread added: 0x000000001eb1c000
+Event: 22.628 Executing VM operation: RevokeBias
+Event: 22.628 Executing VM operation: RevokeBias done
+Event: 22.629 Executing VM operation: RevokeBias
+Event: 22.629 Executing VM operation: RevokeBias done
+Event: 22.629 Executing VM operation: RevokeBias
+Event: 22.629 Executing VM operation: RevokeBias done
+Event: 22.630 Thread 0x000000001ebc9800 flushing nmethod 0x0000000003b39ed0
+Event: 22.631 Thread 0x000000001ebc9800 flushing nmethod 0x0000000003b8f6d0
+Event: 22.631 Thread 0x000000001ebc9800 flushing nmethod 0x0000000003bcd510
+Event: 22.631 Thread 0x000000001ebc9800 flushing nmethod 0x0000000003bcd990
+Event: 22.631 Thread 0x000000001ebc9800 flushing nmethod 0x0000000003bcddd0
+Event: 22.633 Thread 0x000000001ebc9800 flushing nmethod 0x0000000003be8e50
+Event: 22.633 Thread 0x000000001ebc9800 flushing nmethod 0x0000000003c0d250
+Event: 22.633 Executing VM operation: RevokeBias
+Event: 22.633 Executing VM operation: RevokeBias done
+Event: 22.633 Thread 0x000000001ebc9800 flushing nmethod 0x0000000003c37610
+Event: 22.633 Thread 0x000000001ebc9800 flushing nmethod 0x0000000003c37950
+Event: 22.633 Thread 0x000000001ebc9800 flushing nmethod 0x0000000003c3c9d0
+Event: 22.633 Thread 0x000000001ebc9800 flushing nmethod 0x0000000003c3e3d0
+Event: 22.633 Thread 0x000000001ebc9800 flushing nmethod 0x0000000003c4e410
+Event: 22.633 Thread 0x000000001ebc9800 flushing nmethod 0x0000000003c53290
+Event: 22.633 Thread 0x000000001ebc9800 flushing nmethod 0x0000000003c60110
+Event: 22.633 Thread 0x000000001ebc9800 flushing nmethod 0x0000000003c60ad0
+Event: 22.633 Thread 0x000000001ebc9800 flushing nmethod 0x0000000003c78e90
+Event: 22.633 Thread 0x000000001ebc9800 flushing nmethod 0x0000000003c79510
+Event: 22.633 Thread 0x000000001ebc9800 flushing nmethod 0x0000000003c7bd90
+Event: 22.633 Thread 0x000000001ebc9800 flushing nmethod 0x0000000003c7c4d0
+Event: 22.633 Thread 0x000000001ebc9800 flushing nmethod 0x0000000003c7c990
+Event: 22.633 Thread 0x000000001ebc9800 flushing nmethod 0x0000000003c93610
+Event: 22.634 Thread 0x000000001ebc9800 flushing nmethod 0x0000000003c97550
+Event: 22.634 Thread 0x000000001ebc9800 flushing nmethod 0x0000000003c97ed0
+Event: 22.634 Thread 0x000000001ebc9800 flushing nmethod 0x0000000003cc3cd0
+Event: 22.634 Thread 0x000000001ebc9800 flushing nmethod 0x0000000003cdac90
+Event: 22.634 Thread 0x000000001ebc9800 flushing nmethod 0x0000000003cebf10
+Event: 22.636 Thread 0x000000001ebc9800 flushing nmethod 0x0000000003e09110
+Event: 22.637 Thread 0x000000001ebc9800 flushing nmethod 0x0000000003edcfd0
+Event: 22.637 Thread 0x000000001ebc9800 flushing nmethod 0x0000000003edd410
+Event: 22.638 loading class com/kctv/api/entity/user/UserEmailVerify$UserEmailVerifyBuilder
+Event: 22.638 loading class com/kctv/api/entity/user/UserEmailVerify$UserEmailVerifyBuilder done
+Event: 22.638 Thread 0x000000001ebc9800 flushing nmethod 0x0000000003f6e350
+Event: 22.639 Thread 0x000000001ebc9800 flushing nmethod 0x0000000004017290
+Event: 22.639 loading class java/lang/ObjectCustomizer
+Event: 22.639 loading class java/lang/ObjectCustomizer done
+Event: 22.640 loading class java/lang/ObjectCustomizer
+Event: 22.640 loading class java/lang/ObjectCustomizer done
+Event: 22.640 loading class com/kctv/api/entity/user/UserEmailVerifyCustomizer
+Event: 22.640 loading class com/kctv/api/entity/user/UserEmailVerifyCustomizer done
+Event: 22.640 Thread 0x000000001ebc9800 flushing nmethod 0x0000000004105d50
+Event: 22.641 Thread 0x000000001ebc9800 flushing nmethod 0x00000000041a3050
+Event: 22.641 loading class com/kctv/api/entity/user/UserEmailVerifyCustomizer
+Event: 22.641 loading class com/kctv/api/entity/user/UserEmailVerifyCustomizer done
+Event: 22.641 loading class com/kctv/api/entity/user/UserEmailVerifyCustomizer
+Event: 22.641 loading class com/kctv/api/entity/user/UserEmailVerifyCustomizer done
+Event: 22.642 Thread 0x000000001ebc9800 flushing nmethod 0x00000000042166d0
+Event: 22.642 Thread 0x000000001ebc9800 flushing nmethod 0x0000000004248410
+Event: 22.642 Thread 0x000000001ebc9800 flushing nmethod 0x0000000004258a50
+Event: 22.642 Thread 0x000000001ebc9800 flushing nmethod 0x0000000004283890
+Event: 22.643 Thread 0x000000001ebc9800 flushing nmethod 0x0000000004355950
+Event: 22.644 Thread 0x000000001ebc6000 flushing nmethod 0x0000000004435a50
+Event: 22.644 Thread 0x000000001ebc6000 flushing nmethod 0x00000000044360d0
+Event: 22.647 Thread 0x000000001ebc9800 flushing nmethod 0x00000000044d9090
+Event: 22.647 Thread 0x000000001ebc9800 flushing nmethod 0x00000000044d9e90
+Event: 22.647 Thread 0x000000001ebc9800 flushing nmethod 0x0000000004515290
+Event: 22.649 Thread 0x000000001ebc9800 flushing nmethod 0x00000000046d3510
+Event: 22.650 Thread 0x000000001ebc9800 flushing nmethod 0x0000000004842b10
+Event: 22.652 Thread 0x00000000036c2800 Uncommon trap: trap_request=0xffffff65 fr.pc=0x0000000004a09108
+Event: 22.652 Thread 0x00000000036c2800 DEOPT PACKING pc=0x0000000004a09108 sp=0x00000000036bc6e0
+Event: 22.652 Thread 0x00000000036c2800 DEOPT UNPACKING pc=0x00000000039f557b sp=0x00000000036bc568 mode 2
+Event: 22.667 loading class org/springframework/beans/factory/annotation/InitDestroyAnnotationBeanPostProcessor$LifecycleElement
+Event: 22.667 loading class org/springframework/beans/factory/annotation/InitDestroyAnnotationBeanPostProcessor$LifecycleElement done
+Event: 22.706 loading class java/util/Base64
+Event: 22.715 loading class java/util/Base64 done
+Event: 22.715 loading class java/util/Base64$Encoder
+Event: 22.715 loading class java/util/Base64$Encoder done
+Event: 22.718 loading class org/springframework/aop/framework/ObjenesisCglibAopProxy
+Event: 22.718 loading class org/springframework/aop/framework/ObjenesisCglibAopProxy done
+Event: 22.719 loading class org/springframework/aop/framework/CglibAopProxy
+Event: 22.719 loading class org/springframework/aop/framework/CglibAopProxy done
+Event: 22.722 loading class org/springframework/aop/framework/CglibAopProxy$AdvisedDispatcher
+Event: 22.722 loading class org/springframework/aop/framework/CglibAopProxy$AdvisedDispatcher done
+Event: 22.723 loading class org/springframework/aop/framework/CglibAopProxy$DynamicAdvisedInterceptor
+Event: 22.723 loading class org/springframework/aop/framework/CglibAopProxy$DynamicAdvisedInterceptor done
+Event: 22.724 loading class org/springframework/aop/framework/CglibAopProxy$DynamicUnadvisedInterceptor
+Event: 22.724 loading class org/springframework/aop/framework/CglibAopProxy$DynamicUnadvisedInterceptor done
+Event: 22.725 loading class org/springframework/aop/framework/CglibAopProxy$SerializableNoOp
+Event: 22.725 loading class org/springframework/aop/framework/CglibAopProxy$SerializableNoOp done
+Event: 22.725 loading class org/springframework/aop/framework/CglibAopProxy$EqualsInterceptor
+Event: 22.725 loading class org/springframework/aop/framework/CglibAopProxy$EqualsInterceptor done
+Event: 22.726 loading class org/springframework/aop/framework/CglibAopProxy$HashCodeInterceptor
+Event: 22.726 loading class org/springframework/aop/framework/CglibAopProxy$HashCodeInterceptor done
+Event: 22.730 loading class org/springframework/aop/framework/CglibAopProxy$ProxyCallbackFilter
+Event: 22.730 loading class org/springframework/aop/framework/CglibAopProxy$ProxyCallbackFilter done
+Event: 22.733 loading class org/springframework/aop/framework/AdvisedSupport$MethodCacheKey
+Event: 22.733 loading class org/springframework/aop/framework/AdvisedSupport$MethodCacheKey done
+Event: 22.733 Thread 0x000000001eb1f800 Thread added: 0x000000001eb1f800
+Event: 22.743 loading class org/springframework/cglib/proxy/Enhancer$5
+Event: 22.743 loading class org/springframework/cglib/proxy/Enhancer$5 done
+Event: 22.744 loading class org/springframework/cglib/proxy/Enhancer$3
+Event: 22.744 loading class org/springframework/cglib/proxy/Enhancer$3 done
+Event: 22.746 Thread 0x00000000036c2800 Uncommon trap: trap_request=0xffffff65 fr.pc=0x000000000465a9ec
+Event: 22.746 Thread 0x00000000036c2800 DEOPT PACKING pc=0x000000000465a9ec sp=0x00000000036bd870
+Event: 22.746 Thread 0x00000000036c2800 DEOPT UNPACKING pc=0x00000000039f557b sp=0x00000000036bd7d8 mode 2
+Event: 22.746 loading class org/springframework/cglib/proxy/Enhancer$4
+Event: 22.746 loading class org/springframework/cglib/proxy/Enhancer$4 done
+Event: 22.752 loading class org/springframework/objenesis/strategy/PlatformDescription
+Event: 22.752 loading class org/springframework/objenesis/strategy/PlatformDescription done
+Event: 22.755 loading class org/springframework/objenesis/instantiator/sun/SunReflectionFactoryInstantiator
+Event: 22.755 loading class org/springframework/objenesis/instantiator/sun/SunReflectionFactoryInstantiator done
+Event: 22.757 loading class org/springframework/objenesis/instantiator/sun/SunReflectionFactoryHelper
+Event: 22.757 loading class org/springframework/objenesis/instantiator/sun/SunReflectionFactoryHelper done
+Event: 22.758 loading class java/io/OptionalDataException
+Event: 22.758 loading class java/io/OptionalDataException done
+Event: 22.759 loading class sun/reflect/SerializationConstructorAccessorImpl
+Event: 22.759 loading class sun/reflect/SerializationConstructorAccessorImpl done
+Event: 22.760 loading class org/springframework/web/accept/HeaderContentNegotiationStrategy
+Event: 22.760 loading class org/springframework/web/accept/HeaderContentNegotiationStrategy done
+Event: 22.761 loading class org/springframework/web/HttpMediaTypeNotAcceptableException
+Event: 22.761 loading class org/springframework/web/HttpMediaTypeNotAcceptableException done
+Event: 22.762 loading class org/springframework/web/HttpMediaTypeException
+Event: 22.762 loading class org/springframework/web/HttpMediaTypeException done
+Event: 22.762 loading class org/springframework/security/config/annotation/web/configuration/WebSecurityConfigurerAdapter$1
+Event: 22.763 loading class org/springframework/security/config/annotation/web/configuration/WebSecurityConfigurerAdapter$1 done
+Event: 22.763 loading class org/springframework/security/authentication/AuthenticationTrustResolverImpl
+Event: 22.763 loading class org/springframework/security/authentication/AuthenticationTrustResolverImpl done
+Event: 22.764 loading class org/springframework/security/authentication/AnonymousAuthenticationToken
+Event: 22.764 loading class org/springframework/security/authentication/AnonymousAuthenticationToken done
+Event: 22.765 loading class org/springframework/security/authentication/AbstractAuthenticationToken
+Event: 22.765 loading class org/springframework/security/authentication/AbstractAuthenticationToken done
+Event: 22.768 loading class org/springframework/security/core/CredentialsContainer
+Event: 22.768 loading class org/springframework/security/core/CredentialsContainer done
+Event: 22.770 loading class org/springframework/security/authentication/RememberMeAuthenticationToken
+Event: 22.770 loading class org/springframework/security/authentication/RememberMeAuthenticationToken done
+Event: 22.795 loading class java/lang/ObjectCustomizer
+Event: 22.795 loading class java/lang/ObjectCustomizer done
+Event: 22.796 loading class java/lang/ObjectCustomizer
+Event: 22.796 loading class java/lang/ObjectCustomizer done
+Event: 22.797 Executing VM operation: RevokeBias
+Event: 22.797 Executing VM operation: RevokeBias done
+Event: 22.797 Executing VM operation: RevokeBias
+Event: 22.798 Executing VM operation: RevokeBias done
+Event: 22.798 Executing VM operation: RevokeBias
+Event: 22.798 Executing VM operation: RevokeBias done
+Event: 22.798 loading class org/springframework/security/config/annotation/web/configuration/WebSecurityConfigurerAdapterCustomizer
+Event: 22.798 loading class org/springframework/security/config/annotation/web/configuration/WebSecurityConfigurerAdapterCustomizer done
+Event: 22.799 Executing VM operation: RevokeBias
+Event: 22.799 Executing VM operation: RevokeBias done
+Event: 22.799 loading class org/springframework/security/config/annotation/web/configuration/WebSecurityConfigurerAdapterCustomizer
+Event: 22.799 loading class org/springframework/security/config/annotation/web/configuration/WebSecurityConfigurerAdapterCustomizer done
+Event: 22.800 loading class org/springframework/security/config/annotation/web/configuration/WebSecurityConfigurerAdapterCustomizer
+Event: 22.800 loading class org/springframework/security/config/annotation/web/configuration/WebSecurityConfigurerAdapterCustomizer done
+Event: 22.801 loading class com/kctv/api/config/security/SecurityConfigurationCustomizer
+Event: 22.801 loading class com/kctv/api/config/security/SecurityConfigurationCustomizer done
+Event: 22.801 loading class com/kctv/api/config/security/SecurityConfigurationCustomizer
+Event: 22.801 loading class com/kctv/api/config/security/SecurityConfigurationCustomizer done
+Event: 22.802 loading class com/kctv/api/config/security/SecurityConfigurationCustomizer
+Event: 22.802 loading class com/kctv/api/config/security/SecurityConfigurationCustomizer done
+Event: 22.802 loading class com/kctv/api/config/security/SecurityConfiguration$$EnhancerBySpringCGLIB$$90840ed9Customizer
+Event: 22.802 loading class com/kctv/api/config/security/SecurityConfiguration$$EnhancerBySpringCGLIB$$90840ed9Customizer done
+Event: 22.803 loading class com/kctv/api/config/security/SecurityConfiguration$$EnhancerBySpringCGLIB$$90840ed9Customizer
+Event: 22.803 loading class com/kctv/api/config/security/SecurityConfiguration$$EnhancerBySpringCGLIB$$90840ed9Customizer done
+Event: 22.804 loading class com/kctv/api/config/security/SecurityConfiguration$$EnhancerBySpringCGLIB$$90840ed9Customizer
+Event: 22.804 loading class com/kctv/api/config/security/SecurityConfiguration$$EnhancerBySpringCGLIB$$90840ed9Customizer done
+Event: 22.805 loading class org/springframework/context/annotation/ConfigurationClassEnhancer$EnhancedConfigurationCustomizer
+Event: 22.805 loading class org/springframework/context/annotation/ConfigurationClassEnhancer$EnhancedConfigurationCustomizer done
+Event: 22.805 loading class org/springframework/context/annotation/ConfigurationClassEnhancer$EnhancedConfigurationCustomizer
+Event: 22.805 loading class org/springframework/context/annotation/ConfigurationClassEnhancer$EnhancedConfigurationCustomizer done
+Event: 22.806 loading class org/springframework/context/annotation/ConfigurationClassEnhancer$EnhancedConfigurationCustomizer
+Event: 22.806 loading class org/springframework/context/annotation/ConfigurationClassEnhancer$EnhancedConfigurationCustomizer done
+Event: 22.806 loading class org/springframework/beans/factory/BeanFactoryAwareCustomizer
+Event: 22.806 loading class org/springframework/beans/factory/BeanFactoryAwareCustomizer done
+Event: 22.806 loading class org/springframework/beans/factory/BeanFactoryAwareCustomizer
+Event: 22.806 loading class org/springframework/beans/factory/BeanFactoryAwareCustomizer done
+Event: 22.807 loading class org/springframework/beans/factory/BeanFactoryAwareCustomizer
+Event: 22.807 loading class org/springframework/beans/factory/BeanFactoryAwareCustomizer done
+Event: 22.807 loading class org/springframework/beans/factory/AwareCustomizer
+Event: 22.807 loading class org/springframework/beans/factory/AwareCustomizer done
+Event: 22.808 loading class org/springframework/beans/factory/AwareCustomizer
+Event: 22.808 loading class org/springframework/beans/factory/AwareCustomizer done
+Event: 22.808 loading class org/springframework/beans/factory/AwareCustomizer
+Event: 22.808 loading class org/springframework/beans/factory/AwareCustomizer done
+Event: 22.808 loading class org/springframework/security/config/annotation/web/WebSecurityConfigurerCustomizer
+Event: 22.808 loading class org/springframework/security/config/annotation/web/WebSecurityConfigurerCustomizer done
+Event: 22.809 loading class org/springframework/security/config/annotation/web/WebSecurityConfigurerCustomizer
+Event: 22.809 loading class org/springframework/security/config/annotation/web/WebSecurityConfigurerCustomizer done
+Event: 22.810 loading class org/springframework/security/config/annotation/web/WebSecurityConfigurerCustomizer
+Event: 22.810 loading class org/springframework/security/config/annotation/web/WebSecurityConfigurerCustomizer done
+Event: 22.810 loading class org/springframework/security/config/annotation/SecurityConfigurerCustomizer
+Event: 22.810 loading class org/springframework/security/config/annotation/SecurityConfigurerCustomizer done
+Event: 22.811 loading class org/springframework/security/config/annotation/SecurityConfigurerCustomizer
+Event: 22.811 loading class org/springframework/security/config/annotation/SecurityConfigurerCustomizer done
+Event: 22.811 loading class org/springframework/security/config/annotation/SecurityConfigurerCustomizer
+Event: 22.811 loading class org/springframework/security/config/annotation/SecurityConfigurerCustomizer done
+Event: 22.820 loading class org/springframework/security/config/annotation/configuration/AutowireBeanFactoryObjectPostProcessor
+Event: 22.820 loading class org/springframework/security/config/annotation/configuration/AutowireBeanFactoryObjectPostProcessor done
+Event: 22.823 loading class org/springframework/security/config/annotation/web/configuration/WebSecurityConfigurerAdapter$LazyPasswordEncoder
+Event: 22.823 loading class org/springframework/security/config/annotation/web/configuration/WebSecurityConfigurerAdapter$LazyPasswordEncoder done
+Event: 22.824 loading class org/springframework/security/config/annotation/AlreadyBuiltException
+Event: 22.824 loading class org/springframework/security/config/annotation/AlreadyBuiltException done
+Event: 22.825 loading class org/springframework/security/config/annotation/authentication/configurers/userdetails/UserDetailsAwareConfigurer
+Event: 22.825 loading class org/springframework/security/config/annotation/authentication/configurers/userdetails/UserDetailsAwareConfigurer done
+Event: 22.827 loading class org/springframework/security/config/annotation/authentication/configurers/userdetails/DaoAuthenticationConfigurer
+Event: 22.827 loading class org/springframework/security/config/annotation/authentication/configurers/userdetails/DaoAuthenticationConfigurer done
+Event: 22.827 loading class org/springframework/security/config/annotation/authentication/configurers/userdetails/AbstractDaoAuthenticationConfigurer
+Event: 22.827 loading class org/springframework/security/config/annotation/authentication/configurers/userdetails/AbstractDaoAuthenticationConfigurer done
+Event: 22.828 loading class org/springframework/security/config/annotation/authentication/configurers/provisioning/InMemoryUserDetailsManagerConfigurer
+Event: 22.828 loading class org/springframework/security/config/annotation/authentication/configurers/provisioning/InMemoryUserDetailsManagerConfigurer done
+Event: 22.829 loading class org/springframework/security/config/annotation/authentication/configurers/provisioning/UserDetailsManagerConfigurer
+Event: 22.829 loading class org/springframework/security/config/annotation/authentication/configurers/provisioning/UserDetailsManagerConfigurer done
+Event: 22.832 loading class org/springframework/security/config/annotation/authentication/configurers/userdetails/UserDetailsServiceConfigurer
+Event: 22.832 loading class org/springframework/security/config/annotation/authentication/configurers/userdetails/UserDetailsServiceConfigurer done
+Event: 22.833 loading class org/springframework/security/config/annotation/authentication/configurers/ldap/LdapAuthenticationProviderConfigurer
+Event: 22.833 loading class org/springframework/security/config/annotation/authentication/configurers/ldap/LdapAuthenticationProviderConfigurer done
+Event: 22.834 loading class org/springframework/security/config/annotation/authentication/configurers/provisioning/JdbcUserDetailsManagerConfigurer
+Event: 22.834 loading class org/springframework/security/config/annotation/authentication/configurers/provisioning/JdbcUserDetailsManagerConfigurer done
+Event: 22.835 loading class org/springframework/security/config/annotation/AbstractConfiguredSecurityBuilder$BuildState
+Event: 22.835 loading class org/springframework/security/config/annotation/AbstractConfiguredSecurityBuilder$BuildState done
+
+
+Dynamic libraries:
+0x00007ff722360000 - 0x00007ff7223a9000 	C:\Program Files\Java\java-1.8.0-openjdk-1.8.0.275-1.b01.ojdkbuild.windows.x86_64\bin\java.exe
+0x00007ffc1d470000 - 0x00007ffc1d666000 	C:\WINDOWS\SYSTEM32\ntdll.dll
+0x00007ffc1b940000 - 0x00007ffc1b9fd000 	C:\WINDOWS\System32\KERNEL32.DLL
+0x00007ffc1b1b0000 - 0x00007ffc1b479000 	C:\WINDOWS\System32\KERNELBASE.dll
+0x00007ffc1bd80000 - 0x00007ffc1be2c000 	C:\WINDOWS\System32\ADVAPI32.dll
+0x00007ffc1d0c0000 - 0x00007ffc1d15e000 	C:\WINDOWS\System32\msvcrt.dll
+0x00007ffc1cac0000 - 0x00007ffc1cb5c000 	C:\WINDOWS\System32\sechost.dll
+0x00007ffc1ba00000 - 0x00007ffc1bb2b000 	C:\WINDOWS\System32\RPCRT4.dll
+0x00007ffc1d290000 - 0x00007ffc1d430000 	C:\WINDOWS\System32\USER32.dll
+0x00007ffc1b150000 - 0x00007ffc1b172000 	C:\WINDOWS\System32\win32u.dll
+0x00007ffc1be30000 - 0x00007ffc1be5a000 	C:\WINDOWS\System32\GDI32.dll
+0x00007ffc1ad10000 - 0x00007ffc1ae1b000 	C:\WINDOWS\System32\gdi32full.dll
+0x00007ffc1aed0000 - 0x00007ffc1af6d000 	C:\WINDOWS\System32\msvcp_win.dll
+0x00007ffc1abb0000 - 0x00007ffc1acb0000 	C:\WINDOWS\System32\ucrtbase.dll
+0x00007ffc19fc0000 - 0x00007ffc1a25b000 	C:\WINDOWS\WinSxS\amd64_microsoft.windows.common-controls_6595b64144ccf1df_6.0.19041.746_none_ca02b4b61b8320a4\COMCTL32.dll
+0x00007ffc1d260000 - 0x00007ffc1d290000 	C:\WINDOWS\System32\IMM32.DLL
+0x000000006fbc0000 - 0x000000006fc92000 	C:\Program Files\Java\java-1.8.0-openjdk-1.8.0.275-1.b01.ojdkbuild.windows.x86_64\jre\bin\msvcr100.dll
+0x000000006fd80000 - 0x00000000706a7000 	C:\Program Files\Java\java-1.8.0-openjdk-1.8.0.275-1.b01.ojdkbuild.windows.x86_64\jre\bin\server\jvm.dll
+0x00007ffc1d230000 - 0x00007ffc1d238000 	C:\WINDOWS\System32\PSAPI.DLL
+0x00007ffc17310000 - 0x00007ffc1731a000 	C:\WINDOWS\SYSTEM32\VERSION.dll
+0x00007ffc0e5e0000 - 0x00007ffc0e607000 	C:\WINDOWS\SYSTEM32\WINMM.dll
+0x00007ffc0a470000 - 0x00007ffc0a479000 	C:\WINDOWS\SYSTEM32\WSOCK32.dll
+0x00007ffc1bb90000 - 0x00007ffc1bbfb000 	C:\WINDOWS\System32\WS2_32.dll
+0x00007ffc0b070000 - 0x00007ffc0b07f000 	C:\Program Files\Java\java-1.8.0-openjdk-1.8.0.275-1.b01.ojdkbuild.windows.x86_64\jre\bin\verify.dll
+0x00007ffbfd560000 - 0x00007ffbfd589000 	C:\Program Files\Java\java-1.8.0-openjdk-1.8.0.275-1.b01.ojdkbuild.windows.x86_64\jre\bin\java.dll
+0x00007ffc0ee00000 - 0x00007ffc0ee23000 	C:\Program Files\Java\java-1.8.0-openjdk-1.8.0.275-1.b01.ojdkbuild.windows.x86_64\jre\bin\instrument.dll
+0x00007ffbfcd10000 - 0x00007ffbfcd26000 	C:\Program Files\Java\java-1.8.0-openjdk-1.8.0.275-1.b01.ojdkbuild.windows.x86_64\jre\bin\zip.dll
+0x00007ffc1bec0000 - 0x00007ffc1c603000 	C:\WINDOWS\System32\SHELL32.dll
+0x00007ffc17fe0000 - 0x00007ffc1876f000 	C:\WINDOWS\SYSTEM32\windows.storage.dll
+0x00007ffc1cc40000 - 0x00007ffc1cf96000 	C:\WINDOWS\System32\combase.dll
+0x00007ffc19f20000 - 0x00007ffc19f4c000 	C:\WINDOWS\SYSTEM32\Wldp.dll
+0x00007ffc1ca10000 - 0x00007ffc1cabe000 	C:\WINDOWS\System32\SHCORE.dll
+0x00007ffc1be60000 - 0x00007ffc1beb5000 	C:\WINDOWS\System32\shlwapi.dll
+0x00007ffc1aae0000 - 0x00007ffc1ab06000 	C:\WINDOWS\SYSTEM32\profapi.dll
+0x00007ffc0ed80000 - 0x00007ffc0ed9a000 	C:\Program Files\JetBrains\IntelliJ IDEA 2020.1.2\bin\breakgen64.dll
+0x00007ffbfaac0000 - 0x00007ffbfaadb000 	C:\Program Files\Java\java-1.8.0-openjdk-1.8.0.275-1.b01.ojdkbuild.windows.x86_64\jre\bin\net.dll
+0x00007ffc19c20000 - 0x00007ffc19c8a000 	C:\WINDOWS\system32\mswsock.dll
+0x00007ffc18840000 - 0x00007ffc1884d000 	C:\Program Files\Java\java-1.8.0-openjdk-1.8.0.275-1.b01.ojdkbuild.windows.x86_64\jre\bin\management.dll
+0x00007ffc09e40000 - 0x00007ffc09e57000 	C:\WINDOWS\system32\napinsp.dll
+0x00007ffc09e00000 - 0x00007ffc09e1b000 	C:\WINDOWS\system32\pnrpnsp.dll
+0x00007ffc14850000 - 0x00007ffc14865000 	C:\WINDOWS\system32\wshbth.dll
+0x00007ffc15510000 - 0x00007ffc1552d000 	C:\WINDOWS\system32\NLAapi.dll
+0x00007ffc19950000 - 0x00007ffc1998b000 	C:\WINDOWS\SYSTEM32\IPHLPAPI.DLL
+0x00007ffc19990000 - 0x00007ffc19a5b000 	C:\WINDOWS\SYSTEM32\DNSAPI.dll
+0x00007ffc1bc00000 - 0x00007ffc1bc08000 	C:\WINDOWS\System32\NSI.dll
+0x00007ffc09520000 - 0x00007ffc09532000 	C:\WINDOWS\System32\winrnr.dll
+0x00007ffc10c30000 - 0x00007ffc10c3a000 	C:\Windows\System32\rasadhlp.dll
+0x00007ffc10890000 - 0x00007ffc1090f000 	C:\WINDOWS\System32\fwpuclnt.dll
+0x00007ffc1b180000 - 0x00007ffc1b1a7000 	C:\WINDOWS\System32\bcrypt.dll
+0x00007ffbfa950000 - 0x00007ffbfa961000 	C:\Program Files\Java\java-1.8.0-openjdk-1.8.0.275-1.b01.ojdkbuild.windows.x86_64\jre\bin\nio.dll
+0x00007ffc1a8c0000 - 0x00007ffc1a8d8000 	C:\WINDOWS\SYSTEM32\CRYPTSP.dll
+0x00007ffc19620000 - 0x00007ffc19654000 	C:\WINDOWS\system32\rsaenh.dll
+0x00007ffc1aaa0000 - 0x00007ffc1aace000 	C:\WINDOWS\SYSTEM32\USERENV.dll
+0x00007ffc1b0d0000 - 0x00007ffc1b150000 	C:\WINDOWS\System32\bcryptprimitives.dll
+0x00007ffc19ec0000 - 0x00007ffc19ecc000 	C:\WINDOWS\SYSTEM32\CRYPTBASE.dll
+0x00007ffc118f0000 - 0x00007ffc11907000 	C:\WINDOWS\SYSTEM32\dhcpcsvc6.DLL
+0x00007ffc118d0000 - 0x00007ffc118ed000 	C:\WINDOWS\SYSTEM32\dhcpcsvc.DLL
+0x000000006e4c0000 - 0x000000006e4df000 	C:\Users\Bruno\AppData\Local\Temp\jffi6064897727756353734.dll
+
+VM Arguments:
+jvm_args: -Ddatastax-java-driver.advanced.connection.warn-on-init-error=false -javaagent:C:\Program Files\JetBrains\IntelliJ IDEA 2020.1.2\lib\idea_rt.jar=52097:C:\Program Files\JetBrains\IntelliJ IDEA 2020.1.2\bin -Dfile.encoding=UTF-8 
+java_command: com.kctv.api.KctvSpringCassandraApplication
+java_class_path (initial): C:\Program Files\Java\java-1.8.0-openjdk-1.8.0.275-1.b01.ojdkbuild.windows.x86_64\jre\lib\charsets.jar;C:\Program Files\Java\java-1.8.0-openjdk-1.8.0.275-1.b01.ojdkbuild.windows.x86_64\jre\lib\ext\access-bridge-64.jar;C:\Program Files\Java\java-1.8.0-openjdk-1.8.0.275-1.b01.ojdkbuild.windows.x86_64\jre\lib\ext\cldrdata.jar;C:\Program Files\Java\java-1.8.0-openjdk-1.8.0.275-1.b01.ojdkbuild.windows.x86_64\jre\lib\ext\dnsns.jar;C:\Program Files\Java\java-1.8.0-openjdk-1.8.0.275-1.b01.ojdkbuild.windows.x86_64\jre\lib\ext\jaccess.jar;C:\Program Files\Java\java-1.8.0-openjdk-1.8.0.275-1.b01.ojdkbuild.windows.x86_64\jre\lib\ext\localedata.jar;C:\Program Files\Java\java-1.8.0-openjdk-1.8.0.275-1.b01.ojdkbuild.windows.x86_64\jre\lib\ext\nashorn.jar;C:\Program Files\Java\java-1.8.0-openjdk-1.8.0.275-1.b01.ojdkbuild.windows.x86_64\jre\lib\ext\sunec.jar;C:\Program Files\Java\java-1.8.0-openjdk-1.8.0.275-1.b01.ojdkbuild.windows.x86_64\jre\lib\ext\sunjce_provider.jar;C:\Program Files\Java\java-1.8.0-openjdk-1.8.0.275-1.b01.ojdkbuild.windows.x86_64\jre\lib\ext\sunmscapi.jar;C:\Program Files\Java\java-1.8.0-openjdk-1.8.0.275-1.b01.ojdkbuild.windows.x86_64\jre\lib\ext\sunpkcs11.jar;C:\Program Files\Java\java-1.8.0-openjdk-1.8.0.275-1.b01.ojdkbuild.windows.x86_64\jre\lib\ext\zipfs.jar;C:\Program Files\Java\java-1.8.0-openjdk-1.8.0.275-1.b01.ojdkbuild.windows.x86_64\jre\lib\jce.jar;C:\Program Files\Java\java-1.8.0-openjdk-1.8.0.275-1.b01.ojdkbuild.windows.x86_64\jre\lib\jfr.jar;C:\Program Files\Java\java-1.8.0-openjdk-1.8.0.275-1.b01.ojdkbuild.windows.x86_64\jre\lib\jsse.jar;C:\Program Files\Java\java-1.8.0-openjdk-1.8.0.275-1.b01.ojdkbuild.windows.x86_64\jre\lib\management-agent.jar;C:\Program Files\Java\java-1.8.0-openjdk-1.8.0.275-1.b01.ojdkbuild.windows.x86_64\jre\lib\resources.jar;C:\Program Files\Java\java-1.8.0-openjdk-1.8.0.275-1.b01.ojdkbuild.windows.x86_64\jre\lib\rt.jar;C:\Users\Bruno\IdeaProjects\kctv-spring-cassandra\target\classes;C:\Users\Br
+Launcher Type: SUN_STANDARD
+
+Environment Variables:
+JAVA_HOME=C:\Program Files\Java\java-1.8.0-openjdk-1.8.0.275-1.b01.ojdkbuild.windows.x86_64
+PATH=C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\Java\java-1.8.0-openjdk-1.8.0.275-1.b01.ojdkbuild.windows.x86_64\bin;C:\Python27;D:\Local\helm\windows-amd64;C:\Program Files\Git\cmd;C:\Program Files (x86)\PuTTY\;C:\work\apache-cassandra-3.11.7\bin;D:\Local\apache-maven-3.6.3\bin;C:\Program Files\Docker\Docker\resources\bin;C:\ProgramData\DockerDesktop\version-bin;C:\Users\Bruno\AppData\Local\Microsoft\WindowsApps;C:\Program Files\Bandizip\;C:\Users\Bruno\AppData\Local\Google\Cloud SDK\google-cloud-sdk\bin
+USERNAME=Bruno
+OS=Windows_NT
+PROCESSOR_IDENTIFIER=AMD64 Family 23 Model 24 Stepping 1, AuthenticAMD
+
+
+
+---------------  S Y S T E M  ---------------
+
+OS: Windows 10.0 , 64 bit Build 19041 (10.0.19041.662)
+
+CPU:total 8 (initial active 8) (8 cores per cpu, 1 threads per core) family 23 model 24 stepping 1, cmov, cx8, fxsr, mmx, sse, sse2, sse3, ssse3, sse4.1, sse4.2, popcnt, avx, avx2, aes, clmul, mmxext, 3dnowpref, lzcnt, sse4a, tsc, tscinvbit, tscinv, bmi1
+
+Memory: 4k page, physical 14654548k(3144844k free), swap 30677968k(18044k free)
+
+vm_info: OpenJDK 64-Bit Server VM (25.275-b01) for windows-amd64 JRE (1.8.0_275-b01), built on Nov  6 2020 13:58:09 by "Administrator" with MS VC++ 10.0 (VS2010)
+
+time: Tue Feb 02 11:54:30 2021
+timezone: 대한민국 표준시
+elapsed time: 22.871193 seconds (0d 0h 0m 22s)
+

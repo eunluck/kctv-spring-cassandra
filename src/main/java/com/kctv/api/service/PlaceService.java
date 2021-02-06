@@ -1,6 +1,7 @@
 package com.kctv.api.service;
 
 import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
 import com.kctv.api.advice.exception.CPartnerNotFoundException;
 import com.kctv.api.advice.exception.CResourceNotExistException;
 import com.kctv.api.entity.place.*;
@@ -9,6 +10,7 @@ import com.kctv.api.entity.stylecard.PartnersByTags;
 import com.kctv.api.entity.stylecard.Tag;
 import com.kctv.api.repository.ap.MenuByPartnerRepository;
 import com.kctv.api.repository.ap.PartnerByTagsRepository;
+import com.kctv.api.repository.file.CardImageInfoRepository;
 import com.kctv.api.repository.tag.PlaceTypeRepository;
 import com.kctv.api.util.GeoOperations;
 import com.kctv.api.repository.ap.PartnerRepository;
@@ -17,6 +19,7 @@ import com.kctv.api.util.MapUtill;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.data.cassandra.config.CassandraCqlTemplateFactoryBean;
+import org.springframework.data.cassandra.core.CassandraBatchOperations;
 import org.springframework.data.cassandra.core.CassandraOperations;
 import org.springframework.data.cassandra.core.CassandraTemplate;
 import org.springframework.data.cassandra.core.cql.CqlTemplate;
@@ -38,7 +41,8 @@ public class PlaceService {
     private final WifiRepository wifiRepository;
     private final PartnerRepository partnerRepository;
     private final PartnerByTagsRepository partnerByTagsRepository;
-
+    private final StorageService storageService;
+    private final CardImageInfoRepository cardImageInfoRepository;
     private final MenuByPartnerRepository menuByPartnerRepository;
     private final PlaceTypeRepository placeTypeRepository;
 
@@ -55,6 +59,15 @@ public class PlaceService {
     }
 
 
+    public PlaceInfo deletePlace(PlaceInfo placeInfo){
+
+        partnerRepository.delete(placeInfo);
+        if(CollectionUtils.isNotEmpty(placeInfo.getTags()))
+        partnerByTagsRepository.deleteAll(placeInfo.getTags().stream().map(s -> new PartnersByTags(s,placeInfo.getPartnerId())).collect(Collectors.toList()));
+    return placeInfo;
+
+    }
+
     public Slice<PlaceInfo> pageableFindAllBy(Pageable pageable){
 
 
@@ -64,9 +77,12 @@ public class PlaceService {
 
     public List<PlaceInfo> getPlaceListByIdIn(List<UUID> placeIds){
 
+        System.out.println("디버깅중::"+placeIds);
+
         return partnerRepository.findByPartnerIdIn(placeIds);
 
     }
+
 
     public Map<String, List<MenuByPlace>> getMenuByPartnerId(UUID partnerId){
 
@@ -140,7 +156,8 @@ public class PlaceService {
     }
     @Transactional
     public PlaceInfo createPlace(PlaceInfo placeInfo,List<MenuByPlace> menuByPlaceList) {
-
+        checkNotNull(placeInfo.getPartnerId(),"유요한 장소 ID가 아닙니다.");
+        checkNotNull(placeInfo.getBusinessName(),"장소 이름을 입력해 주세요.");
         placeInfo.setPartnerId(UUID.randomUUID());
 
 
@@ -183,9 +200,7 @@ public class PlaceService {
 
 
     @Transactional
-    public PlaceInfoDto modifyPlace(UUID placeId,PlaceInfo requestPlace, List<MenuByPlace> menuByPlaceList){
-
-        PlaceInfo beforePlace = partnerRepository.findByPartnerId(placeId).orElseThrow(CResourceNotExistException::new);
+    public PlaceInfoDto modifyPlace(PlaceInfo requestPlace,PlaceInfo beforePlace, List<MenuByPlace> menuByPlaceList){
 
 
         if(CollectionUtils.isNotEmpty(requestPlace.getAges()))
@@ -214,15 +229,14 @@ public class PlaceService {
         beforePlace.setLatitude(requestPlace.getLatitude());
         if(requestPlace.getLongitude() != null && requestPlace.getLongitude() != 0)
         beforePlace.setLongitude(requestPlace.getLongitude());
+        if(CollectionUtils.isNotEmpty(requestPlace.getImages())){
+            beforePlace.setImages(requestPlace.getImages());
+        }
         if(CollectionUtils.isNotEmpty(menuByPlaceList)){
             menuByPartnerRepository.deleteAll(menuByPartnerRepository.findByPartnerId(beforePlace.getPartnerId()));
             menuByPlaceList.forEach(menuByPlace -> menuByPlace.setPartnerId(beforePlace.getPartnerId()));
             menuByPartnerRepository.saveAll(menuByPlaceList);
         }
-
-
-
-
 
         PlaceInfo afterPlace = Optional.of(partnerRepository.save(beforePlace)).orElseThrow(CResourceNotExistException::new);
 

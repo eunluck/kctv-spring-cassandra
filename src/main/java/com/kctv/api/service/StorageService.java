@@ -1,6 +1,7 @@
 package com.kctv.api.service;
 
 import com.google.common.collect.Lists;
+import com.kctv.api.advice.exception.CFormatNotAllowedException;
 import com.kctv.api.advice.exception.CNotOwnerException;
 import com.kctv.api.advice.exception.CResourceNotExistException;
 import com.kctv.api.controller.v1.admin.captive.CaptiveRequest;
@@ -25,6 +26,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.Normalizer;
 import java.util.*;
 
 
@@ -80,16 +82,47 @@ public class StorageService {
         return imageByteArray;
     }
 
-   /* public List<String> appendPlaceImage(MultipartFile file, UUID uuid){
+    public String appendPlaceImage(PlaceInfo placeInfo,MultipartFile file) throws IOException {
+        UUID imgId = UUID.randomUUID();
 
-       TODO 이미지추가 필요
+        String fileName = saveFileIO(file,"place",imgId);
 
-    }*/
+        CardImageInfo newImage = CardImageInfo.builder()
+                .imageId(imgId)
+                .cardId(placeInfo.getPartnerId())
+                .createAt(new Date())
+                .path(placeImagePath)
+                .fileName(fileName)
+                .build();
+
+        CardImageInfo cardImageInfo = cardImageInfoRepository.save(newImage);
+
+        return REQUEST_URL+imgId;
+    }
+
+    public boolean removePlaceImage(UUID imgId){
+
+
+        CardImageInfo cardImageInfo = cardImageInfoRepository.findByImageId(imgId).orElseThrow(CResourceNotExistException::new);
+        try {
+
+        Path directory = Paths.get(basePath+cardImageInfo.getPath()+"/"+cardImageInfo.getFileName()).normalize();
+
+        Files.deleteIfExists(directory);
+        }catch (IOException e){
+            e.printStackTrace();
+            cardImageInfoRepository.save(cardImageInfo);
+            return false;
+        }
+
+        return true;
+    }
+
 
     public String saveImage(UUID uuid, MultipartFile file,String type) throws IOException {
 
         UUID imageId = UUID.randomUUID();//이미지 아이디 생성
-        saveFileIO(file,type,imageId); //실제 파일 저장
+        String fileName = saveFileIO(file,type,imageId); //실제 파일 저장
 
 
 
@@ -97,7 +130,7 @@ public class StorageService {
                 .imageId(imageId)
                 .cardId(uuid)
                 .createAt(new Date())
-                .fileName(StringUtils.cleanPath(imageId.toString()+"_"+file.getOriginalFilename()))
+                .fileName(fileName)
                 .build();
 
         if ("card".equals(type)){
@@ -129,14 +162,14 @@ public class StorageService {
             checkImgType(multipartFile);
 
             UUID imageId = UUID.randomUUID();//이미지 아이디 생성
-            saveFileIO(multipartFile, type, imageId); //실제 파일 저장
+            String fileName = saveFileIO(multipartFile, type, imageId); //실제 파일 저장
 
 
             CardImageInfo newImage = CardImageInfo.builder()
                     .imageId(imageId)
                     .cardId(uuid)
                     .createAt(new Date())
-                    .fileName(StringUtils.cleanPath(imageId.toString() + "_" + multipartFile.getOriginalFilename()))
+                    .fileName(fileName)
                     .build();
 
             newImage.setPath(placeImagePath);
@@ -157,6 +190,7 @@ public class StorageService {
 
         UUID randomAdId = UUID.randomUUID();
 
+        String fileName = saveFileIO(request.getImgFile(),"ad",randomAdId);
         CaptivePortalAdEntity saveAd = CaptivePortalAdEntity.builder().adCreateDt(new Date())
                 .adId(randomAdId)
                 .adStatus(request.getStatus())
@@ -164,13 +198,12 @@ public class StorageService {
                 .adEndDt(request.getEndDate())
                 .adLink(request.getLink())
                 .imgName(request.getImgFile().getOriginalFilename())
-                .imgPath(StringUtils.cleanPath(adImagePath+"/"+randomAdId.toString()+"_"+request.getImgFile().getOriginalFilename()))
+                .imgPath(fileName)
                 .imgUrl(AD_REQUEST_URL+randomAdId)
                 .build();
 
 
 
-        saveFileIO(request.getImgFile(),"ad",randomAdId);
         return captivePortalAdRepository.save(saveAd);
 
     }
@@ -215,7 +248,7 @@ public class StorageService {
     }
 
 
-    public void saveFileIO(MultipartFile file,String type,UUID imageId) throws IOException{
+    public String saveFileIO(MultipartFile file,String type,UUID imageId) throws IOException{
 
         Path directory = null;
 
@@ -226,10 +259,9 @@ public class StorageService {
         } else if("ad".equals(type)){
             directory = Paths.get(basePath + adImagePath).normalize();
         }
-
         Files.createDirectories(directory);  // directory 해당 경로까지 디렉토리를 모두 만든다.
 
-        String fileName = StringUtils.cleanPath(imageId.toString()+"_"+file.getOriginalFilename());  // 파일명을 바르게 수정한다.
+        String fileName = StringUtils.cleanPath(imageId.toString()+"_"+Normalizer.normalize(file.getOriginalFilename(), Normalizer.Form.NFC));  // 파일명을 바르게 수정한다.
 
         Assert.state(!fileName.contains(".."), "Name of file cannot contain '..'");       // 파일명에 '..' 문자가 들어 있다면 오류를 발생하고 아니라면 진행(해킹및 오류방지)
 
@@ -241,6 +273,7 @@ public class StorageService {
 
         file.transferTo(targetPath);
 
+        return fileName;
     }
 
 
@@ -250,7 +283,19 @@ public class StorageService {
                 && !file.getOriginalFilename().endsWith(".jpg")
                 && !file.getOriginalFilename().endsWith(".jpeg")
                 && !file.getOriginalFilename().endsWith(".gif")) {
-            throw new CResourceNotExistException("Only PNG/GIF/JPG file accepted.");
+            throw new CFormatNotAllowedException("Only PNG/GIF/JPG file accepted.");
+        }
+    }
+
+
+    public void checkImgType(List<MultipartFile> files){
+        for (MultipartFile file: files){
+            if (file.getOriginalFilename() != null && !file.getOriginalFilename().endsWith(".png")
+                    && !file.getOriginalFilename().endsWith(".jpg")
+                    && !file.getOriginalFilename().endsWith(".jpeg")
+                    && !file.getOriginalFilename().endsWith(".gif")) {
+                throw new CFormatNotAllowedException("Only PNG/GIF/JPG file accepted.");
+            }
         }
     }
 

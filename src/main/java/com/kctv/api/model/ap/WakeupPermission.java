@@ -1,11 +1,15 @@
 package com.kctv.api.model.ap;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.collect.Sets;
 import com.kctv.api.entity.user.UserInfo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.apache.commons.io.FileUtils;
+import org.codehaus.jackson.annotate.JsonIgnore;
+import org.springframework.data.annotation.ReadOnlyProperty;
 import org.springframework.data.cassandra.core.cql.PrimaryKeyType;
 import org.springframework.data.cassandra.core.mapping.Column;
 import org.springframework.data.cassandra.core.mapping.PrimaryKeyColumn;
@@ -32,24 +36,30 @@ public class WakeupPermission {
     @Column("device_mac")
     private Set<String> deviceMac;
     @Column("device_mac_history")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Map<String,Long> deviceMacHistory;
     @Column("expire_epoch")
     private Long expireEpoch;
-    private Long volume;
     private String plan;
     @Column("unique_code")
     private String uniqueCode;
+    private Long volume;
+    @ReadOnlyProperty
+    private String volumeText;
+
+
 
     public WakeupPermission(FindApRequest request,Date createDt){
         copyProperties(request,this);
-
     }
 
     public WakeupPermission (UserInfo userInfo,String uniqueCode){
         this.userId = userInfo.getUserId();
-        this.plan = "무료";
+        this.plan = "FREE";
         this.uniqueCode = uniqueCode;
+
     }
+
 
 
 }

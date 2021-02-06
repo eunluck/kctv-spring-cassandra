@@ -4,12 +4,14 @@ import com.google.common.base.Strings;
 import com.kctv.api.advice.exception.CPartnerNotFoundException;
 import com.kctv.api.advice.exception.CResourceNotExistException;
 import com.kctv.api.entity.stylecard.StyleCardByTags;
+import com.kctv.api.entity.stylecard.StyleCardCounter;
 import com.kctv.api.entity.stylecard.StyleCardInfo;
 import com.kctv.api.entity.stylecard.Tag;
 import com.kctv.api.entity.stylecard.admin.StyleCardVo;
 import com.kctv.api.model.tag.TagGroup;
 import com.kctv.api.repository.ap.PartnerByTagsRepository;
 import com.kctv.api.repository.card.StyleByTagsRepository;
+import com.kctv.api.repository.card.StyleCardCounterRepository;
 import com.kctv.api.repository.card.StyleCardRepository;
 import com.kctv.api.repository.tag.TagRepository;
 import com.kctv.api.util.sorting.SortingTagsUtiil;
@@ -18,7 +20,10 @@ import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -30,6 +35,7 @@ public class StyleCardService {
     private final StyleByTagsRepository styleByTagsRepository;
     private final TagRepository tagRepository;
     private final PartnerByTagsRepository partnerByTagsRepository;
+    private final StyleCardCounterRepository counterRepository;
 
     public List<StyleCardInfo> getStyleCardListAllService(){
         return styleCardRepository.findAll();
@@ -38,7 +44,12 @@ public class StyleCardService {
         return tagRepository.findAll();
     }
     public Optional<Tag> getTagOneService(Tag tag){return tagRepository.findByTagTypeAndTagName(tag.getTagType(),tag.getTagName());}
+    public void deleteStyleCard(StyleCardInfo styleCardInfo){
 
+        if (CollectionUtils.isNotEmpty(styleCardInfo.getTags()))
+        styleByTagsRepository.deleteAll(styleCardInfo.getTags().stream().map(s -> new StyleCardByTags(s,styleCardInfo.getCardId())).collect(Collectors.toList()));
+        styleCardRepository.delete(styleCardInfo);
+    }
     public List<Tag> getTagList (String search){
         return tagRepository.findByTagType(search);
     }
@@ -49,7 +60,8 @@ public class StyleCardService {
 
         long score = card.getTags().stream().map(TagGroup::findByTagPoint).reduce(0L,Long::sum);
 
-        System.out.println(score);
+        counterRepository.incrementViewCountByCardId(card.getCardId());
+
         return card;
     }
 
@@ -166,5 +178,23 @@ public class StyleCardService {
         }
     }
 
+
+    public StyleCardCounter countStyleCardView(UUID cardId){
+
+
+        return counterRepository.findByCardId(cardId);
+    }
+
+
+    public List<StyleCardCounter> cardCountList(){
+
+
+        return counterRepository.findAll();
+    }
+
+    public List<StyleCardInfo> cardInfosByIds(List<UUID> uuids){
+
+        return styleCardRepository.findByCardIdIn(uuids);
+    }
 
 }

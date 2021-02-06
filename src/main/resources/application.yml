@@ -5,11 +5,6 @@ spring:
       file-size-threshold: 4KB
       max-file-size: 200MB
       max-request-size: 215MB
-  redis:
-    host: localhost
-    port: 6379
-  cache:
-    type: redis
   profiles:
     active: local
   messages:
@@ -21,7 +16,7 @@ spring:
     cassandra:
       contact-points: 192.168.0.76
       port: 9042
-      keyspace-name: kctv
+      keyspace-name: kctv_dev
       local-datacenter: DC1
       username: biskit
 
@@ -42,5 +37,6 @@ logging:
     sql: info
 application:
   appVersion: v1
+
 
 

@@ -55,6 +55,8 @@ public class PlaceInfoVo {
 
     @ApiModelProperty(value = "편의시설")
     private Set<String> facilities;
+    @ApiModelProperty(value = "삭제할 이미지 주소")
+    private List<String> deleteImg;
 
     @ApiModelProperty(value = "메뉴리스트")
     private List<MenuByPlace> menuList;
@@ -66,9 +68,7 @@ public class PlaceInfoVo {
     private Long latitude;
     @ApiModelProperty(value = "경도", readOnly = true)
     private Long longitude;
-
-
-
+    private String serviceType;
 
 
 }

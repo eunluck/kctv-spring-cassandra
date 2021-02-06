@@ -75,6 +75,7 @@ public class PlaceInfoDto {
     private Long latitude;
     @ApiModelProperty(value = "경도", readOnly = true)
     private Long longitude;
+    private String serviceType;
 
 
 

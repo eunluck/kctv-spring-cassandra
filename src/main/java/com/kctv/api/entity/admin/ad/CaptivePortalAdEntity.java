@@ -1,6 +1,7 @@
 package com.kctv.api.entity.admin.ad;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import org.springframework.data.annotation.ReadOnlyProperty;
 import org.springframework.data.cassandra.core.cql.PrimaryKeyType;
@@ -31,6 +32,7 @@ public class CaptivePortalAdEntity {
     @Column("img_name")
     private String imgName;
     @Column("img_path")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String imgPath;
     @Column("ad_link")
     private String adLink;

@@ -1,5 +1,6 @@
 package com.kctv.api.controller.v1;
 
+import com.google.common.collect.Lists;
 import com.kctv.api.advice.exception.CResourceNotExistException;
 import com.kctv.api.entity.place.PlaceInfo;
 import com.kctv.api.entity.visit.UserVisitHistoryEntity;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
@@ -49,6 +51,7 @@ public class UserVisitController {
         UUID uuid = UUID.fromString(authentication.getName());
 
         List<UserVisitHistoryEntity> visitHistoryEntityList = userVisitHistoryService.findHistoryByUserId(uuid);
+        if(visitHistoryEntityList.size() > 0){
        List<PlaceInfo> list = placeService.getPlaceListByIdIn(visitHistoryEntityList.stream().map(UserVisitHistoryEntity::getPlaceId).collect(Collectors.toList()));
 
         return responseService.getListResult(visitHistoryEntityList
@@ -62,6 +65,10 @@ public class UserVisitController {
                                         .orElseThrow(CResourceNotExistException::new)))
                 .sorted(Comparator.comparingLong(UserVisitHistoryDto::getVisitDate))
                 .collect(Collectors.toList()));
+        }else{
+            return responseService.getListResult(Lists.newArrayList());
+        }
+
     }
 
 
@@ -70,30 +77,33 @@ public class UserVisitController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 token", required = true, dataType = "String", paramType = "header")
     })
     @GetMapping("/user/visit/count")
-    public ListResult<?> visitCountByPlace(){
+    public ListResult<?> visitCountByPlace() {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         UUID uuid = UUID.fromString(authentication.getName());
 
         List<VisitCount> visitCountList = userVisitHistoryService.visitCounts(uuid);
-        List<PlaceInfo> visitPlaceList = placeService.getPlaceListByIdIn(visitCountList.stream().map(VisitCount::getPlaceId).collect(Collectors.toList()));
+        if (visitCountList.size() > 0) {
+            List<PlaceInfo> visitPlaceList = placeService.getPlaceListByIdIn(visitCountList.stream().map(VisitCount::getPlaceId).collect(Collectors.toList()));
 
 
-        return responseService.getListResult(
-                visitCountList
-                        .stream()
-                        .map(visitCount ->
-                                new VisitCountDto(uuid,visitPlaceList
-                                        .stream()
-                                        .filter(placeInfo -> placeInfo.getPartnerId().equals(visitCount.getPlaceId()))
-                                        .findFirst()
-                                        .orElseThrow(CResourceNotExistException::new),visitCount.getVisitCount()))
-                        .sorted(Comparator.comparingLong(VisitCountDto::getVisitCount))
-                        .collect(Collectors.toList()));
+            return responseService.getListResult(
+                    visitCountList
+                            .stream()
+                            .map(visitCount ->
+                                    new VisitCountDto(uuid, visitPlaceList
+                                            .stream()
+                                            .filter(placeInfo -> placeInfo.getPartnerId().equals(visitCount.getPlaceId()))
+                                            .findFirst()
+                                            .orElseThrow(CResourceNotExistException::new), visitCount.getVisitCount()))
+                            .sorted(Comparator.comparingLong(VisitCountDto::getVisitCount))
+                            .collect(Collectors.toList()));
+        }else {
+            return responseService.getListResult(Lists.newArrayList());
+        }
+
     }
-
-
 
 
 

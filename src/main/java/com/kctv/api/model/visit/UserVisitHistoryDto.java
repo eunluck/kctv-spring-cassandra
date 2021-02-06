@@ -4,6 +4,7 @@ import com.kctv.api.entity.place.PlaceInfo;
 import com.kctv.api.entity.place.PlaceInfoDto;
 import com.kctv.api.entity.visit.UserVisitHistoryEntity;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.cassandra.core.cql.Ordering;
 import org.springframework.data.cassandra.core.cql.PrimaryKeyType;
@@ -13,6 +14,7 @@ import java.util.Date;
 import java.util.UUID;
 
 @Data
+@NoArgsConstructor
 public class UserVisitHistoryDto {
 
     private UUID userId;
@@ -25,5 +27,8 @@ public class UserVisitHistoryDto {
         BeanUtils.copyProperties(userVisitHistoryEntity,this);
         this.timestamp = new Date(timestamp * 1000L);
         this.placeInfo = placeInfo;
+    }
+    public UserVisitHistoryDto(UUID userId){
+        this.userId = userId;
     }
 }

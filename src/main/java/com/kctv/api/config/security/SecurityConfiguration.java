@@ -16,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.CorsUtils;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.Arrays;
@@ -42,13 +43,31 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
+
+    /*
+    * Access-Contorl-Allow-Origin
+    * CORS 요청을 허용할 사이트 (e.g. https://oddpoet.net)
+    *
+    * Access-Contorl-Allow-Method
+    * CORS 요청을 허용할 Http Method들 (e.g. GET,PUT,POST)
+    *
+    * Access-Contorl-Allow-Headers
+    * 특정 헤더를 가진 경우에만 CORS 요청을 허용할 경우
+    *
+    * Access-Contorl-Allow-Credencial
+    * 자격증명과 함께 요청을 할 수 있는지 여부.
+    * 해당 서버에서 Authorization로 사용자 인증도 서비스할 것이라면 true로 응답해야 할 것이다.
+    *
+    * Access-Contorl-Max-Age
+    * preflight 요청의 캐시 시간.
+    * */
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList("*"));
-        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
-        configuration.setAllowedHeaders(Arrays.asList("authorization", "content-type", "x-auth-token","Authorization"));
-        configuration.setExposedHeaders(Arrays.asList("x-auth-token"));
+        configuration.setAllowedMethods(Arrays.asList("*"));
+        configuration.setAllowedHeaders(Arrays.asList("*"));
+        configuration.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
@@ -67,8 +86,10 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS) // jwt token으로 인증하므로 세션은 필요없으므로 생성안함.
                 .and()
                 .authorizeRequests() // 다음 리퀘스트에 대한 사용권한 체크
+                .requestMatchers(CorsUtils::isPreFlightRequest).permitAll() //  현재 웹페이지 이외의 사이트(프론트와 서버가 분리되어 있을때)에 xhr 요청할 때 CORS preflight 라는 요청을 보낸다. 이 것은 실제 해당 서버에 CORS 정책을 확인하기 위한 요청이므로 허용한다.
                 //.antMatchers("/v1/**").permitAll() // v1은 토큰체크 x (임시)
                 .antMatchers("/image/**").permitAll()
+                .antMatchers("/ad/**").permitAll()
                 .antMatchers("/actuator/**").permitAll()
                 .antMatchers("/v1/find/password/**").permitAll() //이메일찾기
                 .antMatchers("/v1/clk/**").permitAll() //클릭로그

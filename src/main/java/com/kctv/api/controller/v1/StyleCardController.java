@@ -2,7 +2,9 @@ package com.kctv.api.controller.v1;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import com.kctv.api.advice.exception.CResourceNotExistException;
 import com.kctv.api.entity.place.PlaceInfo;
+import com.kctv.api.entity.stylecard.StyleCardCounter;
 import com.kctv.api.entity.stylecard.StyleCardInfo;
 
 import com.kctv.api.entity.user.UserInfoDto;
@@ -17,6 +19,7 @@ import com.kctv.api.service.UserService;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 
+import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.CollectionUtils;
@@ -41,19 +44,31 @@ public class StyleCardController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 token", required = true, dataType = "String", paramType = "header"),
     })
-    @GetMapping("/card/tags/me")
+    @GetMapping("/card/me")
     public ListResult<StyleCardInfo> getStyleCardMyList(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UUID uuid = UUID.fromString(authentication.getName());
 
         UserInterestTag connectionUser = userService.getUserInterestTag(uuid).orElseGet(() -> new UserInterestTag(uuid,null,Sets.newHashSet()));
+        UserInfoDto userInfoDto = new UserInfoDto(userService.findByUserId(uuid),new ArrayList<>(connectionUser.getTags()));
+        String filterAge = Optional.ofNullable(userInfoDto.getAges()).orElseGet(() -> "20대");
+        String filterGender = Optional.ofNullable(userInfoDto.getUserGender()).orElseGet(() -> "남");
+
+
         //UserInfoDto userDto = new UserInfoDto(userService.findByUserId(uuid), new ArrayList<>(connectionUser.getTags()));
 
         if (!CollectionUtils.isEmpty(connectionUser.getTags())){
 
-            return responseService.getListResult(styleCardService.getCardByTagsService(new ArrayList<>(connectionUser.getTags())));
+            return responseService.getListResult(styleCardService.getCardByTagsService(new ArrayList<>(connectionUser.getTags()))
+                    .stream()
+                    .filter(styleCardInfo -> !CollectionUtils.isEmpty(styleCardInfo.getAges()) && styleCardInfo.getAges().contains(filterAge))
+                    .filter(styleCardInfo -> !CollectionUtils.isEmpty(styleCardInfo.getGender()) && styleCardInfo.getGender().contains(filterGender))
+                    .limit(10L)
+                    .collect(Collectors.toList()));
         }else {
-            List<StyleCardInfo> randomList = styleCardService.getStyleCardListAllService();
+            List<StyleCardInfo> randomList = styleCardService.getStyleCardListAllService().stream()
+                    .limit(10L)
+                    .collect(Collectors.toList());
             Collections.shuffle(randomList);
             return responseService.getListResult(randomList);
         }
@@ -67,7 +82,7 @@ public class StyleCardController {
     public ListResult<StyleCardInfo> getStyleCardRelevant(@PathVariable("cardId") UUID cardId){
         
         //TODO 정직하게 구현 필요
-        List<StyleCardInfo> randomList = styleCardService.getStyleCardListAllService();
+        List<StyleCardInfo> randomList = styleCardService.getStyleCardListAllService().stream().limit(5).collect(Collectors.toList());
         Collections.shuffle(randomList);
         return responseService.getListResult(randomList);
         
@@ -80,8 +95,13 @@ public class StyleCardController {
                                                       @PathVariable("tag") String tags){
 
         List<String> tagArr = Arrays.asList(tags.split(","));
-
+        if (tagArr.size() > 0){
         return responseService.getListResult(styleCardService.getCardByTagsService(tagArr));
+
+        }else {
+            return responseService.getListResult(Lists.newArrayList());
+        }
+
 
     }
 
@@ -133,7 +153,34 @@ public class StyleCardController {
 
     }
 
+    @ApiOperation(value = "스타일카드 조회수 랭킹 TOP5", notes = "가장 많이 조회된 스타일카드 목록")
+    @GetMapping("/card/hit")
+    public ListResult<StyleCardCounter> styleCardsOrderByViewCount(){
 
+        List<StyleCardCounter> countList = styleCardService.cardCountList();
+
+        List<StyleCardCounter> topFive =  countList
+                               .stream()
+                               .sorted(Comparator.comparingLong(StyleCardCounter::getViewCount).reversed())
+                               .limit(5)
+                               .collect(Collectors.toList());
+
+       List<StyleCardInfo> topFiveCards = styleCardService.cardInfosByIds(topFive.stream().map(StyleCardCounter::getCardId).collect(Collectors.toList()));
+
+       topFive.forEach(styleCardCounter ->
+               styleCardCounter.setCardName(topFiveCards.stream()
+                       .filter(styleCardInfo ->
+                               styleCardCounter.getCardId().equals(styleCardInfo.getCardId()))
+                       .findAny()
+                       .orElseThrow(CResourceNotExistException::new)
+                       .getTitle()
+               )
+       );
+
+
+        return responseService.getListResult(topFive);
+
+    }
 
 
 

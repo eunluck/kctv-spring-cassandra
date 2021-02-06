@@ -15,8 +15,10 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @Api(tags = {"05. Tag API"})
@@ -67,6 +69,18 @@ public class TagController {
 
         return responseService.getListResult(Facilities.facilities.getFacilitiesName());
     }
+
+
+    @ApiOperation(value = "추천 키워드",notes = "무작위 키워드 5개를 조회한다.")
+    @GetMapping("/tags/random")
+    public ListResult<Tag> getRandomKeyword(){
+
+        List<Tag> tagList = styleCardService.getTagListAllService();
+        Collections.shuffle(tagList);
+
+        return responseService.getListResult(tagList.stream().limit(5).collect(Collectors.toList()));
+    }
+
 
 
 

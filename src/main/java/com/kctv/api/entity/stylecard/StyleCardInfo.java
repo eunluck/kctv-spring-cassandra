@@ -1,5 +1,6 @@
 package com.kctv.api.entity.stylecard;
 
+import com.datastax.oss.driver.shaded.guava.common.collect.Sets;
 import com.kctv.api.entity.stylecard.admin.StyleCardVo;
 import lombok.*;
 import org.springframework.data.cassandra.core.cql.PrimaryKeyType;
@@ -37,7 +38,7 @@ public class StyleCardInfo {
     private Set<String> gender;
     private String status;
     @Column("place_id")
-    private Set<UUID> placeId;
+    private Set<UUID> placeId = Sets.newHashSet();
     @Column("curator_saying")
     private String curatorSaying;
 
@@ -52,4 +53,11 @@ public class StyleCardInfo {
         this.cardId = UUID.randomUUID();
 
     }
+    public StyleCardInfo(StyleCardVo styleCardVo,UUID uuid){
+        copyProperties(styleCardVo,this);
+        this.createAt = new Date();
+        this.cardId = uuid;
+
+    }
+
 }

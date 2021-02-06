@@ -27,7 +27,7 @@ public class UserVerifyController {
     public String getVerify(@PathVariable("key") String key){
 
         try {
-            userService.verifyEmail(key);
+            userService.newVerifyEmail(key);
             return "successverify";
         }catch (Exception e){
             e.printStackTrace();
@@ -50,7 +50,9 @@ public class UserVerifyController {
 
         System.out.println(user.toString());
 
-        userService.sendVerificationMail(user);
+
+        userService.userVerifyEmailResend(user);
+        //userService.sendVerificationMail(user);
 
         return responseService.getSuccessResult();
     }

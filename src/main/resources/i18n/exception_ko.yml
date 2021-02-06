@@ -46,3 +46,6 @@ partnerNotFound:
 notVerifyEmailException:
   code: "-1013"
   msg: "이메일 인증을 완료해주세요."
+formatNotAllowedException:
+  code: "-1014"
+  msg: "허용되지 않는 형식입니다."

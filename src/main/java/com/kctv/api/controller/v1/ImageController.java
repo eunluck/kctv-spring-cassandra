@@ -2,7 +2,11 @@ package com.kctv.api.controller.v1;
 
 import com.kctv.api.advice.exception.CResourceNotExistException;
 
+import com.kctv.api.controller.v1.admin.captive.CaptiveAdEntity;
+import com.kctv.api.entity.admin.ad.CaptivePortalAdEntity;
+import com.kctv.api.model.response.ListResult;
 import com.kctv.api.model.response.SingleResult;
+import com.kctv.api.service.CaptivePortalAdService;
 import com.kctv.api.service.ResponseService;
 import com.kctv.api.service.StorageService;
 import io.swagger.annotations.Api;
@@ -15,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 //file:///C:/images
 @Api(tags = {"06. Images API"})
@@ -24,6 +29,7 @@ public class ImageController {
 
     private final ResponseService responseService;
     private final StorageService storageService;
+    private final CaptivePortalAdService captivePortalAdService;
 
 
     @ApiOperation(value = "이미지 출력 API", notes = "이미지 UUID로 이미지를 출력한다.")
@@ -42,6 +48,15 @@ public class ImageController {
             @ApiParam(value = "이미지ID", required = true) @PathVariable("imageid")String imageid) throws IOException {
 
         return storageService.getAdImage(UUID.fromString(imageid));
+
+    }
+
+
+    @ApiOperation(value = "캡티브포탈 리스트 출력API", notes = "캡티브 포탈 AD에 등록된 이미지 중 ACTIVE상태인 목록을 조회한다.")
+    @GetMapping(value = "/ad")
+    public ListResult<CaptivePortalAdEntity> getAdList() throws IOException {
+
+        return responseService.getListResult(captivePortalAdService.findAllAd().stream().filter(adEntity -> adEntity.getAdStatus().equals("Active")).limit(4).collect(Collectors.toList()));
 
     }
 /*

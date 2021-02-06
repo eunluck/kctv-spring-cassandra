@@ -132,6 +132,13 @@ public class ExceptionAdvice {
         return responseService.getFailResult(Integer.valueOf(getMessage("notVerifyEmailException.code")), getMessage("notVerifyEmailException.msg"));
     }
 
+    @ExceptionHandler(CFormatNotAllowedException.class)
+    @ResponseStatus(HttpStatus.OK)
+    public CommonResult formatNotAllowedException(HttpServletRequest request, CFormatNotAllowedException e) {
+        log.debug(getMessage("formatNotAllowedException.msg")+"::{}", e.getMessage(), e);
+        return responseService.getFailResult(Integer.valueOf(getMessage("formatNotAllowedException.code")), getMessage("formatNotAllowedException.msg"));
+    }
+
 
 
 

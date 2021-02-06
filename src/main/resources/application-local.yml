@@ -5,6 +5,9 @@ costom:
     path: http://localhost:8081/v1/verify/
   path:
     images : 'C:\data\'
+  wakeuf:
+    bryan:
+      path: http://192.168.0.91:8099
 
 
 

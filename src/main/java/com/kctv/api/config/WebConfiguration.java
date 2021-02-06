@@ -11,19 +11,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Configuration
 public class WebConfiguration implements WebMvcConfigurer {
 
-    private final String imagesPath;
-
-    public WebConfiguration(@Value("${costom.path.images}") String imagesPath) {
-        this.imagesPath = imagesPath;
-    }
-
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-
-        registry
-                .addMapping("/**").allowedMethods("*").allowedHeaders("*").allowedOrigins("*");
-    }
-
+    public WebConfiguration() {}
 
 }
 
