@@ -1,5 +1,6 @@
 package com.kctv.api.entity.stylecard;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.data.annotation.ReadOnlyProperty;
 import org.springframework.data.cassandra.core.cql.PrimaryKeyType;
@@ -11,6 +12,7 @@ import org.springframework.data.cassandra.core.mapping.Table;
 import java.util.UUID;
 
 @Data
+@AllArgsConstructor
 @Table("style_card_counter")
 public class StyleCardCounter {
 
@@ -27,6 +29,5 @@ public class StyleCardCounter {
 
     @ReadOnlyProperty
     private String cardName;
-
 
 }

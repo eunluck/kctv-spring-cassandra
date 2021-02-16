@@ -1,16 +1,16 @@
 package com.kctv.api.service;
 
+import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
 import com.kctv.api.advice.exception.CPartnerNotFoundException;
 import com.kctv.api.advice.exception.CResourceNotExistException;
-import com.kctv.api.entity.stylecard.StyleCardByTags;
-import com.kctv.api.entity.stylecard.StyleCardCounter;
-import com.kctv.api.entity.stylecard.StyleCardInfo;
-import com.kctv.api.entity.stylecard.Tag;
+import com.kctv.api.entity.stylecard.*;
 import com.kctv.api.entity.stylecard.admin.StyleCardVo;
 import com.kctv.api.model.tag.TagGroup;
 import com.kctv.api.repository.ap.PartnerByTagsRepository;
 import com.kctv.api.repository.card.StyleByTagsRepository;
+import com.kctv.api.repository.card.StyleCardCounterDayRepository;
 import com.kctv.api.repository.card.StyleCardCounterRepository;
 import com.kctv.api.repository.card.StyleCardRepository;
 import com.kctv.api.repository.tag.TagRepository;
@@ -20,10 +20,9 @@ import org.apache.commons.collections.CollectionUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -35,7 +34,7 @@ public class StyleCardService {
     private final StyleByTagsRepository styleByTagsRepository;
     private final TagRepository tagRepository;
     private final PartnerByTagsRepository partnerByTagsRepository;
-    private final StyleCardCounterRepository counterRepository;
+    private final StyleCardCounterDayRepository counterDayRepository;
 
     public List<StyleCardInfo> getStyleCardListAllService(){
         return styleCardRepository.findAll();
@@ -60,7 +59,12 @@ public class StyleCardService {
 
         long score = card.getTags().stream().map(TagGroup::findByTagPoint).reduce(0L,Long::sum);
 
-        counterRepository.incrementViewCountByCardId(card.getCardId());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        LocalDate now = LocalDate.now();
+        Long nowToLong = Long.valueOf(now.format(formatter));
+
+
+        counterDayRepository.incrementViewCountByCardId(nowToLong,card.getCardId());
 
         return card;
     }
@@ -109,8 +113,12 @@ public class StyleCardService {
         List<StyleCardByTags> result = styleByTagsRepository.findByTagIn(tags); //태그를 조건으로 StyleCard를 검색
         List<UUID> uuidList = SortingTagsUtiil.duplicationMappingList(result);  //검색된 카드의 태그가 중복되는 갯수 순서로 내림차순 정렬
 
+        if(uuidList.size() > 0){
         List<StyleCardInfo> styleCardInfos = styleCardRepository.findByCardIdIn(uuidList);  // 위 태그에 충족되는 카드들을 UUID를 통해 조회
         return SortingTagsUtiil.SortingToList(styleCardInfos,uuidList); // 중복되는 순서로 내림차순 정렬
+        }else {
+            return Lists.newArrayList();
+        }
 
 
 
@@ -154,6 +162,8 @@ public class StyleCardService {
 //admin
     @Transactional
     public StyleCardInfo createStyleCard(StyleCardVo styleCardVo){
+        Preconditions.checkArgument(styleCardVo.getGender().stream().allMatch(s -> s.equals("male") || s.equals("female")),"성별은 필수값입니다. (허용 되는 값 : male or female)");
+
         StyleCardInfo styleCardInfo = new StyleCardInfo(styleCardVo);
 
         List<StyleCardByTags> list = styleCardInfo.getTags()
@@ -179,17 +189,20 @@ public class StyleCardService {
     }
 
 
-    public StyleCardCounter countStyleCardView(UUID cardId){
 
 
-        return counterRepository.findByCardId(cardId);
-    }
+    public List<StyleCardCounter> cardCountListByWeek(){
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        LocalDate now = LocalDate.now().minusDays(7);
+        Long nowToLong = Long.valueOf(now.format(formatter)); //일주일전날짜구함
+
+        System.out.println("현재시간변환"+nowToLong);
+
+    List<StyleCardCounterByDay> list = counterDayRepository.findByWeekCount(nowToLong);
 
 
-    public List<StyleCardCounter> cardCountList(){
-
-
-        return counterRepository.findAll();
+        return list.stream().collect(Collectors.groupingBy(styleCardCounterByDay -> styleCardCounterByDay.getKey().getCardId(),TreeMap::new,Collectors.summingLong(StyleCardCounterByDay::getViewCount))).entrySet().stream().map(uuidLongEntry -> new StyleCardCounter(uuidLongEntry.getKey(),0L,uuidLongEntry.getValue(),null)).collect(Collectors.toList());
     }
 
     public List<StyleCardInfo> cardInfosByIds(List<UUID> uuids){

@@ -78,12 +78,18 @@ public class UserInfoDto {
 
     public UserInfoDto(UserInfo userInfo, List<String> tags, WakeupPermission permission) {
         copyProperties(userInfo, this);
-        if (permission.getVolume() != null) {
+        if (permission.getVolume() != null && permission.getVolume() != 1L && permission.getVolume() != 0L) {
             long volume = permission.getVolume();
             permission.setVolume(parseByteToLong(volume));
             permission.setVolumeText(parseByteToString(volume));
+        } else if (permission.getUseVolume() != null && permission.getVolume() != 0L){
+            long useVolume = permission.getUseVolume();
+            permission.setUseVolume(parseByteToLong(useVolume));
+            permission.setVolumeText(parseByteToString(useVolume));
         }
         this.tags = tags;
+        String planText = "FREE".equals(permission.getPlan()) ? "무료" : "유료";
+        permission.setPlanText(planText);
         this.myPermission = permission;
         if (userInfo.getUserBirth() != null && !userInfo.getUserBirth().equals("")) {
             int accAge = ageAcc(userInfo.getUserBirth());
@@ -147,8 +153,11 @@ public class UserInfoDto {
 
     public String ages(int age) {
 
-        return String.valueOf(age).substring(0, 1) + "0대";
+        if (String.valueOf(age).length() == 2) {
+            return String.valueOf(age).substring(0, 1) + "0대";
+        }else{
+            return "10대";
+        }
     }
-
 
 }

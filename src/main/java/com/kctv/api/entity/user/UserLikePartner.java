@@ -1,6 +1,7 @@
 package com.kctv.api.entity.user;
 
 
+import com.kctv.api.advice.exception.CUserNotFoundException;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

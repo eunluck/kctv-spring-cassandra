@@ -12,6 +12,7 @@ import com.kctv.api.model.response.CommonResult;
 import com.kctv.api.service.InviteService;
 import com.kctv.api.service.ResponseService;
 import io.swagger.annotations.*;
+import org.bouncycastle.util.Strings;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -39,7 +40,6 @@ public class InviteController {
     private final RestTemplate restTemplate;
 
     public InviteController(ResponseService responseService, InviteService inviteService, @Value("${costom.wakeuf.bryan.path}") String path, RestTemplateBuilder builder) {
-        System.out.println(path);
         this.responseService = responseService;
         this.inviteService = inviteService;
         this.path = path;
@@ -56,15 +56,22 @@ public class InviteController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UUID uuid = UUID.fromString(authentication.getName());
 
+        String lowerCode = Strings.toLowerCase(code);
 
-        Optional<UserInfo> user = inviteService.findUserByCode(code);
+
+        Optional<UserInfo> user = inviteService.findUserByCode(lowerCode);
 
         if (!user.isPresent()){
             return responseService.getFailResult(-11,"유효하지 않는 코드입니다.");
         }else if(inviteService.inviteDoubleCheck(uuid,user.get().getUserId())) {
-            return responseService.getFailResult(-12,"이미 추천했던 사용자입니다.");
+            return responseService.getFailResult(-12,"이미 추천했던 사용자예요.");
+        }else if(uuid.equals(user.get().getUserId())) {
+            return responseService.getFailResult(-13,"자기 자신은 추천할 수 없어요");
         }else {
-            if (inviteService.saveInviteCode(new InviteFriends(uuid,user.get().getUserId(),new Date()))) {
+
+            InviteFriends inviteFriends = new InviteFriends(uuid,user.get().getUserId(),new Date());
+
+            if (inviteService.saveInviteCode(inviteFriends)) {
                 //추천인 코드는 여러명을 입력할 수 있다.(완)
                 //한번 추천한 사람에게 중복 추천할 수 없다. (완)
                 //추천인과 추천등록한사람은 100MB씩 제공받는다.(완)
@@ -72,15 +79,15 @@ public class InviteController {
                 HttpEntity httpEntity = new HttpEntity(new ReferRequest(user.get().getUserId(),uuid,"104857600"));
 
                 try {
-                ResponseEntity<WakeupPermissionVO> responseEntity = restTemplate.exchange(path+"/wakeuf/refer",HttpMethod.POST,httpEntity, WakeupPermissionVO.class);
+                ResponseEntity<WakeupPermissionVO> responseEntity = restTemplate.exchange(path+"/wakeuf/refer",HttpMethod.POST,httpEntity, WakeupPermissionVO.class); // 브라이언 서버와 통신
                 WakeupPermissionVO objects = responseEntity.getBody();
 
                 return responseService.getSingleResult(objects);
 
                 }catch (Exception e){
                     e.printStackTrace();
-
-                    return responseService.getFailResult(-20,"브라이언이 잘못했네");
+                    inviteService.deleteInviteCode(inviteFriends);
+                    return responseService.getFailResult(-20,"Permission 통신 오류.");
                 }
 
             }else{

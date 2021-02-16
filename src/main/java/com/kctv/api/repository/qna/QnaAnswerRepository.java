@@ -3,6 +3,7 @@ package com.kctv.api.repository.qna;
 import com.kctv.api.entity.admin.QnaAnswer;
 import com.kctv.api.entity.qna.QnaByUserEntity;
 import org.springframework.data.cassandra.repository.CassandraRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;

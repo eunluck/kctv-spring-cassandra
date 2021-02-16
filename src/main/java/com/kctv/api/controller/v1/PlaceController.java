@@ -76,6 +76,22 @@ public class PlaceController {
 
     }
 
+    @ApiOperation(value = "태그에 충족되는 가게 검색", notes = "태그에 충족되는 가게를 조회한다.(태그가 많이 충족되는 순서로 내림차순)")
+    @GetMapping("/place/search/tag/{tags}")
+    public ListResult<PlaceInfo> newGetPlaceByTags(@ApiParam(value = "검색할 태그(','로 구분.))",defaultValue = "건강,따뜻한,제주생활")@PathVariable("tags")String tags){
+
+
+        List<String> tagArr = Arrays.asList(tags.split(","));
+
+        if(CollectionUtils.isNotEmpty(tagArr)){
+
+            return responseService.getListResult(placeService.getPartnerInfoListByTagsService(tagArr));
+        }else{
+            return responseService.getListResult(placeService.getPartnerInfoListService());
+        }
+
+    }
+
 
 
 

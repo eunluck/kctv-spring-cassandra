@@ -3,10 +3,12 @@ package com.kctv.api.service;
 
 import com.kctv.api.entity.place.PlaceInfo;
 import com.kctv.api.entity.stylecard.StyleCardCounter;
+import com.kctv.api.entity.stylecard.StyleCardCounterByDay;
 import com.kctv.api.entity.stylecard.StyleCardInfo;
 import com.kctv.api.entity.user.UserLikePartner;
 import com.kctv.api.entity.user.UserScrapCard;
 import com.kctv.api.repository.ap.PartnerRepository;
+import com.kctv.api.repository.card.StyleCardCounterDayRepository;
 import com.kctv.api.repository.card.StyleCardCounterRepository;
 import com.kctv.api.repository.card.StyleCardRepository;
 import com.kctv.api.repository.user.UserLikeRepository;
@@ -16,6 +18,8 @@ import org.springframework.data.cassandra.core.CassandraBatchOperations;
 import org.springframework.data.cassandra.core.CassandraTemplate;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -27,7 +31,7 @@ public class LikeScrapService {
     private final PartnerRepository partnerRepository;
     private final UserScrapRepository userScrapRepository;
     private final StyleCardRepository styleCardRepository;
-    private final StyleCardCounterRepository counterRepository;
+    private final StyleCardCounterDayRepository counterRepository;
     /* 좋아요 기능*/
     public Optional<UserLikePartner> userLikePartnerService(UUID userId, UUID placeId){
 
@@ -66,12 +70,18 @@ public class LikeScrapService {
     /*유저 스크랩 기능*/
     public Optional<UserScrapCard> userScrapCardService(UUID userId, UUID cardId){
 
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        LocalDate now = LocalDate.now();
+        Long nowToLong = Long.valueOf(now.format(formatter));
+
+
         if(scrapCheck(userId,cardId)){
             userScrapRepository.delete(UserScrapCard.builder().cardId(cardId).userId(userId).build());
-            counterRepository.decrementScrapCountByCardId(cardId);
+            counterRepository.decrementScrapCountByCardId(nowToLong,cardId);
             return Optional.empty();
         }else{
-            counterRepository.incrementScrapCountByCardId(cardId);
+            counterRepository.incrementScrapCountByCardId(nowToLong,cardId);
             return Optional.ofNullable(userScrapRepository.save(UserScrapCard.builder().cardId(cardId).userId(userId).build()));
         }
     }

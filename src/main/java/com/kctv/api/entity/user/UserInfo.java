@@ -165,6 +165,8 @@ public class UserInfo implements UserDetails {
         if (!Strings.isNullOrEmpty(userInfo.getUserBirth()))
             this.userBirth = userInfo.getUserBirth();
             this.updateDate = new Date();
+        if(CollectionUtils.isNotEmpty(userInfo.getRoles()))
+            this.roles = userInfo.getRoles();
 
     }
 }

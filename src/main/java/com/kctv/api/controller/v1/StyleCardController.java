@@ -1,10 +1,12 @@
 package com.kctv.api.controller.v1;
 
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import com.kctv.api.advice.exception.CResourceNotExistException;
 import com.kctv.api.entity.place.PlaceInfo;
 import com.kctv.api.entity.stylecard.StyleCardCounter;
+import com.kctv.api.entity.stylecard.StyleCardCounterByDay;
 import com.kctv.api.entity.stylecard.StyleCardInfo;
 
 import com.kctv.api.entity.user.UserInfoDto;
@@ -26,6 +28,10 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
 
 
+import javax.swing.undo.CannotRedoException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -45,27 +51,36 @@ public class StyleCardController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 token", required = true, dataType = "String", paramType = "header"),
     })
     @GetMapping("/card/me")
-    public ListResult<StyleCardInfo> getStyleCardMyList(){
+    public ListResult<StyleCardInfo> getStyleCardMyList() {
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println("getStyleCardMyList:::" + authentication.getName());
         UUID uuid = UUID.fromString(authentication.getName());
 
-        UserInterestTag connectionUser = userService.getUserInterestTag(uuid).orElseGet(() -> new UserInterestTag(uuid,null,Sets.newHashSet()));
-        UserInfoDto userInfoDto = new UserInfoDto(userService.findByUserId(uuid),new ArrayList<>(connectionUser.getTags()));
-        String filterAge = Optional.ofNullable(userInfoDto.getAges()).orElseGet(() -> "20대");
-        String filterGender = Optional.ofNullable(userInfoDto.getUserGender()).orElseGet(() -> "남");
+        UserInterestTag connectionUser = userService.getUserInterestTag(uuid).orElseGet(() -> new UserInterestTag(uuid, null, Sets.newHashSet())); // 유저의 태그들을 뽑아옴. 태그가없을시 빈 배열 생성
+        UserInfoDto userInfoDto = new UserInfoDto(userService.findByUserId(uuid), new ArrayList<>(connectionUser.getTags())); // 유저객체를 위 태그와 합침
+        System.out.println(userInfoDto);
+        String filterAge = Optional.ofNullable(userInfoDto.getAges()).orElseGet(() -> "20대"); //유저가 가지고있는 정보로 필터를 생성
+        String filterGender = Optional.ofNullable(userInfoDto.getUserGender()).orElseGet(() -> "male");
 
-
-        //UserInfoDto userDto = new UserInfoDto(userService.findByUserId(uuid), new ArrayList<>(connectionUser.getTags()));
-
-        if (!CollectionUtils.isEmpty(connectionUser.getTags())){
-
-            return responseService.getListResult(styleCardService.getCardByTagsService(new ArrayList<>(connectionUser.getTags()))
+        if (!CollectionUtils.isEmpty(userInfoDto.getTags())) {
+            List<StyleCardInfo> filteringList = styleCardService.getCardByTagsService(new ArrayList<>(userInfoDto.getTags()))
                     .stream()
-                    .filter(styleCardInfo -> !CollectionUtils.isEmpty(styleCardInfo.getAges()) && styleCardInfo.getAges().contains(filterAge))
-                    .filter(styleCardInfo -> !CollectionUtils.isEmpty(styleCardInfo.getGender()) && styleCardInfo.getGender().contains(filterGender))
+                    .filter(styleCardInfo -> styleCardInfo.getAges().contains(filterAge))
+                    .filter(styleCardInfo -> styleCardInfo.getGender().contains(filterGender))
                     .limit(10L)
-                    .collect(Collectors.toList()));
-        }else {
+                    .collect(Collectors.toList());
+
+            if (CollectionUtils.isEmpty(filteringList)) {
+                List<StyleCardInfo> randomList = styleCardService.getStyleCardListAllService().stream()
+                        .limit(10L)
+                        .collect(Collectors.toList());
+                Collections.shuffle(randomList);
+
+                return responseService.getListResult(randomList);
+            }
+            return responseService.getListResult(filteringList);
+        } else {
             List<StyleCardInfo> randomList = styleCardService.getStyleCardListAllService().stream()
                     .limit(10L)
                     .collect(Collectors.toList());
@@ -79,36 +94,36 @@ public class StyleCardController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 token", required = true, dataType = "String", paramType = "header"),
     })
     @GetMapping("/card/{cardId}/relevant")
-    public ListResult<StyleCardInfo> getStyleCardRelevant(@PathVariable("cardId") UUID cardId){
-        
+    public ListResult<StyleCardInfo> getStyleCardRelevant(@PathVariable("cardId") UUID cardId) {
+
         //TODO 정직하게 구현 필요
         List<StyleCardInfo> randomList = styleCardService.getStyleCardListAllService().stream().limit(5).collect(Collectors.toList());
         Collections.shuffle(randomList);
         return responseService.getListResult(randomList);
-        
+
     }
 
     /* tag를 통해 작성되어 있는 style Card 목록을 가져옴*/
     @ApiOperation(value = "태그를 통해 StyleCard를 검색.", notes = "태그에 충족하는 스타일카드를 검색한다.")
     @GetMapping("/card/tags/{tag}")
-    public ListResult<StyleCardInfo> getStyleCardList(@ApiParam(value = "검색할 태그 입력(콤마','로 구분)",defaultValue = "제주여행,따뜻한")
-                                                      @PathVariable("tag") String tags){
+    public ListResult<StyleCardInfo> getStyleCardList(@ApiParam(value = "검색할 태그 입력(콤마','로 구분)", defaultValue = "제주여행,따뜻한")
+                                                      @PathVariable("tag") String tags) {
 
         List<String> tagArr = Arrays.asList(tags.split(","));
-        if (tagArr.size() > 0){
-        return responseService.getListResult(styleCardService.getCardByTagsService(tagArr));
 
-        }else {
+        if (tagArr.size() > 0) {
+            return responseService.getListResult(styleCardService.getCardByTagsService(tagArr));
+
+        } else {
             return responseService.getListResult(Lists.newArrayList());
         }
-
 
     }
 
     @ApiOperation(value = "card id로 특정 카드 상세보기", notes = "uuid를 통해 특정 카드를 검색한다.")
     @GetMapping("/card/{cardId}")
-    public SingleResult<?> getCardById(@ApiParam(value = "검색할 Card UUID 입력",defaultValue = "fc35a91b-3bb2-4a55-8a45-3b03df9e797d")
-                                       @PathVariable("cardId")UUID cardId){
+    public SingleResult<?> getCardById(@ApiParam(value = "검색할 Card UUID 입력", defaultValue = "fc35a91b-3bb2-4a55-8a45-3b03df9e797d")
+                                       @PathVariable("cardId") UUID cardId) {
 
         return responseService.getSingleResult(styleCardService.getCardById(cardId));
 
@@ -117,76 +132,74 @@ public class StyleCardController {
 
     @ApiOperation(value = "LifeStyleCardList", notes = "등록된 모든 카드를 조회한다.")
     @GetMapping("/card")
-    public ListResult<StyleCardInfo> getStyleCardAll(){
+    public ListResult<StyleCardInfo> getStyleCardAll() {
 
         return responseService.getListResult(styleCardService.getStyleCardListAllService());
 
     }
 
 
-    @ApiOperation(value = "card id로 가게리스트 검색", notes = "card uuid를 통해 태그에 충족되는 가게 리스트를 조회한다.")
+    @ApiOperation(value = "기준에 충족되는 가게리스트 검색", notes = "스타일카드에 해당되는 가게 리스트를 조회한다.<br/>" +
+            "card에 직접 입력된 가게 리스트 조회: \"/card/{cardId}/place?type=id\") <br/>" +
+            "card의 태그를 기반으로 가게 리스트 조회: \"/card/{cardId}/place?type=tag\"    ")
     @GetMapping("/card/{cardId}/place")
-    public PlaceListResult getPlaceByTags(@ApiParam(value = "검색할 Card UUID 입력",defaultValue = "fc35a91b-3bb2-4a55-8a45-3b03df9e797d")
-                                          @PathVariable("cardId")UUID cardId,
-                                          @RequestParam(required = false,value = "type",defaultValue = "id")String type){
+    public PlaceListResult getPlaceByTags(@ApiParam(value = "검색할 Card UUID 입력", defaultValue = "fc35a91b-3bb2-4a55-8a45-3b03df9e797d")
+                                          @PathVariable("cardId") UUID cardId,
+                                          @RequestParam(required = false, value = "type", defaultValue = "id") String type) {
 
         //타입을 입력받게되면 tag기반으로 검색된 플레이스 리스트가 나타난다.
 
 
         StyleCardInfo cardInfo = styleCardService.getCardById(cardId);
-        if (CollectionUtils.isEmpty(cardInfo.getPlaceId())){
+        if (CollectionUtils.isEmpty(cardInfo.getPlaceId())) {
             type = "tag";
         }
 
         List<PlaceInfo> placeInfoList = Lists.newArrayList();
 
 
-        if("tag".equals(type)) {
+        if ("tag".equals(type)) {
             placeInfoList.addAll(placeService.getPartnerInfoListByTagsService(Lists.newArrayList(cardInfo.getTags())));
-        }else if("id".equals(type)){
+        } else if ("id".equals(type)) {
             placeInfoList.addAll(placeService.getPlaceListByIdIn(Lists.newArrayList(cardInfo.getPlaceId())));
         }
-
 
 
         return responseService.getPlaceListResult(cardInfo, placeInfoList);
 
     }
 
-    @ApiOperation(value = "스타일카드 조회수 랭킹 TOP5", notes = "가장 많이 조회된 스타일카드 목록")
+
+    private List<StyleCardCounter> styleCardCounterCache = null;
+    private Long styleCardCounterCacheUpdateTs = 0L;
+
+    @ApiOperation(value = "최근 일주일간 스타일카드 조회수 랭킹 TOP5", notes = "가장 많이 조회된 스타일카드 목록(10분마다 갱신)")
     @GetMapping("/card/hit")
-    public ListResult<StyleCardCounter> styleCardsOrderByViewCount(){
+    public ListResult<StyleCardCounter> styleCardsOrderByViewCountDay() {
 
-        List<StyleCardCounter> countList = styleCardService.cardCountList();
-
-        List<StyleCardCounter> topFive =  countList
-                               .stream()
-                               .sorted(Comparator.comparingLong(StyleCardCounter::getViewCount).reversed())
-                               .limit(5)
-                               .collect(Collectors.toList());
-
-       List<StyleCardInfo> topFiveCards = styleCardService.cardInfosByIds(topFive.stream().map(StyleCardCounter::getCardId).collect(Collectors.toList()));
-
-       topFive.forEach(styleCardCounter ->
-               styleCardCounter.setCardName(topFiveCards.stream()
-                       .filter(styleCardInfo ->
-                               styleCardCounter.getCardId().equals(styleCardInfo.getCardId()))
-                       .findAny()
-                       .orElseThrow(CResourceNotExistException::new)
-                       .getTitle()
-               )
-       );
+        if (styleCardCounterCacheUpdateTs < (System.currentTimeMillis() - 10000)) {
 
 
-        return responseService.getListResult(topFive);
+            List<StyleCardCounter> countList = styleCardService.cardCountListByWeek();
 
+            List<StyleCardCounter> topFive = countList
+                    .stream()
+                    .sorted(Comparator.comparingLong(StyleCardCounter::getViewCount).reversed())
+                    .limit(5)
+                    .collect(Collectors.toList());
+
+            List<StyleCardInfo> topFiveCards = styleCardService.cardInfosByIds(countList.stream().map(StyleCardCounter::getCardId).collect(Collectors.toList()));
+
+
+            for (StyleCardCounter styleCardCounter : topFive){
+                styleCardCounter.setCardName(topFiveCards.stream().filter(styleCardInfo -> styleCardInfo.getCardId().equals(styleCardCounter.getCardId())).findFirst().get().getTitle());
+            }
+
+            styleCardCounterCache = topFive;
+
+        }
+        return responseService.getListResult(styleCardCounterCache);
     }
-
-
-
-
-
-
 
 
 }

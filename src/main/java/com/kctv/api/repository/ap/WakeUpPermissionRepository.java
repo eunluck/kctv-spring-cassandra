@@ -4,6 +4,7 @@ import com.kctv.api.entity.place.WifiInfo;
 import com.kctv.api.model.ap.WakeupPermission;
 import org.springframework.data.cassandra.repository.AllowFiltering;
 import org.springframework.data.cassandra.repository.CassandraRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;

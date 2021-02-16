@@ -57,8 +57,6 @@ public class JwtTokenProvider {
         public Authentication getAuthentication(String token) {
 
             UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserPk(token));
-            UserInfo userInfo = (UserInfo) userDetails;
-            userInfo.getRoles().stream().findAny();
 
             return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
         }
@@ -78,12 +76,6 @@ public class JwtTokenProvider {
 
         }
 
-        /*
-
-            public String resolveToken(HttpServletRequest req) {
-                return req.getHeader("X-AUTH-TOKEN");
-            }
-        */
 
         // Jwt 토큰의 유효성 + 만료일자 확인
         public boolean validateToken(String jwtToken) {

@@ -38,4 +38,10 @@ public class InviteService {
 
     }
 
+    public void deleteInviteCode(InviteFriends inviteFriends){
+
+        inviteRepository.delete(inviteFriends);
+
+    }
+
 }

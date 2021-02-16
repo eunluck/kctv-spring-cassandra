@@ -6,14 +6,17 @@ import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.common.hash.HashCode;
 import com.google.common.hash.Hashing;
-import com.kctv.api.advice.exception.CNotFoundEmailException;
 import com.kctv.api.advice.exception.CResourceNotExistException;
 import com.kctv.api.advice.exception.CUserExistException;
 import com.kctv.api.advice.exception.CUserNotFoundException;
 import com.kctv.api.entity.user.*;
+import com.kctv.api.entity.visit.UserVisitHistoryEntity;
 import com.kctv.api.model.ap.WakeupPermission;
 import com.kctv.api.repository.ap.WakeUpPermissionRepository;
 import com.kctv.api.repository.user.*;
+import com.kctv.api.repository.visit.VisitHistoryRepository;
+import com.kctv.api.util.AES256Util;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.mail.SimpleMailMessage;
@@ -23,10 +26,11 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
+import sun.security.krb5.internal.crypto.Aes256;
 
+import java.io.UnsupportedEncodingException;
+import java.security.GeneralSecurityException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -39,13 +43,15 @@ public class UserService implements UserDetailsService {
     private final JavaMailSender emailSender;
     private final UserInterestTagRepository userInterestTagRepository;
     private final UserLikeRepository userLikeRepository;
+    private final UserScrapRepository userScrapRepository;
     private final UserEmailVerifyRepository userEmailVerifyRepository;
+    private final VisitHistoryRepository visitHistoryRepository;
     private final String EMAIL_LINK;
     //private final String EMAIL_LINK = "http://192.168.0.56:8081/v1/verify/";
     private final String EMAIL_SUB = "KCTV 회원가입 인증 메일입니다.";
 
 
-    public UserService(UserUniqueCodeRepository userUniqueCodeRepository, WakeUpPermissionRepository wakeUpPermissionRepository, @Lazy PasswordEncoder passwordEncoder, UserRepository userRepository, JavaMailSender emailSender, UserInterestTagRepository userInterestTagRepository, UserLikeRepository userLikeRepository, UserEmailVerifyRepository userEmailVerifyRepository, @Value("${costom.host.path}") String email_link) {
+    public UserService(UserUniqueCodeRepository userUniqueCodeRepository, WakeUpPermissionRepository wakeUpPermissionRepository, @Lazy PasswordEncoder passwordEncoder, UserRepository userRepository, JavaMailSender emailSender, UserInterestTagRepository userInterestTagRepository, UserLikeRepository userLikeRepository, UserScrapRepository userScrapRepository, UserEmailVerifyRepository userEmailVerifyRepository, VisitHistoryRepository visitHistoryRepository, @Value("${costom.host.path}") String email_link) {
         this.userUniqueCodeRepository = userUniqueCodeRepository;
         this.wakeUpPermissionRepository = wakeUpPermissionRepository;
         this.passwordEncoder = passwordEncoder;
@@ -53,9 +59,49 @@ public class UserService implements UserDetailsService {
         this.emailSender = emailSender;
         this.userInterestTagRepository = userInterestTagRepository;
         this.userLikeRepository = userLikeRepository;
+        this.userScrapRepository = userScrapRepository;
         this.userEmailVerifyRepository = userEmailVerifyRepository;
+        this.visitHistoryRepository = visitHistoryRepository;
         this.EMAIL_LINK = email_link;
 
+    }
+
+    public UserInfo deleteUserInfo(UserInfo userInfo){
+        WakeupPermission userPermission;
+        UserUniqueCode userUniqueCode;
+        UserInterestTag userTags;
+        List<UserLikePartner> userLikePartners;
+        List<UserScrapCard> userScrapCards;
+        UserEmailVerify userEmailVerify;
+        List<UserVisitHistoryEntity> userVisitHistoryEntities;
+        try {
+            userPermission = wakeUpPermissionRepository.findByUserId(userInfo.getUserId()).orElseThrow(CUserNotFoundException::new);
+            userUniqueCode = userUniqueCodeRepository.findByUniqueCode(userPermission.getUniqueCode()).orElseThrow(CUserNotFoundException::new);
+            userTags = userInterestTagRepository.findByUserId(userInfo.getUserId()).orElseGet(() -> null);
+            userLikePartners = userLikeRepository.findByUserId(userInfo.getUserId());
+            userScrapCards = userScrapRepository.findByUserId(userInfo.getUserId());
+            userEmailVerify = userEmailVerifyRepository.findByUserId(userInfo.getUserId()).orElseGet(() -> null);
+            userVisitHistoryEntities = visitHistoryRepository.findByUserId(userInfo.getUserId());
+        }catch (Exception e){
+            e.printStackTrace();
+            throw new CUserNotFoundException();
+        }
+
+        userRepository.delete(userInfo);
+        wakeUpPermissionRepository.delete(userPermission);
+        userUniqueCodeRepository.delete(userUniqueCode);
+        if (userTags != null)
+            userInterestTagRepository.delete(userTags);
+        if (CollectionUtils.isNotEmpty(userLikePartners))
+            userLikeRepository.deleteAll(userLikePartners);
+        if (CollectionUtils.isNotEmpty(userScrapCards))
+            userScrapRepository.deleteAll(userScrapCards);
+        if(CollectionUtils.isNotEmpty(userVisitHistoryEntities))
+            visitHistoryRepository.deleteAll(userVisitHistoryEntities);
+        if (userEmailVerify != null)
+            userEmailVerifyRepository.delete(userEmailVerify);
+
+        return userInfo;
     }
 
     public UserInfo findByUserId(UUID uuid) {
@@ -93,12 +139,14 @@ public class UserService implements UserDetailsService {
 
     }
 
-    public UserInfo userSignUpService(UserInfo userInfo) {
+    public UserInfo userSignUpService(UserInfo userInfo) throws GeneralSecurityException, UnsupportedEncodingException {
+
+
 
         String code = UUID.randomUUID().toString().replaceAll("-", ""); // -를 제거해 주었다.
         code = code.substring(0, 6);
-        String userUniqueCode = createUniqueCode(userInfo.getUserId());
         userInfo.setUserId(UUID.randomUUID());
+        String userUniqueCode = createUniqueCode(userInfo.getUserId());
 
         WakeupPermission wakeupPermission = null;
 
@@ -189,6 +237,7 @@ public class UserService implements UserDetailsService {
 
         HashCode md5 = Hashing.md5().hashString(uuid, Charsets.UTF_8);
 
+
         findUser.setUserPassword(passwordEncoder.encode(md5.toString()));
 
         List<String> role = findUser.getRoles();
@@ -252,7 +301,7 @@ public class UserService implements UserDetailsService {
 
     public UserInfo userUpdateService(UserInfo userInfo) {
 
-        if (!Strings.isNullOrEmpty(userInfo.getPassword())){
+        if (!Strings.isNullOrEmpty(userInfo.getUserPassword())){
         userInfo.setUserPassword(passwordEncoder.encode(userInfo.getUserPassword()));
         }
 
@@ -285,6 +334,8 @@ public class UserService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String s) throws CUserNotFoundException {
 
+
+        System.out.println("디버깅loadUserByuserName:::"+s);
         return userRepository.findByUserId(UUID.fromString(s)).orElseThrow(CUserNotFoundException::new);
     }
 
@@ -302,12 +353,21 @@ public class UserService implements UserDetailsService {
 
     public UserInfo modifyManager(UserInfo userInfo){
 
+        if (!Strings.isNullOrEmpty(userInfo.getPassword()))
         userInfo.setUserPassword(passwordEncoder.encode(userInfo.getUserPassword()));
 
-        findByUserId(userInfo.getUserId()).modifyUser(userInfo,userInfo.getUserPassword());
+        UserInfo before = findByUserId(userInfo.getUserId());
 
-        return userRepository.save(userInfo);
+        before.modifyUser(userInfo,userInfo.getUserPassword());
+        return userRepository.save(before);
 
+    }
+
+    public boolean deleteManager(UserInfo userInfo){
+
+        userRepository.delete(userInfo);
+
+        return true;
     }
 
 

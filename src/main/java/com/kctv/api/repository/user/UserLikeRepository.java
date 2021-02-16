@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-
 public interface UserLikeRepository extends CassandraRepository<UserLikePartner, UUID> {
 
     List<UserLikePartner> findByUserId(UUID userId); // 내가 좋아한 가게 리스트

@@ -28,7 +28,6 @@ public class WakeupPermissionUnder {
 
     private UUID user_id;
     private Set<String> device_mac;
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Map<String,Long> device_mac_history;
     private Long expire_epoch;
     private Long volume;

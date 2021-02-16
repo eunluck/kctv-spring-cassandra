@@ -28,7 +28,7 @@ spring:
       - 192.168.161.170
       - 192.168.161.172
       port: 9042
-      keyspace-name: kctv
+      keyspace-name: kctv_dev
       local-datacenter: jeju-dc
 server:
   port: 8101
@@ -42,6 +42,9 @@ costom:
     path: http://112.133.52.70:8101/v1/verify/
   path:
     images : ./data/nginx/
+  wakeuf:
+    bryan:
+      path: http://112.133.52.72:8077
 
 
 

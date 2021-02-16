@@ -139,6 +139,13 @@ public class ExceptionAdvice {
         return responseService.getFailResult(Integer.valueOf(getMessage("formatNotAllowedException.code")), getMessage("formatNotAllowedException.msg"));
     }
 
+   @ExceptionHandler(CTokenNotFoundException.class)
+    @ResponseStatus(HttpStatus.OK)
+    public CommonResult formatNotAllowedException(HttpServletRequest request, CTokenNotFoundException e) {
+        log.debug(getMessage("tokenNotFoundException.msg")+"::{}", e.getMessage(), e);
+        return responseService.getFailResult(Integer.valueOf(getMessage("tokenNotFoundException.code")), getMessage("tokenNotFoundException.msg"));
+    }
+
 
 
 

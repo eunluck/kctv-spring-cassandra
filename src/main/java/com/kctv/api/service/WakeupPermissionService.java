@@ -35,9 +35,20 @@ public class WakeupPermissionService {
 
     }
 
-    public Optional<WakeupPermission> findPermissionByUserId(UUID uuid){
+    public WakeupPermission findPermissionByUserId(UUID uuid){
 
-        return wakeUpPermissionRepository.findByUserId(uuid);
+        WakeupPermission userPermission = wakeUpPermissionRepository.findByUserId(uuid).orElseGet(WakeupPermission::new);
+
+        if(userPermission.getExpireEpoch() != null && userPermission.getExpireEpoch() != 0L){
+            if (userPermission.getExpireEpoch() < System.currentTimeMillis()){
+                userPermission.expirationUser();
+                return wakeUpPermissionRepository.save(userPermission);
+            }
+
+        }
+
+
+        return userPermission;
 
     }
 

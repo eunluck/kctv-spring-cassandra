@@ -6,6 +6,7 @@ import com.kctv.api.advice.exception.*;
 import com.kctv.api.config.security.JwtTokenProvider;
 
 
+import com.kctv.api.entity.admin.ManagerDto;
 import com.kctv.api.entity.user.InviteFriends;
 import com.kctv.api.entity.user.UserInfo;
 import com.kctv.api.entity.user.UserInfoDto;
@@ -18,9 +19,11 @@ import com.kctv.api.model.response.LoginResult;
 import com.kctv.api.model.response.SingleResult;
 
 
+import com.kctv.api.model.tag.Role;
 import com.kctv.api.service.ResponseService;
 import com.kctv.api.service.UserService;
 import com.kctv.api.service.WakeupPermissionService;
+import com.kctv.api.util.AES256Util;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.cassandra.core.cql.keyspace.UserTypeSpecification;
@@ -30,6 +33,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
+import java.io.UnsupportedEncodingException;
+import java.security.GeneralSecurityException;
 import java.util.*;
 
 import static java.util.stream.Collectors.toList;
@@ -48,27 +53,45 @@ public class UserController {
 
     @ApiOperation(value = "회원가입 API", notes = "회원가입 후 인증메일을 발송한다. (인증링크유효기간3분)")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "userInfo", value = "수정할 데이터 body", dataType = "SignUpEx", required = true),
+            @ApiImplicitParam(name = "userInfo", value = "수정할 데이터 body", dataType = "SignUpEx", required = true)
     })
     @PostMapping(value = "/signup", consumes = "application/json;charset=utf-8", produces = "application/json;charset=utf-8")
-    public SingleResult<UserInfo> signUp(@RequestBody UserInfo userInfo){
+    public SingleResult<UserInfo> signUp(@RequestBody UserInfo userInfo) throws GeneralSecurityException, UnsupportedEncodingException {
 
-        Optional<UserInfo> requestUser = userService.checkByEmail(userInfo.getUserEmail(),userInfo.getUserEmailType());
+        Optional<UserInfo> requestUser = userService.checkByEmail(userInfo.getUserEmail(), userInfo.getUserEmailType());
 
-        if(requestUser.isPresent()){
+        if (requestUser.isPresent()) {
             throw new CUserExistException();
         }
-        if (!"user".equals(userInfo.getUserEmailType())&&userService.userSnsLoginService(userInfo.getUserSnsKey()).isPresent()){
+        if (!"user".equals(userInfo.getUserEmailType()) && userService.userSnsLoginService(userInfo.getUserSnsKey()).isPresent()) {
             throw new COverlapSnsKey();
         }
 
+        userInfo.setUserNickname(AES256Util.encrypt(userInfo.getUserNickname()));
+        SingleResult<UserInfo> result = responseService.getSingleResult(userService.userSignUpService(userInfo));
+        if ("user".equals(result.getData().getUserEmailType()))
+            result.setMessage("이메일로 인증 링크를 보내드렸습니다. 회원가입을 완료해주세요.");
+
+        return result;
+
+    }
 
 
-       SingleResult<UserInfo>  result = responseService.getSingleResult(userService.userSignUpService(userInfo));
-       if("user".equals(result.getData().getUserEmailType()))
-        result.setMessage("이메일로 인증 링크를 보내드렸습니다. 회원가입을 완료해주세요.");
+    @ApiOperation(value = "회원탈퇴 API", notes = "사용자를 삭제한다.")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 token", required = true, dataType = "String", paramType = "header")
+    })
+    @DeleteMapping("/user")
+    public SingleResult<UserInfo> removeUser() {
 
-    return result;
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        UUID uuid = UUID.fromString(authentication.getName());
+
+        UserInfo deleteRequest = Optional.of(userService.findByUserId(uuid)).orElseThrow(CUserNotFoundException::new);
+
+
+        return responseService.getSingleResult(userService.deleteUserInfo(deleteRequest));
 
     }
 
@@ -76,24 +99,22 @@ public class UserController {
 
     @ApiOperation(value = "내 정보 API(태그,permission 정보 포함)", notes = "Header에 실린 TOKEN정보로 로그인한 회원 정보 출력")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 token", required = true, dataType = "String", paramType = "header"),
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 token", required = true, dataType = "String", paramType = "header")
     })
     @GetMapping("/user")
-    public SingleResult<UserInfoDto> getUserByUUID(){
+    public SingleResult<UserInfoDto> getUserByUUID() {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         UUID uuid = UUID.fromString(authentication.getName());
         UserInfo user = Optional.ofNullable(userService.findByUserId(uuid)).orElseThrow(CUserNotFoundException::new);
-        UserInterestTag userInterestTag = userService.getUserInterestTag(uuid).orElse(new UserInterestTag(user.getUserId(),null,Sets.newHashSet()));
+        UserInterestTag userInterestTag = userService.getUserInterestTag(uuid).orElse(new UserInterestTag(user.getUserId(), null, Sets.newHashSet()));
         List<String> userTags = new ArrayList<>(userInterestTag.getTags());
 
-        WakeupPermission wakeupPermission = wakeupPermissionService.findPermissionByUserId(user.getUserId()).orElseGet(WakeupPermission::new);
+        WakeupPermission wakeupPermission = wakeupPermissionService.findPermissionByUserId(user.getUserId());
 
-        return responseService.getSingleResult(new UserInfoDto(user,userTags,wakeupPermission));
+        return responseService.getSingleResult(new UserInfoDto(user, userTags, wakeupPermission));
     }
-
-
 
 
     @ApiOperation(value = "회원가입 후 추가정보 입력(업데이트)API", notes = "추가정보 수정")
@@ -102,18 +123,17 @@ public class UserController {
             @ApiImplicitParam(name = "userInfo", value = "수정할 데이터 body", dataType = "UserUpdateEx", required = true)
     })
     @PutMapping("/user")
-    public CommonResult userUpdate(@ApiIgnore @RequestBody UserInfo userInfo){
+    public CommonResult userUpdate(@ApiIgnore @RequestBody UserInfo userInfo) {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
         userInfo.setUserId(UUID.fromString(authentication.getName()));
 
         UserInfo afterUser = userService.userUpdateService(userInfo);
-        UserInterestTag userInterestTag = userService.getUserInterestTag(afterUser.getUserId()).orElseGet( () -> new UserInterestTag(afterUser.getUserId(),null,Sets.newHashSet()));
+        UserInterestTag userInterestTag = userService.getUserInterestTag(afterUser.getUserId()).orElseGet(() -> new UserInterestTag(afterUser.getUserId(), null, Sets.newHashSet()));
         List<String> userTags = new ArrayList<>(userInterestTag.getTags());
-        WakeupPermission permission = wakeupPermissionService.findPermissionByUserId(afterUser.getUserId()).orElseGet(WakeupPermission::new);
+        WakeupPermission permission = wakeupPermissionService.findPermissionByUserId(afterUser.getUserId());
 
-        return responseService.getSingleResult(new UserInfoDto(afterUser,userTags,permission));
+        return responseService.getSingleResult(new UserInfoDto(afterUser, userTags, permission));
     }
 
 
@@ -123,23 +143,32 @@ public class UserController {
 
     })
     @PostMapping("/login")
-    public LoginResult<UserInfo> userLogin(@RequestBody UserInfo loginRequest){
+    public LoginResult<?> userLogin(@RequestBody UserInfo loginRequest) {
 
-        if(loginRequest.getUserEmailType().equals("user")){
-            UserInfo user = userService.checkByEmail(loginRequest.getUserEmail(),loginRequest.getUserEmailType()).orElseThrow(CNotFoundEmailException::new);
-            UserInfo loginUser = userService.userLoginService(user.getUserEmail(),user.getUserEmailType(),loginRequest.getUserPassword()).orElseThrow(CIncorrectPasswordException::new);
-            LoginResult<UserInfo> resultUser = responseService.getLoginResult(loginUser);
+        if (loginRequest.getUserEmailType().equals("user")) {
+            UserInfo user = userService.checkByEmail(loginRequest.getUserEmail(), loginRequest.getUserEmailType()).orElseThrow(CNotFoundEmailException::new);
+            UserInfo loginUser = userService.userLoginService(user.getUserEmail(), user.getUserEmailType(), loginRequest.getUserPassword()).orElseThrow(CIncorrectPasswordException::new);
 
-            resultUser.setEmailVerify(loginUser.getRoles().stream().noneMatch(s -> s.contains("NOT_VERIFY_EMAIL")));
+            if (Role.AdminIsTrue(loginUser.getRoles())) {
+                LoginResult<ManagerDto> resultManager = responseService.getLoginResult(new ManagerDto(loginUser));
 
+                resultManager.setToken(jwtTokenProvider.createToken(String.valueOf(loginUser.getUserId()), loginUser.getRoles()));
 
-            resultUser.setToken(jwtTokenProvider.createToken(String.valueOf(loginUser.getUserId()),loginUser.getRoles()));
+                return resultManager;
 
-            return resultUser;
-        }else{
+            } else {
+                LoginResult<UserInfo> resultUser = responseService.getLoginResult(loginUser);
+
+                resultUser.setEmailVerify(loginUser.getRoles().stream().noneMatch(s -> s.contains("NOT_VERIFY_EMAIL")));
+
+                resultUser.setToken(jwtTokenProvider.createToken(String.valueOf(loginUser.getUserId()), loginUser.getRoles()));
+
+                return resultUser;
+            }
+        } else {
             UserInfo snsLoginUser = userService.userSnsLoginService(loginRequest.getUserSnsKey()).orElseThrow(CUserNotFoundException::new);
             LoginResult<UserInfo> snsUser = responseService.getLoginResult(snsLoginUser);
-            snsUser.setToken(jwtTokenProvider.createToken(String.valueOf(snsLoginUser.getUserId()),snsLoginUser.getRoles()));
+            snsUser.setToken(jwtTokenProvider.createToken(String.valueOf(snsLoginUser.getUserId()), snsLoginUser.getRoles()));
 
             return snsUser;
         }
@@ -147,14 +176,14 @@ public class UserController {
 
     @ApiOperation(value = "이메일 중복 검사", notes = "가입된 이메일인지 확인한다. ")
     @GetMapping("/check/{email}/{emailType}")
-    public CommonResult checkByEmail(@ApiParam(value = "이메일",required = true) @PathVariable("email") String email,
-                                     @ApiParam(value = "이메일타입(ex:user,kakao,facebook)",required = true) @PathVariable("emailType") String emailType) {
+    public CommonResult checkByEmail(@ApiParam(value = "이메일", required = true) @PathVariable("email") String email,
+                                     @ApiParam(value = "이메일타입(ex:user,kakao,facebook)", required = true) @PathVariable("emailType") String emailType) {
 
-        Optional<UserInfo> user = userService.checkByEmail(email,emailType);
+        Optional<UserInfo> user = userService.checkByEmail(email, emailType);
 
         if (!user.isPresent()) {
-             CommonResult result = responseService.getSuccessResult();
-             result.setMessage("사용 가능한 이메일입니다.");
+            CommonResult result = responseService.getSuccessResult();
+            result.setMessage("사용 가능한 이메일입니다.");
             return result;
         } else {
             SingleResult<UserInfo> result = responseService.getSingleResult(user.get());
@@ -164,14 +193,12 @@ public class UserController {
     }
 
 
-
-
     @ApiOperation(value = "계정에 태그 등록", notes = "token을 통해 계정에 관심사(태그)들을 추가(수정)한다.")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 token", required = true, dataType = "String", paramType = "header"),
     })
     @PostMapping("/user/tag")
-    public CommonResult userInterestCreateTags(@RequestBody List<String> tags){
+    public CommonResult userInterestCreateTags(@RequestBody List<String> tags) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         UUID userId = UUID.fromString(authentication.getName());
@@ -189,12 +216,14 @@ public class UserController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 token", required = true, dataType = "String", paramType = "header"),
     })
     @GetMapping("/user/tag/me")
-    public SingleResult<UserInterestTag> getUserInterestTags(){
+    public SingleResult<UserInterestTag> getUserInterestTags() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
+
+        System.out.println("디버깅getUserInterestTags::" + authentication.getName());
         UUID userId = UUID.fromString(authentication.getName());
 
-         UserInterestTag interestTag = userService.getUserInterestTag(userId).orElseGet(() -> new UserInterestTag(userId,null,Sets.newHashSet()));
+        UserInterestTag interestTag = userService.getUserInterestTag(userId).orElseGet(() -> new UserInterestTag(userId, null, Sets.newHashSet()));
 
         return responseService.getSingleResult(interestTag);
     }
@@ -213,9 +242,6 @@ public class UserController {
     }
 
 */
-
-
-
 
 
 }

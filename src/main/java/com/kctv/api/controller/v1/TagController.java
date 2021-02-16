@@ -75,7 +75,7 @@ public class TagController {
     @GetMapping("/tags/random")
     public ListResult<Tag> getRandomKeyword(){
 
-        List<Tag> tagList = styleCardService.getTagListAllService();
+        List<Tag> tagList = styleCardService.getTagListAllService().stream().filter(tag -> !"태그종류".equals(tag.getTagType())).collect(Collectors.toList());
         Collections.shuffle(tagList);
 
         return responseService.getListResult(tagList.stream().limit(5).collect(Collectors.toList()));

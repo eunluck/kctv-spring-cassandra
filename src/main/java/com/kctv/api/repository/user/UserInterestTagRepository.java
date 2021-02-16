@@ -10,7 +10,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 
-
 public interface UserInterestTagRepository extends CassandraRepository<UserInterestTag, UUID> {
 
     Optional<UserInterestTag>  findByUserId(UUID id);

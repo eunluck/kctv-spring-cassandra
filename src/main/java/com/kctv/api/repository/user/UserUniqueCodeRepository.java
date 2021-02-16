@@ -10,7 +10,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 
-@Repository
 public interface UserUniqueCodeRepository extends CassandraRepository<UserUniqueCode, String> {
     Optional<UserUniqueCode> findByUniqueCode(String code);
 

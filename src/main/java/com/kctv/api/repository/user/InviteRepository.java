@@ -10,7 +10,6 @@ import java.util.Optional;
 import java.util.UUID;
 
 
-@Repository
 public interface InviteRepository extends CassandraRepository<InviteFriends, UUID> {
 
     List<InviteFriends> findByUserId(UUID userId); // 나를 추천한 사용자 리스트

@@ -2,28 +2,22 @@ package com.kctv.api.controller.v1.admin;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.io.Files;
+import com.google.common.collect.Lists;
 import com.kctv.api.advice.exception.CFormatNotAllowedException;
 import com.kctv.api.advice.exception.CResourceNotExistException;
-import com.kctv.api.advice.exception.CUserExistException;
-import com.kctv.api.controller.v1.admin.captive.CaptiveRequest;
 import com.kctv.api.entity.admin.FaqRequest;
 import com.kctv.api.entity.admin.FaqTable;
 import com.kctv.api.entity.admin.QnaAnswer;
-import com.kctv.api.entity.admin.ad.CaptivePortalAdEntity;
-import com.kctv.api.entity.place.MenuByPlace;
 import com.kctv.api.entity.place.PlaceInfo;
 import com.kctv.api.entity.place.PlaceInfoDto;
 import com.kctv.api.entity.place.PlaceInfoVo;
 import com.kctv.api.entity.qna.QnaByUserEntity;
 import com.kctv.api.entity.stylecard.StyleCardInfo;
-import com.kctv.api.entity.stylecard.Tag;
 import com.kctv.api.entity.stylecard.admin.StyleCardDto;
 import com.kctv.api.entity.stylecard.admin.StyleCardVo;
 import com.kctv.api.model.response.CommonResult;
 import com.kctv.api.model.response.ListResult;
 import com.kctv.api.model.response.SingleResult;
-import com.kctv.api.repository.qna.QnaAnswerRepository;
 import com.kctv.api.service.*;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
@@ -196,9 +190,10 @@ public class AdminController {
                                                @ApiIgnore @RequestPart(value = "file", required = false) List<MultipartFile> file) throws JsonProcessingException {
 
         PlaceInfoVo placeRequest = new ObjectMapper().readValue(request, PlaceInfoVo.class);
+        PlaceInfo place = null;
 
-        PlaceInfo place = placeService.createPlace(new PlaceInfo(placeRequest), placeRequest.getMenuList());
-
+        try {
+        place = placeService.createPlace(new PlaceInfo(placeRequest), placeRequest.getMenuList());
 
         if (CollectionUtils.isNotEmpty(file)) {
             try {
@@ -209,10 +204,12 @@ public class AdminController {
                 placeService.deletePlace(place);
                 throw new CFormatNotAllowedException("장소 등록 중 에러가 발생했습니다. 다시 시도해주세요.");
             }
+        }
+        }catch (Exception e){
+            if (place != null)
+            placeService.deletePlace(place);
 
         }
-
-
         return responseService.getSingleResult(place);
     }
 
@@ -239,7 +236,7 @@ public class AdminController {
         try {
 
 
-            if ((CollectionUtils.isEmpty(placeRequest.getDeleteImg())) && (file == null|| file.isEmpty())){
+            if ((CollectionUtils.isEmpty(placeRequest.getDeleteImg())) && file == null){
 
                 PlaceInfoDto afterPlace = Optional.ofNullable(placeService.modifyPlace(new PlaceInfo(placeRequest),beforePlace, placeRequest.getMenuList())).orElseThrow(CResourceNotExistException::new);
 
@@ -247,10 +244,14 @@ public class AdminController {
 
                 //기존 파일에 대한 수정도 없고, 파일 추가도 없는경우. (완)
 
-            }else if ((CollectionUtils.isEmpty(placeRequest.getDeleteImg())) && (file != null || !file.isEmpty())){
+            }else if ((CollectionUtils.isEmpty(placeRequest.getDeleteImg())) && file != null){
+                System.out.println("이게실행대야댐");
                 storageService.checkImgType(file);
 
                 emptyImgList = beforePlace.getImages();
+                if (emptyImgList == null){
+                    emptyImgList = Lists.newArrayList();
+                }
 
                 for (MultipartFile appendFile : file) {
                     emptyImgList.add(storageService.appendPlaceImage(beforePlace, appendFile));
@@ -264,7 +265,7 @@ public class AdminController {
                 //추가되는 파일만 있는경우.
                 // -> 새로운 파일 저장 후 나온 path를 beforePlace에 ++
 
-            }else if ((CollectionUtils.isNotEmpty(placeRequest.getDeleteImg())) && (file == null || file.isEmpty()) ){
+            }else if ((CollectionUtils.isNotEmpty(placeRequest.getDeleteImg())) && file == null){
 
                 List<UUID> deleteImg = placeRequest.getDeleteImg().stream().map(s -> UUID.fromString(storageService.getImgIdByImgUrl(s))).collect(Collectors.toList());
                 for (UUID imgId : deleteImg){
@@ -286,7 +287,7 @@ public class AdminController {
                 // -> beforePlace.img - placeRequest.getDeleteImg
                 // -> 이미지삭제 로직
 
-            }else if ((CollectionUtils.isNotEmpty(placeRequest.getDeleteImg())) && (file != null || !file.isEmpty())){
+            }else if ((CollectionUtils.isNotEmpty(placeRequest.getDeleteImg())) && file != null){
 
                 //이미지 삭제와 새로운 이미지 추가가 같이 있는 경우
                 storageService.checkImgType(file);

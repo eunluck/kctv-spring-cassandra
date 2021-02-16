@@ -7,7 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.UUID;
 
-@Repository
 public interface PartnerByTagsRepository extends CassandraRepository<PartnersByTags, UUID> {
 
 

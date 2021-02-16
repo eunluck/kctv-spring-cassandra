@@ -2,6 +2,7 @@ package com.kctv.api;
 
 
 import com.kctv.api.config.GracefulShutdown;
+import com.kctv.api.entity.payment.PaymentCode;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -10,17 +11,22 @@ import org.springframework.boot.web.servlet.server.ConfigurableServletWebServerF
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 
+import java.util.List;
+
 @EnableCaching
 @SpringBootApplication
 public class KctvSpringCassandraApplication {
 
         @Value("application.version")
         private static String appVersion;
+        private static List<PaymentCode> getPaymentCodeList;
+
 
 
     public static void main(String[] args) {
         SpringApplication.run(KctvSpringCassandraApplication.class, args);
     }
+
 
     @Bean
     public GracefulShutdown gracefulShutdown() {

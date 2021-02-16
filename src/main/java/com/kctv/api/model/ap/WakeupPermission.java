@@ -41,9 +41,13 @@ public class WakeupPermission {
     @Column("expire_epoch")
     private Long expireEpoch;
     private String plan;
+    @ReadOnlyProperty
+    private String planText;
     @Column("unique_code")
     private String uniqueCode;
     private Long volume;
+    @Column("use_volume")
+    private Long useVolume;
     @ReadOnlyProperty
     private String volumeText;
 
@@ -57,6 +61,22 @@ public class WakeupPermission {
         this.userId = userInfo.getUserId();
         this.plan = "FREE";
         this.uniqueCode = uniqueCode;
+    }
+
+    public void subscribeUser(Long expireEpoch,String planCode,Long volume){
+        this.deviceMac = null;
+        this.expireEpoch = (System.currentTimeMillis()) + expireEpoch;
+        this.plan = planCode;
+        this.useVolume = 0L;
+        this.volume = volume;
+    }
+
+    public void expirationUser(){
+        this.deviceMac = null;
+        this.plan = "FREE";
+        this.volume = 524288000L;
+        this.useVolume = null;
+        this.expireEpoch = null;
 
     }
 

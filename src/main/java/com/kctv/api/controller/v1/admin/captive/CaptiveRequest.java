@@ -17,7 +17,7 @@ public class CaptiveRequest {
     private Date startDate;
     @ApiModelProperty(notes = "광고 마지막일")
     private Date endDate;
-    @ApiModelProperty(notes = "광고 상태(true 시 즉시 광고 게시)")
+    @ApiModelProperty(notes = "광고 상태")
     private String status;
 
 }

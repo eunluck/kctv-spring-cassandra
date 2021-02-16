@@ -1,8 +1,10 @@
 package com.kctv.api.service;
 
+import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.kctv.api.advice.exception.CPartnerNotFoundException;
+import com.kctv.api.advice.exception.CRequiredValueException;
 import com.kctv.api.advice.exception.CResourceNotExistException;
 import com.kctv.api.entity.place.*;
 import com.kctv.api.entity.stylecard.PartnersByTags;
@@ -156,8 +158,12 @@ public class PlaceService {
     }
     @Transactional
     public PlaceInfo createPlace(PlaceInfo placeInfo,List<MenuByPlace> menuByPlaceList) {
-        checkNotNull(placeInfo.getPartnerId(),"유요한 장소 ID가 아닙니다.");
-        checkNotNull(placeInfo.getBusinessName(),"장소 이름을 입력해 주세요.");
+        Preconditions.checkArgument(!Strings.isNullOrEmpty(placeInfo.getBusinessName()),new CRequiredValueException("장소 이름을 입력해주세요."));
+        Preconditions.checkArgument(!Strings.isNullOrEmpty(placeInfo.getPartnerAddress()),new CRequiredValueException("주소를 입력해주세요."));
+        Preconditions.checkArgument(CollectionUtils.isNotEmpty(placeInfo.getTags()),new CRequiredValueException("장소 태그를 입력해주세요."));
+        Preconditions.checkArgument(!Strings.isNullOrEmpty(placeInfo.getStoreType()),new CRequiredValueException("장소의 종류를 입력해주세요."));
+
+
         placeInfo.setPartnerId(UUID.randomUUID());
 
 

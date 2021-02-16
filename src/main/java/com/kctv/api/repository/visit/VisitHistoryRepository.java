@@ -10,12 +10,11 @@ import java.util.Optional;
 import java.util.UUID;
 
 
-@Repository
 public interface VisitHistoryRepository extends CassandraRepository<UserVisitHistoryEntity, UUID> {
 
 
     List<UserVisitHistoryEntity> findFirst20ByUserId(UUID userId);
-
+    List<UserVisitHistoryEntity> findByUserId(UUID userId);
 
 
 }

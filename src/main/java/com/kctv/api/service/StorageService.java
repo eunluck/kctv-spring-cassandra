@@ -186,6 +186,8 @@ public class StorageService {
 
     public CaptivePortalAdEntity saveAdImg(CaptiveRequest request) throws IOException {
 
+
+        //Normalizer.normalize(request.getImgFile().getOriginalFilename(), Normalizer.Form.NFC)
         checkImgType(request.getImgFile());
 
         UUID randomAdId = UUID.randomUUID();
@@ -198,7 +200,7 @@ public class StorageService {
                 .adEndDt(request.getEndDate())
                 .adLink(request.getLink())
                 .imgName(request.getImgFile().getOriginalFilename())
-                .imgPath(fileName)
+                .imgPath(adImagePath+"/"+randomAdId.toString()+"_"+Normalizer.normalize(request.getImgFile().getOriginalFilename(), Normalizer.Form.NFC))
                 .imgUrl(AD_REQUEST_URL+randomAdId)
                 .build();
 
