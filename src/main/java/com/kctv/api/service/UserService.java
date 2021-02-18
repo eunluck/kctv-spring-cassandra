@@ -16,6 +16,7 @@ import com.kctv.api.repository.ap.WakeUpPermissionRepository;
 import com.kctv.api.repository.user.*;
 import com.kctv.api.repository.visit.VisitHistoryRepository;
 import com.kctv.api.util.AES256Util;
+import lombok.SneakyThrows;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
@@ -49,9 +50,10 @@ public class UserService implements UserDetailsService {
     private final String EMAIL_LINK;
     //private final String EMAIL_LINK = "http://192.168.0.56:8081/v1/verify/";
     private final String EMAIL_SUB = "KCTV 회원가입 인증 메일입니다.";
+    private final AES256Util aes = AES256Util.getInstance();
 
 
-    public UserService(UserUniqueCodeRepository userUniqueCodeRepository, WakeUpPermissionRepository wakeUpPermissionRepository, @Lazy PasswordEncoder passwordEncoder, UserRepository userRepository, JavaMailSender emailSender, UserInterestTagRepository userInterestTagRepository, UserLikeRepository userLikeRepository, UserScrapRepository userScrapRepository, UserEmailVerifyRepository userEmailVerifyRepository, VisitHistoryRepository visitHistoryRepository, @Value("${costom.host.path}") String email_link) {
+    public UserService(UserUniqueCodeRepository userUniqueCodeRepository, WakeUpPermissionRepository wakeUpPermissionRepository, @Lazy PasswordEncoder passwordEncoder, UserRepository userRepository, JavaMailSender emailSender, UserInterestTagRepository userInterestTagRepository, UserLikeRepository userLikeRepository, UserScrapRepository userScrapRepository, UserEmailVerifyRepository userEmailVerifyRepository, VisitHistoryRepository visitHistoryRepository, @Value("${costom.host.path}") String email_link) throws UnsupportedEncodingException {
         this.userUniqueCodeRepository = userUniqueCodeRepository;
         this.wakeUpPermissionRepository = wakeUpPermissionRepository;
         this.passwordEncoder = passwordEncoder;
@@ -105,14 +107,21 @@ public class UserService implements UserDetailsService {
     }
 
     public UserInfo findByUserId(UUID uuid) {
-        return userRepository.findByUserId(uuid).orElseThrow(CUserNotFoundException::new);
+
+        UserInfo user = userRepository.findByUserId(uuid).orElseThrow(CUserNotFoundException::new);
+        user.decryptInfo();
+
+        return user;
     }
 
+    @SneakyThrows
     public Optional<UserInfo> checkByEmail(String email, String emailType) {
+        email = aes.encrypt(email);
+
         return userRepository.findByUserEmailAndUserEmailType(email, emailType);
     }
 
-
+    @SneakyThrows
     public Optional<UserInfo> userLoginService(String email, String emailType, String pwd) {
         UserInfo loginUser = userRepository.findByUserEmailAndUserEmailType(email, emailType).orElseThrow(CUserNotFoundException::new);
 
@@ -183,11 +192,14 @@ public class UserService implements UserDetailsService {
 
     }
 
+    @SneakyThrows
     public boolean userEmailVerifySave(String uniqueCode, UUID userId, String email){
 
 
 
+
         userEmailVerifyRepository.save(new UserEmailVerify(uniqueCode,new Date(),email, userId));
+
 
         sendMailMessage(email, EMAIL_SUB, EMAIL_LINK + uniqueCode); //메일전송
 
@@ -196,8 +208,10 @@ public class UserService implements UserDetailsService {
 
     }
 
+    @SneakyThrows
     public void userVerifyEmailResend(UserInfo userInfo){
 
+        userInfo.setUserEmail(aes.encrypt(userInfo.getUserEmail()));
          userEmailVerifyRepository.findByUserId(userInfo.getUserId())
                  .ifPresent(beforeUserEmailVerify -> userEmailVerifyRepository.delete(beforeUserEmailVerify));
 
@@ -207,10 +221,13 @@ public class UserService implements UserDetailsService {
     }
 
 
+    @SneakyThrows
     public void sendMailMessage(String userEmail, String subject, String text) {
 
+        System.out.println(userEmail);
+        System.out.println(aes.decrypt(userEmail));
         SimpleMailMessage sender = new SimpleMailMessage();
-        sender.setTo(String.valueOf(userEmail));
+        sender.setTo(String.valueOf(aes.decrypt(userEmail)));
         sender.setSubject(subject);
         sender.setText(text);
 
@@ -227,8 +244,10 @@ public class UserService implements UserDetailsService {
     }*/
 
 
+    @SneakyThrows
     public void sendTempPassword(String email, String emailType) {
 
+        email = aes.encrypt(email);
 
         UserInfo findUser = userRepository.findByUserEmailAndUserEmailType(email, emailType).orElseThrow(CUserNotFoundException::new);
 
@@ -244,10 +263,10 @@ public class UserService implements UserDetailsService {
         role.add("ROLE_TEMP_PASSWORD");
         findUser.setRoles(role);
 
-
+        findUser.setUserEmail(aes.decrypt(findUser.getUserEmail()));
         Optional.of(userRepository.save(findUser)).orElseThrow(CUserNotFoundException::new);
 
-        sendMailMessage(findUser.getUserEmail(), "임시비밀번호를 발급해드립니다.", "임시비밀번호:" + uuid);
+        sendMailMessage(email, "임시비밀번호를 발급해드립니다.", "임시비밀번호:" + uuid);
     }
 
 
@@ -256,6 +275,7 @@ public class UserService implements UserDetailsService {
 
         UserEmailVerify userEmailVerify = userEmailVerifyRepository.findByUniqueCode(uniqueCode).orElseThrow(CUserNotFoundException::new);
         UserInfo userInfo = userRepository.findByUserId(userEmailVerify.getUserId()).orElseThrow(CUserNotFoundException::new);
+        userInfo.decryptInfo();
         userInfo.setRoles(Collections.singletonList("ROLE_USER"));
         UserInfo saveAfterUser = userRepository.save(userInfo);
         userEmailVerifyRepository.delete(userEmailVerify);
@@ -295,7 +315,9 @@ public class UserService implements UserDetailsService {
 
 
     public List<UserInfo> getAllUserService() {
-        return userRepository.findAll();
+        List<UserInfo> userInfoList = userRepository.findAll();
+        userInfoList.forEach(UserInfo::decryptInfo);
+        return userInfoList;
     }
 
 
@@ -322,21 +344,14 @@ public class UserService implements UserDetailsService {
 
     }
 
-    public UserInfoDto createManager(){
-
-
-        //TODO
-
-        return null;
-    }
-
 
     @Override
     public UserDetails loadUserByUsername(String s) throws CUserNotFoundException {
+        UserInfo user = userRepository.findByUserId(UUID.fromString(s)).orElseThrow(CUserNotFoundException::new);
 
+        user.decryptInfo();
 
-        System.out.println("디버깅loadUserByuserName:::"+s);
-        return userRepository.findByUserId(UUID.fromString(s)).orElseThrow(CUserNotFoundException::new);
+        return user;
     }
 
     public UserInfo addManager(UserInfo userInfo){

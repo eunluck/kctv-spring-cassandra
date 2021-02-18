@@ -21,9 +21,11 @@ import com.kctv.api.repository.payment.UserPaymentRepository;
 import com.kctv.api.repository.user.UserLikeRepository;
 import com.kctv.api.repository.user.UserRepository;
 import com.kctv.api.repository.user.UserScrapRepository;
+import com.kctv.api.util.AES256Util;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.io.UnsupportedEncodingException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -37,11 +39,23 @@ public class PaymentService {
     private final UserPaymentRepository paymentRepository;
     private final WakeUpPermissionRepository wakeUpPermissionRepository;
     private final UserRepository userRepository;
+    private AES256Util aes;
+
+    {
+        try {
+            aes = AES256Util.getInstance();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     public PaymentInfo subscribe(UUID userId, String appPaymentCode){
 
         PaymentCode code = Optional.of(paymentCodeRepository.findByAppPaymentCode(appPaymentCode)).orElseThrow(() -> new CResourceNotExistException(appPaymentCode));
         UserInfo requestUser = userRepository.findByUserId(userId).orElseThrow(CUserNotFoundException::new);
+
+        requestUser.decryptInfo();
 
         WakeupPermission permissionUser = wakeUpPermissionRepository.findByUserId(requestUser.getUserId()).orElseThrow(() -> new CUserNotFoundException(userId.toString()));
 

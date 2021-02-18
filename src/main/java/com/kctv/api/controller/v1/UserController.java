@@ -67,7 +67,6 @@ public class UserController {
             throw new COverlapSnsKey();
         }
 
-        userInfo.setUserNickname(AES256Util.encrypt(userInfo.getUserNickname()));
         SingleResult<UserInfo> result = responseService.getSingleResult(userService.userSignUpService(userInfo));
         if ("user".equals(result.getData().getUserEmailType()))
             result.setMessage("이메일로 인증 링크를 보내드렸습니다. 회원가입을 완료해주세요.");

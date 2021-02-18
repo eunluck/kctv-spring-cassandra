@@ -2,6 +2,8 @@ package com.kctv.api.entity.user;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Strings;
+
+import com.kctv.api.util.AES256Util;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -14,11 +16,17 @@ import org.springframework.data.cassandra.core.cql.PrimaryKeyType;
 import org.springframework.data.cassandra.core.mapping.Column;
 import org.springframework.data.cassandra.core.mapping.PrimaryKeyColumn;
 import org.springframework.data.cassandra.core.mapping.Table;
+import org.springframework.data.convert.WritingConverter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import springfox.documentation.annotations.ApiIgnore;
 
+import javax.persistence.Convert;
+import javax.persistence.Converter;
+import javax.persistence.Entity;
+import java.io.UnsupportedEncodingException;
+import java.security.GeneralSecurityException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -28,6 +36,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 @NoArgsConstructor
 
+@WritingConverter
 @Table(value = "user_info")
 public class UserInfo implements UserDetails {
 
@@ -37,6 +46,8 @@ public class UserInfo implements UserDetails {
     @Column("user_email_type")
     @ApiModelProperty(value = "사용자 이메일 타입",dataType = "String",required = true, example = "user")
     private String userEmailType;
+
+
 
     @ApiModelProperty(value = "사용자 이메일",dataType = "String",required = true, example = "test@gmail.com")
     @Column("user_email")
@@ -143,6 +154,21 @@ public class UserInfo implements UserDetails {
     }
 
 
+
+    public void decryptInfo() {
+        try {
+            AES256Util aes = AES256Util.getInstance();
+
+        this.userNickname = this.userNickname== null ? null :  aes.decrypt(this.userNickname);
+        this.userEmail = this.userEmail== null ? null : aes.decrypt(this.userEmail);
+        this.userPhone = this.userPhone== null ? null : aes.decrypt(this.userPhone);
+
+    } catch (GeneralSecurityException | UnsupportedEncodingException e) {
+            System.out.println("오류발생");
+    }
+
+
+    }
     public void modifyUser(UserInfo userInfo,String pwd){
         if  (!Strings.isNullOrEmpty(userInfo.getUserEmail()))
             this.userEmail = userInfo.getUserEmail();
@@ -169,4 +195,6 @@ public class UserInfo implements UserDetails {
             this.roles = userInfo.getRoles();
 
     }
+
+
 }

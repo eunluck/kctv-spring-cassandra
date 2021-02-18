@@ -1,15 +1,24 @@
 package com.kctv.api.config.database;
 
 
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.cassandra.config.AbstractCassandraConfiguration;
+import org.springframework.data.cassandra.core.CassandraAdminTemplate;
+import org.springframework.data.cassandra.core.convert.CassandraConverter;
 import org.springframework.data.cassandra.core.convert.CassandraCustomConversions;
+import org.springframework.data.cassandra.core.convert.MappingCassandraConverter;
 import org.springframework.data.cassandra.core.mapping.BasicCassandraMappingContext;
 import org.springframework.data.cassandra.core.mapping.CassandraMappingContext;
 import org.springframework.data.cassandra.core.mapping.SimpleUserTypeResolver;
 import org.springframework.data.cassandra.repository.config.EnableCassandraRepositories;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Configuration
 @EnableCassandraRepositories
@@ -27,11 +36,13 @@ public class CassandraConfiguration extends AbstractCassandraConfiguration {
     private String  username;
 
 
+
     @Override
     protected String getKeyspaceName() {
 
         return keySpace;
     }
+
 
     @Override
     protected String getLocalDataCenter() {

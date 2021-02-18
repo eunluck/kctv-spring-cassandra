@@ -19,9 +19,6 @@ public interface UserRepository extends CassandraRepository<UserInfo, UUID> {
 
 
     @AllowFiltering
-    Optional<UserInfo> findByUserEmailAndUserEmailTypeAndUserPassword(String email, String emailType, String pwd); //로그인
-
-    @AllowFiltering
     Optional<UserInfo> findByUserSnsKey(String SnsKey);
 
 

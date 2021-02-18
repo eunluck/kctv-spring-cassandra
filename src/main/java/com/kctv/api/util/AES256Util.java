@@ -1,3 +1,4 @@
+
 package com.kctv.api.util;
 
 import java.io.UnsupportedEncodingException;
@@ -13,8 +14,9 @@ import org.apache.commons.codec.binary.Base64;
  * 양방향 암호화 알고리즘인 AES256 암호화를 지원하는 클래스
  */
 public class AES256Util {
-    private static String iv;
-    private static Key keySpec;
+    private String iv;
+    private Key keySpec;
+    private static AES256Util instance;
 
     /**
      * 16자리의 키값을 입력하여 객체를 생성한다.
@@ -26,7 +28,7 @@ public class AES256Util {
      */
     final static String key = "!@kctvjeju&wakeuF2021@#*q1w2e3r4";
 
-    public AES256Util() throws UnsupportedEncodingException {
+    private AES256Util() throws UnsupportedEncodingException {
         this.iv = key.substring(0, 16);
         byte[] keyBytes = new byte[16];
         byte[] b = key.getBytes("UTF-8");
@@ -40,6 +42,15 @@ public class AES256Util {
         this.keySpec = keySpec;
     }
 
+    public static AES256Util getInstance() throws UnsupportedEncodingException {
+        if (instance == null) {
+            instance = new AES256Util();
+            return instance;
+        } else {
+            return instance;
+        }
+    }
+
     /**
      * AES256 으로 암호화 한다.
      *
@@ -50,7 +61,7 @@ public class AES256Util {
      * @throws GeneralSecurityException
      * @throws UnsupportedEncodingException
      */
-    public static String encrypt(String str) throws NoSuchAlgorithmException,
+    public String encrypt(String str) throws NoSuchAlgorithmException,
             GeneralSecurityException, UnsupportedEncodingException {
         Cipher c = Cipher.getInstance("AES/CBC/PKCS5Padding");
         c.init(Cipher.ENCRYPT_MODE, keySpec, new IvParameterSpec(iv.getBytes()));
@@ -69,7 +80,7 @@ public class AES256Util {
      * @throws GeneralSecurityException
      * @throws UnsupportedEncodingException
      */
-    public static String decrypt(String str) throws NoSuchAlgorithmException,
+    public String decrypt(String str) throws NoSuchAlgorithmException,
             GeneralSecurityException, UnsupportedEncodingException {
         Cipher c = Cipher.getInstance("AES/CBC/PKCS5Padding");
         c.init(Cipher.DECRYPT_MODE, keySpec, new IvParameterSpec(iv.getBytes()));
