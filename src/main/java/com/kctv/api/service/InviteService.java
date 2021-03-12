@@ -1,13 +1,20 @@
 package com.kctv.api.service;
 
 import com.kctv.api.advice.exception.CResourceNotExistException;
-import com.kctv.api.entity.user.InviteFriends;
-import com.kctv.api.entity.user.UserInfo;
+import com.kctv.api.model.payment.PaymentCodeEntity;
+import com.kctv.api.model.payment.PaymentInfoEntity;
+import com.kctv.api.model.user.InviteFriendsEntity;
+import com.kctv.api.model.user.UserInfoEntity;
+import com.kctv.api.repository.payment.PaymentCodeRepository;
+import com.kctv.api.repository.payment.UserPaymentRepository;
 import com.kctv.api.repository.user.InviteRepository;
+import com.kctv.api.repository.user.UserInfoByEmailRepository;
 import com.kctv.api.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -17,8 +24,11 @@ public class InviteService {
 
     private final UserRepository userRepository;
     private final InviteRepository inviteRepository;
+    private final UserPaymentRepository userPaymentRepository;
+    private final PaymentCodeRepository paymentCodeRepository;
+    private final UserInfoByEmailRepository userInfoByEmailRepository;
 
-    public Optional<UserInfo> findUserByCode(String code){
+    public Optional<UserInfoEntity> findUserByCode(String code){
 
         return userRepository.findByInviteCode(code);
     }
@@ -29,18 +39,17 @@ public class InviteService {
     }
 
 
-    public boolean saveInviteCode(InviteFriends inviteFriends){
+    public boolean saveInviteCode(InviteFriendsEntity inviteFriendsEntity,UserInfoEntity userInfoEntity){
 
-
-        Optional.of(inviteRepository.save(inviteFriends)).orElseThrow(CResourceNotExistException::new);
+        inviteRepository.save(inviteFriendsEntity);
+        userPaymentRepository.insert(new PaymentInfoEntity("f001",inviteFriendsEntity.getFriendId(),userInfoEntity.getUserEmail(),inviteFriendsEntity.getCreateDt()));
 
         return true;
-
     }
 
-    public void deleteInviteCode(InviteFriends inviteFriends){
+    public void deleteInviteCode(InviteFriendsEntity inviteFriendsEntity){
 
-        inviteRepository.delete(inviteFriends);
+        inviteRepository.delete(inviteFriendsEntity);
 
     }
 

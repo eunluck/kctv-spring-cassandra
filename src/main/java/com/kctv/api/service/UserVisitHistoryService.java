@@ -3,11 +3,9 @@ package com.kctv.api.service;
 import com.datastax.oss.driver.api.core.CqlSession;
 import com.datastax.oss.driver.api.core.cql.ResultSet;
 import com.datastax.oss.driver.api.core.cql.Row;
-import com.datastax.oss.driver.api.core.session.Session;
-import com.datastax.oss.driver.api.querybuilder.QueryBuilder;
 import com.datastax.oss.driver.shaded.guava.common.collect.Lists;
-import com.kctv.api.entity.visit.UserVisitHistoryEntity;
-import com.kctv.api.entity.visit.VisitCount;
+import com.kctv.api.model.visit.UserVisitHistoryEntity;
+import com.kctv.api.model.visit.VisitCount;
 import com.kctv.api.repository.visit.VisitHistoryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.cassandra.core.CassandraTemplate;
@@ -31,9 +29,7 @@ public class UserVisitHistoryService {
     public List<UserVisitHistoryEntity> findHistoryByUserId(UUID userId){
 
 
-        List<UserVisitHistoryEntity> user = visitHistoryRepository.findFirst20ByUserId(userId).stream().sorted(Comparator.comparingLong(UserVisitHistoryEntity::getTimestamp)).collect(Collectors.toList());
-
-        return user;
+        return visitHistoryRepository.findFirst20ByUserId(userId).stream().sorted(Comparator.comparingLong(UserVisitHistoryEntity::getTimestamp)).collect(Collectors.toList());
     }
 
 

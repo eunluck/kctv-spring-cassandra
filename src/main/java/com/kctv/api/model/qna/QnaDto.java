@@ -1,6 +1,6 @@
 package com.kctv.api.model.qna;
 
-import com.kctv.api.entity.admin.QnaAnswer;
+import com.kctv.api.model.admin.QnaAnswerEntity;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,7 +28,7 @@ public class QnaDto {
     private String status;
     private String title;
     private String remark;
-    private List<QnaAnswer> answers;
+    private List<QnaAnswerEntity> answers;
     @ApiModelProperty(required = true,hidden = true,notes = "사용자 계정에 저장되어있는 이메일")
     private String userEmail;
     @ApiModelProperty(required= true,notes = "사용자 계정에 저장되어있는 닉네임")

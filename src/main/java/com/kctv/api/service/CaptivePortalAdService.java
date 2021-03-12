@@ -2,7 +2,7 @@ package com.kctv.api.service;
 
 
 import com.kctv.api.advice.exception.CResourceNotExistException;
-import com.kctv.api.entity.admin.ad.CaptivePortalAdEntity;
+import com.kctv.api.model.admin.ad.CaptivePortalAdEntity;
 import com.kctv.api.repository.ad.CaptivePortalAdRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

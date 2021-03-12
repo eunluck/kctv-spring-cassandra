@@ -1,8 +1,7 @@
 package com.kctv.api.repository.card;
 
-import com.kctv.api.entity.stylecard.StyleCardByTags;
+import com.kctv.api.model.stylecard.StyleCardByTags;
 import org.springframework.data.cassandra.repository.CassandraRepository;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.UUID;

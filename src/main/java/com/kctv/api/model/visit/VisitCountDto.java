@@ -1,6 +1,6 @@
 package com.kctv.api.model.visit;
 
-import com.kctv.api.entity.place.PlaceInfo;
+import com.kctv.api.model.place.PlaceInfoEntity;
 import lombok.Data;
 
 import java.util.UUID;
@@ -9,12 +9,12 @@ import java.util.UUID;
 public class VisitCountDto {
 
     private UUID userId;
-    private PlaceInfo placeInfo;
+    private PlaceInfoEntity placeInfoEntity;
     private Long visitCount;
 
-    public VisitCountDto(UUID userId, PlaceInfo placeInfo, Long visitCount) {
+    public VisitCountDto(UUID userId, PlaceInfoEntity placeInfoEntity, Long visitCount) {
         this.userId = userId;
-        this.placeInfo = placeInfo;
+        this.placeInfoEntity = placeInfoEntity;
         this.visitCount = visitCount;
     }
 }

@@ -5,13 +5,13 @@ import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.kctv.api.advice.exception.CPartnerNotFoundException;
 import com.kctv.api.advice.exception.CResourceNotExistException;
-import com.kctv.api.entity.stylecard.*;
-import com.kctv.api.entity.stylecard.admin.StyleCardVo;
+import com.kctv.api.model.admin.stylecard.StyleCardVo;
+import com.kctv.api.model.stylecard.*;
+import com.kctv.api.model.tag.TagEntity;
 import com.kctv.api.model.tag.TagGroup;
 import com.kctv.api.repository.ap.PartnerByTagsRepository;
 import com.kctv.api.repository.card.StyleByTagsRepository;
 import com.kctv.api.repository.card.StyleCardCounterDayRepository;
-import com.kctv.api.repository.card.StyleCardCounterRepository;
 import com.kctv.api.repository.card.StyleCardRepository;
 import com.kctv.api.repository.tag.TagRepository;
 import com.kctv.api.util.sorting.SortingTagsUtiil;
@@ -36,26 +36,26 @@ public class StyleCardService {
     private final PartnerByTagsRepository partnerByTagsRepository;
     private final StyleCardCounterDayRepository counterDayRepository;
 
-    public List<StyleCardInfo> getStyleCardListAllService(){
+    public List<StyleCardInfoEntity> getStyleCardListAllService(){
         return styleCardRepository.findAll();
     }
-    public List<Tag> getTagListAllService (){
+    public List<TagEntity> getTagListAllService (){
         return tagRepository.findAll();
     }
-    public Optional<Tag> getTagOneService(Tag tag){return tagRepository.findByTagTypeAndTagName(tag.getTagType(),tag.getTagName());}
-    public void deleteStyleCard(StyleCardInfo styleCardInfo){
+    public Optional<TagEntity> getTagOneService(TagEntity tag){return tagRepository.findByTagTypeAndTagName(tag.getTagType(),tag.getTagName());}
+    public void deleteStyleCard(StyleCardInfoEntity styleCardInfoEntity){
 
-        if (CollectionUtils.isNotEmpty(styleCardInfo.getTags()))
-        styleByTagsRepository.deleteAll(styleCardInfo.getTags().stream().map(s -> new StyleCardByTags(s,styleCardInfo.getCardId())).collect(Collectors.toList()));
-        styleCardRepository.delete(styleCardInfo);
+        if (CollectionUtils.isNotEmpty(styleCardInfoEntity.getTags()))
+        styleByTagsRepository.deleteAll(styleCardInfoEntity.getTags().stream().map(s -> new StyleCardByTags(s, styleCardInfoEntity.getCardId())).collect(Collectors.toList()));
+        styleCardRepository.delete(styleCardInfoEntity);
     }
-    public List<Tag> getTagList (String search){
+    public List<TagEntity> getTagList (String search){
         return tagRepository.findByTagType(search);
     }
 
-    public StyleCardInfo getCardById (UUID uuid){
+    public StyleCardInfoEntity getCardById (UUID uuid){
 
-        StyleCardInfo card = styleCardRepository.findByCardId(uuid).orElseThrow(CPartnerNotFoundException::new);
+        StyleCardInfoEntity card = styleCardRepository.findByCardId(uuid).orElseThrow(CPartnerNotFoundException::new);
 
         long score = card.getTags().stream().map(TagGroup::findByTagPoint).reduce(0L,Long::sum);
 
@@ -69,13 +69,13 @@ public class StyleCardService {
         return card;
     }
 
-    public Tag createTagService(Tag tag){
+    public TagEntity createTagService(TagEntity tag){
         return tagRepository.insert(tag);
     }
 
-    public StyleCardInfo modifyStyleCard(UUID cardId,StyleCardInfo request){
+    public StyleCardInfoEntity modifyStyleCard(UUID cardId, StyleCardInfoEntity request){
 
-        StyleCardInfo beforeCard = styleCardRepository.findByCardId(cardId).orElseThrow(CResourceNotExistException::new);
+        StyleCardInfoEntity beforeCard = styleCardRepository.findByCardId(cardId).orElseThrow(CResourceNotExistException::new);
 
         if (CollectionUtils.isNotEmpty(request.getAges()))
         beforeCard.setAges(request.getAges());
@@ -92,7 +92,7 @@ public class StyleCardService {
         beforeCard.setModifyAt(new Date());
         beforeCard.setStatus("업데이트");
 
-        StyleCardInfo afterCard = Optional.of(styleCardRepository.save(beforeCard)).orElseThrow(CResourceNotExistException::new);
+        StyleCardInfoEntity afterCard = Optional.of(styleCardRepository.save(beforeCard)).orElseThrow(CResourceNotExistException::new);
 
         if (CollectionUtils.isNotEmpty(request.getTags())){
             styleByTagsRepository.saveAll(
@@ -109,13 +109,13 @@ public class StyleCardService {
 
 
 
-    public List<StyleCardInfo> getCardByTagsService(List<String> tags){
+    public List<StyleCardInfoEntity> getCardByTagsService(List<String> tags){
         List<StyleCardByTags> result = styleByTagsRepository.findByTagIn(tags); //태그를 조건으로 StyleCard를 검색
         List<UUID> uuidList = SortingTagsUtiil.duplicationMappingList(result);  //검색된 카드의 태그가 중복되는 갯수 순서로 내림차순 정렬
 
         if(uuidList.size() > 0){
-        List<StyleCardInfo> styleCardInfos = styleCardRepository.findByCardIdIn(uuidList);  // 위 태그에 충족되는 카드들을 UUID를 통해 조회
-        return SortingTagsUtiil.SortingToList(styleCardInfos,uuidList); // 중복되는 순서로 내림차순 정렬
+        List<StyleCardInfoEntity> styleCardInfoEntities = styleCardRepository.findByCardIdIn(uuidList);  // 위 태그에 충족되는 카드들을 UUID를 통해 조회
+        return SortingTagsUtiil.SortingToList(styleCardInfoEntities,uuidList); // 중복되는 순서로 내림차순 정렬
         }else {
             return Lists.newArrayList();
         }
@@ -161,24 +161,24 @@ public class StyleCardService {
 
 //admin
     @Transactional
-    public StyleCardInfo createStyleCard(StyleCardVo styleCardVo){
+    public StyleCardInfoEntity createStyleCard(StyleCardVo styleCardVo){
         Preconditions.checkArgument(styleCardVo.getGender().stream().allMatch(s -> s.equals("male") || s.equals("female")),"성별은 필수값입니다. (허용 되는 값 : male or female)");
 
-        StyleCardInfo styleCardInfo = new StyleCardInfo(styleCardVo);
+        StyleCardInfoEntity styleCardInfoEntity = new StyleCardInfoEntity(styleCardVo);
 
-        List<StyleCardByTags> list = styleCardInfo.getTags()
+        List<StyleCardByTags> list = styleCardInfoEntity.getTags()
                                     .stream()
-                                    .map(s -> new StyleCardByTags(s,styleCardInfo.getCardId()))
+                                    .map(s -> new StyleCardByTags(s, styleCardInfoEntity.getCardId()))
                                     .collect(Collectors.toList());
 
         styleByTagsRepository.saveAll(list);
 
-        return Optional.of(styleCardRepository.save(styleCardInfo)).orElseThrow(RuntimeException::new);
+        return Optional.of(styleCardRepository.save(styleCardInfoEntity)).orElseThrow(RuntimeException::new);
     }
 
 
 
-    public boolean deleteTag(Tag tag){
+    public boolean deleteTag(TagEntity tag){
 
         if (partnerByTagsRepository.findByTag(tag.getTagName()).size() != 0) {
             return false;
@@ -186,12 +186,15 @@ public class StyleCardService {
             tagRepository.delete(tag);
             return true;
         }
+
+
+
     }
 
 
 
 
-    public List<StyleCardCounter> cardCountListByWeek(){
+    public List<StyleCardCounterEntity> cardCountListByWeek(){
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
         LocalDate now = LocalDate.now().minusDays(7);
@@ -199,13 +202,15 @@ public class StyleCardService {
 
         System.out.println("현재시간변환"+nowToLong);
 
-    List<StyleCardCounterByDay> list = counterDayRepository.findByWeekCount(nowToLong);
+    List<StyleCardCounterByDayEntity> list = counterDayRepository.findByWeekCount(nowToLong);
 
 
-        return list.stream().collect(Collectors.groupingBy(styleCardCounterByDay -> styleCardCounterByDay.getKey().getCardId(),TreeMap::new,Collectors.summingLong(StyleCardCounterByDay::getViewCount))).entrySet().stream().map(uuidLongEntry -> new StyleCardCounter(uuidLongEntry.getKey(),0L,uuidLongEntry.getValue(),null)).collect(Collectors.toList());
+    Map<StyleCardCounterByDayEntity.StyleCardCounterKey,List<StyleCardCounterByDayEntity>> map = list.stream().collect(Collectors.groupingBy(StyleCardCounterByDayEntity::getKey));
+
+        return     list.stream().collect(Collectors.groupingBy(styleCardCounterByDayEntity -> styleCardCounterByDayEntity.getKey().getCardId(),TreeMap::new,Collectors.summingLong(StyleCardCounterByDayEntity::getViewCount))).entrySet().stream().map(uuidLongEntry -> new StyleCardCounterEntity(uuidLongEntry.getKey(),0L,uuidLongEntry.getValue(),null)).collect(Collectors.toList());
     }
 
-    public List<StyleCardInfo> cardInfosByIds(List<UUID> uuids){
+    public List<StyleCardInfoEntity> cardInfosByIds(List<UUID> uuids){
 
         return styleCardRepository.findByCardIdIn(uuids);
     }

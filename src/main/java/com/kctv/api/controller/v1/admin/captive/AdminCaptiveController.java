@@ -1,19 +1,6 @@
 package com.kctv.api.controller.v1.admin.captive;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kctv.api.advice.exception.CResourceNotExistException;
-import com.kctv.api.entity.admin.FaqRequest;
-import com.kctv.api.entity.admin.FaqTable;
-import com.kctv.api.entity.admin.QnaAnswer;
-import com.kctv.api.entity.admin.ad.CaptivePortalAdEntity;
-import com.kctv.api.entity.place.PlaceInfo;
-import com.kctv.api.entity.place.PlaceInfoDto;
-import com.kctv.api.entity.place.PlaceInfoVo;
-import com.kctv.api.entity.qna.QnaByUserEntity;
-import com.kctv.api.entity.stylecard.StyleCardInfo;
-import com.kctv.api.entity.stylecard.admin.StyleCardVo;
-import com.kctv.api.model.response.CommonResult;
+import com.kctv.api.model.admin.ad.CaptivePortalAdEntity;
 import com.kctv.api.model.response.ListResult;
 import com.kctv.api.model.response.SingleResult;
 import com.kctv.api.service.*;
@@ -22,21 +9,11 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.collections.CollectionUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import springfox.documentation.annotations.ApiIgnore;
 
 import java.io.IOException;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 
 @Api(tags = {"11. Admin CaptivePortal API"})

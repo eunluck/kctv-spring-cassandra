@@ -1,11 +1,7 @@
 package com.kctv.api.controller.v1;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kctv.api.entity.stylecard.StyleCardInfo;
-import com.kctv.api.entity.user.InviteFriends;
-import com.kctv.api.entity.user.UserInfo;
-import com.kctv.api.model.ap.WakeupPermission;
-import com.kctv.api.model.ap.WakeupPermissionUnder;
+import com.kctv.api.model.user.InviteFriendsEntity;
+import com.kctv.api.model.user.UserInfoEntity;
 import com.kctv.api.model.ap.WakeupPermissionVO;
 import com.kctv.api.model.request.ReferRequest;
 import com.kctv.api.model.response.CommonResult;
@@ -13,7 +9,6 @@ import com.kctv.api.service.InviteService;
 import com.kctv.api.service.ResponseService;
 import io.swagger.annotations.*;
 import org.bouncycastle.util.Strings;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpEntity;
@@ -24,7 +19,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
-import javax.xml.ws.Response;
 import java.util.*;
 
 
@@ -59,7 +53,7 @@ public class InviteController {
         String lowerCode = Strings.toLowerCase(code);
 
 
-        Optional<UserInfo> user = inviteService.findUserByCode(lowerCode);
+        Optional<UserInfoEntity> user = inviteService.findUserByCode(lowerCode);
 
         if (!user.isPresent()){
             return responseService.getFailResult(-11,"유효하지 않는 코드입니다.");
@@ -69,14 +63,14 @@ public class InviteController {
             return responseService.getFailResult(-13,"자기 자신은 추천할 수 없어요");
         }else {
 
-            InviteFriends inviteFriends = new InviteFriends(uuid,user.get().getUserId(),new Date());
+            InviteFriendsEntity inviteFriendsEntity = new InviteFriendsEntity(uuid,user.get().getUserId(),new Date());
 
-            if (inviteService.saveInviteCode(inviteFriends)) {
+            if (inviteService.saveInviteCode(inviteFriendsEntity,user.get())) {
                 //추천인 코드는 여러명을 입력할 수 있다.(완)
                 //한번 추천한 사람에게 중복 추천할 수 없다. (완)
                 //추천인과 추천등록한사람은 100MB씩 제공받는다.(완)
 
-                HttpEntity httpEntity = new HttpEntity(new ReferRequest(user.get().getUserId(),uuid,"104857600"));
+                HttpEntity<ReferRequest> httpEntity = new HttpEntity<>(new ReferRequest(user.get().getUserId(),uuid,"104857600"));
 
                 try {
                 ResponseEntity<WakeupPermissionVO> responseEntity = restTemplate.exchange(path+"/wakeuf/refer",HttpMethod.POST,httpEntity, WakeupPermissionVO.class); // 브라이언 서버와 통신
@@ -86,7 +80,7 @@ public class InviteController {
 
                 }catch (Exception e){
                     e.printStackTrace();
-                    inviteService.deleteInviteCode(inviteFriends);
+                    inviteService.deleteInviteCode(inviteFriendsEntity);
                     return responseService.getFailResult(-20,"Permission 통신 오류.");
                 }
 

@@ -3,7 +3,7 @@ package com.kctv.api.config;
 
 import com.fasterxml.classmate.TypeResolver;
 
-import com.kctv.api.entity.place.PlaceInfoVo;
+import com.kctv.api.model.place.PlaceInfoVo;
 import com.kctv.api.model.swagger.LoginEx;
 import com.kctv.api.model.swagger.SignUpEx;
 import com.kctv.api.model.swagger.UserUpdateEx;

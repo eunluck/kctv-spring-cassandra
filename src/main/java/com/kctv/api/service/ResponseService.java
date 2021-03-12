@@ -1,7 +1,7 @@
 package com.kctv.api.service;
 
-import com.kctv.api.entity.place.PlaceInfo;
-import com.kctv.api.entity.stylecard.StyleCardInfo;
+import com.kctv.api.model.place.PlaceInfoEntity;
+import com.kctv.api.model.stylecard.StyleCardInfoEntity;
 import com.kctv.api.model.response.*;
 import org.springframework.stereotype.Service;
 
@@ -46,10 +46,10 @@ public class ResponseService {
     }
 
 
-    public PlaceListResult getPlaceListResult(StyleCardInfo cardInfo, List<PlaceInfo> placeInfoList){
+    public PlaceListResult getPlaceListResult(StyleCardInfoEntity cardInfo, List<PlaceInfoEntity> placeInfoEntityList){
         PlaceListResult result = new PlaceListResult();
         result.setData(cardInfo);
-        result.setPlaceList(placeInfoList);
+        result.setPlaceList(placeInfoEntityList);
         setSuccessResult(result);
         return result;
 

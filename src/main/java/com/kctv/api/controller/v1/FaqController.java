@@ -1,7 +1,7 @@
 package com.kctv.api.controller.v1;
 
 
-import com.kctv.api.entity.admin.FaqTable;
+import com.kctv.api.model.admin.FaqTableEntity;
 import com.kctv.api.model.response.ListResult;
 import com.kctv.api.model.response.SingleResult;
 import com.kctv.api.service.FaqService;
@@ -22,14 +22,14 @@ public class FaqController {
     private final ResponseService responseService;
 
     @GetMapping("/faq")
-    public ListResult<FaqTable> findByAllFaq(){
+    public ListResult<FaqTableEntity> findByAllFaq(){
 
         return responseService.getListResult(faqService.findByAll());
 
     }
 
     @GetMapping("/faq/{id}")
-    public SingleResult<FaqTable> findById(@PathVariable("id")UUID uuid){
+    public SingleResult<FaqTableEntity> findById(@PathVariable("id")UUID uuid){
 
         return responseService.getSingleResult(faqService.findById(uuid));
     }

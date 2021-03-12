@@ -5,8 +5,8 @@ import com.google.common.base.Strings;
 
 import com.kctv.api.advice.exception.CResourceNotExistException;
 
-import com.kctv.api.entity.admin.QnaAnswer;
-import com.kctv.api.entity.qna.QnaByUserEntity;
+import com.kctv.api.model.admin.QnaAnswerEntity;
+import com.kctv.api.model.qna.QnaByUserEntity;
 import com.kctv.api.model.qna.QnaDto;
 import com.kctv.api.model.qna.QnaRequest;
 import com.kctv.api.repository.qna.QnaAnswerRepository;
@@ -14,7 +14,6 @@ import com.kctv.api.repository.qna.QnaRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -46,37 +45,40 @@ public class QnaService {
         Preconditions.checkNotNull(question);
         Preconditions.checkNotNull(userId);
 
-        if(question.getQuestionType().equals("as")){
-            question.setQuestionType("WiFi A/S");
-        }else if(question.getQuestionType().equals("zone")){
-            question.setQuestionType("WiFi Zone");
-        }else if(question.getQuestionType().equals("app")){
-            question.setQuestionType("WakeUf 앱 문의");
-        }else if(question.getQuestionType().equals("etc")){
-            question.setQuestionType("기타 문의");
+        switch (question.getQuestionType()) {
+            case "as":
+                question.setQuestionType("WiFi A/S");
+                break;
+            case "zone":
+                question.setQuestionType("WiFi Zone");
+                break;
+            case "app":
+                question.setQuestionType("WakeUf 앱 문의");
+                break;
+            case "etc":
+                question.setQuestionType("기타 문의");
+                break;
         }
         question.setStatus("미답변");
 
-        QnaByUserEntity inserted = qnaRepository.insert(new QnaByUserEntity(question,userId,Nickname,email));
-
-        return inserted;
+        return qnaRepository.insert(new QnaByUserEntity(question,userId,Nickname,email));
     }
 
 
-    public QnaAnswer createAnswer(QnaAnswer qnaAnswer){
+    public QnaAnswerEntity createAnswer(QnaAnswerEntity qnaAnswerEntity){
 
-        QnaByUserEntity qna = qnaRepository.findByUserIdAndQuestionId(qnaAnswer.getUserId(),qnaAnswer.getQuestionId()).orElseThrow(CResourceNotExistException::new);
+        QnaByUserEntity qna = qnaRepository.findByUserIdAndQuestionId(qnaAnswerEntity.getUserId(), qnaAnswerEntity.getQuestionId()).orElseThrow(CResourceNotExistException::new);
         qna.setStatus("답변완료");
 
-        Optional.ofNullable(qnaRepository.save(qna)).orElseThrow(CResourceNotExistException::new);
+        qnaRepository.save(qna);
 
-        return Optional.ofNullable(qnaAnswerRepository.save(qnaAnswer)).orElseThrow(CResourceNotExistException::new);
+        return qnaAnswerRepository.save(qnaAnswerEntity);
     }
 
 
-    public QnaAnswer saveOrInsertAnswer(QnaAnswer qnaAnswer){
+    public QnaAnswerEntity saveOrInsertAnswer(QnaAnswerEntity qnaAnswerEntity){
 
-        return Optional.ofNullable(qnaAnswerRepository.save(qnaAnswer)).orElseThrow(CResourceNotExistException::new);
+        return qnaAnswerRepository.save(qnaAnswerEntity);
     }
 
 

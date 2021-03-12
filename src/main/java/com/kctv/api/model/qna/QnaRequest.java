@@ -1,11 +1,9 @@
 package com.kctv.api.model.qna;
 
-import com.kctv.api.entity.admin.QnaAnswer;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
 @Getter

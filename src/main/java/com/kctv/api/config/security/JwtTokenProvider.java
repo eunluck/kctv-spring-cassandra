@@ -2,7 +2,6 @@ package com.kctv.api.config.security;
 
 
 
-import com.kctv.api.entity.user.UserInfo;
 import com.kctv.api.service.UserService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -17,12 +16,9 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
-import java.io.StringWriter;
-import java.net.StandardSocketOptions;
 import java.util.Base64;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Component

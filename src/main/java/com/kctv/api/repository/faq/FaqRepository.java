@@ -1,19 +1,15 @@
 package com.kctv.api.repository.faq;
 
-import com.kctv.api.entity.admin.FaqTable;
-import com.kctv.api.entity.place.WifiInfo;
-import org.springframework.data.cassandra.repository.AllowFiltering;
+import com.kctv.api.model.admin.FaqTableEntity;
 import org.springframework.data.cassandra.repository.CassandraRepository;
-import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface FaqRepository extends CassandraRepository<FaqTable, UUID> {
+public interface FaqRepository extends CassandraRepository<FaqTableEntity, UUID> {
 
 
 
-    Optional<FaqTable> findByFaqId(UUID id);
+    Optional<FaqTableEntity> findByFaqId(UUID id);
 
 }

@@ -2,9 +2,9 @@ package com.kctv.api.controller.v1;
 
 import com.google.common.collect.Lists;
 import com.kctv.api.advice.exception.CResourceNotExistException;
-import com.kctv.api.entity.place.PlaceInfo;
-import com.kctv.api.entity.visit.UserVisitHistoryEntity;
-import com.kctv.api.entity.visit.VisitCount;
+import com.kctv.api.model.place.PlaceInfoEntity;
+import com.kctv.api.model.visit.UserVisitHistoryEntity;
+import com.kctv.api.model.visit.VisitCount;
 import com.kctv.api.model.response.ListResult;
 import com.kctv.api.model.visit.UserVisitHistoryDto;
 import com.kctv.api.model.visit.VisitCountDto;
@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
@@ -52,7 +51,7 @@ public class UserVisitController {
 
         List<UserVisitHistoryEntity> visitHistoryEntityList = userVisitHistoryService.findHistoryByUserId(uuid);
         if(visitHistoryEntityList.size() > 0){
-       List<PlaceInfo> list = placeService.getPlaceListByIdIn(visitHistoryEntityList.stream().map(UserVisitHistoryEntity::getPlaceId).collect(Collectors.toList()));
+       List<PlaceInfoEntity> list = placeService.getPlaceListByIdIn(visitHistoryEntityList.stream().map(UserVisitHistoryEntity::getPlaceId).collect(Collectors.toList()));
 
         return responseService.getListResult(visitHistoryEntityList
                 .stream()
@@ -85,7 +84,7 @@ public class UserVisitController {
 
         List<VisitCount> visitCountList = userVisitHistoryService.visitCounts(uuid);
         if (visitCountList.size() > 0) {
-            List<PlaceInfo> visitPlaceList = placeService.getPlaceListByIdIn(visitCountList.stream().map(VisitCount::getPlaceId).collect(Collectors.toList()));
+            List<PlaceInfoEntity> visitPlaceList = placeService.getPlaceListByIdIn(visitCountList.stream().map(VisitCount::getPlaceId).collect(Collectors.toList()));
 
 
             return responseService.getListResult(

@@ -1,29 +1,27 @@
 package com.kctv.api.repository.user;
 
-import com.kctv.api.entity.user.UserInfo;
+import com.kctv.api.model.user.UserInfoEntity;
 import org.springframework.data.cassandra.repository.AllowFiltering;
 import org.springframework.data.cassandra.repository.CassandraRepository;
-import org.springframework.data.cassandra.repository.Consistency;
-import org.springframework.data.querydsl.QuerydslPredicateExecutor;
-import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-public interface UserRepository extends CassandraRepository<UserInfo, UUID> {
+public interface UserRepository extends CassandraRepository<UserInfoEntity, UUID>,UserCustomRepository {
 
-    Optional<UserInfo> findByUserId(UUID id);
-
-    @AllowFiltering
-    Optional<UserInfo> findByUserEmailAndUserEmailType(String email, String emailType); //이메일중복체크
-
+    Optional<UserInfoEntity> findByUserId(UUID id);
+/*
 
     @AllowFiltering
-    Optional<UserInfo> findByUserSnsKey(String SnsKey);
+    Optional<UserInfoEntity> findByUserEmailAndUserEmailType(String email, String emailType); //이메일중복체크
 
 
     @AllowFiltering
-    Optional<UserInfo> findByInviteCode(String code);
+    Optional<UserInfoEntity> findByUserSnsKey(String SnsKey);
+*/
+
+
+    @AllowFiltering
+    Optional<UserInfoEntity> findByInviteCode(String code);
 
 
 }

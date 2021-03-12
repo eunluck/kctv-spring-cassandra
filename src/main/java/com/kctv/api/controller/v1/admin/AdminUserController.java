@@ -1,20 +1,27 @@
 package com.kctv.api.controller.v1.admin;
 
+import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import com.kctv.api.advice.exception.CNotFoundCodeException;
+import com.kctv.api.advice.exception.CUserExistException;
 import com.kctv.api.advice.exception.CUserNotFoundException;
-import com.kctv.api.entity.admin.AddManagerRequest;
-import com.kctv.api.entity.admin.ManagerDto;
-import com.kctv.api.entity.stylecard.StyleCardCounter;
-import com.kctv.api.entity.stylecard.StyleCardCounterByDay;
-import com.kctv.api.entity.stylecard.StyleCardInfo;
-import com.kctv.api.entity.user.UserInfo;
-import com.kctv.api.entity.user.UserInfoDto;
-import com.kctv.api.entity.user.UserInterestTag;
+import com.kctv.api.model.admin.AddManagerRequest;
+import com.kctv.api.model.admin.AdminPaymentInfoEntity;
+import com.kctv.api.model.admin.AdminPaymentInfoDto;
+import com.kctv.api.model.admin.ManagerDto;
+import com.kctv.api.model.ap.WakeupPermissionEntity;
+import com.kctv.api.model.payment.PaymentCodeEntity;
+import com.kctv.api.model.payment.PaymentInfoEntity;
+import com.kctv.api.model.user.UserInfoEntity;
+import com.kctv.api.model.user.UserInfoDto;
+import com.kctv.api.model.user.UserInterestTagEntity;
 import com.kctv.api.model.response.ListResult;
 import com.kctv.api.model.response.SingleResult;
 import com.kctv.api.model.tag.Role;
+import com.kctv.api.service.PaymentService;
 import com.kctv.api.service.ResponseService;
 import com.kctv.api.service.UserService;
+import com.kctv.api.service.WakeupPermissionService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -38,8 +45,8 @@ public class AdminUserController {
 
     private final ResponseService responseService;
     private final UserService userService;
-
-
+    private final WakeupPermissionService wakeupPermissionService;
+    private final PaymentService paymentService;
 
 
 
@@ -52,7 +59,7 @@ public class AdminUserController {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UUID uuid = UUID.fromString(authentication.getName());
-        UserInfo user = Optional.of(userService.findByUserId(uuid)).orElseThrow(CUserNotFoundException::new);
+        UserInfoEntity user = Optional.of(userService.findByUserId(uuid)).orElseThrow(CUserNotFoundException::new);
 
         return responseService.getSingleResult(new ManagerDto(user));
     }
@@ -79,9 +86,9 @@ public class AdminUserController {
     public ListResult<UserInfoDto> getAllUser() {
 
         return responseService.getListResult(userService.getAllUserService().stream().map(userInfo ->
-                new UserInfoDto(userInfo, userService.getUserInterestTag(userInfo.getUserId())
-                        .orElseGet(() -> new UserInterestTag(userInfo.getUserId(), null, Sets.newHashSet()))
-                        .getTags().stream().collect(toList())))
+                new UserInfoDto(userInfo, new ArrayList<String>(userService.getUserInterestTag(userInfo.getUserId())
+                        .orElseGet(() -> new UserInterestTagEntity(userInfo.getUserId(), null, Sets.newHashSet()))
+                        .getTags()))).filter(userInfoDto -> !Role.adminIsTrue(userInfoDto.getRoles()))
                 .collect(toList()));
     }
 
@@ -93,12 +100,8 @@ public class AdminUserController {
     @GetMapping("/list/manager")
     public ListResult<ManagerDto> getAdminList() {
 
-
-
         return responseService.getListResult(userService.getAllUserService().stream()
-                .filter(userInfo ->  !Role.USER.getAuthority().containsAll(userInfo.getRoles()))
-                .filter(userInfo ->  !Role.NOT_ROLE.getAuthority().containsAll(userInfo.getRoles()))
-                .filter(userInfo ->  !Role.EMAIL_NOT_VERIFY.getAuthority().containsAll(userInfo.getRoles()))
+                .filter(userInfo -> Role.adminIsTrue(userInfo.getRoles()))
                 .filter(userInfo ->  !userInfo.getRoles().contains("ROLE_TEMP_PASSWORD"))
                 .map(ManagerDto::new)
                 .collect(toList()));
@@ -114,10 +117,41 @@ public class AdminUserController {
     @GetMapping("/{userId}")
     public SingleResult<UserInfoDto> getUserById(@PathVariable UUID userId) {
 
+        List<PaymentCodeEntity> codeList = paymentService.findByCodeList();
+        UserInfoEntity userInfoEntity = userService.findByUserId(userId);
+        WakeupPermissionEntity wakeupPermissionEntity = wakeupPermissionService.findPermissionByUserId(userInfoEntity.getUserId());
+        List<PaymentInfoEntity> paymentInfoEntity = paymentService.findByUserId(userInfoEntity.getUserId());
 
-        return responseService.getSingleResult(new UserInfoDto(userService.findByUserId(userId)));
+        if(paymentInfoEntity.size() != 0){
+        List<AdminPaymentInfoEntity> result = paymentInfoEntity.stream()
+                .filter(paymentInfoEntity1 -> ! "p001".equals(paymentInfoEntity1.getAppPaymentCode()))
+                .filter(paymentInfoEntity1 -> ! "FREE".equals(paymentInfoEntity1.getAppPaymentCode()))
+                .map(paymentInfoEntityStream ->
+                codeList.stream()
+                        .filter(paymentCodeEntity -> paymentCodeEntity.getAppPaymentCode().equals(paymentInfoEntityStream.getAppPaymentCode()))
+                        .findFirst()
+                        .map(paymentCodeEntityMap ->
+                                AdminPaymentInfoEntity
+                                        .builder()
+                                        .paymentName(paymentCodeEntityMap.getDescription())
+                                        .endDate(paymentInfoEntityStream.getEndDt())
+                                        .paymentType(paymentInfoEntityStream.getSubscriptionPeriodAndroid())
+                                        .price(paymentCodeEntityMap.getPrice())
+                                        .referFriend(paymentInfoEntityStream.getFriendEmailReferMe())
+                                        .startDate(paymentInfoEntityStream.getCreateDt())
+                                        .status(paymentInfoEntityStream.getEndDt()==null?null:paymentInfoEntityStream.getEndDt().after(new Date())?"사용중":"만료")
+                                        .build())
+                        .orElseThrow(CNotFoundCodeException::new))
+                .collect(Collectors.toList());
 
+                //new AdminPaymentInfo(codeList.stream().filter(paymentCodeEntity -> paymentCodeEntity.equals(paymentInfoStream.getAppPaymentCode())).findFirst().map(PaymentCodeEntity::getDescription).orElseGet(null),codeList.stream().filter(paymentCodeEntity -> paymentCodeEntity.equals(paymentInfoStream.getAppPaymentCode())).findFirst().map(PaymentCodeEntity::getPrice).orElseGet(() -> 0L),paymentInfoStream.getCreateDt(),paymentInfoStream.getEndDt(),null,paymentInfoStream.getFriendEmailReferMe())).collect(Collectors.toList());
+            return responseService.getSingleResult(new AdminPaymentInfoDto(userInfoEntity,wakeupPermissionEntity,result));
+        } else {
+            return responseService.getSingleResult(new AdminPaymentInfoDto(userInfoEntity,wakeupPermissionEntity, Lists.newArrayList()));
 
+        }
+
+        //return responseService.getSingleResult(new UserInfoDto(userService.findByUserId(userId)));
     }
 
 /*
@@ -133,8 +167,11 @@ public class AdminUserController {
     @PostMapping("/manager")
     public SingleResult<ManagerDto> createManagerUser(@RequestBody AddManagerRequest request) throws RoleNotFoundException {
 
-        request.toString();
+        Optional<UserInfoEntity> requestUser = userService.checkByEmail(request.getManagerId(),"user");
 
+        if (requestUser.isPresent()) {
+            throw new CUserExistException();
+        }
 
         return responseService.getSingleResult(new ManagerDto(userService.addManager(request.newAddManager(Role.findAuthorityByDescription(request.getRole())))));
     }
@@ -149,11 +186,12 @@ public class AdminUserController {
     public SingleResult<ManagerDto> modifyManagerUser(@PathVariable("managerId")UUID uuid,
                                                        @RequestBody AddManagerRequest request) throws RoleNotFoundException {
 
-        UserInfo requestUserInfo = request.parseUserInfo(uuid);
+            request.setManagerId(null);
+            UserInfoEntity requestUserInfoEntity = request.parseUserInfo(uuid);
 
-        UserInfo userInfo = userService.modifyManager(requestUserInfo);
+        UserInfoEntity userInfoEntity = userService.modifyManager(requestUserInfoEntity);
 
-        return responseService.getSingleResult(new ManagerDto(userInfo));
+        return responseService.getSingleResult(new ManagerDto(userInfoEntity));
     }
 
 
@@ -165,11 +203,11 @@ public class AdminUserController {
     public SingleResult<ManagerDto> deleteManagerUser(@PathVariable("managerId")UUID uuid) {
 
 
-        UserInfo userInfo = Optional.of(userService.findByUserId(uuid)).orElseThrow(CUserNotFoundException::new);
+        UserInfoEntity userInfoEntity = Optional.of(userService.findByUserId(uuid)).orElseThrow(CUserNotFoundException::new);
 
-        userService.deleteManager(userInfo);
+        userService.deleteManager(userInfoEntity);
 
-        return responseService.getSingleResult(new ManagerDto(userInfo));
+        return responseService.getSingleResult(new ManagerDto(userInfoEntity));
     }
 
 

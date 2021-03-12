@@ -44,11 +44,11 @@ public enum Role {
 
     public static String findDescriptionByAuthority(List<String> authority) {
 
-        return Arrays.stream(Role.values()).filter(role -> authority.containsAll(role.authority) && role.authority.size() == authority.size()).findAny().orElseGet(() -> NOT_ROLE).description;
+        return Arrays.stream(Role.values()).filter(role -> authority.containsAll(role.authority) && role.authority.size() == authority.size()).findAny().orElse(NOT_ROLE).description;
 
     }
 
-    public static boolean AdminIsTrue(List<String> role){
+    public static boolean adminIsTrue(List<String> role){
 
         return !findDescriptionByAuthority(role).equals(USER.description)
                 &&!findDescriptionByAuthority(role).equals(NOT_ROLE.description)

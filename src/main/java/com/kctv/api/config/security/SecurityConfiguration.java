@@ -32,6 +32,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private final JwtTokenProvider jwtTokenProvider;
 
+
+
     public SecurityConfiguration(@Lazy JwtTokenProvider jwtTokenProvider) {
         this.jwtTokenProvider = jwtTokenProvider;
     }
@@ -74,8 +76,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder(){
-        return new BCryptPasswordEncoder();
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder(4);
     }
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -111,7 +113,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/v1/payment/**").permitAll() // 태그 조회
 
                 .antMatchers("/exception/**").permitAll() // 토큰 예외처리
-                .antMatchers(HttpMethod.GET, "helloworld/**").permitAll() // hellowworld로 시작하는 GET요청 리소스는 누구나 접근가능
                 // 위 URL들은 토큰없이 접속 가능
                 .antMatchers("/v1/admin/**").hasAnyRole("ADMIN","AP_ADMIN","CUSTOMER_ADMIN","WIRELESS_ADMIN")
                 .anyRequest().hasRole("USER") // 그외 나머지 요청은 모두 인증된 회원만 접근 가능

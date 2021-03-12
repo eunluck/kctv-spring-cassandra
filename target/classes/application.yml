@@ -19,6 +19,7 @@ spring:
       keyspace-name: kctv_dev
       local-datacenter: DC1
       username: biskit
+
   mail:
     host: smtp.gmail.com
     port: 587

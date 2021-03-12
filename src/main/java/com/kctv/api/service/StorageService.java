@@ -5,10 +5,10 @@ import com.kctv.api.advice.exception.CFormatNotAllowedException;
 import com.kctv.api.advice.exception.CNotOwnerException;
 import com.kctv.api.advice.exception.CResourceNotExistException;
 import com.kctv.api.controller.v1.admin.captive.CaptiveRequest;
-import com.kctv.api.entity.admin.ad.CaptivePortalAdEntity;
-import com.kctv.api.entity.place.PlaceInfo;
-import com.kctv.api.entity.stylecard.StyleCardInfo;
-import com.kctv.api.entity.stylecard.CardImageInfo;
+import com.kctv.api.model.admin.ad.CaptivePortalAdEntity;
+import com.kctv.api.model.place.PlaceInfoEntity;
+import com.kctv.api.model.stylecard.StyleCardInfoEntity;
+import com.kctv.api.model.stylecard.CardImageInfoEntity;
 import com.kctv.api.repository.ad.CaptivePortalAdRepository;
 import com.kctv.api.repository.ap.PartnerRepository;
 import com.kctv.api.repository.card.StyleCardRepository;
@@ -55,7 +55,7 @@ public class StorageService {
 
     public byte[] getImage(UUID uuid) throws IOException {
 
-        CardImageInfo image = cardImageInfoRepository.findByImageId(uuid).orElseThrow(CNotOwnerException::new);
+        CardImageInfoEntity image = cardImageInfoRepository.findByImageId(uuid).orElseThrow(CNotOwnerException::new);
 
         Path filePath = Paths.get(basePath+image.getPath()+"/"+image.getFileName()).normalize();
 
@@ -82,20 +82,20 @@ public class StorageService {
         return imageByteArray;
     }
 
-    public String appendPlaceImage(PlaceInfo placeInfo,MultipartFile file) throws IOException {
+    public String appendPlaceImage(PlaceInfoEntity placeInfoEntity, MultipartFile file) throws IOException {
         UUID imgId = UUID.randomUUID();
 
         String fileName = saveFileIO(file,"place",imgId);
 
-        CardImageInfo newImage = CardImageInfo.builder()
+        CardImageInfoEntity newImage = CardImageInfoEntity.builder()
                 .imageId(imgId)
-                .cardId(placeInfo.getPartnerId())
+                .cardId(placeInfoEntity.getPartnerId())
                 .createAt(new Date())
                 .path(placeImagePath)
                 .fileName(fileName)
                 .build();
 
-        CardImageInfo cardImageInfo = cardImageInfoRepository.save(newImage);
+        CardImageInfoEntity cardImageInfoEntity = cardImageInfoRepository.save(newImage);
 
         return REQUEST_URL+imgId;
     }
@@ -103,15 +103,15 @@ public class StorageService {
     public boolean removePlaceImage(UUID imgId){
 
 
-        CardImageInfo cardImageInfo = cardImageInfoRepository.findByImageId(imgId).orElseThrow(CResourceNotExistException::new);
+        CardImageInfoEntity cardImageInfoEntity = cardImageInfoRepository.findByImageId(imgId).orElseThrow(CResourceNotExistException::new);
         try {
 
-        Path directory = Paths.get(basePath+cardImageInfo.getPath()+"/"+cardImageInfo.getFileName()).normalize();
+        Path directory = Paths.get(basePath+ cardImageInfoEntity.getPath()+"/"+ cardImageInfoEntity.getFileName()).normalize();
 
         Files.deleteIfExists(directory);
         }catch (IOException e){
             e.printStackTrace();
-            cardImageInfoRepository.save(cardImageInfo);
+            cardImageInfoRepository.save(cardImageInfoEntity);
             return false;
         }
 
@@ -126,7 +126,7 @@ public class StorageService {
 
 
 
-        CardImageInfo newImage = CardImageInfo.builder()
+        CardImageInfoEntity newImage = CardImageInfoEntity.builder()
                 .imageId(imageId)
                 .cardId(uuid)
                 .createAt(new Date())
@@ -135,18 +135,18 @@ public class StorageService {
 
         if ("card".equals(type)){
             newImage.setPath(cardImagePath);
-            StyleCardInfo styleCardInfo = styleCardRepository.findByCardId(uuid).orElseThrow(IOException::new);
-            styleCardInfo.setCoverImage(REQUEST_URL+imageId);
-            Optional.of(styleCardRepository.save(styleCardInfo)).orElseThrow(IOException::new);
+            StyleCardInfoEntity styleCardInfoEntity = styleCardRepository.findByCardId(uuid).orElseThrow(IOException::new);
+            styleCardInfoEntity.setCoverImage(REQUEST_URL+imageId);
+            styleCardRepository.save(styleCardInfoEntity);
 
         }else if("place".equals(type)){
             newImage.setPath(placeImagePath);
-            PlaceInfo placeInfo = partnerRepository.findByPartnerId(uuid).orElseThrow(IOException::new);
-            placeInfo.setImages(Lists.newArrayList(REQUEST_URL+imageId));
-            Optional.of(partnerRepository.save(placeInfo)).orElseThrow(IOException::new);
+            PlaceInfoEntity placeInfoEntity = partnerRepository.findByPartnerId(uuid).orElseThrow(IOException::new);
+            placeInfoEntity.setImages(Lists.newArrayList(REQUEST_URL+imageId));
+            partnerRepository.save(placeInfoEntity);
         }
 
-        CardImageInfo afterImg = Optional.of(cardImageInfoRepository.save(newImage)).orElseThrow(IOException::new);
+        CardImageInfoEntity afterImg = Optional.of(cardImageInfoRepository.save(newImage)).orElseThrow(IOException::new);
 
         return afterImg.getPath();
 
@@ -165,7 +165,7 @@ public class StorageService {
             String fileName = saveFileIO(multipartFile, type, imageId); //실제 파일 저장
 
 
-            CardImageInfo newImage = CardImageInfo.builder()
+            CardImageInfoEntity newImage = CardImageInfoEntity.builder()
                     .imageId(imageId)
                     .cardId(uuid)
                     .createAt(new Date())
@@ -173,12 +173,12 @@ public class StorageService {
                     .build();
 
             newImage.setPath(placeImagePath);
-            Optional.of(cardImageInfoRepository.save(newImage)).orElseThrow(IOException::new);
+            cardImageInfoRepository.save(newImage);
             filePathList.add(REQUEST_URL + imageId);
         }
-            PlaceInfo placeInfo = partnerRepository.findByPartnerId(uuid).orElseThrow(IOException::new);
-            placeInfo.setImages(filePathList);
-            Optional.of(partnerRepository.save(placeInfo)).orElseThrow(IOException::new);
+            PlaceInfoEntity placeInfoEntity = partnerRepository.findByPartnerId(uuid).orElseThrow(IOException::new);
+            placeInfoEntity.setImages(filePathList);
+            partnerRepository.save(placeInfoEntity);
 
         return filePathList;
 
@@ -200,7 +200,7 @@ public class StorageService {
                 .adEndDt(request.getEndDate())
                 .adLink(request.getLink())
                 .imgName(request.getImgFile().getOriginalFilename())
-                .imgPath(adImagePath+"/"+randomAdId.toString()+"_"+Normalizer.normalize(request.getImgFile().getOriginalFilename(), Normalizer.Form.NFC))
+                .imgPath(adImagePath+"/"+randomAdId.toString()+"_"+Normalizer.normalize(Objects.requireNonNull(request.getImgFile().getOriginalFilename()), Normalizer.Form.NFC))
                 .imgUrl(AD_REQUEST_URL+randomAdId)
                 .build();
 
@@ -221,12 +221,12 @@ public class StorageService {
     }
 
     public boolean deleteFile(UUID imgId) throws IOException {
-        CardImageInfo cardImageInfo = cardImageInfoRepository.findByImageId(imgId).orElseThrow(CResourceNotExistException::new);
+        CardImageInfoEntity cardImageInfoEntity = cardImageInfoRepository.findByImageId(imgId).orElseThrow(CResourceNotExistException::new);
 
-        Path directory = Paths.get(basePath+cardImageInfo.getPath()+"/"+cardImageInfo.getFileName()).normalize();
+        Path directory = Paths.get(basePath+ cardImageInfoEntity.getPath()+"/"+ cardImageInfoEntity.getFileName()).normalize();
 
         if (Files.deleteIfExists(directory)){
-            cardImageInfoRepository.delete(cardImageInfo);
+            cardImageInfoRepository.delete(cardImageInfoEntity);
             return true;
         }else {
             return false;
@@ -238,10 +238,10 @@ public class StorageService {
     public boolean deleteFile(List<UUID> imgIds) throws IOException {
         for (UUID imgId : imgIds) {
 
-            CardImageInfo cardImageInfo = cardImageInfoRepository.findByImageId(imgId).orElseThrow(CResourceNotExistException::new);
-            Path directory = Paths.get(basePath+cardImageInfo.getPath()+"/"+cardImageInfo.getFileName()).normalize();
+            CardImageInfoEntity cardImageInfoEntity = cardImageInfoRepository.findByImageId(imgId).orElseThrow(CResourceNotExistException::new);
+            Path directory = Paths.get(basePath+ cardImageInfoEntity.getPath()+"/"+ cardImageInfoEntity.getFileName()).normalize();
             if (Files.deleteIfExists(directory)) {
-                cardImageInfoRepository.delete(cardImageInfo);
+                cardImageInfoRepository.delete(cardImageInfoEntity);
             }else {
                 return false;
             }
@@ -263,7 +263,7 @@ public class StorageService {
         }
         Files.createDirectories(directory);  // directory 해당 경로까지 디렉토리를 모두 만든다.
 
-        String fileName = StringUtils.cleanPath(imageId.toString()+"_"+Normalizer.normalize(file.getOriginalFilename(), Normalizer.Form.NFC));  // 파일명을 바르게 수정한다.
+        String fileName = StringUtils.cleanPath(imageId.toString()+"_"+Normalizer.normalize(Objects.requireNonNull(file.getOriginalFilename()), Normalizer.Form.NFC));  // 파일명을 바르게 수정한다.
 
         Assert.state(!fileName.contains(".."), "Name of file cannot contain '..'");       // 파일명에 '..' 문자가 들어 있다면 오류를 발생하고 아니라면 진행(해킹및 오류방지)
 

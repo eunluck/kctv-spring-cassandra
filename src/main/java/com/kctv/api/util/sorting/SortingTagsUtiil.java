@@ -1,7 +1,7 @@
 package com.kctv.api.util.sorting;
 
-import com.kctv.api.entity.stylecard.StyleCardByTags;
-import com.kctv.api.entity.stylecard.StyleCardInfo;
+import com.kctv.api.model.stylecard.StyleCardByTags;
+import com.kctv.api.model.stylecard.StyleCardInfoEntity;
 import com.kctv.api.util.MapUtill;
 
 import java.util.*;
@@ -30,9 +30,9 @@ public class SortingTagsUtiil {
         return queryList;
     }
 
-    public static List<StyleCardInfo> SortingToList (List<StyleCardInfo> cardInfos,List<UUID> queryList) {
+    public static List<StyleCardInfoEntity> SortingToList (List<StyleCardInfoEntity> cardInfos, List<UUID> queryList) {
 
-        List<StyleCardInfo> resultList = new ArrayList<>();
+        List<StyleCardInfoEntity> resultList = new ArrayList<>();
         for (int i = 0; i < cardInfos.size(); i++) {
             for (int j = 0; j < cardInfos.size(); j++) {
                 if(cardInfos.get(j).getCardId().equals(queryList.get(i)))

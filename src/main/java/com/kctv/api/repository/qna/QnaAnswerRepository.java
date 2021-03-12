@@ -1,16 +1,13 @@
 package com.kctv.api.repository.qna;
 
-import com.kctv.api.entity.admin.QnaAnswer;
-import com.kctv.api.entity.qna.QnaByUserEntity;
+import com.kctv.api.model.admin.QnaAnswerEntity;
 import org.springframework.data.cassandra.repository.CassandraRepository;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
-public interface QnaAnswerRepository extends CassandraRepository<QnaAnswer, UUID> {
+public interface QnaAnswerRepository extends CassandraRepository<QnaAnswerEntity, UUID> {
 
-    List<QnaAnswer> findByQuestionId(UUID id);
+    List<QnaAnswerEntity> findByQuestionId(UUID id);
 
 }

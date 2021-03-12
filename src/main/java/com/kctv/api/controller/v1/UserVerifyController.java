@@ -1,7 +1,7 @@
 package com.kctv.api.controller.v1;
 
 
-import com.kctv.api.entity.user.UserInfo;
+import com.kctv.api.model.user.UserInfoEntity;
 import com.kctv.api.model.response.CommonResult;
 import com.kctv.api.service.ResponseService;
 import com.kctv.api.service.UserService;
@@ -11,6 +11,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import javax.mail.MessagingException;
+import java.io.UnsupportedEncodingException;
 
 @Api(tags = {"02. UserEmailVerify API"})
 @RequiredArgsConstructor
@@ -42,11 +45,11 @@ public class UserVerifyController {
     })
     @GetMapping("/verify/resend")
     @ResponseBody
-    public CommonResult reSendMail(){
+    public CommonResult reSendMail() throws UnsupportedEncodingException {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        UserInfo user = (UserInfo) authentication.getPrincipal();
+        UserInfoEntity user = (UserInfoEntity) authentication.getPrincipal();
 
         System.out.println(user.toString());
 
@@ -65,7 +68,7 @@ public class UserVerifyController {
     @ResponseBody
     @PutMapping("/find/password/{email}/{emailType}")
     public CommonResult sendTempPassword(@ApiParam(value = "email",example = "test@gmail.com")@PathVariable("email") String email,
-                                 @ApiParam(value = "emailType",example = "user")@PathVariable("emailType")String emailType){
+                                 @ApiParam(value = "emailType",example = "user")@PathVariable("emailType")String emailType) throws MessagingException {
 
         userService.sendTempPassword(email,emailType);
         CommonResult result = responseService.getSuccessResult();

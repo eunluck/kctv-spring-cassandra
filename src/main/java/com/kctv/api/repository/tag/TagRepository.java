@@ -1,6 +1,6 @@
 package com.kctv.api.repository.tag;
 
-import com.kctv.api.entity.stylecard.Tag;
+import com.kctv.api.model.tag.TagEntity;
 import org.springframework.data.cassandra.repository.CassandraRepository;
 import org.springframework.stereotype.Repository;
 
@@ -9,13 +9,13 @@ import java.util.Optional;
 
 
 @Repository
-public interface TagRepository extends CassandraRepository<Tag,String> {
+public interface TagRepository extends CassandraRepository<TagEntity,String> {
 
 
-    List<Tag> findByTagType(String tagType);
+    List<TagEntity> findByTagType(String tagType);
 
 
-    Optional<Tag> findByTagTypeAndTagName(String tagType,String tagName);
+    Optional<TagEntity> findByTagTypeAndTagName(String tagType, String tagName);
 
 
 

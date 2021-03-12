@@ -9,9 +9,9 @@ import com.google.common.hash.Hashing;
 import com.kctv.api.advice.exception.CResourceNotExistException;
 import com.kctv.api.advice.exception.CUserExistException;
 import com.kctv.api.advice.exception.CUserNotFoundException;
-import com.kctv.api.entity.user.*;
-import com.kctv.api.entity.visit.UserVisitHistoryEntity;
-import com.kctv.api.model.ap.WakeupPermission;
+import com.kctv.api.model.visit.UserVisitHistoryEntity;
+import com.kctv.api.model.ap.WakeupPermissionEntity;
+import com.kctv.api.model.user.*;
 import com.kctv.api.repository.ap.WakeUpPermissionRepository;
 import com.kctv.api.repository.user.*;
 import com.kctv.api.repository.visit.VisitHistoryRepository;
@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -29,9 +30,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sun.security.krb5.internal.crypto.Aes256;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import java.io.UnsupportedEncodingException;
 import java.security.GeneralSecurityException;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -47,13 +51,14 @@ public class UserService implements UserDetailsService {
     private final UserScrapRepository userScrapRepository;
     private final UserEmailVerifyRepository userEmailVerifyRepository;
     private final VisitHistoryRepository visitHistoryRepository;
+    private final UserInfoByEmailRepository userInfoByEmailRepository;
     private final String EMAIL_LINK;
     //private final String EMAIL_LINK = "http://192.168.0.56:8081/v1/verify/";
-    private final String EMAIL_SUB = "KCTV 회원가입 인증 메일입니다.";
-    private final AES256Util aes = AES256Util.getInstance();
+    private final String EMAIL_SUB = "[WAKE UF] 이메일 계정을 인증해주세요.";
 
 
-    public UserService(UserUniqueCodeRepository userUniqueCodeRepository, WakeUpPermissionRepository wakeUpPermissionRepository, @Lazy PasswordEncoder passwordEncoder, UserRepository userRepository, JavaMailSender emailSender, UserInterestTagRepository userInterestTagRepository, UserLikeRepository userLikeRepository, UserScrapRepository userScrapRepository, UserEmailVerifyRepository userEmailVerifyRepository, VisitHistoryRepository visitHistoryRepository, @Value("${costom.host.path}") String email_link) throws UnsupportedEncodingException {
+
+    public UserService(UserUniqueCodeRepository userUniqueCodeRepository, WakeUpPermissionRepository wakeUpPermissionRepository, @Lazy PasswordEncoder passwordEncoder, UserRepository userRepository, JavaMailSender emailSender, UserInterestTagRepository userInterestTagRepository, UserLikeRepository userLikeRepository, UserScrapRepository userScrapRepository, UserEmailVerifyRepository userEmailVerifyRepository, VisitHistoryRepository visitHistoryRepository, UserInfoByEmailRepository userInfoByEmailRepository, @Value("${costom.host.path}") String email_link) {
         this.userUniqueCodeRepository = userUniqueCodeRepository;
         this.wakeUpPermissionRepository = wakeUpPermissionRepository;
         this.passwordEncoder = passwordEncoder;
@@ -64,73 +69,90 @@ public class UserService implements UserDetailsService {
         this.userScrapRepository = userScrapRepository;
         this.userEmailVerifyRepository = userEmailVerifyRepository;
         this.visitHistoryRepository = visitHistoryRepository;
+        this.userInfoByEmailRepository = userInfoByEmailRepository;
         this.EMAIL_LINK = email_link;
 
     }
 
-    public UserInfo deleteUserInfo(UserInfo userInfo){
-        WakeupPermission userPermission;
-        UserUniqueCode userUniqueCode;
-        UserInterestTag userTags;
-        List<UserLikePartner> userLikePartners;
-        List<UserScrapCard> userScrapCards;
-        UserEmailVerify userEmailVerify;
+    public UserInfoEntity deleteUserInfo(UserInfoEntity userInfoEntity){
+        WakeupPermissionEntity userPermission;
+        UserUniqueCodeEntity userUniqueCodeEntity;
+        UserInterestTagEntity userTags;
+        List<UserLikePartnerEntity> userLikePartnerEntities;
+        List<UserScrapCardEntity> userScrapCardEntities;
+        UserEmailVerifyEntity userEmailVerifyEntity;
         List<UserVisitHistoryEntity> userVisitHistoryEntities;
+        UserInfoByEmailEntity userInfoByEmailEntity;
         try {
-            userPermission = wakeUpPermissionRepository.findByUserId(userInfo.getUserId()).orElseThrow(CUserNotFoundException::new);
-            userUniqueCode = userUniqueCodeRepository.findByUniqueCode(userPermission.getUniqueCode()).orElseThrow(CUserNotFoundException::new);
-            userTags = userInterestTagRepository.findByUserId(userInfo.getUserId()).orElseGet(() -> null);
-            userLikePartners = userLikeRepository.findByUserId(userInfo.getUserId());
-            userScrapCards = userScrapRepository.findByUserId(userInfo.getUserId());
-            userEmailVerify = userEmailVerifyRepository.findByUserId(userInfo.getUserId()).orElseGet(() -> null);
-            userVisitHistoryEntities = visitHistoryRepository.findByUserId(userInfo.getUserId());
+            userPermission = wakeUpPermissionRepository.findByUserId(userInfoEntity.getUserId()).orElseThrow(CUserNotFoundException::new);
+            userUniqueCodeEntity = userUniqueCodeRepository.findByUniqueCode(userPermission.getUniqueCode()).orElseThrow(CUserNotFoundException::new);
+            userTags = userInterestTagRepository.findByUserId(userInfoEntity.getUserId()).orElse(null);
+            userLikePartnerEntities = userLikeRepository.findByUserId(userInfoEntity.getUserId());
+            userScrapCardEntities = userScrapRepository.findByUserId(userInfoEntity.getUserId());
+            userEmailVerifyEntity = userEmailVerifyRepository.findByUserId(userInfoEntity.getUserId()).orElse(null);
+            userVisitHistoryEntities = visitHistoryRepository.findByUserId(userInfoEntity.getUserId());
+            userInfoByEmailEntity = userInfoByEmailRepository.findByUserEmailAndUserEmailType(userInfoEntity.getUserEmail(),userInfoEntity.getUserEmailType()).orElse(null);
+            userInfoByEmailEntity.setUserEmail(AES256Util.getInstance().encrypt(userInfoByEmailEntity.getUserEmail()));
         }catch (Exception e){
             e.printStackTrace();
             throw new CUserNotFoundException();
         }
 
-        userRepository.delete(userInfo);
+        userRepository.delete(userInfoEntity);
         wakeUpPermissionRepository.delete(userPermission);
-        userUniqueCodeRepository.delete(userUniqueCode);
+        userUniqueCodeRepository.delete(userUniqueCodeEntity);
         if (userTags != null)
             userInterestTagRepository.delete(userTags);
-        if (CollectionUtils.isNotEmpty(userLikePartners))
-            userLikeRepository.deleteAll(userLikePartners);
-        if (CollectionUtils.isNotEmpty(userScrapCards))
-            userScrapRepository.deleteAll(userScrapCards);
+        if (CollectionUtils.isNotEmpty(userLikePartnerEntities))
+            userLikeRepository.deleteAll(userLikePartnerEntities);
+        if (CollectionUtils.isNotEmpty(userScrapCardEntities))
+            userScrapRepository.deleteAll(userScrapCardEntities);
         if(CollectionUtils.isNotEmpty(userVisitHistoryEntities))
             visitHistoryRepository.deleteAll(userVisitHistoryEntities);
-        if (userEmailVerify != null)
-            userEmailVerifyRepository.delete(userEmailVerify);
+        if (userEmailVerifyEntity != null)
+            userEmailVerifyRepository.delete(userEmailVerifyEntity);
+        if (userInfoByEmailEntity != null)
+            userInfoByEmailRepository.delete(userInfoByEmailEntity);
 
-        return userInfo;
+        return userInfoEntity;
     }
 
-    public UserInfo findByUserId(UUID uuid) {
+    public UserInfoEntity findByUserId(UUID uuid) {
 
-        UserInfo user = userRepository.findByUserId(uuid).orElseThrow(CUserNotFoundException::new);
-        user.decryptInfo();
-
-        return user;
+        return userRepository.findByUserId(uuid).orElseThrow(CUserNotFoundException::new);
     }
 
-    @SneakyThrows
-    public Optional<UserInfo> checkByEmail(String email, String emailType) {
-        email = aes.encrypt(email);
+    public Optional<UserInfoEntity> checkByEmail(String email, String emailType) {
 
-        return userRepository.findByUserEmailAndUserEmailType(email, emailType);
+        Optional<UserInfoByEmailEntity> userEmail = userInfoByEmailRepository.findByUserEmailAndUserEmailType(email, emailType);
+        //userInfoByEmailRepository.findByUserEmailAndUserEmailType(email, emailType)
+        AtomicReference<Optional<UserInfoEntity>> result = new AtomicReference<>(Optional.empty());
+        userEmail.ifPresent(userInfoByEmailEntity -> result.set(userRepository.findByUserId(userInfoByEmailEntity.getUserId())));
+        return result.get();
     }
 
-    @SneakyThrows
-    public Optional<UserInfo> userLoginService(String email, String emailType, String pwd) {
-        UserInfo loginUser = userRepository.findByUserEmailAndUserEmailType(email, emailType).orElseThrow(CUserNotFoundException::new);
+
+    public Optional<UserInfoEntity> userLoginService(String email, String emailType, String pwd) {
+
+        UserInfoEntity loginUser = userInfoByEmailRepository.findByUserEmailAndUserEmailType(email,emailType)
+                .map(userInfoByEmailEntity ->
+                        userRepository.findByUserId(userInfoByEmailEntity.getUserId())
+                                .orElseThrow(CUserNotFoundException::new))
+                .orElseThrow(CUserNotFoundException::new);
+
+//        UserInfoEntity loginUser = userRepository.findByUserEmailAndUserEmailType(email, emailType).orElseThrow(CUserNotFoundException::new);
 
 
+        System.out.println(loginUser.toString());
+        //return Optional.empty();
         return passwordEncoder.matches(pwd, loginUser.getUserPassword()) ? Optional.of(loginUser) : Optional.empty();
     }
 
-    public Optional<UserInfo> userSnsLoginService(String snsKey) {
-        return userRepository.findByUserSnsKey(snsKey);
+    public Optional<UserInfoEntity> userSnsLoginService(String snsKey) {
+
+        UUID findId = userInfoByEmailRepository.findByUserSnsKey(snsKey).map(UserInfoByEmailEntity::getUserId).orElse(null);
+
+        return  findId == null ? Optional.empty() : userRepository.findByUserId(findId);
 
     }
 
@@ -144,46 +166,45 @@ public class UserService implements UserDetailsService {
 
         } while (userUniqueCodeRepository.findByUniqueCode(resultCode).isPresent());
 
-        return userUniqueCodeRepository.insert(new UserUniqueCode(resultCode, userId, new Date())).getUniqueCode();
+        return userUniqueCodeRepository.insert(new UserUniqueCodeEntity(resultCode, userId, new Date())).getUniqueCode();
 
     }
 
-    public UserInfo userSignUpService(UserInfo userInfo) throws GeneralSecurityException, UnsupportedEncodingException {
-
-
+    public UserInfoEntity userSignUpService(UserInfoEntity userInfoEntity) {
 
         String code = UUID.randomUUID().toString().replaceAll("-", ""); // -를 제거해 주었다.
         code = code.substring(0, 6);
-        userInfo.setUserId(UUID.randomUUID());
-        String userUniqueCode = createUniqueCode(userInfo.getUserId());
+        userInfoEntity.setUserId(UUID.randomUUID());
+        String userUniqueCode = createUniqueCode(userInfoEntity.getUserId());
 
-        WakeupPermission wakeupPermission = null;
+        WakeupPermissionEntity wakeupPermissionEntity = null;
 
-        if ("user".equals(userInfo.getUserEmailType())) {
-            userInfo.setRoles(Collections.singletonList("ROLE_NOT_VERIFY_EMAIL"));
-            userInfo.setUserPassword(passwordEncoder.encode(userInfo.getUserPassword()));
+        if ("user".equals(userInfoEntity.getUserEmailType())) {
+            userInfoEntity.setRoles(Collections.singletonList("ROLE_NOT_VERIFY_EMAIL"));
+            userInfoEntity.setUserPassword(passwordEncoder.encode(userInfoEntity.getUserPassword()));
         } else {
-            userInfo.setRoles(Collections.singletonList("ROLE_USER"));
+            userInfoEntity.setRoles(Collections.singletonList("ROLE_USER"));
 
-            wakeupPermission = wakeUpPermissionRepository.save(new WakeupPermission(userInfo, userUniqueCode));
+            wakeupPermissionEntity = wakeUpPermissionRepository.save(new WakeupPermissionEntity(userInfoEntity, userUniqueCode));
         }
 
-        userInfo.setUserStatus("NORMAL");
-        userInfo.setCreateDate(new Date());
-        userInfo.setInviteCode(code);
+        userInfoEntity.setUserStatus("NORMAL");
+        userInfoEntity.setCreateDate(new Date());
+        userInfoEntity.setInviteCode(code);
 
-        UserInfo result = Optional.of(userRepository.insert(userInfo)).orElseThrow(CUserExistException::new);
-
+        UserInfoEntity result = userRepository.insert(userInfoEntity);
+        UserInfoByEmailEntity userEmail = userInfoByEmailRepository.insert(new UserInfoByEmailEntity(result.getUserEmail(),result.getUserEmailType(),result.getUserId(),result.getUserPassword(),result.getUserSnsKey()));
 
         if ("user".equals(result.getUserEmailType())){
-            //TODO 여기에 이메일인증로직 추가
+
             try {
-                userEmailVerifySave(userUniqueCode,userInfo.getUserId(),userInfo.getUserEmail());
+                userEmailVerifySave(userUniqueCode, result.getUserId(), result.getUserEmail());
 
             }catch (Exception e){
                 e.printStackTrace();
                 userRepository.delete(result);
-                wakeUpPermissionRepository.delete(wakeupPermission);
+                wakeUpPermissionRepository.delete(wakeupPermissionEntity);
+                userInfoByEmailRepository.delete(userEmail);
                 throw new CUserNotFoundException();
             }
         }
@@ -192,46 +213,52 @@ public class UserService implements UserDetailsService {
 
     }
 
-    @SneakyThrows
-    public boolean userEmailVerifySave(String uniqueCode, UUID userId, String email){
 
+    public void userEmailVerifySave(String uniqueCode, UUID userId, String email)  {
 
+        System.out.println("저장중");
 
+        UserEmailVerifyEntity result = userEmailVerifyRepository.save(new UserEmailVerifyEntity(uniqueCode,new Date(),email, userId));
 
-        userEmailVerifyRepository.save(new UserEmailVerify(uniqueCode,new Date(),email, userId));
+        try {
+            sendMailMessage(AES256Util.getInstance().decrypt(email), EMAIL_SUB,
+                "안녕하세요. WAKE UF입니다.<br>" +
+                        "이메일 인증을 받으시려면 24시간 이내에 아래 ‘이메일 인증 받기’를 클릭해주세요.<br>  메일 수신 시간으로부터 24시간이 지나면 본 링크는 만료되며, 다시 이메일 인증을 요청 해야합니다. <br>" +
+                        "<br><a href=\""+EMAIL_LINK + uniqueCode+"\">이 곳을 클릭하여 이메일 인증 받기</a>"); //메일전송
+        }catch (Exception e){
+            System.out.println("저장실패");
+            e.printStackTrace();
+            userEmailVerifyRepository.delete(result);
 
-
-        sendMailMessage(email, EMAIL_SUB, EMAIL_LINK + uniqueCode); //메일전송
-
-
-        return true;
-
-    }
-
-    @SneakyThrows
-    public void userVerifyEmailResend(UserInfo userInfo){
-
-        userInfo.setUserEmail(aes.encrypt(userInfo.getUserEmail()));
-         userEmailVerifyRepository.findByUserId(userInfo.getUserId())
-                 .ifPresent(beforeUserEmailVerify -> userEmailVerifyRepository.delete(beforeUserEmailVerify));
-
-
-        userEmailVerifySave(createUniqueCode(userInfo.getUserId()),userInfo.getUserId(),userInfo.getUserEmail());
+        }
 
     }
 
-
     @SneakyThrows
-    public void sendMailMessage(String userEmail, String subject, String text) {
+    public void userVerifyEmailResend(UserInfoEntity userInfoEntity) throws UnsupportedEncodingException {
 
-        System.out.println(userEmail);
-        System.out.println(aes.decrypt(userEmail));
-        SimpleMailMessage sender = new SimpleMailMessage();
-        sender.setTo(String.valueOf(aes.decrypt(userEmail)));
-        sender.setSubject(subject);
-        sender.setText(text);
+         userEmailVerifyRepository.findByUserId(userInfoEntity.getUserId())
+                 .ifPresent(beforeUserEmailVerifyEntity -> userEmailVerifyRepository.delete(beforeUserEmailVerifyEntity));
 
-        emailSender.send(sender);
+        userEmailVerifySave(createUniqueCode(userInfoEntity.getUserId()), userInfoEntity.getUserId(), AES256Util.getInstance().encrypt(userInfoEntity.getUserEmail()));
+
+    }
+
+    public void sendMailMessage(String userEmail, String subject, String text) throws MessagingException {
+        System.out.println("메일전송");
+
+        MimeMessage mimeMessage = emailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(mimeMessage,"utf-8");
+
+        helper.setText(text,true);
+        helper.setTo(String.valueOf(userEmail));
+        helper.setSubject(subject);
+
+
+
+
+        emailSender.send(mimeMessage);
+        System.out.println("메일전송완료");
     }
 
 /*
@@ -244,12 +271,10 @@ public class UserService implements UserDetailsService {
     }*/
 
 
-    @SneakyThrows
-    public void sendTempPassword(String email, String emailType) {
+    public void sendTempPassword(String email, String emailType) throws MessagingException {
 
-        email = aes.encrypt(email);
 
-        UserInfo findUser = userRepository.findByUserEmailAndUserEmailType(email, emailType).orElseThrow(CUserNotFoundException::new);
+        UserInfoEntity findUser = userRepository.findByUserId(userInfoByEmailRepository.findByUserEmailAndUserEmailType(email, emailType).orElseThrow(CUserNotFoundException::new).getUserId()).orElseThrow(CUserNotFoundException::new);
 
         String uuid = UUID.randomUUID().toString().replaceAll("-", ""); // -를 제거해 주었다.
         uuid = uuid.substring(0, 8);
@@ -263,31 +288,31 @@ public class UserService implements UserDetailsService {
         role.add("ROLE_TEMP_PASSWORD");
         findUser.setRoles(role);
 
-        findUser.setUserEmail(aes.decrypt(findUser.getUserEmail()));
+        userInfoByEmailRepository.save(new UserInfoByEmailEntity(findUser.getUserEmail(),findUser.getUserEmailType(),findUser.getUserId(),findUser.getUserPassword(),findUser.getUserSnsKey()));
         Optional.of(userRepository.save(findUser)).orElseThrow(CUserNotFoundException::new);
 
-        sendMailMessage(email, "임시비밀번호를 발급해드립니다.", "임시비밀번호:" + uuid);
+        sendMailMessage(findUser.getUserEmail(), "[WAKE UF] 임시 비밀번호가 발급되었습니다.", "안녕하세요. WAKE UF입니다.<br>" +
+                "요청하신 임시 비밀번호가 아래와 같이 발급되었습니다. <br>" +
+                "임시 비밀번호는 일회성 비밀번호이므로, 로그인 후 비밀번호를 신속하게 변경해 주시기 바랍니다.<br>" +
+                "<br>\n" + uuid);
     }
 
 
     @Transactional
     public void newVerifyEmail(String uniqueCode){
 
-        UserEmailVerify userEmailVerify = userEmailVerifyRepository.findByUniqueCode(uniqueCode).orElseThrow(CUserNotFoundException::new);
-        UserInfo userInfo = userRepository.findByUserId(userEmailVerify.getUserId()).orElseThrow(CUserNotFoundException::new);
-        userInfo.decryptInfo();
-        userInfo.setRoles(Collections.singletonList("ROLE_USER"));
-        UserInfo saveAfterUser = userRepository.save(userInfo);
-        userEmailVerifyRepository.delete(userEmailVerify);
+        UserEmailVerifyEntity userEmailVerifyEntity = userEmailVerifyRepository.findByUniqueCode(uniqueCode).orElseThrow(CUserNotFoundException::new);
+        UserInfoEntity userInfoEntity = userRepository.findByUserId(userEmailVerifyEntity.getUserId()).orElseThrow(CUserNotFoundException::new);
+        userInfoEntity.setRoles(Collections.singletonList("ROLE_USER"));
+        UserInfoEntity saveAfterUser = userRepository.save(userInfoEntity);
+        userEmailVerifyRepository.delete(userEmailVerifyEntity);
 
-        Optional.of(wakeUpPermissionRepository.save(new WakeupPermission(saveAfterUser, uniqueCode))).orElseThrow(CResourceNotExistException::new);
-
+        Optional.of(wakeUpPermissionRepository.save(new WakeupPermissionEntity(saveAfterUser, uniqueCode))).orElseThrow(CResourceNotExistException::new);
 
 
     }
 
   /*  public void verifyEmail(String key) throws CUserNotFoundException {
-
 
 
         UUID userId = UUID.fromString(redisUtil.getData(key));
@@ -305,82 +330,92 @@ public class UserService implements UserDetailsService {
 
     }*/
 
-    public UserInfo modifyUserRole(UserInfo userInfo, String role) {
+    public UserInfoEntity modifyUserRole(UserInfoEntity userInfoEntity, String role) {
 
-        List<String> userRole = userInfo.getRoles();
+        List<String> userRole = userInfoEntity.getRoles();
         userRole.add(role);
-        userInfo.setRoles(userRole);
-        return userRepository.save(userInfo);
+        userInfoEntity.setRoles(userRole);
+        return userRepository.save(userInfoEntity);
     }
 
 
-    public List<UserInfo> getAllUserService() {
-        List<UserInfo> userInfoList = userRepository.findAll();
-        userInfoList.forEach(UserInfo::decryptInfo);
-        return userInfoList;
+    public List<UserInfoEntity> getAllUserService() {
+        return userRepository.findAll();
     }
 
 
-    public UserInfo userUpdateService(UserInfo userInfo) {
+    public UserInfoEntity userUpdateService(UserInfoEntity userInfoEntity) {
 
-        if (!Strings.isNullOrEmpty(userInfo.getUserPassword())){
-        userInfo.setUserPassword(passwordEncoder.encode(userInfo.getUserPassword()));
-        }
+        if (!Strings.isNullOrEmpty(userInfoEntity.getUserPassword())){
+        userInfoEntity.setUserPassword(passwordEncoder.encode(userInfoEntity.getUserPassword()));
 
-        UserInfo findUser = Optional.of(findByUserId(userInfo.getUserId())).orElseThrow(CUserNotFoundException::new);
-                 findUser.modifyUser(userInfo,userInfo.getUserPassword());
+        UserInfoEntity findUser = Optional.of(findByUserId(userInfoEntity.getUserId())).orElseThrow(CUserNotFoundException::new);
+        findUser.modifyUser(userInfoEntity, userInfoEntity.getUserPassword());
+
+        userInfoByEmailRepository.save(new UserInfoByEmailEntity(findUser.getUserEmail(),findUser.getUserEmailType(),findUser.getUserId(),findUser.getUserPassword(),findUser.getUserSnsKey()));
+        return userRepository.save(findUser);
+        }else {
+            UserInfoEntity findUser = Optional.of(findByUserId(userInfoEntity.getUserId())).orElseThrow(CUserNotFoundException::new);
+            findUser.modifyUser(userInfoEntity, userInfoEntity.getUserPassword());
 
         return userRepository.save(findUser);
+        }
     }
 
-    public UserInterestTag userInterestTagService(UserInterestTag userTags) {
+    public UserInterestTagEntity userInterestTagService(UserInterestTagEntity userTags) {
 
         return Optional.of(userInterestTagRepository.save(userTags)).orElseThrow(CUserNotFoundException::new);
     }
 
-    public Optional<UserInterestTag> getUserInterestTag(UUID uuid) {
+    public Optional<UserInterestTagEntity> getUserInterestTag(UUID uuid) {
 
         return userInterestTagRepository.findByUserId(uuid);
 
     }
 
-
     @Override
     public UserDetails loadUserByUsername(String s) throws CUserNotFoundException {
-        UserInfo user = userRepository.findByUserId(UUID.fromString(s)).orElseThrow(CUserNotFoundException::new);
 
-        user.decryptInfo();
 
-        return user;
+        System.out.println("디버깅loadUserByuserName:::"+s);
+        return userRepository.findByUserId(UUID.fromString(s)).orElseThrow(CUserNotFoundException::new);
     }
 
-    public UserInfo addManager(UserInfo userInfo){
-        Preconditions.checkNotNull(userInfo.getUserEmail(),"아이디를 입력해주세요.");
-        Preconditions.checkNotNull(userInfo.getUserPassword(),"비밀번호를 입력해주세요.");
-        Preconditions.checkNotNull(userInfo.getUserAddress(),"이메일을 입력해주세요.");
+    public UserInfoEntity addManager(UserInfoEntity userInfoEntity){
+        Preconditions.checkNotNull(userInfoEntity.getUserEmail(),"아이디를 입력해주세요.");
+        Preconditions.checkNotNull(userInfoEntity.getUserPassword(),"비밀번호를 입력해주세요.");
+        Preconditions.checkNotNull(userInfoEntity.getUserAddress(),"이메일을 입력해주세요.");
 
-        userInfo.setUserPassword(passwordEncoder.encode(userInfo.getUserPassword()));
+        userInfoEntity.setUserPassword(passwordEncoder.encode(userInfoEntity.getUserPassword()));
 
-        return userRepository.insert(userInfo);
+        UserInfoEntity result = userRepository.insert(userInfoEntity);
+        userInfoByEmailRepository.insert(new UserInfoByEmailEntity(result.getUserEmail(),result.getUserEmailType(),result.getUserId(),result.getUserPassword(),result.getUserSnsKey()));
+        return result;
 
     }
 
 
-    public UserInfo modifyManager(UserInfo userInfo){
+    public UserInfoEntity modifyManager(UserInfoEntity userInfoEntity){
+        if (!Strings.isNullOrEmpty(userInfoEntity.getUserEmail())){
+            if(userInfoByEmailRepository.findByUserEmailAndUserEmailType(userInfoEntity.getUserEmail(),"user").isPresent()){
+                throw new CUserExistException();
+            }
+        }
 
-        if (!Strings.isNullOrEmpty(userInfo.getPassword()))
-        userInfo.setUserPassword(passwordEncoder.encode(userInfo.getUserPassword()));
+        if (!Strings.isNullOrEmpty(userInfoEntity.getPassword()))
+        userInfoEntity.setUserPassword(passwordEncoder.encode(userInfoEntity.getUserPassword()));
 
-        UserInfo before = findByUserId(userInfo.getUserId());
+        UserInfoEntity before = findByUserId(userInfoEntity.getUserId());
 
-        before.modifyUser(userInfo,userInfo.getUserPassword());
+        before.modifyUser(userInfoEntity, userInfoEntity.getUserPassword());
         return userRepository.save(before);
 
     }
 
-    public boolean deleteManager(UserInfo userInfo){
+    public boolean deleteManager(UserInfoEntity userInfoEntity){
 
-        userRepository.delete(userInfo);
+        userInfoByEmailRepository.delete(new UserInfoByEmailEntity(userInfoEntity.getUserEmail(),userInfoEntity.getUserEmailType(),userInfoEntity.getUserId(),userInfoEntity.getUserPassword(),userInfoEntity.getUserSnsKey()));
+        userRepository.delete(userInfoEntity);
 
         return true;
     }

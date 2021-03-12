@@ -1,8 +1,6 @@
 package com.kctv.api.controller.v1;
 
-import com.kctv.api.advice.exception.CCommunicationException;
-import com.kctv.api.entity.stylecard.Tag;
-import com.kctv.api.model.response.CommonResult;
+import com.kctv.api.model.tag.TagEntity;
 import com.kctv.api.model.response.ListResult;
 import com.kctv.api.model.response.SingleResult;
 import com.kctv.api.model.tag.Facilities;
@@ -55,8 +53,8 @@ public class TagController {
     public SingleResult<Boolean> tagCheck(@PathVariable("tagType")String tagType,
                                        @PathVariable("tagName") String tagName){
 
-        Tag tag = Tag.builder().tagName(tagName).tagType(tagType).build();
-        Optional<Tag> result = styleCardService.getTagOneService(tag);
+        TagEntity tag = TagEntity.builder().tagName(tagName).tagType(tagType).build();
+        Optional<TagEntity> result = styleCardService.getTagOneService(tag);
 
         return responseService.getSingleResult(result.isPresent());
 
@@ -73,9 +71,9 @@ public class TagController {
 
     @ApiOperation(value = "추천 키워드",notes = "무작위 키워드 5개를 조회한다.")
     @GetMapping("/tags/random")
-    public ListResult<Tag> getRandomKeyword(){
+    public ListResult<TagEntity> getRandomKeyword(){
 
-        List<Tag> tagList = styleCardService.getTagListAllService().stream().filter(tag -> !"태그종류".equals(tag.getTagType())).collect(Collectors.toList());
+        List<TagEntity> tagList = styleCardService.getTagListAllService().stream().filter(tag -> !"태그종류".equals(tag.getTagType())).collect(Collectors.toList());
         Collections.shuffle(tagList);
 
         return responseService.getListResult(tagList.stream().limit(5).collect(Collectors.toList()));

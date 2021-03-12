@@ -1,14 +1,9 @@
 package com.kctv.api.model.visit;
 
-import com.kctv.api.entity.place.PlaceInfo;
-import com.kctv.api.entity.place.PlaceInfoDto;
-import com.kctv.api.entity.visit.UserVisitHistoryEntity;
+import com.kctv.api.model.place.PlaceInfoEntity;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.BeanUtils;
-import org.springframework.data.cassandra.core.cql.Ordering;
-import org.springframework.data.cassandra.core.cql.PrimaryKeyType;
-import org.springframework.data.cassandra.core.mapping.PrimaryKeyColumn;
 
 import java.util.Date;
 import java.util.UUID;
@@ -19,14 +14,14 @@ public class UserVisitHistoryDto {
 
     private UUID userId;
     private int visitDate;
-    private PlaceInfo placeInfo;
+    private PlaceInfoEntity placeInfoEntity;
     private Date timestamp;
     private String userMac;
 
-    public UserVisitHistoryDto(UserVisitHistoryEntity userVisitHistoryEntity,Long timestamp, PlaceInfo placeInfo){
+    public UserVisitHistoryDto(UserVisitHistoryEntity userVisitHistoryEntity,Long timestamp, PlaceInfoEntity placeInfoEntity){
         BeanUtils.copyProperties(userVisitHistoryEntity,this);
         this.timestamp = new Date(timestamp * 1000L);
-        this.placeInfo = placeInfo;
+        this.placeInfoEntity = placeInfoEntity;
     }
     public UserVisitHistoryDto(UUID userId){
         this.userId = userId;

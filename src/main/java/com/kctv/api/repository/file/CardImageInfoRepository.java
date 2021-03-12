@@ -1,18 +1,17 @@
 package com.kctv.api.repository.file;
 
-import com.kctv.api.entity.stylecard.CardImageInfo;
+import com.kctv.api.model.stylecard.CardImageInfoEntity;
 import org.springframework.data.cassandra.repository.CassandraRepository;
-import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 import java.util.UUID;
 
 
 
-public interface CardImageInfoRepository extends CassandraRepository<CardImageInfo, UUID> {
+public interface CardImageInfoRepository extends CassandraRepository<CardImageInfoEntity, UUID> {
 
 
-    Optional<CardImageInfo> findByImageId(UUID uuid);
+    Optional<CardImageInfoEntity> findByImageId(UUID uuid);
 
 
 

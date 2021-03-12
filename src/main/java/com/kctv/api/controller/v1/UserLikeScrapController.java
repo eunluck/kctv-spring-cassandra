@@ -1,8 +1,8 @@
 package com.kctv.api.controller.v1;
 
 
-import com.kctv.api.entity.place.PlaceInfo;
-import com.kctv.api.entity.stylecard.StyleCardInfo;
+import com.kctv.api.model.place.PlaceInfoEntity;
+import com.kctv.api.model.stylecard.StyleCardInfoEntity;
 import com.kctv.api.model.response.CommonResult;
 import com.kctv.api.model.response.ListResult;
 import com.kctv.api.service.LikeScrapService;
@@ -46,7 +46,7 @@ public class UserLikeScrapController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 token", required = true, dataType = "String", paramType = "header"),
     })
     @GetMapping("/user/like")
-    public ListResult<PlaceInfo> likeList(){
+    public ListResult<PlaceInfoEntity> likeList(){
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UUID userId = UUID.fromString(authentication.getName());
@@ -66,9 +66,9 @@ public class UserLikeScrapController {
         UUID userId = UUID.fromString(authentication.getName());
 
 
-        List<PlaceInfo> list = likeScrapService.likeList(userId);
+        List<PlaceInfoEntity> list = likeScrapService.likeList(userId);
 
-        return responseService.getListResult(list.stream().map(PlaceInfo::getPartnerId).collect(Collectors.toList()));
+        return responseService.getListResult(list.stream().map(PlaceInfoEntity::getPartnerId).collect(Collectors.toList()));
 
     }
 
@@ -93,7 +93,7 @@ public class UserLikeScrapController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 token", required = true, dataType = "String", paramType = "header"),
     })
     @GetMapping("/user/scrap")
-    public ListResult<StyleCardInfo> scrapList(){
+    public ListResult<StyleCardInfoEntity> scrapList(){
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UUID userId = UUID.fromString(authentication.getName());
@@ -114,9 +114,9 @@ public class UserLikeScrapController {
 
 
 
-        List<StyleCardInfo> list = likeScrapService.scrapList(userId);
+        List<StyleCardInfoEntity> list = likeScrapService.scrapList(userId);
 
-        return responseService.getListResult(list.stream().map(StyleCardInfo::getCardId).collect(Collectors.toList()));
+        return responseService.getListResult(list.stream().map(StyleCardInfoEntity::getCardId).collect(Collectors.toList()));
 
     }
 

@@ -1,7 +1,7 @@
 package com.kctv.api.controller.v1;
 
-import com.kctv.api.entity.place.PlaceInfo;
-import com.kctv.api.entity.stylecard.StyleCardInfo;
+import com.kctv.api.model.place.PlaceInfoEntity;
+import com.kctv.api.model.stylecard.StyleCardInfoEntity;
 import com.kctv.api.model.response.ListResult;
 import com.kctv.api.service.ResponseService;
 import com.kctv.api.service.SearchService;
@@ -37,7 +37,7 @@ public class SearchController {
 
     @ApiOperation(value = "가게 검색", notes = "검색어를 입력하여 가게를 검색한다.(제목,태그)")
     @GetMapping("/search/{param}/place")
-    public ListResult<PlaceInfo> searchPlace(@ApiParam("검색어") @PathVariable("param")String param){
+    public ListResult<PlaceInfoEntity> searchPlace(@ApiParam("검색어") @PathVariable("param")String param){
 
 
 
@@ -46,7 +46,7 @@ public class SearchController {
 
     @ApiOperation(value = "라이프스타일카드 검색", notes = "검색어를 입력하여 스타일카드를 검색한다. (제목,태그)")
     @GetMapping("/search/{param}/card")
-    public ListResult<StyleCardInfo> searchCard(@ApiParam("검색어") @PathVariable("param")String param){
+    public ListResult<StyleCardInfoEntity> searchCard(@ApiParam("검색어") @PathVariable("param")String param){
 
 
 

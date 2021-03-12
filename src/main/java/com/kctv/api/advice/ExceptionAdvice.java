@@ -32,120 +32,125 @@ public class ExceptionAdvice {
     protected CommonResult defaultException(HttpServletRequest request, Exception e) {
         log.warn("알수없는 오류 발생: {}", e.getMessage(), e);
         // 예외 처리의 메시지를 MessageSource에서 가져오도록 수정
-        return responseService.getFailResult(Integer.valueOf(getMessage("unKnown.code")), getMessage("unKnown.msg") + "(" + e.getMessage() + ")");
+        return responseService.getFailResult(Integer.parseInt(getMessage("unKnown.code")), getMessage("unKnown.msg") + "(" + e.getMessage() + ")");
     }
 
     @ExceptionHandler(CUserNotFoundException.class)
     @ResponseStatus(HttpStatus.OK)
     protected CommonResult userNotFound(HttpServletRequest request, CUserNotFoundException e) {
         log.info(getMessage("userNotFound.msg")+"::{}", e.getMessage(), e);
-        return responseService.getFailResult(Integer.valueOf(getMessage("userNotFound.code")), getMessage("userNotFound.msg"));
+        return responseService.getFailResult(Integer.parseInt(getMessage("userNotFound.code")), getMessage("userNotFound.msg"));
     }
 
     @ExceptionHandler(CEmailSigninFailedException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     protected CommonResult emailSigninFailed(HttpServletRequest request, CEmailSigninFailedException e) {
         log.info(getMessage("emailSigninFailed.msg")+"::{}", e.getMessage(), e);
-        return responseService.getFailResult(Integer.valueOf(getMessage("emailSigninFailed.code")), getMessage("emailSigninFailed.msg"));
+        return responseService.getFailResult(Integer.parseInt(getMessage("emailSigninFailed.code")), getMessage("emailSigninFailed.msg"));
     }
 
     @ExceptionHandler(CAuthenticationEntryPointException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public CommonResult authenticationEntryPointException(HttpServletRequest request, CAuthenticationEntryPointException e) {
         //log.info(getMessage("entryPointException.msg")+"::{}", e.getMessage(), e);
-        return responseService.getFailResult(Integer.valueOf(getMessage("entryPointException.code")), getMessage("entryPointException.msg"));
+        return responseService.getFailResult(Integer.parseInt(getMessage("entryPointException.code")), getMessage("entryPointException.msg"));
     }
 
     @ExceptionHandler(AccessDeniedException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public CommonResult accessDeniedException(HttpServletRequest request, AccessDeniedException e) {
         log.info(getMessage("accessDenied.msg")+"::{}", e.getMessage(), e);
-        return responseService.getFailResult(Integer.valueOf(getMessage("accessDenied.code")), getMessage("accessDenied.msg"));
+        return responseService.getFailResult(Integer.parseInt(getMessage("accessDenied.code")), getMessage("accessDenied.msg"));
     }
 
     @ExceptionHandler(CCommunicationException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public CommonResult communicationException(HttpServletRequest request, CCommunicationException e) {
         log.info(getMessage("communicationError.msg")+"::{}", e.getMessage(), e);
-        return responseService.getFailResult(Integer.valueOf(getMessage("communicationError.code")), getMessage("communicationError.msg"));
+        return responseService.getFailResult(Integer.parseInt(getMessage("communicationError.code")), getMessage("communicationError.msg"));
     }
 
     @ExceptionHandler(CUserExistException.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public CommonResult communicationException(HttpServletRequest request, CUserExistException e) {
         log.info(getMessage("existingUser.msg")+"::{}", e.getMessage(), e);
-        return responseService.getFailResult(Integer.valueOf(getMessage("existingUser.code")), getMessage("existingUser.msg"));
+        return responseService.getFailResult(Integer.parseInt(getMessage("existingUser.code")), getMessage("existingUser.msg"));
     }
 
     @ExceptionHandler(CNotOwnerException.class)
     @ResponseStatus(HttpStatus.NON_AUTHORITATIVE_INFORMATION)
     public CommonResult notOwnerException(HttpServletRequest request, CNotOwnerException e) {
         log.info(getMessage("notOwner.msg")+"::{}", e.getMessage(), e);
-        return responseService.getFailResult(Integer.valueOf(getMessage("notOwner.code")), getMessage("notOwner.msg"));
+        return responseService.getFailResult(Integer.parseInt(getMessage("notOwner.code")), getMessage("notOwner.msg"));
     }
 
     @ExceptionHandler(CResourceNotExistException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public CommonResult resourceNotExistException(HttpServletRequest request, CResourceNotExistException e) {
         log.debug(getMessage("resourceNotExist.msg")+"::{}", e.getMessage(), e);
-        return responseService.getFailResult(Integer.valueOf(getMessage("resourceNotExist.code")), getMessage("resourceNotExist.msg"));
+        return responseService.getFailResult(Integer.parseInt(getMessage("resourceNotExist.code")), getMessage("resourceNotExist.msg"));
     }
 
     @ExceptionHandler(CForbiddenWordException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public CommonResult forbiddenWordException(HttpServletRequest request, CForbiddenWordException e) {
         log.debug(getMessage("forbiddenWord.msg")+"::{}", e.getMessage(), e);
-        return responseService.getFailResult(Integer.valueOf(getMessage("forbiddenWord.code")), getMessage("forbiddenWord.msg", new Object[]{e.getMessage()}));
+        return responseService.getFailResult(Integer.parseInt(getMessage("forbiddenWord.code")), getMessage("forbiddenWord.msg", new Object[]{e.getMessage()}));
     }
 
     @ExceptionHandler(CNotFoundEmailException.class)
     @ResponseStatus(HttpStatus.OK)
     public CommonResult notFoundEmailException(HttpServletRequest request, CNotFoundEmailException e) {
         log.debug(getMessage("emailNotFound.msg")+"::{}", e.getMessage(), e);
-        return responseService.getFailResult(Integer.valueOf(getMessage("emailNotFound.code")), getMessage("emailNotFound.msg"));
+        return responseService.getFailResult(Integer.parseInt(getMessage("emailNotFound.code")), getMessage("emailNotFound.msg"));
     }
 
     @ExceptionHandler(CIncorrectPasswordException.class)
     @ResponseStatus(HttpStatus.OK)
     public CommonResult incorrectPasswordException(HttpServletRequest request, CIncorrectPasswordException e) {
         log.debug(getMessage("incorrectPassword.msg")+"::{}", e.getMessage(), e);
-        return responseService.getFailResult(Integer.valueOf(getMessage("incorrectPassword.code")), getMessage("incorrectPassword.msg"));
+        return responseService.getFailResult(Integer.parseInt(getMessage("incorrectPassword.code")), getMessage("incorrectPassword.msg"));
     }
     @ExceptionHandler(COverlapSnsKey.class)
     @ResponseStatus(HttpStatus.OK)
     public CommonResult overlapSnsKey(HttpServletRequest request, COverlapSnsKey e) {
         log.debug(getMessage("overlapSnsKey.msg")+"::{}", e.getMessage(), e);
-        return responseService.getFailResult(Integer.valueOf(getMessage("overlapSnsKey.code")), getMessage("overlapSnsKey.msg"));
+        return responseService.getFailResult(Integer.parseInt(getMessage("overlapSnsKey.code")), getMessage("overlapSnsKey.msg"));
     }
 
     @ExceptionHandler(CPartnerNotFoundException.class)
     @ResponseStatus(HttpStatus.OK)
     public CommonResult partnerNotFound(HttpServletRequest request, CPartnerNotFoundException e) {
         log.debug(getMessage("partnerNotFound.msg")+"::{}", e.getMessage(), e);
-        return responseService.getFailResult(Integer.valueOf(getMessage("partnerNotFound.code")), getMessage("partnerNotFound.msg"));
+        return responseService.getFailResult(Integer.parseInt(getMessage("partnerNotFound.code")), getMessage("partnerNotFound.msg"));
     }
 
     @ExceptionHandler(CNotVerifyEmailException.class)
     @ResponseStatus(HttpStatus.OK)
     public CommonResult notVerifyEmailException(HttpServletRequest request, CNotVerifyEmailException e) {
         log.debug(getMessage("notVerifyEmailException.msg")+"::{}", e.getMessage(), e);
-        return responseService.getFailResult(Integer.valueOf(getMessage("notVerifyEmailException.code")), getMessage("notVerifyEmailException.msg"));
+        return responseService.getFailResult(Integer.parseInt(getMessage("notVerifyEmailException.code")), getMessage("notVerifyEmailException.msg"));
     }
 
     @ExceptionHandler(CFormatNotAllowedException.class)
     @ResponseStatus(HttpStatus.OK)
     public CommonResult formatNotAllowedException(HttpServletRequest request, CFormatNotAllowedException e) {
         log.debug(getMessage("formatNotAllowedException.msg")+"::{}", e.getMessage(), e);
-        return responseService.getFailResult(Integer.valueOf(getMessage("formatNotAllowedException.code")), getMessage("formatNotAllowedException.msg"));
+        return responseService.getFailResult(Integer.parseInt(getMessage("formatNotAllowedException.code")), getMessage("formatNotAllowedException.msg"));
     }
 
    @ExceptionHandler(CTokenNotFoundException.class)
     @ResponseStatus(HttpStatus.OK)
-    public CommonResult formatNotAllowedException(HttpServletRequest request, CTokenNotFoundException e) {
+    public CommonResult tokenNotFoundException(HttpServletRequest request, CTokenNotFoundException e) {
         log.debug(getMessage("tokenNotFoundException.msg")+"::{}", e.getMessage(), e);
-        return responseService.getFailResult(Integer.valueOf(getMessage("tokenNotFoundException.code")), getMessage("tokenNotFoundException.msg"));
+        return responseService.getFailResult(Integer.parseInt(getMessage("tokenNotFoundException.code")), getMessage("tokenNotFoundException.msg"));
     }
-
+    @ExceptionHandler(CNotFoundCodeException.class)
+    @ResponseStatus(HttpStatus.OK)
+    public CommonResult notFoundCodeException(HttpServletRequest request, CNotFoundCodeException e) {
+        log.debug(getMessage("notFoundCodeException.msg")+"::{}", e.getMessage(), e);
+        return responseService.getFailResult(Integer.parseInt(getMessage("notFoundCodeException.code")), getMessage("notFoundCodeException.msg"));
+    }
 
 
 

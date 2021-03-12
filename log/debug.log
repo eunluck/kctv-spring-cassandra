@@ -1,34 +1,41 @@
-2021-02-17 14:30:45.911  INFO 25080 --- [           main] o.apache.catalina.core.StandardService  :173 : Starting service [Tomcat]
-2021-02-17 14:30:45.919  INFO 25080 --- [           main] org.apache.catalina.core.StandardEngine :173 : Starting Servlet engine: [Apache Tomcat/9.0.38]
-2021-02-17 14:30:46.264  INFO 25080 --- [           main] o.a.c.c.C.[Tomcat].[localhost].[/]      :173 : Initializing Spring embedded WebApplicationContext
-2021-02-17 14:30:46.265  INFO 25080 --- [           main] w.s.c.ServletWebServerApplicationContext:285 : Root WebApplicationContext: initialization completed in 6631 ms
-2021-02-17 14:30:47.550  INFO 25080 --- [           main] c.d.o.d.i.core.DefaultMavenCoordinates  :37 : DataStax Java driver for Apache Cassandra(R) (com.datastax.oss:java-driver-core) version 4.6.1
-2021-02-17 14:30:48.653  INFO 25080 --- [     s0-admin-0] c.d.oss.driver.internal.core.time.Clock :40 : Using native clock for microsecond precision
-2021-02-17 14:30:50.204  INFO 25080 --- [        s0-io-0] c.d.o.d.i.core.channel.ChannelFactory   :224 : [s0] Failed to connect with protocol DSE_V2, retrying with DSE_V1
-2021-02-17 14:30:50.219  INFO 25080 --- [        s0-io-1] c.d.o.d.i.core.channel.ChannelFactory   :224 : [s0] Failed to connect with protocol DSE_V1, retrying with V4
-2021-02-17 14:30:50.948  INFO 25080 --- [        s0-io-2] c.d.oss.driver.api.core.uuid.Uuids      :194 : PID obtained through native call to getpid(): 25080
-2021-02-17 14:30:56.362  INFO 25080 --- [     s1-admin-0] c.d.oss.driver.internal.core.time.Clock :40 : Using native clock for microsecond precision
-2021-02-17 14:30:56.376  INFO 25080 --- [        s1-io-0] c.d.o.d.i.core.channel.ChannelFactory   :224 : [s1] Failed to connect with protocol DSE_V2, retrying with DSE_V1
-2021-02-17 14:30:56.387  INFO 25080 --- [        s1-io-1] c.d.o.d.i.core.channel.ChannelFactory   :224 : [s1] Failed to connect with protocol DSE_V1, retrying with V4
-2021-02-17 14:31:04.651  INFO 25080 --- [           main] o.s.b.a.e.web.EndpointLinksResolver     :58 : Exposing 2 endpoint(s) beneath base path '/actuator'
-2021-02-17 14:31:05.121  INFO 25080 --- [           main] o.s.s.web.DefaultSecurityFilterChain    :43 : Creating filter chain: Ant [pattern='/v2/api-docs'], []
-2021-02-17 14:31:05.121  INFO 25080 --- [           main] o.s.s.web.DefaultSecurityFilterChain    :43 : Creating filter chain: Ant [pattern='/swagger-resources/**'], []
-2021-02-17 14:31:05.123  INFO 25080 --- [           main] o.s.s.web.DefaultSecurityFilterChain    :43 : Creating filter chain: Ant [pattern='/swagger-ui.html'], []
-2021-02-17 14:31:05.124  INFO 25080 --- [           main] o.s.s.web.DefaultSecurityFilterChain    :43 : Creating filter chain: Ant [pattern='/webjars/**'], []
-2021-02-17 14:31:05.125  INFO 25080 --- [           main] o.s.s.web.DefaultSecurityFilterChain    :43 : Creating filter chain: Ant [pattern='/swagger/**'], []
-2021-02-17 14:31:05.125  INFO 25080 --- [           main] o.s.s.web.DefaultSecurityFilterChain    :43 : Creating filter chain: Ant [pattern='/swagger-ui/**'], []
-2021-02-17 14:31:05.217  INFO 25080 --- [           main] o.s.s.web.DefaultSecurityFilterChain    :43 : Creating filter chain: any request, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@236fd411, org.springframework.security.web.context.SecurityContextPersistenceFilter@2b2b7e3c, org.springframework.security.web.header.HeaderWriterFilter@208e5b23, org.springframework.web.filter.CorsFilter@402f61f5, org.springframework.security.web.authentication.logout.LogoutFilter@4d065e1a, com.kctv.api.config.security.JwtAuthenticationFilter@6480a063, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@7a3c99f1, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@2bb3f39e, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@2f6f4ac4, org.springframework.security.web.session.SessionManagementFilter@a99c42c, org.springframework.security.web.access.ExceptionTranslationFilter@23c05889, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@460eb276]
-2021-02-17 14:31:05.558  INFO 25080 --- [           main] o.s.s.concurrent.ThreadPoolTaskExecutor :181 : Initializing ExecutorService 'applicationTaskExecutor'
-2021-02-17 14:31:06.316  INFO 25080 --- [           main] o.a.coyote.http11.Http11NioProtocol     :173 : Starting ProtocolHandler ["http-nio-8081"]
-2021-02-17 14:31:06.377  INFO 25080 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer :220 : Tomcat started on port(s): 8081 (http) with context path ''
-2021-02-17 14:31:06.381  INFO 25080 --- [           main] d.s.w.p.DocumentationPluginsBootstrapper:120 : Context refreshed
-2021-02-17 14:31:06.466  INFO 25080 --- [           main] d.s.w.p.DocumentationPluginsBootstrapper:123 : Found 1 custom documentation plugin(s)
-2021-02-17 14:31:06.527  INFO 25080 --- [           main] s.d.s.w.s.ApiListingReferenceScanner    :41 : Scanning for api listing references
-2021-02-17 14:31:08.135  INFO 25080 --- [           main] .d.s.w.r.o.CachingOperationNameGenerator:40 : Generating unique operation named: getPlaceAllUsingGET_1
-2021-02-17 14:31:08.255  INFO 25080 --- [           main] .d.s.w.r.o.CachingOperationNameGenerator:40 : Generating unique operation named: getPlaceByTagsUsingGET_1
-2021-02-17 14:31:08.338  INFO 25080 --- [           main] .d.s.w.r.o.CachingOperationNameGenerator:40 : Generating unique operation named: getListTagsUsingGET_1
-2021-02-17 14:31:08.350  INFO 25080 --- [           main] .d.s.w.r.o.CachingOperationNameGenerator:40 : Generating unique operation named: getListTagsAllUsingGET_1
-2021-02-17 14:31:08.754  INFO 25080 --- [           main] c.k.api.KctvSpringCassandraApplication  :61 : Started KctvSpringCassandraApplication in 31.716 seconds (JVM running for 33.664)
-2021-02-17 14:31:09.944  INFO 25080 --- [nio-8081-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]      :173 : Initializing Spring DispatcherServlet 'dispatcherServlet'
-2021-02-17 14:31:09.945  INFO 25080 --- [nio-8081-exec-1] o.s.web.servlet.DispatcherServlet       :525 : Initializing Servlet 'dispatcherServlet'
-2021-02-17 14:31:09.963  INFO 25080 --- [nio-8081-exec-1] o.s.web.servlet.DispatcherServlet       :547 : Completed initialization in 17 ms
+2021-03-12 14:55:00.468  INFO 20772 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate:127 : Bootstrapping Spring Data Reactive Cassandra repositories in DEFAULT mode.
+2021-03-12 14:55:00.736  INFO 20772 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate:187 : Finished Spring Data repository scanning in 251ms. Found 0 Reactive Cassandra repository interfaces.
+2021-03-12 14:55:00.745  INFO 20772 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate:127 : Bootstrapping Spring Data Cassandra repositories in DEFAULT mode.
+2021-03-12 14:55:00.967  INFO 20772 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate:187 : Finished Spring Data repository scanning in 222ms. Found 33 Cassandra repository interfaces.
+2021-03-12 14:55:01.468  INFO 20772 --- [           main] f.a.AutowiredAnnotationBeanPostProcessor:478 : Autowired annotation is not supported on static fields: private static java.lang.String com.kctv.api.KctvSpringCassandraApplication.appVersion
+2021-03-12 14:55:02.497  INFO 20772 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer :108 : Tomcat initialized with port(s): 8081 (http)
+2021-03-12 14:55:02.512  INFO 20772 --- [           main] o.a.coyote.http11.Http11NioProtocol     :173 : Initializing ProtocolHandler ["http-nio-8081"]
+2021-03-12 14:55:02.514  INFO 20772 --- [           main] o.apache.catalina.core.StandardService  :173 : Starting service [Tomcat]
+2021-03-12 14:55:02.514  INFO 20772 --- [           main] org.apache.catalina.core.StandardEngine :173 : Starting Servlet engine: [Apache Tomcat/9.0.38]
+2021-03-12 14:55:02.781  INFO 20772 --- [           main] o.a.c.c.C.[Tomcat].[localhost].[/]      :173 : Initializing Spring embedded WebApplicationContext
+2021-03-12 14:55:02.782  INFO 20772 --- [           main] w.s.c.ServletWebServerApplicationContext:285 : Root WebApplicationContext: initialization completed in 4309 ms
+2021-03-12 14:55:03.663  INFO 20772 --- [           main] c.d.o.d.i.core.DefaultMavenCoordinates  :37 : DataStax Java driver for Apache Cassandra(R) (com.datastax.oss:java-driver-core) version 4.6.1
+2021-03-12 14:55:04.538  INFO 20772 --- [     s0-admin-0] c.d.oss.driver.internal.core.time.Clock :40 : Using native clock for microsecond precision
+2021-03-12 14:55:05.798  INFO 20772 --- [        s0-io-0] c.d.o.d.i.core.channel.ChannelFactory   :224 : [s0] Failed to connect with protocol DSE_V2, retrying with DSE_V1
+2021-03-12 14:55:05.808  INFO 20772 --- [        s0-io-1] c.d.o.d.i.core.channel.ChannelFactory   :224 : [s0] Failed to connect with protocol DSE_V1, retrying with V4
+2021-03-12 14:55:06.284  INFO 20772 --- [        s0-io-2] c.d.oss.driver.api.core.uuid.Uuids      :194 : PID obtained through native call to getpid(): 20772
+2021-03-12 14:55:11.613  INFO 20772 --- [     s1-admin-0] c.d.oss.driver.internal.core.time.Clock :40 : Using native clock for microsecond precision
+2021-03-12 14:55:11.629  INFO 20772 --- [        s1-io-0] c.d.o.d.i.core.channel.ChannelFactory   :224 : [s1] Failed to connect with protocol DSE_V2, retrying with DSE_V1
+2021-03-12 14:55:11.643  INFO 20772 --- [        s1-io-1] c.d.o.d.i.core.channel.ChannelFactory   :224 : [s1] Failed to connect with protocol DSE_V1, retrying with V4
+2021-03-12 14:55:19.281  INFO 20772 --- [           main] o.s.b.a.e.web.EndpointLinksResolver     :58 : Exposing 2 endpoint(s) beneath base path '/actuator'
+2021-03-12 14:55:19.670  INFO 20772 --- [           main] o.s.s.web.DefaultSecurityFilterChain    :43 : Creating filter chain: Ant [pattern='/v2/api-docs'], []
+2021-03-12 14:55:19.671  INFO 20772 --- [           main] o.s.s.web.DefaultSecurityFilterChain    :43 : Creating filter chain: Ant [pattern='/swagger-resources/**'], []
+2021-03-12 14:55:19.672  INFO 20772 --- [           main] o.s.s.web.DefaultSecurityFilterChain    :43 : Creating filter chain: Ant [pattern='/swagger-ui.html'], []
+2021-03-12 14:55:19.673  INFO 20772 --- [           main] o.s.s.web.DefaultSecurityFilterChain    :43 : Creating filter chain: Ant [pattern='/webjars/**'], []
+2021-03-12 14:55:19.674  INFO 20772 --- [           main] o.s.s.web.DefaultSecurityFilterChain    :43 : Creating filter chain: Ant [pattern='/swagger/**'], []
+2021-03-12 14:55:19.674  INFO 20772 --- [           main] o.s.s.web.DefaultSecurityFilterChain    :43 : Creating filter chain: Ant [pattern='/swagger-ui/**'], []
+2021-03-12 14:55:19.730  INFO 20772 --- [           main] o.s.s.web.DefaultSecurityFilterChain    :43 : Creating filter chain: any request, [org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter@78b9155e, org.springframework.security.web.context.SecurityContextPersistenceFilter@2ce47652, org.springframework.security.web.header.HeaderWriterFilter@79b8ecb, org.springframework.web.filter.CorsFilter@2ceb68a1, org.springframework.security.web.authentication.logout.LogoutFilter@fde487b, com.kctv.api.config.security.JwtAuthenticationFilter@6de33fde, org.springframework.security.web.savedrequest.RequestCacheAwareFilter@2a42019a, org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter@495da9a7, org.springframework.security.web.authentication.AnonymousAuthenticationFilter@69c33ea2, org.springframework.security.web.session.SessionManagementFilter@4ec0229c, org.springframework.security.web.access.ExceptionTranslationFilter@3de88f64, org.springframework.security.web.access.intercept.FilterSecurityInterceptor@3460e4ed]
+2021-03-12 14:55:19.897  INFO 20772 --- [           main] o.s.s.concurrent.ThreadPoolTaskExecutor :181 : Initializing ExecutorService 'applicationTaskExecutor'
+2021-03-12 14:55:20.400  INFO 20772 --- [           main] o.a.coyote.http11.Http11NioProtocol     :173 : Starting ProtocolHandler ["http-nio-8081"]
+2021-03-12 14:55:20.434  INFO 20772 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer :220 : Tomcat started on port(s): 8081 (http) with context path ''
+2021-03-12 14:55:20.436  INFO 20772 --- [           main] d.s.w.p.DocumentationPluginsBootstrapper:120 : Context refreshed
+2021-03-12 14:55:20.477  INFO 20772 --- [           main] d.s.w.p.DocumentationPluginsBootstrapper:123 : Found 1 custom documentation plugin(s)
+2021-03-12 14:55:20.502  INFO 20772 --- [           main] s.d.s.w.s.ApiListingReferenceScanner    :41 : Scanning for api listing references
+2021-03-12 14:55:21.497  INFO 20772 --- [           main] .d.s.w.r.o.CachingOperationNameGenerator:40 : Generating unique operation named: getPlaceAllUsingGET_1
+2021-03-12 14:55:21.584  INFO 20772 --- [           main] .d.s.w.r.o.CachingOperationNameGenerator:40 : Generating unique operation named: getPlaceByTagsUsingGET_1
+2021-03-12 14:55:21.621  INFO 20772 --- [           main] .d.s.w.r.o.CachingOperationNameGenerator:40 : Generating unique operation named: getListTagsUsingGET_1
+2021-03-12 14:55:21.628  INFO 20772 --- [           main] .d.s.w.r.o.CachingOperationNameGenerator:40 : Generating unique operation named: getListTagsAllUsingGET_1
+2021-03-12 14:55:21.853  INFO 20772 --- [           main] c.k.api.KctvSpringCassandraApplication  :61 : Started KctvSpringCassandraApplication in 24.651 seconds (JVM running for 25.751)
+2021-03-12 14:55:24.126  INFO 20772 --- [nio-8081-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/]      :173 : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2021-03-12 14:55:24.127  INFO 20772 --- [nio-8081-exec-2] o.s.web.servlet.DispatcherServlet       :525 : Initializing Servlet 'dispatcherServlet'
+2021-03-12 14:55:24.139  INFO 20772 --- [nio-8081-exec-2] o.s.web.servlet.DispatcherServlet       :547 : Completed initialization in 11 ms

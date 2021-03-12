@@ -1,18 +1,14 @@
 package com.kctv.api.repository.user;
 
-import com.kctv.api.entity.log.AppClkLog;
-import com.kctv.api.entity.user.UserInfo;
-import org.springframework.data.cassandra.repository.AllowFiltering;
+import com.kctv.api.model.log.AppClkLogEntitiy;
 import org.springframework.data.cassandra.repository.CassandraRepository;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
-public interface UserLoggingRepository extends CassandraRepository<AppClkLog, UUID> {
+public interface UserLoggingRepository extends CassandraRepository<AppClkLogEntitiy, UUID> {
 
-    List<AppClkLog> findByUserId(UUID id);
+    List<AppClkLogEntitiy> findByUserId(UUID id);
 
 
 }

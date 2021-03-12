@@ -1,23 +1,12 @@
 package com.kctv.api.service;
 
-import com.google.common.base.Preconditions;
-import com.google.common.base.Strings;
-import com.kctv.api.advice.exception.CResourceNotExistException;
-import com.kctv.api.entity.admin.QnaAnswer;
-import com.kctv.api.entity.qna.QnaByUserEntity;
 import com.kctv.api.model.ap.FindApRequest;
-import com.kctv.api.model.ap.WakeupPermission;
-import com.kctv.api.model.qna.QnaDto;
-import com.kctv.api.model.qna.QnaRequest;
+import com.kctv.api.model.ap.WakeupPermissionEntity;
 import com.kctv.api.repository.ap.WakeUpPermissionRepository;
-import com.kctv.api.repository.qna.QnaAnswerRepository;
-import com.kctv.api.repository.qna.QnaRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
-import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 
@@ -29,15 +18,15 @@ public class WakeupPermissionService {
 
 
 
-    public WakeupPermission saveUserIdToWakeUfPermission(FindApRequest apRequest) {
+    public WakeupPermissionEntity saveUserIdToWakeUfPermission(FindApRequest apRequest) {
 
-        return wakeUpPermissionRepository.save(new WakeupPermission(apRequest,new Date()));
+        return wakeUpPermissionRepository.save(new WakeupPermissionEntity(apRequest,new Date()));
 
     }
 
-    public WakeupPermission findPermissionByUserId(UUID uuid){
+    public WakeupPermissionEntity findPermissionByUserId(UUID uuid){
 
-        WakeupPermission userPermission = wakeUpPermissionRepository.findByUserId(uuid).orElseGet(WakeupPermission::new);
+        WakeupPermissionEntity userPermission = wakeUpPermissionRepository.findByUserId(uuid).orElseGet(WakeupPermissionEntity::new);
 
         if(userPermission.getExpireEpoch() != null && userPermission.getExpireEpoch() != 0L){
             if (userPermission.getExpireEpoch() < System.currentTimeMillis()){

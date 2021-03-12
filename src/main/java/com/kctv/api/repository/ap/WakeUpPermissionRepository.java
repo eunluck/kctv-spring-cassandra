@@ -1,17 +1,13 @@
 package com.kctv.api.repository.ap;
 
-import com.kctv.api.entity.place.WifiInfo;
-import com.kctv.api.model.ap.WakeupPermission;
-import org.springframework.data.cassandra.repository.AllowFiltering;
+import com.kctv.api.model.ap.WakeupPermissionEntity;
 import org.springframework.data.cassandra.repository.CassandraRepository;
-import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
-public interface WakeUpPermissionRepository extends CassandraRepository<WakeupPermission, UUID> {
+public interface WakeUpPermissionRepository extends CassandraRepository<WakeupPermissionEntity, UUID> {
 
-    Optional<WakeupPermission> findByUserId(UUID id);
+    Optional<WakeupPermissionEntity> findByUserId(UUID id);
 
 }

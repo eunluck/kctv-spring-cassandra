@@ -1,11 +1,8 @@
 package com.kctv.api.controller.v1;
 
 
-import com.kctv.api.entity.admin.FaqTable;
 import com.kctv.api.model.ap.FindApRequest;
 import com.kctv.api.model.response.CommonResult;
-import com.kctv.api.model.response.ListResult;
-import com.kctv.api.service.FaqService;
 import com.kctv.api.service.ResponseService;
 import com.kctv.api.service.WakeupPermissionService;
 import io.swagger.annotations.*;

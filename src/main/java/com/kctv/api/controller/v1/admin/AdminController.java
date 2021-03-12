@@ -5,16 +5,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
 import com.kctv.api.advice.exception.CFormatNotAllowedException;
 import com.kctv.api.advice.exception.CResourceNotExistException;
-import com.kctv.api.entity.admin.FaqRequest;
-import com.kctv.api.entity.admin.FaqTable;
-import com.kctv.api.entity.admin.QnaAnswer;
-import com.kctv.api.entity.place.PlaceInfo;
-import com.kctv.api.entity.place.PlaceInfoDto;
-import com.kctv.api.entity.place.PlaceInfoVo;
-import com.kctv.api.entity.qna.QnaByUserEntity;
-import com.kctv.api.entity.stylecard.StyleCardInfo;
-import com.kctv.api.entity.stylecard.admin.StyleCardDto;
-import com.kctv.api.entity.stylecard.admin.StyleCardVo;
+import com.kctv.api.model.admin.FaqRequest;
+import com.kctv.api.model.admin.FaqTableEntity;
+import com.kctv.api.model.admin.QnaAnswerEntity;
+import com.kctv.api.model.place.PlaceInfoEntity;
+import com.kctv.api.model.place.PlaceInfoDto;
+import com.kctv.api.model.place.PlaceInfoVo;
+import com.kctv.api.model.qna.QnaByUserEntity;
+import com.kctv.api.model.stylecard.StyleCardInfoEntity;
+import com.kctv.api.model.admin.stylecard.StyleCardDto;
+import com.kctv.api.model.admin.stylecard.StyleCardVo;
 import com.kctv.api.model.response.CommonResult;
 import com.kctv.api.model.response.ListResult;
 import com.kctv.api.model.response.SingleResult;
@@ -54,7 +54,7 @@ public class AdminController {
 
     @ApiOperation(value = "전체 Place 목록 출력", notes = "등록된 모든 장소를 조회한다.")
     @GetMapping("/places")
-    public ListResult<PlaceInfo> getPlaceAll(){
+    public ListResult<PlaceInfoEntity> getPlaceAll(){
 
         return responseService.getListResult(placeService.getPartnerInfoListService());
 
@@ -68,12 +68,12 @@ public class AdminController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 token", required = true, dataType = "String", paramType = "header")
     })
     @PostMapping(value = "/card", consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public SingleResult<StyleCardInfo> createCard(@RequestPart String request,
+    public SingleResult<StyleCardDto> createCard(@RequestPart String request,
                                                   @RequestPart(value = "file", required = false) MultipartFile file) throws JsonProcessingException {
 
         StyleCardVo cardVoRequest = new ObjectMapper().readValue(request, StyleCardVo.class);
 
-        StyleCardInfo card = styleCardService.createStyleCard(cardVoRequest);
+        StyleCardInfoEntity card = styleCardService.createStyleCard(cardVoRequest);
 
         if (file != null) {
             try {
@@ -86,8 +86,7 @@ public class AdminController {
             }
         }
 
-
-        return responseService.getSingleResult(card);
+        return responseService.getSingleResult(new StyleCardDto(card, placeService.getPlaceListByIdIn(new ArrayList<>(card.getPlaceId()))));
     }
 
 
@@ -186,14 +185,14 @@ public class AdminController {
                     "}")
     })
     @PostMapping(value = "/place", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public SingleResult<PlaceInfo> createPlace(@ApiIgnore @RequestPart String request,
-                                               @ApiIgnore @RequestPart(value = "file", required = false) List<MultipartFile> file) throws JsonProcessingException {
+    public SingleResult<PlaceInfoEntity> createPlace(@ApiIgnore @RequestPart String request,
+                                                     @ApiIgnore @RequestPart(value = "file", required = false) List<MultipartFile> file) throws JsonProcessingException {
 
         PlaceInfoVo placeRequest = new ObjectMapper().readValue(request, PlaceInfoVo.class);
-        PlaceInfo place = null;
+        PlaceInfoEntity place = null;
 
         try {
-        place = placeService.createPlace(new PlaceInfo(placeRequest), placeRequest.getMenuList());
+        place = placeService.createPlace(new PlaceInfoEntity(placeRequest), placeRequest.getMenuList());
 
         if (CollectionUtils.isNotEmpty(file)) {
             try {
@@ -229,16 +228,15 @@ public class AdminController {
 
         PlaceInfoVo placeRequest = new ObjectMapper().readValue(request, PlaceInfoVo.class);
 
-        PlaceInfo beforePlace = placeService.getPartnerByIdService(placeId).orElseThrow(CResourceNotExistException::new);
+        PlaceInfoEntity beforePlace = placeService.getPartnerByIdService(placeId).orElseThrow(CResourceNotExistException::new);
 
         List<String> emptyImgList;
 
         try {
 
-
             if ((CollectionUtils.isEmpty(placeRequest.getDeleteImg())) && file == null){
 
-                PlaceInfoDto afterPlace = Optional.ofNullable(placeService.modifyPlace(new PlaceInfo(placeRequest),beforePlace, placeRequest.getMenuList())).orElseThrow(CResourceNotExistException::new);
+                PlaceInfoDto afterPlace = Optional.ofNullable(placeService.modifyPlace(new PlaceInfoEntity(placeRequest),beforePlace, placeRequest.getMenuList())).orElseThrow(CResourceNotExistException::new);
 
                 return responseService.getSingleResult(afterPlace);
 
@@ -257,8 +255,7 @@ public class AdminController {
                     emptyImgList.add(storageService.appendPlaceImage(beforePlace, appendFile));
                 }
 
-
-                PlaceInfoDto afterPlace = Optional.ofNullable(placeService.modifyPlace(new PlaceInfo(placeRequest,emptyImgList),beforePlace, placeRequest.getMenuList())).orElseThrow(CResourceNotExistException::new);
+                PlaceInfoDto afterPlace = Optional.ofNullable(placeService.modifyPlace(new PlaceInfoEntity(placeRequest,emptyImgList),beforePlace, placeRequest.getMenuList())).orElseThrow(CResourceNotExistException::new);
 
                 return responseService.getSingleResult(afterPlace);
 
@@ -273,16 +270,11 @@ public class AdminController {
                      throw new CResourceNotExistException("파일 삭제 중 에러 발생");
                     }
                 }
-
                 emptyImgList = beforePlace.getImages().stream().filter(s -> !placeRequest.getDeleteImg().contains(s)).collect(Collectors.toList());
 
-
-
-                PlaceInfoDto afterPlace = Optional.ofNullable(placeService.modifyPlace(new PlaceInfo(placeRequest,emptyImgList),beforePlace, placeRequest.getMenuList())).orElseThrow(CResourceNotExistException::new);
+                PlaceInfoDto afterPlace = Optional.ofNullable(placeService.modifyPlace(new PlaceInfoEntity(placeRequest,emptyImgList),beforePlace, placeRequest.getMenuList())).orElseThrow(CResourceNotExistException::new);
 
                 return responseService.getSingleResult(afterPlace);
-
-
                 //이미지 삭제만 있는경우
                 // -> beforePlace.img - placeRequest.getDeleteImg
                 // -> 이미지삭제 로직
@@ -304,11 +296,9 @@ public class AdminController {
                     emptyImgList.add(storageService.appendPlaceImage(beforePlace, appendFile));
                 }
 
-
-                PlaceInfoDto afterPlace = Optional.ofNullable(placeService.modifyPlace(new PlaceInfo(placeRequest,emptyImgList),beforePlace, placeRequest.getMenuList())).orElseThrow(CResourceNotExistException::new);
+                PlaceInfoDto afterPlace = Optional.ofNullable(placeService.modifyPlace(new PlaceInfoEntity(placeRequest,emptyImgList),beforePlace, placeRequest.getMenuList())).orElseThrow(CResourceNotExistException::new);
 
                 return responseService.getSingleResult(afterPlace);
-
 
             } else {
                 throw new CFormatNotAllowedException("수정 중 오류가 발생했습니다. 다시 시도해주세요.");
@@ -316,8 +306,6 @@ public class AdminController {
         }catch (Exception e){
             throw new CFormatNotAllowedException("수정 중 오류가 발생했습니다. 다시 시도해주세요.");
         }
-
-
         //기존
 
      /*   if (file == null || file.isEmpty()) {
@@ -372,19 +360,20 @@ public class AdminController {
     })
     @PutMapping(value = "/card/{cardId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @Transactional
-    public SingleResult<StyleCardInfo> modifyStyleCard(@ApiIgnore @RequestPart String request,
+    public SingleResult<StyleCardDto> modifyStyleCard(@ApiIgnore @RequestPart String request,
                                                        @PathVariable("cardId") UUID cardId,
                                                        @ApiIgnore @RequestPart(value = "file", required = false) MultipartFile file) throws IOException {
 
-        StyleCardInfo cardRequest = new ObjectMapper().readValue(request, StyleCardInfo.class);
+        StyleCardInfoEntity cardRequest = new ObjectMapper().readValue(request, StyleCardInfoEntity.class);
 
         if (file == null || file.isEmpty()) {
-            StyleCardInfo afterPlace = styleCardService.modifyStyleCard(cardId, cardRequest);
+            StyleCardInfoEntity afterPlace = styleCardService.modifyStyleCard(cardId, cardRequest);
 
-            return responseService.getSingleResult(afterPlace);
+
+            return responseService.getSingleResult(new StyleCardDto(afterPlace, placeService.getPlaceListByIdIn(new ArrayList<>(afterPlace.getPlaceId()))));
         } else {
             storageService.checkImgType(file);
-            StyleCardInfo beforeCard = Optional.ofNullable(styleCardService.getCardById(cardId)).orElseThrow(CResourceNotExistException::new);
+            StyleCardInfoEntity beforeCard = Optional.ofNullable(styleCardService.getCardById(cardId)).orElseThrow(CResourceNotExistException::new);
 
             if (storageService.deleteFile(UUID.fromString(storageService.getImgIdByImgUrl(beforeCard.getCoverImage())))) {
                 try {
@@ -393,8 +382,11 @@ public class AdminController {
                 } catch (IOException e) {
                     logger.warn("파일 첨부 에러 발생");
                 }
-                StyleCardInfo afterStyleCard = Optional.ofNullable(styleCardService.modifyStyleCard(beforeCard.getCardId(), cardRequest)).orElseThrow(CResourceNotExistException::new);
-                return responseService.getSingleResult(afterStyleCard);
+                StyleCardInfoEntity afterStyleCard = Optional.ofNullable(styleCardService.modifyStyleCard(beforeCard.getCardId(), cardRequest)).orElseThrow(CResourceNotExistException::new);
+
+
+
+                return responseService.getSingleResult(new StyleCardDto(afterStyleCard, placeService.getPlaceListByIdIn(new ArrayList<>(afterStyleCard.getPlaceId()))));
             } else {
                 throw new IOException("카드 수정 중 파일 첨부 에러 발생");
             }
@@ -407,13 +399,15 @@ public class AdminController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 token", required = true, dataType = "String", paramType = "header")
     })
     @GetMapping(value = "/place/{placeId}/card")
-    public ListResult<StyleCardInfo> placeByStyleCard(@PathVariable("placeId") UUID placeUuid) {
+    public ListResult<StyleCardInfoEntity> placeByStyleCard(@PathVariable("placeId") UUID placeUuid) {
 
-        List<StyleCardInfo> searchResult = styleCardService.getStyleCardListAllService()
+        List<StyleCardInfoEntity> searchResult = styleCardService.getStyleCardListAllService()
                 .stream()
                 .filter(styleCardInfo -> CollectionUtils.isNotEmpty(styleCardInfo.getPlaceId()))
                 .filter(styleCardInfo -> styleCardInfo.getPlaceId().contains(placeUuid))
                 .collect(Collectors.toList());
+
+
 
         return responseService.getListResult(searchResult);
 
@@ -425,7 +419,7 @@ public class AdminController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 token", required = true, dataType = "String", paramType = "header")
     })
     @PostMapping(value = "/faq")
-    public SingleResult<FaqTable> createFaq(@RequestBody FaqRequest request) {
+    public SingleResult<FaqTableEntity> createFaq(@RequestBody FaqRequest request) {
 
         return responseService.getSingleResult(faqService.postFaq(request.getQuestion(), request.getAnswer()));
     }
@@ -436,12 +430,12 @@ public class AdminController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 token", required = true, dataType = "String", paramType = "header")
     })
     @PutMapping(value = "/faq")
-    public SingleResult<FaqTable> modifyFaq(@RequestBody FaqTable faqTable) {
+    public SingleResult<FaqTableEntity> modifyFaq(@RequestBody FaqTableEntity faqTableEntity) {
 
-        FaqTable beforeFaq = faqService.findById(faqTable.getFaqId());
-        beforeFaq.setAnswer(faqTable.getAnswer());
+        FaqTableEntity beforeFaq = faqService.findById(faqTableEntity.getFaqId());
+        beforeFaq.setAnswer(faqTableEntity.getAnswer());
         beforeFaq.setModifyDt(new Date());
-        beforeFaq.setQuestion(faqTable.getQuestion());
+        beforeFaq.setQuestion(faqTableEntity.getQuestion());
 
         return responseService.getSingleResult(faqService.faqSaveOrUpdate(beforeFaq));
     }
@@ -481,7 +475,7 @@ public class AdminController {
             typeSetter = "기타 문의";
         }
 
-        if (!"".equals(typeSetter)) {
+        if (!"".equals(typeSetter))  {
 
             String finalTypeSetter = typeSetter;
             return responseService.getListResult(qnaService.getAllQnaList(status)
@@ -501,17 +495,17 @@ public class AdminController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 token", required = true, dataType = "String", paramType = "header")
     })
     @PostMapping(value = "/qna")
-    public CommonResult adminAnswer(@RequestBody QnaAnswer qnaAnswer) {
+    public CommonResult adminAnswer(@RequestBody QnaAnswerEntity qnaAnswerEntity) {
 
-        qnaAnswer.setCreateDt(new Date());
-        qnaAnswer.setAnswerId(com.datastax.oss.driver.api.core.uuid.Uuids.timeBased());
+        qnaAnswerEntity.setCreateDt(new Date());
+        qnaAnswerEntity.setAnswerId(com.datastax.oss.driver.api.core.uuid.Uuids.timeBased());
 
-        QnaByUserEntity qnaUser = qnaService.findQuestion(qnaAnswer.getQuestionId());
+        QnaByUserEntity qnaUser = qnaService.findQuestion(qnaAnswerEntity.getQuestionId());
 
         qnaUser.setStatus("답변완료");
-        qnaUser.setRemark(qnaAnswer.getRemark());
-        qnaAnswer.setUserId(qnaUser.getUserId());
-        qnaService.createAnswer(qnaAnswer);
+        qnaUser.setRemark(qnaAnswerEntity.getRemark());
+        qnaAnswerEntity.setUserId(qnaUser.getUserId());
+        qnaService.createAnswer(qnaAnswerEntity);
         qnaService.modifyQuestion(qnaUser);
 
         return responseService.getSuccessResult();
@@ -526,7 +520,7 @@ public class AdminController {
     @GetMapping(value = "/card")
     public ListResult<StyleCardDto> getCardList() {
 
-        List<StyleCardInfo> searchResult = styleCardService.getStyleCardListAllService();
+        List<StyleCardInfoEntity> searchResult = styleCardService.getStyleCardListAllService();
 
         return responseService.getListResult(searchResult.stream()
                 .map(styleCardInfo -> new StyleCardDto(styleCardInfo, placeService.getPlaceListByIdIn(new ArrayList<>(styleCardInfo.getPlaceId()))))

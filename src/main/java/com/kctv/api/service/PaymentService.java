@@ -2,34 +2,21 @@
 package com.kctv.api.service;
 
 
+import com.kctv.api.advice.exception.CNotFoundCodeException;
 import com.kctv.api.advice.exception.CResourceNotExistException;
 import com.kctv.api.advice.exception.CUserNotFoundException;
-import com.kctv.api.entity.payment.PaymentCode;
-import com.kctv.api.entity.payment.PaymentInfo;
-import com.kctv.api.entity.place.PlaceInfo;
-import com.kctv.api.entity.stylecard.StyleCardInfo;
-import com.kctv.api.entity.user.UserInfo;
-import com.kctv.api.entity.user.UserLikePartner;
-import com.kctv.api.entity.user.UserScrapCard;
-import com.kctv.api.model.ap.WakeupPermission;
-import com.kctv.api.repository.ap.PartnerRepository;
+import com.kctv.api.model.payment.PaymentCodeEntity;
+import com.kctv.api.model.payment.PaymentInfoEntity;
+import com.kctv.api.model.user.UserInfoEntity;
+import com.kctv.api.model.ap.WakeupPermissionEntity;
 import com.kctv.api.repository.ap.WakeUpPermissionRepository;
-import com.kctv.api.repository.card.StyleCardCounterDayRepository;
-import com.kctv.api.repository.card.StyleCardRepository;
 import com.kctv.api.repository.payment.PaymentCodeRepository;
 import com.kctv.api.repository.payment.UserPaymentRepository;
-import com.kctv.api.repository.user.UserLikeRepository;
 import com.kctv.api.repository.user.UserRepository;
-import com.kctv.api.repository.user.UserScrapRepository;
-import com.kctv.api.util.AES256Util;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.io.UnsupportedEncodingException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -39,34 +26,40 @@ public class PaymentService {
     private final UserPaymentRepository paymentRepository;
     private final WakeUpPermissionRepository wakeUpPermissionRepository;
     private final UserRepository userRepository;
-    private AES256Util aes;
-
-    {
-        try {
-            aes = AES256Util.getInstance();
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-    }
 
 
-    public PaymentInfo subscribe(UUID userId, String appPaymentCode){
+    public PaymentInfoEntity subscribe(UUID userId, String appPaymentCode){
 
-        PaymentCode code = Optional.of(paymentCodeRepository.findByAppPaymentCode(appPaymentCode)).orElseThrow(() -> new CResourceNotExistException(appPaymentCode));
-        UserInfo requestUser = userRepository.findByUserId(userId).orElseThrow(CUserNotFoundException::new);
+        PaymentCodeEntity code = Optional.ofNullable(paymentCodeRepository.findByAppPaymentCode(appPaymentCode)).orElseThrow(() -> new CNotFoundCodeException(appPaymentCode));
+        UserInfoEntity requestUser = userRepository.findByUserId(userId).orElseThrow(CUserNotFoundException::new);
 
-        requestUser.decryptInfo();
-
-        WakeupPermission permissionUser = wakeUpPermissionRepository.findByUserId(requestUser.getUserId()).orElseThrow(() -> new CUserNotFoundException(userId.toString()));
+        WakeupPermissionEntity permissionUser = wakeUpPermissionRepository.findByUserId(requestUser.getUserId()).orElseThrow(() -> new CUserNotFoundException(userId.toString()));
 
         permissionUser.subscribeUser(code.getPeriod(),code.getAppPaymentCode(),code.getVolumeLimit());
 
         Optional.of(wakeUpPermissionRepository.insert(permissionUser)).orElseThrow(CResourceNotExistException::new); //결제실패 에러작성
 
-        return paymentRepository.insert(new PaymentInfo(requestUser.getUserId(),code.getAppPaymentCode(),new Date()));
+        Date userExpire = new Date(permissionUser.getExpireEpoch());
+
+        return !appPaymentCode.equals("FREE") && !appPaymentCode.equals("p001") ? paymentRepository.insert(new PaymentInfoEntity(permissionUser.getUserId(),code.getAppPaymentCode(),new Date(),userExpire)) : new PaymentInfoEntity(userId,"FREE",new Date());
+
+    }
+
+    public List<PaymentInfoEntity> findByUserId(UUID userId){
+
+        return paymentRepository.findByUserId(userId);
+    }
+
+    public List<PaymentCodeEntity> findByCodeList(){
+
+        return paymentCodeRepository.findAll();
     }
 
 
+    public PaymentCodeEntity findByAppPaymentCode(String code){
+
+        return paymentCodeRepository.findByAppPaymentCode(code);
+    }
 
 }
 

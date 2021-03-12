@@ -2,14 +2,12 @@ package com.kctv.api.service;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
-import com.google.common.collect.Lists;
 import com.kctv.api.advice.exception.CPartnerNotFoundException;
 import com.kctv.api.advice.exception.CRequiredValueException;
 import com.kctv.api.advice.exception.CResourceNotExistException;
-import com.kctv.api.entity.place.*;
-import com.kctv.api.entity.stylecard.PartnersByTags;
+import com.kctv.api.model.stylecard.PartnersByTags;
 
-import com.kctv.api.entity.stylecard.Tag;
+import com.kctv.api.model.place.*;
 import com.kctv.api.repository.ap.MenuByPartnerRepository;
 import com.kctv.api.repository.ap.PartnerByTagsRepository;
 import com.kctv.api.repository.file.CardImageInfoRepository;
@@ -20,12 +18,6 @@ import com.kctv.api.repository.ap.WifiRepository;
 import com.kctv.api.util.MapUtill;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections.CollectionUtils;
-import org.springframework.data.cassandra.config.CassandraCqlTemplateFactoryBean;
-import org.springframework.data.cassandra.core.CassandraBatchOperations;
-import org.springframework.data.cassandra.core.CassandraOperations;
-import org.springframework.data.cassandra.core.CassandraTemplate;
-import org.springframework.data.cassandra.core.cql.CqlTemplate;
-import org.springframework.data.cassandra.core.mapping.UserDefinedType;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
@@ -49,104 +41,99 @@ public class PlaceService {
     private final PlaceTypeRepository placeTypeRepository;
 
 
-
-    public boolean deleteTag(PlaceTypeEntity placeTypeEntity){
+    public boolean deleteTag(PlaceTypeEntity placeTypeEntity) {
 
         if (partnerByTagsRepository.findByTag(placeTypeEntity.getPlaceType()).size() != 0) {
             return false;
-        }else {
+        } else {
             placeTypeRepository.delete(placeTypeEntity);
             return true;
         }
     }
 
 
-    public PlaceInfo deletePlace(PlaceInfo placeInfo){
+    public PlaceInfoEntity deletePlace(PlaceInfoEntity placeInfoEntity) {
 
-        partnerRepository.delete(placeInfo);
-        if(CollectionUtils.isNotEmpty(placeInfo.getTags()))
-        partnerByTagsRepository.deleteAll(placeInfo.getTags().stream().map(s -> new PartnersByTags(s,placeInfo.getPartnerId())).collect(Collectors.toList()));
-    return placeInfo;
+        partnerRepository.delete(placeInfoEntity);
+        if (CollectionUtils.isNotEmpty(placeInfoEntity.getTags()))
+            partnerByTagsRepository.deleteAll(placeInfoEntity.getTags().stream().map(s -> new PartnersByTags(s, placeInfoEntity.getPartnerId())).collect(Collectors.toList()));
+        return placeInfoEntity;
 
     }
 
-    public Slice<PlaceInfo> pageableFindAllBy(Pageable pageable){
-
+    public Slice<PlaceInfoEntity> pageableFindAllBy(Pageable pageable) {
 
 
         return partnerRepository.findAll(pageable);
     }
 
-    public List<PlaceInfo> getPlaceListByIdIn(List<UUID> placeIds){
+    public List<PlaceInfoEntity> getPlaceListByIdIn(List<UUID> placeIds) {
 
-        System.out.println("디버깅중::"+placeIds);
+        System.out.println("디버깅중::" + placeIds);
 
         return partnerRepository.findByPartnerIdIn(placeIds);
 
     }
 
 
-    public Map<String, List<MenuByPlace>> getMenuByPartnerId(UUID partnerId){
+    public Map<String, List<MenuByPlaceEntity>> getMenuByPartnerId(UUID partnerId) {
 
-        List<MenuByPlace> menuList =  menuByPartnerRepository.findByPartnerId(partnerId);
+        List<MenuByPlaceEntity> menuList = menuByPartnerRepository.findByPartnerId(partnerId);
 
 
-        return menuList.stream().collect(Collectors.groupingBy(MenuByPlace::getMenuType));
+        return menuList.stream().collect(Collectors.groupingBy(MenuByPlaceEntity::getMenuType));
 
     }
 
 
-    public List<WifiInfo> getPartnerWifiService(UUID partnerId, Double distance){
+    public List<WifiInfoEntity> getPartnerWifiService(UUID partnerId, Double distance) {
 
-        WifiInfo wifiInfo = wifiRepository.findByPartnerId(partnerId).orElseThrow(CPartnerNotFoundException::new);
+        WifiInfoEntity wifiInfoEntity = wifiRepository.findByPartnerId(partnerId).orElseThrow(CPartnerNotFoundException::new);
 
-        GeoOperations geo = new GeoOperations(wifiInfo.getApLat(),wifiInfo.getApLon());
+        GeoOperations geo = new GeoOperations(wifiInfoEntity.getApLat(), wifiInfoEntity.getApLon());
 
         double[] geoArr = geo.GenerateBoxCoordinates(distance);
 
-        return wifiRepository.findByApLatGreaterThanAndApLatLessThanAndApLonGreaterThanAndApLonLessThan(geoArr[1],geoArr[0],geoArr[2],geoArr[3]);
+        return wifiRepository.findByApLatGreaterThanAndApLatLessThanAndApLonGreaterThanAndApLonLessThan(geoArr[1], geoArr[0], geoArr[2], geoArr[3]);
 
     }
 
-    public Optional<PlaceInfo> getPartnerByIdService(UUID uuid){
+    public Optional<PlaceInfoEntity> getPartnerByIdService(UUID uuid) {
 
         return partnerRepository.findByPartnerId(uuid);
     }
 
-    public List<PlaceInfo> getPartnerInfoListService(){
+    public List<PlaceInfoEntity> getPartnerInfoListService() {
 
         return partnerRepository.findAll();
     }
 
-    public List<PlaceInfo> getPartnerInfoListByTagsService(List<String> tags){
-
+    public List<PlaceInfoEntity> getPartnerInfoListByTagsService(List<String> tags) {
 
         //  long score = card.getTags().stream().map(s -> TagGroup.findByTagPoint(s)).reduce(0L,Long::sum);
 
-
         List<PartnersByTags> result = partnerByTagsRepository.findByTagIn(tags);
 
-
-                ArrayList<UUID> idArr = new ArrayList<>();
+        ArrayList<UUID> idArr = new ArrayList<>();
         //ArrayList<Map<UUID,Integer>> idArr = new ArrayList<>();
-        if(CollectionUtils.isNotEmpty(result)){
+        if (CollectionUtils.isNotEmpty(result)) {
             result.forEach(partnerByTags -> idArr.add(partnerByTags.getPartnerId()));
-            Map<UUID,Integer> sorting = new HashMap<>();
+            Map<UUID, Integer> sorting = new HashMap<>();
 
-            for(UUID id:idArr){
-                sorting.put(id,sorting.getOrDefault(id,0)+1);
+            for (UUID id : idArr) {
+                sorting.put(id, sorting.getOrDefault(id, 0) + 1);
             }
 
             sorting = MapUtill.sortByValueDesc(sorting);
             List<UUID> queryList = new ArrayList<>(sorting.keySet());
 
-            List<PlaceInfo> placeInfos = partnerRepository.findByPartnerIdIn(queryList);
+            List<PlaceInfoEntity> placeInfoEntities = partnerRepository.findByPartnerIdIn(queryList);
 
-            List<PlaceInfo> resultList = new ArrayList<>();
-            for (int i = 0; i < placeInfos.size(); i++) {
-                for (PlaceInfo placeInfo : placeInfos) {
-                    if (placeInfo.getPartnerId().equals(queryList.get(i)))
-                        resultList.add(placeInfo);
+            List<PlaceInfoEntity> resultList = new ArrayList<>();
+            for (int i = 0; i < placeInfoEntities.size(); i++) {
+                for (PlaceInfoEntity placeInfoEntity : placeInfoEntities) {
+                    if (placeInfoEntity.getPartnerId().equals(queryList.get(i)))
+                        resultList.add(placeInfoEntity);
                 }
             }
 
@@ -156,36 +143,34 @@ public class PlaceService {
         }
 
     }
+
     @Transactional
-    public PlaceInfo createPlace(PlaceInfo placeInfo,List<MenuByPlace> menuByPlaceList) {
-        Preconditions.checkArgument(!Strings.isNullOrEmpty(placeInfo.getBusinessName()),new CRequiredValueException("장소 이름을 입력해주세요."));
-        Preconditions.checkArgument(!Strings.isNullOrEmpty(placeInfo.getPartnerAddress()),new CRequiredValueException("주소를 입력해주세요."));
-        Preconditions.checkArgument(CollectionUtils.isNotEmpty(placeInfo.getTags()),new CRequiredValueException("장소 태그를 입력해주세요."));
-        Preconditions.checkArgument(!Strings.isNullOrEmpty(placeInfo.getStoreType()),new CRequiredValueException("장소의 종류를 입력해주세요."));
+    public PlaceInfoEntity createPlace(PlaceInfoEntity placeInfoEntity, List<MenuByPlaceEntity> menuByPlaceEntityList) {
+        Preconditions.checkArgument(!Strings.isNullOrEmpty(placeInfoEntity.getBusinessName()), new CRequiredValueException("장소 이름을 입력해주세요."));
+        Preconditions.checkArgument(!Strings.isNullOrEmpty(placeInfoEntity.getPartnerAddress()), new CRequiredValueException("주소를 입력해주세요."));
+        Preconditions.checkArgument(CollectionUtils.isNotEmpty(placeInfoEntity.getTags()), new CRequiredValueException("장소 태그를 입력해주세요."));
+        Preconditions.checkArgument(!Strings.isNullOrEmpty(placeInfoEntity.getStoreType()), new CRequiredValueException("장소의 종류를 입력해주세요."));
 
+        placeInfoEntity.setPartnerId(UUID.randomUUID());
 
-        placeInfo.setPartnerId(UUID.randomUUID());
-
-
-        List<PartnersByTags> partnersByTagsList = placeInfo.getTags().stream()
+        List<PartnersByTags> partnersByTagsList = placeInfoEntity.getTags().stream()
                 .map(s -> PartnersByTags.builder()
                         .tag(s)
-                        .partnerId(placeInfo.getPartnerId())
+                        .partnerId(placeInfoEntity.getPartnerId())
                         .build())
                 .collect(Collectors.toList());
 
         partnerByTagsRepository.saveAll(partnersByTagsList);
 
-        if(CollectionUtils.isNotEmpty(menuByPlaceList)) {
-            for (MenuByPlace menuByPlace : menuByPlaceList) {
-                menuByPlace.setPartnerId(placeInfo.getPartnerId());
+        if (CollectionUtils.isNotEmpty(menuByPlaceEntityList)) {
+            for (MenuByPlaceEntity menuByPlaceEntity : menuByPlaceEntityList) {
+                menuByPlaceEntity.setPartnerId(placeInfoEntity.getPartnerId());
             }
-            menuByPartnerRepository.saveAll(menuByPlaceList);
+            menuByPartnerRepository.saveAll(menuByPlaceEntityList);
         }
 
 
-
-       return partnerRepository.insert(placeInfo);
+        return partnerRepository.insert(placeInfoEntity);
     }
 /*
 
@@ -206,72 +191,43 @@ public class PlaceService {
 
 
     @Transactional
-    public PlaceInfoDto modifyPlace(PlaceInfo requestPlace,PlaceInfo beforePlace, List<MenuByPlace> menuByPlaceList){
+    public PlaceInfoDto modifyPlace(PlaceInfoEntity requestPlace, PlaceInfoEntity beforePlace, List<MenuByPlaceEntity> menuByPlaceEntityList) {
 
+        beforePlace.modifyEntity(requestPlace);
 
-        if(CollectionUtils.isNotEmpty(requestPlace.getAges()))
-        beforePlace.setAges(requestPlace.getAges());
-        if(!Strings.isNullOrEmpty(requestPlace.getBusinessName()))
-        beforePlace.setBusinessName(requestPlace.getBusinessName());
-        if(CollectionUtils.isNotEmpty(requestPlace.getFacilities()))
-        beforePlace.setFacilities(requestPlace.getFacilities());
-        if(!Strings.isNullOrEmpty(requestPlace.getPartnerAddress()))
-        beforePlace.setPartnerAddress(requestPlace.getPartnerAddress());
-        if(CollectionUtils.isNotEmpty(requestPlace.getPeriods()))
-        beforePlace.setPeriods(requestPlace.getPeriods());
-        if(CollectionUtils.isNotEmpty(requestPlace.getPartnerHomepage()))
-        beforePlace.setPartnerHomepage(requestPlace.getPartnerHomepage());
-        if(!Strings.isNullOrEmpty(requestPlace.getStoreType()))
-        beforePlace.setStoreType(requestPlace.getStoreType());
-        if(CollectionUtils.isNotEmpty(requestPlace.getTags()))
-        beforePlace.setTags(requestPlace.getTags());
-        if(!Strings.isNullOrEmpty(requestPlace.getTelNumber()))
-        beforePlace.setTelNumber(requestPlace.getTelNumber());
-        if(!Strings.isNullOrEmpty(requestPlace.getStoreParentType()))
-        beforePlace.setStoreParentType(requestPlace.getStoreParentType());
-        if(!Strings.isNullOrEmpty(requestPlace.getDetailed_address()))
-        beforePlace.setDetailed_address(requestPlace.getDetailed_address());
-        if(requestPlace.getLatitude() != null && requestPlace.getLatitude() != 0)
-        beforePlace.setLatitude(requestPlace.getLatitude());
-        if(requestPlace.getLongitude() != null && requestPlace.getLongitude() != 0)
-        beforePlace.setLongitude(requestPlace.getLongitude());
-        if(CollectionUtils.isNotEmpty(requestPlace.getImages())){
-            beforePlace.setImages(requestPlace.getImages());
-        }
-        if(CollectionUtils.isNotEmpty(menuByPlaceList)){
+        if (CollectionUtils.isNotEmpty(menuByPlaceEntityList)) {
             menuByPartnerRepository.deleteAll(menuByPartnerRepository.findByPartnerId(beforePlace.getPartnerId()));
-            menuByPlaceList.forEach(menuByPlace -> menuByPlace.setPartnerId(beforePlace.getPartnerId()));
-            menuByPartnerRepository.saveAll(menuByPlaceList);
+            menuByPlaceEntityList.forEach(menuByPlaceEntity -> menuByPlaceEntity.setPartnerId(beforePlace.getPartnerId()));
+            menuByPartnerRepository.saveAll(menuByPlaceEntityList);
         }
 
-        PlaceInfo afterPlace = Optional.of(partnerRepository.save(beforePlace)).orElseThrow(CResourceNotExistException::new);
+        PlaceInfoEntity afterPlace = Optional.of(partnerRepository.save(beforePlace)).orElseThrow(CResourceNotExistException::new);
 
-        if(CollectionUtils.isNotEmpty(requestPlace.getTags())){
+        if (CollectionUtils.isNotEmpty(requestPlace.getTags())) {
             partnerByTagsRepository.saveAll(
                     afterPlace.getTags().stream()
-                            .map(s -> new PartnersByTags(s,afterPlace.getPartnerId()))
+                            .map(s -> new PartnersByTags(s, afterPlace.getPartnerId()))
                             .collect(Collectors.toList()));
         }
 
-        return new PlaceInfoDto(afterPlace,getMenuByPartnerId(afterPlace.getPartnerId()));
-
-
+        return new PlaceInfoDto(afterPlace, getMenuByPartnerId(afterPlace.getPartnerId()));
     }
 
-    public List<PlaceTypeEntity> getTagListAllService (){
+    public List<PlaceTypeEntity> getTagListAllService() {
         return placeTypeRepository.findAll();
     }
 
-    public Optional<PlaceTypeEntity> getTagOneService(PlaceTypeEntity placeTypeEntity){return placeTypeRepository.findByPlaceParentTypeAndPlaceType(placeTypeEntity.getPlaceParentType(),placeTypeEntity.getPlaceType());}
+    public Optional<PlaceTypeEntity> getTagOneService(PlaceTypeEntity placeTypeEntity) {
+        return placeTypeRepository.findByPlaceParentTypeAndPlaceType(placeTypeEntity.getPlaceParentType(), placeTypeEntity.getPlaceType());
+    }
 
-    public List<PlaceTypeEntity> getTagList (String search){
+    public List<PlaceTypeEntity> getTagList(String search) {
         return placeTypeRepository.findByPlaceParentType(search);
     }
 
-    public Optional<PlaceTypeEntity> createTagService(PlaceTypeEntity tag){
+    public Optional<PlaceTypeEntity> createTagService(PlaceTypeEntity tag) {
         return Optional.of(placeTypeRepository.insert(tag));
     }
-
 
 
 }

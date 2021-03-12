@@ -1,12 +1,10 @@
 package com.kctv.api.controller.v1.admin;
 
 
-import com.kctv.api.advice.exception.CCommunicationException;
 import com.kctv.api.advice.exception.CUserExistException;
-import com.kctv.api.entity.place.PlaceTypeEntity;
-import com.kctv.api.entity.stylecard.Tag;
+import com.kctv.api.model.place.PlaceTypeEntity;
+import com.kctv.api.model.tag.TagEntity;
 import com.kctv.api.model.response.CommonResult;
-import com.kctv.api.model.response.ListResult;
 import com.kctv.api.model.response.SingleResult;
 import com.kctv.api.service.PlaceService;
 import com.kctv.api.service.ResponseService;
@@ -15,7 +13,6 @@ import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Optional;
 
 @Api(tags = {"14. Admin Tag And PlaceType API"})
@@ -105,7 +102,7 @@ public class AdminTagController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 token", required = true, dataType = "String", paramType = "header")
     })
     @PostMapping(value = "/keyword")
-    public CommonResult createKeyword(@RequestBody Tag keyword){
+    public CommonResult createKeyword(@RequestBody TagEntity keyword){
 
         if (styleCardService.getTagOneService(keyword).isPresent())
             return responseService.getFailResult(200,"이미 존재하는 태그입니다.");
@@ -119,7 +116,7 @@ public class AdminTagController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 token", required = true, dataType = "String", paramType = "header")
     })
     @DeleteMapping(value = "/keyword")
-    public CommonResult deleteKeyword(@RequestBody Tag keyword){
+    public CommonResult deleteKeyword(@RequestBody TagEntity keyword){
 
 
         if(styleCardService.deleteTag(keyword)){

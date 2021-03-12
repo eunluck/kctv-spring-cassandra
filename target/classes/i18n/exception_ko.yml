@@ -49,6 +49,9 @@ notVerifyEmailException:
 formatNotAllowedException:
   code: "-1014"
   msg: "허용되지 않는 형식입니다."
+notFoundCodeException:
+  code: "-1015"
+  msg: "존재하지 않는 코드입니다."
 tokenNotFoundException:
   code: "-1099"
   msg: "로그인 정보가 존재하지 않습니다. 다시 로그인 해 주세요."

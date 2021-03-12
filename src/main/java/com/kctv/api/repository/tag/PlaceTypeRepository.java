@@ -1,9 +1,7 @@
 package com.kctv.api.repository.tag;
 
-import com.kctv.api.entity.place.PlaceTypeEntity;
-import com.kctv.api.entity.stylecard.Tag;
+import com.kctv.api.model.place.PlaceTypeEntity;
 import org.springframework.data.cassandra.repository.CassandraRepository;
-import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;

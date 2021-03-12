@@ -2,7 +2,7 @@ package com.kctv.api.service;
 
 import com.google.common.base.Preconditions;
 import com.kctv.api.advice.exception.CResourceNotExistException;
-import com.kctv.api.entity.admin.FaqTable;
+import com.kctv.api.model.admin.FaqTableEntity;
 import com.kctv.api.repository.faq.FaqRepository;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,35 +22,34 @@ public class FaqService {
 
     public final FaqRepository faqRepository;
 
-    public List<FaqTable> findByAll(){
+    public List<FaqTableEntity> findByAll(){
 
         return faqRepository.findAll();
     }
 
 
-    public FaqTable findById(UUID uuid){
+    public FaqTableEntity findById(UUID uuid){
         return faqRepository.findByFaqId(uuid).orElseThrow(CResourceNotExistException::new);
     }
 
-    public FaqTable faqSaveOrUpdate(FaqTable faqTable){
-        return Optional.ofNullable(faqRepository.save(faqTable)).orElseThrow(CResourceNotExistException::new);
+    public FaqTableEntity faqSaveOrUpdate(FaqTableEntity faqTableEntity){
+        return faqRepository.save(faqTableEntity);
     }
 
-    public FaqTable postFaq(String question, String answer){
+    public FaqTableEntity postFaq(String question, String answer){
         Preconditions.checkNotNull(question);
         Preconditions.checkNotNull(answer);
 
-        FaqTable faq = new FaqTable(UUID.randomUUID(),new Date(),answer,question,null);
-        FaqTable inserted = faqRepository.insert(faq);
+        FaqTableEntity faq = new FaqTableEntity(UUID.randomUUID(),new Date(),answer,question,null);
 
-        return inserted;
+        return faqRepository.insert(faq);
 
 
     }
 
-    public boolean deleteFaq(FaqTable faqTable){
+    public boolean deleteFaq(FaqTableEntity faqTableEntity){
         try {
-            faqRepository.delete(faqTable);
+            faqRepository.delete(faqTableEntity);
         }catch (Exception e){
             throw new CResourceNotExistException();
         }

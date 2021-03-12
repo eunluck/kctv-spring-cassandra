@@ -1,7 +1,7 @@
 package com.kctv.api.controller.v1;
 
-import com.kctv.api.entity.qna.QnaByUserEntity;
-import com.kctv.api.entity.user.UserInfo;
+import com.kctv.api.model.qna.QnaByUserEntity;
+import com.kctv.api.model.user.UserInfoEntity;
 import com.kctv.api.model.qna.QnaDto;
 import com.kctv.api.model.qna.QnaRequest;
 import com.kctv.api.model.response.ListResult;
@@ -68,7 +68,7 @@ public class QnaController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UUID uuid = UUID.fromString(authentication.getName());
 
-        UserInfo user = userService.findByUserId(uuid);
+        UserInfoEntity user = userService.findByUserId(uuid);
 
 
         return responseService.getSingleResult(qnaService.postQuestion(qnaRequest,uuid,user.getUserNickname(),user.getUserEmail()));

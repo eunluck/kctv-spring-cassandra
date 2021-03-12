@@ -2,7 +2,7 @@ package com.kctv.api;
 
 
 import com.kctv.api.config.GracefulShutdown;
-import com.kctv.api.entity.payment.PaymentCode;
+import com.kctv.api.model.payment.PaymentCodeEntity;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -19,12 +19,13 @@ public class KctvSpringCassandraApplication {
 
         @Value("application.version")
         private static String appVersion;
-        private static List<PaymentCode> getPaymentCodeList;
+        private static List<PaymentCodeEntity> getPaymentCodeEntityList;
 
 
 
     public static void main(String[] args) {
         SpringApplication.run(KctvSpringCassandraApplication.class, args);
+        
     }
 
 
