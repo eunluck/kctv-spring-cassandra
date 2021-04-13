@@ -111,6 +111,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/v1/faq/**").permitAll() // 태그 조회
                 .antMatchers("/v1/faq").permitAll() // 태그 조회
                 .antMatchers("/v1/payment/**").permitAll() // 태그 조회
+                .antMatchers("/place/**").permitAll() // 사장님인터뷰 조회
 
                 .antMatchers("/exception/**").permitAll() // 토큰 예외처리
                 // 위 URL들은 토큰없이 접속 가능

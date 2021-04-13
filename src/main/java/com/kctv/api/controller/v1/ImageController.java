@@ -27,6 +27,20 @@ public class ImageController {
     private final CaptivePortalAdService captivePortalAdService;
 
 
+
+    @ApiOperation(value = "사장님이야기 이미지 출력 API", notes = "interview UUID로 이미지를 출력한다.")
+    @GetMapping(value = "/place/{placeId}/interview/{interviewId}/image/{param}",produces = MediaType.IMAGE_JPEG_VALUE)
+    public byte[] getInterviewImage(
+            @ApiParam(value = "인터뷰ID", required = true) @PathVariable("interviewId")String interviewId,@PathVariable("param")String param,@PathVariable("placeId")String placeId) throws IOException {
+
+        System.out.println("이미지출력호출");
+
+
+        return storageService.getInterviewImage(placeId,interviewId,param);
+
+    }
+
+
     @ApiOperation(value = "이미지 출력 API", notes = "이미지 UUID로 이미지를 출력한다.")
     @GetMapping(value = "/image/{imageid}",produces = MediaType.IMAGE_JPEG_VALUE)
     public byte[] getCoverImage(

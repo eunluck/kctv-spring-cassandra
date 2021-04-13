@@ -11,6 +11,7 @@ import com.kctv.api.model.place.*;
 import com.kctv.api.repository.ap.MenuByPartnerRepository;
 import com.kctv.api.repository.ap.PartnerByTagsRepository;
 import com.kctv.api.repository.file.CardImageInfoRepository;
+import com.kctv.api.repository.interview.OwnerInterviewRepository;
 import com.kctv.api.repository.tag.PlaceTypeRepository;
 import com.kctv.api.util.GeoOperations;
 import com.kctv.api.repository.ap.PartnerRepository;
@@ -35,10 +36,10 @@ public class PlaceService {
     private final WifiRepository wifiRepository;
     private final PartnerRepository partnerRepository;
     private final PartnerByTagsRepository partnerByTagsRepository;
-    private final StorageService storageService;
-    private final CardImageInfoRepository cardImageInfoRepository;
     private final MenuByPartnerRepository menuByPartnerRepository;
     private final PlaceTypeRepository placeTypeRepository;
+    private final OwnerInterviewRepository ownerInterviewRepository;
+
 
 
     public boolean deleteTag(PlaceTypeEntity placeTypeEntity) {
@@ -69,7 +70,6 @@ public class PlaceService {
 
     public List<PlaceInfoEntity> getPlaceListByIdIn(List<UUID> placeIds) {
 
-        System.out.println("디버깅중::" + placeIds);
 
         return partnerRepository.findByPartnerIdIn(placeIds);
 
@@ -228,6 +228,7 @@ public class PlaceService {
     public Optional<PlaceTypeEntity> createTagService(PlaceTypeEntity tag) {
         return Optional.of(placeTypeRepository.insert(tag));
     }
+
 
 
 }

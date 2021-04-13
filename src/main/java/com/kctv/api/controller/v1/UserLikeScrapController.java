@@ -1,12 +1,19 @@
 package com.kctv.api.controller.v1;
 
 
+import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
+import com.kctv.api.advice.exception.CRequiredValueException;
+import com.kctv.api.advice.exception.CResourceNotExistException;
 import com.kctv.api.model.place.PlaceInfoEntity;
 import com.kctv.api.model.stylecard.StyleCardInfoEntity;
 import com.kctv.api.model.response.CommonResult;
 import com.kctv.api.model.response.ListResult;
+import com.kctv.api.model.user.UserLikePartnerEntity;
 import com.kctv.api.service.LikeScrapService;
+import com.kctv.api.service.PlaceService;
 import com.kctv.api.service.ResponseService;
+import com.kctv.api.service.StyleCardService;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -14,6 +21,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -25,6 +33,8 @@ public class UserLikeScrapController {
 
     private final ResponseService responseService;
     private final LikeScrapService likeScrapService;
+    private final PlaceService placeService;
+    private final StyleCardService styleCardService;
 
     @ApiOperation(value = "이 가게 조아요", notes = "좋아요를 추가하거나 삭제한다. (좋아요:true, 좋아요취소:false)")
     @ApiImplicitParams({
@@ -36,8 +46,9 @@ public class UserLikeScrapController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UUID userId = UUID.fromString(authentication.getName());
 
+        PlaceInfoEntity placeInfoEntity = placeService.getPartnerByIdService(placeId).orElseThrow(CResourceNotExistException::new);
 
-        return responseService.getSingleResult(likeScrapService.userLikePartnerService(userId,placeId).isPresent());
+        return responseService.getBooleanResult(likeScrapService.userLikePartnerService(userId,placeId).isPresent(),placeInfoEntity);
     }
 
 
@@ -82,8 +93,9 @@ public class UserLikeScrapController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UUID userId = UUID.fromString(authentication.getName());
 
+        StyleCardInfoEntity styleCardInfoEntity = Optional.ofNullable(styleCardService.getCardById(cardId)).orElseThrow(CResourceNotExistException::new);
 
-        return responseService.getSingleResult(likeScrapService.userScrapCardService(userId,cardId).isPresent());
+        return responseService.getBooleanResult(likeScrapService.userScrapCardService(userId,cardId).isPresent(),styleCardInfoEntity);
 
     }
 
@@ -111,8 +123,6 @@ public class UserLikeScrapController {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UUID userId = UUID.fromString(authentication.getName());
-
-
 
         List<StyleCardInfoEntity> list = likeScrapService.scrapList(userId);
 

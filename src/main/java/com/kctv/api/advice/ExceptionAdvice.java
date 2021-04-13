@@ -151,6 +151,12 @@ public class ExceptionAdvice {
         log.debug(getMessage("notFoundCodeException.msg")+"::{}", e.getMessage(), e);
         return responseService.getFailResult(Integer.parseInt(getMessage("notFoundCodeException.code")), getMessage("notFoundCodeException.msg"));
     }
+    @ExceptionHandler(CRequiredValueException.class)
+    @ResponseStatus(HttpStatus.OK)
+    public CommonResult requiredValueException(HttpServletRequest request, CRequiredValueException e) {
+        log.debug(getMessage("notFoundCodeException.msg")+"::{}", e.getMessage(), e);
+        return responseService.getFailResult(-1004, e.getMessage());
+    }
 
 
 

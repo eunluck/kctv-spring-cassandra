@@ -13,6 +13,7 @@ import com.kctv.api.repository.ad.CaptivePortalAdRepository;
 import com.kctv.api.repository.ap.PartnerRepository;
 import com.kctv.api.repository.card.StyleCardRepository;
 import com.kctv.api.repository.file.CardImageInfoRepository;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -20,9 +21,7 @@ import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -39,6 +38,7 @@ public class StorageService {
     private final String cardImagePath = "images/cover/card";
     private final String placeImagePath = "images/cover/place";
     private final String adImagePath = "images/ad";
+    private final String interviewImagePath = "images/interview";
 
     private final CardImageInfoRepository cardImageInfoRepository;
     private final StyleCardRepository styleCardRepository;
@@ -52,6 +52,33 @@ public class StorageService {
         this.partnerRepository = partnerRepository;
         this.captivePortalAdRepository = captivePortalAdRepository;
     }
+
+
+    public byte[] getInterviewImage(String placeId,String interviewId,String param) throws IOException {
+
+        File dir = new File(basePath+interviewImagePath+"/"+placeId+"/"+interviewId);
+        String[] fileName = dir.list();
+
+
+        String paramFile = null;
+
+        for (int i = 0; i < fileName.length; i++) {
+
+            if (fileName[i].startsWith(param)){
+                paramFile = fileName[i];
+            }
+        }
+        Path filePath = Paths.get(basePath+interviewImagePath+"/"+placeId+"/"+interviewId+"/"+paramFile);
+
+        InputStream imageStream = new FileInputStream(filePath.toString());
+
+        byte[] imageByteArray = IOUtils.toByteArray(imageStream);
+        imageStream.close();
+
+        return imageByteArray;
+    }
+
+
 
     public byte[] getImage(UUID uuid) throws IOException {
 
@@ -250,6 +277,97 @@ public class StorageService {
     }
 
 
+/*
+
+    public void ownerInterviewUpload(UUID placeId, Map<String,MultipartFile> files,UUID interviewId) throws IOException {
+
+        // cover : file
+        // 1 : file
+        Path directory = Paths.get(basePath + interviewImagePath +"/" +placeId+"/"+interviewId).normalize();
+        Path path = Files.createDirectories(directory);
+
+
+        files.forEach((s, file) -> {
+            try {
+                saveOwnerInterviewFile(path.resolve(s+file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."))).normalize(),s,file);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
+        System.out.println(path.toString());
+
+    }
+*/
+
+
+    public void ownerInterviewModifyCover(UUID placeId, MultipartFile cover,UUID interviewId) throws IOException {
+
+        File dir = new File(basePath+interviewImagePath+"/"+placeId+"/"+interviewId);
+        String[] fileName = dir.list();
+
+
+        String paramFile = null;
+
+        for (int i = 0; i < fileName.length; i++) {
+
+            if (fileName[i].startsWith("cover")){
+                paramFile = fileName[i];
+            }
+        }
+
+        Path directory = Paths.get(basePath + interviewImagePath +"/" +placeId+"/"+interviewId+"/"+"cover").normalize();
+        Files.deleteIfExists(directory.resolve(paramFile));
+
+        saveOwnerInterviewFile(directory.resolve("cover"+cover.getOriginalFilename().substring(cover.getOriginalFilename().lastIndexOf("."))).normalize(),"cover",cover);
+
+    }
+
+    public void ownerInterviewUploadStepOne(UUID placeId, MultipartFile cover,UUID interviewId) throws IOException {
+
+        Path directory = Paths.get(basePath + interviewImagePath +"/" +placeId+"/"+interviewId).normalize();
+        Path path = Files.createDirectories(directory);
+
+        saveOwnerInterviewFile(path.resolve("cover"+cover.getOriginalFilename().substring(cover.getOriginalFilename().lastIndexOf("."))).normalize(),"cover",cover);
+
+    }
+
+
+
+    public void ownerInterviewUploadStepTwo(UUID placeId, Map<String,MultipartFile> files,UUID interviewId) throws IOException {
+        // cover : file
+        // 1 : file
+        Path directory = Paths.get(basePath + interviewImagePath +"/" +placeId+"/"+interviewId).normalize();
+        Path path = Files.createDirectories(directory);
+
+
+        files.forEach((s, file) -> {
+            try {
+                saveOwnerInterviewFile(path.resolve(s+file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."))).normalize(),s,file);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+
+
+    public void saveOwnerInterviewFile(Path path, String key, MultipartFile file) throws IOException {
+
+
+        Assert.state(!file.getOriginalFilename().contains(".."), "Name of file cannot contain '..'");       // 파일명에 '..' 문자가 들어 있다면 오류를 발생하고 아니라면 진행(해킹및 오류방지)
+        Assert.state(!Files.exists(path), key + " File alerdy exists.");  // 파일이 이미 존재하는지 확인하여 존재한다면 오류를 발생하고 없다면 저장한다.
+/*
+
+        String fileName = file.getOriginalFilename();
+        fileName.substring(fileName.lastIndexOf("/"));
+*/
+        file.transferTo(path);
+
+
+    }
+
+
     public String saveFileIO(MultipartFile file,String type,UUID imageId) throws IOException{
 
         Path directory = null;
@@ -268,8 +386,6 @@ public class StorageService {
         Assert.state(!fileName.contains(".."), "Name of file cannot contain '..'");       // 파일명에 '..' 문자가 들어 있다면 오류를 발생하고 아니라면 진행(해킹및 오류방지)
 
         Path targetPath = directory.resolve(fileName).normalize(); // 파일을 저장할 경로를 Path 객체로 받는다.
-
-
 
         Assert.state(!Files.exists(targetPath), fileName + " File alerdy exists.");  // 파일이 이미 존재하는지 확인하여 존재한다면 오류를 발생하고 없다면 저장한다.
 

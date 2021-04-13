@@ -1,13 +1,18 @@
 package com.kctv.api.controller.v1.admin;
 
+import com.datastax.oss.driver.shaded.guava.common.base.Preconditions;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 import com.kctv.api.advice.exception.CFormatNotAllowedException;
 import com.kctv.api.advice.exception.CResourceNotExistException;
 import com.kctv.api.model.admin.FaqRequest;
 import com.kctv.api.model.admin.FaqTableEntity;
 import com.kctv.api.model.admin.QnaAnswerEntity;
+import com.kctv.api.model.interview.InterviewContent;
+import com.kctv.api.model.interview.OwnerInterviewEntity;
 import com.kctv.api.model.place.PlaceInfoEntity;
 import com.kctv.api.model.place.PlaceInfoDto;
 import com.kctv.api.model.place.PlaceInfoVo;
@@ -31,6 +36,7 @@ import org.springframework.web.multipart.MultipartFile;
 import springfox.documentation.annotations.ApiIgnore;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -50,6 +56,269 @@ public class AdminController {
     private final StorageService storageService;
     private final FaqService faqService;
     private final QnaService qnaService;
+    private final InterviewService interviewService;
+
+
+    @ApiOperation(value = "사장님이야기 상태변경", notes = "사장님이야기의 상태를 변경한다.")
+    @PutMapping(value = "/place/interview/{interviewId}/status")
+    public SingleResult<OwnerInterviewEntity> modifyStatus(@PathVariable("interviewId")UUID interviewId){
+
+        OwnerInterviewEntity ownerInterviewEntity = interviewService.findByInterviewId(interviewId);
+
+        ownerInterviewEntity.setStatus(ownerInterviewEntity.getStatus() ? false : true);
+
+        return responseService.getSingleResult(interviewService.saveOwnerInterviewEntity(ownerInterviewEntity));
+
+    }
+
+/*
+
+
+    @ApiOperation(value = "사장님이야기 수정", notes = "장소 ID를 통해 사장님이야기 수정",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 token", required = true, dataType = "String", paramType = "header")
+    })
+    @PutMapping(value = "/place/interview/{interviewId}",consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public SingleResult<OwnerInterviewEntity> modifyOwnerInterview(@PathVariable("interviewId")UUID interviewId,
+                                                                 @RequestPart String request,
+                                                                 @ApiIgnore @RequestParam Map<String,MultipartFile> image
+                                                                 ) throws IOException {
+
+
+        OwnerInterviewEntity ownerInterviewEntity = new ObjectMapper().readValue(request,OwnerInterviewEntity.class);
+
+        ownerInterviewEntity.setModifyDt(new Date());
+
+        //OwnerInterviewEntity beforeInterview = interviewService.findByInterviewId(interviewId);
+
+
+        PlaceInfoEntity placeInfoEntity = placeService.getPartnerByIdService(placeId).orElseThrow(CResourceNotExistException::new);
+        //ownerInterviewEntity.setPlaceInfo(placeInfoEntity);
+
+        //인터뷰컨텐츠 객체중 키값이 'cover'라면 커버이미지로 판단
+
+            image.entrySet()
+                .stream()
+                .filter(stringMultipartFileEntry -> "cover".equals(stringMultipartFileEntry.getKey()))
+                    .findFirst()
+                    .ifPresent(stringMultipartFileEntry ->
+                            ownerInterviewEntity.setCoverImg("/place/"+placeInfoEntity.getPartnerId()+"/interview/"+ownerInterviewEntity.getInterviewId()+"/image/"+"cover"));
+
+
+        List<InterviewContent> imageContent = image.entrySet()
+                .stream()
+                .filter(stringMultipartFileEntry -> !"cover".equals(stringMultipartFileEntry.getKey()))
+                .map(stringMultipartFileEntry ->
+                        new InterviewContent(Integer.parseInt(stringMultipartFileEntry.getKey()),"image","/place/"+placeInfoEntity.getPartnerId()+"/interview/"+ownerInterviewEntity.getInterviewId()+"/image/"+stringMultipartFileEntry.getKey()))
+                .collect(Collectors.toList());
+
+        for (InterviewContent interviewContent: imageContent){
+        ownerInterviewEntity.getInterviewContents().add(interviewContent.getContentOrder(),interviewContent);
+        }
+
+        storageService.ownerInterviewUpload(placeInfoEntity.getPartnerId(),image,ownerInterviewEntity.getInterviewId()); // 파일저장
+
+        interviewService.postOwnerInterviewService(ownerInterviewEntity);
+
+        return null;
+
+        //return responseService.getSingleResult(interviewService.postOwnerInterviewService());
+
+    }
+*/
+
+
+
+
+    @ApiOperation(value = "사장님이야기 등록 step.1", notes = "장소 ID를 통해 사장님이야기 등록",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 token", required = true, dataType = "String", paramType = "header"),
+            @ApiImplicitParam(name = "title", value = "요청 본문", dataType = "String", paramType = "form"),
+            @ApiImplicitParam(name = "ownerSaying", value = "요청 본문", dataType = "String", paramType = "form"),
+            @ApiImplicitParam(name = "cover", value = "커버 이미지", dataType = "file", paramType = "form")
+    })
+    @PostMapping(value = "/place/{placeId}/interview/1",consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public SingleResult<OwnerInterviewEntity> postOwnerInterviewStep1(@PathVariable("placeId")UUID placeId,
+                                                                      @RequestParam String title,
+                                                                      @RequestParam String ownerSaying,
+                                                                      @ApiIgnore @RequestPart MultipartFile cover
+    ) throws IOException {
+
+        //OwnerInterviewEntity ownerInterviewEntity = new ObjectMapper().readValue(request,OwnerInterviewEntity.class);
+        OwnerInterviewEntity ownerInterviewEntity = new OwnerInterviewEntity();
+
+        ownerInterviewEntity.setTitle(title);
+        ownerInterviewEntity.setOwnerSaying(ownerSaying);
+        ownerInterviewEntity.setPlaceId(placeId);
+        ownerInterviewEntity.setInterviewId(UUID.randomUUID());
+        ownerInterviewEntity.setCreateDt(new Date());
+        ownerInterviewEntity.setStatus(false);
+
+
+        PlaceInfoEntity placeInfoEntity = placeService.getPartnerByIdService(placeId).orElseThrow(CResourceNotExistException::new);
+        //ownerInterviewEntity.setPlaceInfo(placeInfoEntity);
+
+        //인터뷰컨텐츠 객체중 키값이 'cover'라면 커버이미지로 판단
+
+        ownerInterviewEntity.setCoverImg("/place/"+placeInfoEntity.getPartnerId()+"/interview/"+ownerInterviewEntity.getInterviewId()+"/image/"+"cover");
+
+        storageService.ownerInterviewUploadStepOne(placeInfoEntity.getPartnerId(),cover,ownerInterviewEntity.getInterviewId());
+        OwnerInterviewEntity result = interviewService.postOwnerInterviewService(ownerInterviewEntity);
+
+        return responseService.getSingleResult(result);
+
+        //return responseService.getSingleResult(interviewService.postOwnerInterviewService());
+
+    }
+
+
+
+
+    @ApiOperation(value = "사장님이야기 수정 step.1", notes = "장소 ID를 통해 사장님이야기 수정",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 token", required = true, dataType = "String", paramType = "header"),
+            @ApiImplicitParam(name = "title", value = "요청 본문", dataType = "String", paramType = "form"),
+            @ApiImplicitParam(name = "ownerSaying", value = "요청 본문", dataType = "String", paramType = "form"),
+            @ApiImplicitParam(name = "cover", value = "커버 이미지", dataType = "file", paramType = "form")
+    })
+    @PutMapping(value = "/place/interview/{interviewId}",consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public SingleResult<OwnerInterviewEntity> modifyOwnerInterviewStep1(@PathVariable("interviewId")UUID interviewId,
+                                                                      @RequestParam String title,
+                                                                      @RequestParam String ownerSaying,
+                                                                      @ApiIgnore @RequestPart MultipartFile cover
+    ) throws IOException {
+
+        //OwnerInterviewEntity ownerInterviewEntity = new ObjectMapper().readValue(request,OwnerInterviewEntity.class);
+
+        OwnerInterviewEntity beforeEntity = interviewService.findByInterviewId(interviewId);
+        OwnerInterviewEntity ownerInterviewEntity = new OwnerInterviewEntity();
+
+        if (!Strings.isNullOrEmpty(title))
+        beforeEntity.setTitle(title);
+        if (!Strings.isNullOrEmpty(ownerSaying))
+        beforeEntity.setOwnerSaying(ownerSaying);
+        beforeEntity.setModifyDt(new Date());
+
+        //ownerInterviewEntity.setPlaceInfo(placeInfoEntity);
+
+        //인터뷰컨텐츠 객체중 키값이 'cover'라면 커버이미지로 판단
+
+        if (cover != null){
+        ownerInterviewEntity.setCoverImg("/place/"+beforeEntity.getPlaceId()+"/interview/"+ownerInterviewEntity.getInterviewId()+"/image/"+"cover");
+
+        storageService.ownerInterviewModifyCover(beforeEntity.getPlaceId(),cover,ownerInterviewEntity.getInterviewId());
+
+        }
+        OwnerInterviewEntity result = interviewService.saveOwnerInterviewEntity(ownerInterviewEntity);
+
+        return responseService.getSingleResult(result);
+
+        //return responseService.getSingleResult(interviewService.postOwnerInterviewService());
+
+    }
+
+
+
+    @ApiOperation(value = "사장님이야기 수정 step.2", notes = "장소 ID를 통해 사장님이야기 수정",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 token", required = true, dataType = "String", paramType = "header"),
+            @ApiImplicitParam(name = "3", value = "파일테스트", dataType = "file", paramType = "form"),
+            @ApiImplicitParam(name = "request", value = "파일테스트", dataType = "string", paramType = "form",defaultValue = "[   {     \"content\": \"컨텐츠제목\",     \"contentOrder\": 0,     \"contentType\": \"sub\"   },   {     \"content\": \"컨텐츠내용\",     \"contentOrder\": 1,     \"contentType\": \"text\"   },{     \"content\": \"컨텐츠내용둘\",     \"contentOrder\": 2,     \"contentType\": \"text\"   } ]")
+
+    })
+    @PutMapping(value = "/place/{placeId}/interview/{interviewId}/2",consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public SingleResult<OwnerInterviewEntity> modifyOwnerInterviewStep2(@PathVariable("placeId")UUID placeId,
+                                                                      @PathVariable("interviewId")UUID interviewId,
+                                                                      @ApiIgnore @RequestPart String request,
+                                                                      @ApiIgnore @RequestParam Map<String,MultipartFile> image
+    ) throws IOException {
+
+
+        List<InterviewContent> interviewContents = new ObjectMapper().readValue(request, new TypeReference<List<InterviewContent>>() {});
+
+        OwnerInterviewEntity ownerInterviewEntity = interviewService.findByInterviewId(interviewId);
+
+        if (ownerInterviewEntity == null || !placeId.equals(ownerInterviewEntity.getPlaceId())){
+            throw new CResourceNotExistException();
+        }
+
+        ownerInterviewEntity.setInterviewContents(interviewContents);
+        ownerInterviewEntity.setModifyDt(new Date());
+
+        PlaceInfoEntity placeInfoEntity = placeService.getPartnerByIdService(placeId).orElseThrow(CResourceNotExistException::new);
+        //ownerInterviewEntity.setPlaceInfo(placeInfoEntity);
+
+        //인터뷰컨텐츠 객체중 키값이 'cover'라면 커버이미지로 판단
+
+        List<InterviewContent> imageContent = image.entrySet()
+                .stream()
+                .map(stringMultipartFileEntry ->
+                        new InterviewContent(Integer.parseInt(stringMultipartFileEntry.getKey()),"image","/place/"+placeInfoEntity.getPartnerId()+"/interview/"+ownerInterviewEntity.getInterviewId()+"/image/"+stringMultipartFileEntry.getKey()))
+                .collect(Collectors.toList());
+
+        for (InterviewContent interviewContent: imageContent){
+            ownerInterviewEntity.getInterviewContents().add(interviewContent.getContentOrder(),interviewContent);
+        }
+
+        storageService.ownerInterviewUploadStepTwo(placeInfoEntity.getPartnerId(),image,ownerInterviewEntity.getInterviewId()); // 파일저장
+
+        return responseService.getSingleResult(interviewService.saveOwnerInterviewEntity(ownerInterviewEntity));
+
+        //return responseService.getSingleResult(interviewService.postOwnerInterviewService());
+
+    }
+
+
+
+    @ApiOperation(value = "사장님이야기 등록 step.2", notes = "장소 ID를 통해 사장님이야기 등록",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 token", required = true, dataType = "String", paramType = "header"),
+            @ApiImplicitParam(name = "3", value = "파일테스트", dataType = "file", paramType = "form"),
+            @ApiImplicitParam(name = "request", value = "파일테스트", dataType = "string", paramType = "form",defaultValue = "[   {     \"content\": \"컨텐츠제목\",     \"contentOrder\": 0,     \"contentType\": \"sub\"   },   {     \"content\": \"컨텐츠내용\",     \"contentOrder\": 1,     \"contentType\": \"text\"   },{     \"content\": \"컨텐츠내용둘\",     \"contentOrder\": 2,     \"contentType\": \"text\"   } ]")
+
+    })
+    @PostMapping(value = "/place/{placeId}/interview/{interviewId}/2",consumes = MediaType.MULTIPART_FORM_DATA_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public SingleResult<OwnerInterviewEntity> postOwnerInterviewStep2(@PathVariable("placeId")UUID placeId,
+                                                                      @PathVariable("interviewId")UUID interviewId,
+                                                                      @ApiIgnore @RequestPart String request,
+                                                                      @ApiIgnore @RequestParam Map<String,MultipartFile> image
+    ) throws IOException {
+
+
+        List<InterviewContent> interviewContents = new ObjectMapper().readValue(request, new TypeReference<List<InterviewContent>>() {});
+
+        OwnerInterviewEntity ownerInterviewEntity = interviewService.findByInterviewId(interviewId);
+
+        if (ownerInterviewEntity == null || !placeId.equals(ownerInterviewEntity.getPlaceId())){
+            throw new CResourceNotExistException();
+        }
+
+        ownerInterviewEntity.setInterviewContents(interviewContents);
+        ownerInterviewEntity.setCreateDt(new Date());
+        ownerInterviewEntity.setStatus(true);
+
+        PlaceInfoEntity placeInfoEntity = placeService.getPartnerByIdService(placeId).orElseThrow(CResourceNotExistException::new);
+        //ownerInterviewEntity.setPlaceInfo(placeInfoEntity);
+
+        //인터뷰컨텐츠 객체중 키값이 'cover'라면 커버이미지로 판단
+
+        List<InterviewContent> imageContent = image.entrySet()
+                .stream()
+                .map(stringMultipartFileEntry ->
+                        new InterviewContent(Integer.parseInt(stringMultipartFileEntry.getKey()),"image","/place/"+placeInfoEntity.getPartnerId()+"/interview/"+ownerInterviewEntity.getInterviewId()+"/image/"+stringMultipartFileEntry.getKey()))
+                .collect(Collectors.toList());
+
+        for (InterviewContent interviewContent: imageContent){
+            ownerInterviewEntity.getInterviewContents().add(interviewContent.getContentOrder(),interviewContent);
+        }
+
+        storageService.ownerInterviewUploadStepTwo(placeInfoEntity.getPartnerId(),image,ownerInterviewEntity.getInterviewId()); // 파일저장
+
+        return responseService.getSingleResult(interviewService.saveOwnerInterviewEntity(ownerInterviewEntity));
+
+        //return responseService.getSingleResult(interviewService.postOwnerInterviewService());
+
+    }
 
 
     @ApiOperation(value = "전체 Place 목록 출력", notes = "등록된 모든 장소를 조회한다.")

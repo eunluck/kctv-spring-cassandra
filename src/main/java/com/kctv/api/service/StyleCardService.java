@@ -204,10 +204,15 @@ public class StyleCardService {
 
     List<StyleCardCounterByDayEntity> list = counterDayRepository.findByWeekCount(nowToLong);
 
+        System.out.println();
+        return list.stream()
+                .collect(Collectors
+                        .groupingBy(styleCardCounterByDayEntity ->
 
-    Map<StyleCardCounterByDayEntity.StyleCardCounterKey,List<StyleCardCounterByDayEntity>> map = list.stream().collect(Collectors.groupingBy(StyleCardCounterByDayEntity::getKey));
-
-        return     list.stream().collect(Collectors.groupingBy(styleCardCounterByDayEntity -> styleCardCounterByDayEntity.getKey().getCardId(),TreeMap::new,Collectors.summingLong(StyleCardCounterByDayEntity::getViewCount))).entrySet().stream().map(uuidLongEntry -> new StyleCardCounterEntity(uuidLongEntry.getKey(),0L,uuidLongEntry.getValue(),null)).collect(Collectors.toList());
+                                styleCardCounterByDayEntity.getKey().getCardId(),TreeMap::new,Collectors.summingLong(value -> value.getViewCount() ==null ? 0 : value.getViewCount())))
+                .entrySet().stream().map(uuidLongEntry ->
+                        new StyleCardCounterEntity(uuidLongEntry.getKey(),0L,Optional.ofNullable(uuidLongEntry.getValue()).orElseGet(() -> 0L),null,null))
+                .collect(Collectors.toList());
     }
 
     public List<StyleCardInfoEntity> cardInfosByIds(List<UUID> uuids){

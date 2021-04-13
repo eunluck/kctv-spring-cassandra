@@ -185,6 +185,7 @@ public class StyleCardController {
 
             for (StyleCardCounterEntity styleCardCounterEntity : topFive){
                 styleCardCounterEntity.setCardName(topFiveCards.stream().filter(styleCardInfo -> styleCardInfo.getCardId().equals(styleCardCounterEntity.getCardId())).findFirst().get().getTitle());
+                styleCardCounterEntity.setCoverImage(topFiveCards.stream().filter(styleCardInfo -> styleCardInfo.getCardId().equals(styleCardCounterEntity.getCardId())).findFirst().get().getCoverImage());
             }
 
             styleCardCounterEntityCache = topFive;

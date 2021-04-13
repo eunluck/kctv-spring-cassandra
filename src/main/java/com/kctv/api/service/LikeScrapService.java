@@ -73,6 +73,7 @@ public class LikeScrapService {
 
         if(scrapCheck(userId,cardId)){
             userScrapRepository.delete(UserScrapCardEntity.builder().cardId(cardId).userId(userId).build());
+
             counterRepository.decrementScrapCountByCardId(nowToLong,cardId);
             return Optional.empty();
         }else{

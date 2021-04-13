@@ -2,6 +2,7 @@ package com.kctv.api.model.place;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.collect.Maps;
+import com.kctv.api.model.interview.OwnerInterviewEntity;
 import com.kctv.api.model.place.openinghours.CloseOrOpen;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
@@ -76,7 +77,7 @@ public class PlaceInfoDto {
     @ApiModelProperty(value = "경도", readOnly = true)
     private Long longitude;
     private String serviceType;
-
+    private OwnerInterviewEntity ownerInterview;
 
 
 
@@ -84,7 +85,7 @@ public class PlaceInfoDto {
         copyProperties(placeInfoEntity, this);
         this.menu = menu;
 
-        if(CollectionUtils.isEmpty(placeInfoEntity.getPeriods()))
+        if(!CollectionUtils.isEmpty(placeInfoEntity.getPeriods()))
         weekday_text = weekText(placeInfoEntity.getPeriods());
     }
     public Map<String,String> weekText(List<CloseOrOpen> original){
@@ -113,6 +114,18 @@ public class PlaceInfoDto {
                     break;
                 case 7:
                     korean = "일";
+                    break;
+                case 8:
+                    korean = "공휴일";
+                    break;
+                case 9:
+                    korean = "주말";
+                    break;
+                case 10:
+                    korean = "평일";
+                    break;
+                case 11:
+                    korean = "매일";
                     break;
             }
             if(!"close".equals(oneday.getOpen().getTime())){

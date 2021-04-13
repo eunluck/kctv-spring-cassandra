@@ -30,4 +30,7 @@ public class StyleCardCounterEntity {
     @ReadOnlyProperty
     private String cardName;
 
+    @ReadOnlyProperty
+    private String coverImage;
+
 }

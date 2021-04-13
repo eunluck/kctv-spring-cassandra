@@ -45,6 +45,14 @@ public class ResponseService {
         return result;
     }
 
+    public <T> BooleanResult<T> getBooleanResult(boolean b,T content){
+        BooleanResult<T> result = new BooleanResult<>();
+        result.setData(b);
+        result.setContent(content);
+        setSuccessResult(result);
+        return result;
+    }
+
 
     public PlaceListResult getPlaceListResult(StyleCardInfoEntity cardInfo, List<PlaceInfoEntity> placeInfoEntityList){
         PlaceListResult result = new PlaceListResult();

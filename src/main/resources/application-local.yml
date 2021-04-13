@@ -4,7 +4,7 @@ spring:
     cassandra:
       contact-points: 192.168.0.76
       port: 9042
-      keyspace-name: kctv_encrypt
+      keyspace-name: kctv_dev
       local-datacenter: DC1
       username: biskit
 costom:

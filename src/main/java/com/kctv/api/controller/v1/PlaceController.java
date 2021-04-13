@@ -2,11 +2,13 @@ package com.kctv.api.controller.v1;
 
 
 import com.kctv.api.advice.exception.CPartnerNotFoundException;
+import com.kctv.api.model.interview.OwnerInterviewEntity;
 import com.kctv.api.model.place.PlaceInfoEntity;
 import com.kctv.api.model.place.WifiInfoEntity;
 import com.kctv.api.model.place.PlaceInfoDto;
 import com.kctv.api.model.response.ListResult;
 import com.kctv.api.model.response.SingleResult;
+import com.kctv.api.service.InterviewService;
 import com.kctv.api.service.PlaceService;
 import com.kctv.api.service.ResponseService;
 import io.swagger.annotations.*;
@@ -27,6 +29,7 @@ import java.util.*;
 public class PlaceController {
 
     private final PlaceService placeService;
+    private final InterviewService interviewService;
     private final ResponseService responseService;
 
 
@@ -54,7 +57,10 @@ public class PlaceController {
     public SingleResult<PlaceInfoDto> getPlaceById(@ApiParam(value = "검색할 가게 ID",defaultValue = "ebe58bff-dd68-434c-9687-cfacda45aefb")@PathVariable("id")UUID uuid){
 
         PlaceInfoEntity placeInfoEntity = placeService.getPartnerByIdService(uuid).orElseThrow(CPartnerNotFoundException::new);
+        Optional<OwnerInterviewEntity> ownerInterviewEntity = interviewService.findByOwnerInterviewEntityByPlaceId(placeInfoEntity.getPartnerId());
         PlaceInfoDto dto = new PlaceInfoDto(placeInfoEntity, placeService.getMenuByPartnerId(uuid));
+
+        dto.setOwnerInterview(ownerInterviewEntity.orElseGet(() -> null));
 
     return responseService.getSingleResult(dto);
 
