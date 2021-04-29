@@ -11,7 +11,6 @@ import java.util.UUID;
 public interface OwnerInterviewRepository extends CassandraRepository<OwnerInterviewEntity, UUID> {
 
 
-
     Optional<OwnerInterviewEntity> findByPlaceId(UUID id);
     Optional<OwnerInterviewEntity> findByInterviewId(UUID interviewId);
 

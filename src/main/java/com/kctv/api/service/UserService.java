@@ -25,6 +25,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -132,6 +133,32 @@ public class UserService implements UserDetailsService {
     }
 
 
+
+    public boolean userPasswordMatches(UserInfoEntity userInfoEntity, String currentPassword){
+
+        UserInfoEntity loginUser = userInfoByEmailRepository.findByUserEmailAndUserEmailType(userInfoEntity.getUserEmail(),userInfoEntity.getUserEmailType())
+                .map(userInfoByEmailEntity ->
+                        userRepository.findByUserId(userInfoByEmailEntity.getUserId())
+                                .orElseThrow(CUserNotFoundException::new))
+                .orElseThrow(CUserNotFoundException::new);
+
+        return passwordEncoder.matches(currentPassword, loginUser.getUserPassword());
+    }
+
+    public UserInfoEntity userUpdatePassword(UserInfoEntity userInfoEntity){
+
+
+        userInfoEntity.setUserPassword(passwordEncoder.encode(userInfoEntity.getUserPassword()));
+
+        UserInfoEntity findUser = Optional.of(findByUserId(userInfoEntity.getUserId())).orElseThrow(CUserNotFoundException::new);
+        findUser.updatePassword(userInfoEntity.getUserPassword());
+
+        userInfoByEmailRepository.save(new UserInfoByEmailEntity(findUser.getUserEmail(), findUser.getUserEmailType(), findUser.getUserId(), findUser.getUserPassword(), findUser.getUserSnsKey()));
+        return userRepository.save(findUser);
+    }
+
+
+
     public Optional<UserInfoEntity> userLoginService(String email, String emailType, String pwd) {
 
         UserInfoEntity loginUser = userInfoByEmailRepository.findByUserEmailAndUserEmailType(email,emailType)
@@ -142,8 +169,6 @@ public class UserService implements UserDetailsService {
 
 //        UserInfoEntity loginUser = userRepository.findByUserEmailAndUserEmailType(email, emailType).orElseThrow(CUserNotFoundException::new);
 
-
-        System.out.println(loginUser.toString());
         //return Optional.empty();
         return passwordEncoder.matches(pwd, loginUser.getUserPassword()) ? Optional.of(loginUser) : Optional.empty();
     }
@@ -216,7 +241,6 @@ public class UserService implements UserDetailsService {
 
     public void userEmailVerifySave(String uniqueCode, UUID userId, String email)  {
 
-        System.out.println("저장중");
 
         UserEmailVerifyEntity result = userEmailVerifyRepository.save(new UserEmailVerifyEntity(uniqueCode,new Date(),email, userId));
 
@@ -245,7 +269,6 @@ public class UserService implements UserDetailsService {
     }
 
     public void sendMailMessage(String userEmail, String subject, String text) throws MessagingException {
-        System.out.println("메일전송");
 
         MimeMessage mimeMessage = emailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage,"utf-8");
@@ -258,7 +281,6 @@ public class UserService implements UserDetailsService {
 
 
         emailSender.send(mimeMessage);
-        System.out.println("메일전송완료");
     }
 
 /*
@@ -271,6 +293,7 @@ public class UserService implements UserDetailsService {
     }*/
 
 
+    @SneakyThrows
     public void sendTempPassword(String email, String emailType) throws MessagingException {
 
 
@@ -291,7 +314,7 @@ public class UserService implements UserDetailsService {
         userInfoByEmailRepository.save(new UserInfoByEmailEntity(findUser.getUserEmail(),findUser.getUserEmailType(),findUser.getUserId(),findUser.getUserPassword(),findUser.getUserSnsKey()));
         Optional.of(userRepository.save(findUser)).orElseThrow(CUserNotFoundException::new);
 
-        sendMailMessage(findUser.getUserEmail(), "[WAKE UF] 임시 비밀번호가 발급되었습니다.", "안녕하세요. WAKE UF입니다.<br>" +
+        sendMailMessage(AES256Util.getInstance().decrypt(findUser.getUserEmail()), "[WAKE UF] 임시 비밀번호가 발급되었습니다.", "안녕하세요. WAKE UF입니다.<br>" +
                 "요청하신 임시 비밀번호가 아래와 같이 발급되었습니다. <br>" +
                 "임시 비밀번호는 일회성 비밀번호이므로, 로그인 후 비밀번호를 신속하게 변경해 주시기 바랍니다.<br>" +
                 "<br>\n" + uuid);
@@ -374,11 +397,10 @@ public class UserService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String s) throws CUserNotFoundException {
+    public UserDetails loadUserByUsername(String s)throws UsernameNotFoundException {
 
 
-        System.out.println("디버깅loadUserByuserName:::"+s);
-        return userRepository.findByUserId(UUID.fromString(s)).orElseThrow(CUserNotFoundException::new);
+        return userRepository.findByUserId(UUID.fromString(s)).orElseThrow(() -> new UsernameNotFoundException("로그인 정보가 유효하지 않습니다. 다시 로그인 해주세요."));
     }
 
     public UserInfoEntity addManager(UserInfoEntity userInfoEntity){

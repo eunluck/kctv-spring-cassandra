@@ -38,7 +38,8 @@ public class StyleCardVo {
     private Date modifyAt;
     @ApiModelProperty(value = "큐레이터의 소갯말")
     private String curatorSaying;
-
+    @ApiModelProperty(value = "큐레이터의 소갯말")
+    private String content;
 
 
 }

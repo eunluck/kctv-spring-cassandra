@@ -32,7 +32,6 @@ public class ImageController {
     @GetMapping(value = "/place/{placeId}/interview/{interviewId}/image/{param}",produces = MediaType.IMAGE_JPEG_VALUE)
     public byte[] getInterviewImage(
             @ApiParam(value = "인터뷰ID", required = true) @PathVariable("interviewId")String interviewId,@PathVariable("param")String param,@PathVariable("placeId")String placeId) throws IOException {
-
         System.out.println("이미지출력호출");
 
 

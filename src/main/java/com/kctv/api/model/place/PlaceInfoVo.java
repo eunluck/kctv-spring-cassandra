@@ -64,6 +64,8 @@ public class PlaceInfoVo {
     private String serviceType;
     @ApiModelProperty(value = "이미지", readOnly = true)
     private List<String> images;
+    @ApiModelProperty(value = "장소 부가설명", readOnly = true)
+    private String placeExplanation;
 
 
 }

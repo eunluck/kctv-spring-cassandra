@@ -40,7 +40,7 @@ public class StyleCardInfoEntity {
     private Set<UUID> placeId = Sets.newHashSet();
     @Column("curator_saying")
     private String curatorSaying;
-
+    private String content;
 
     public void setCoverImage(String coverImage) {
         this.coverImage = coverImage;
@@ -56,7 +56,6 @@ public class StyleCardInfoEntity {
         copyProperties(styleCardVo,this);
         this.createAt = new Date();
         this.cardId = uuid;
-
     }
 
 }

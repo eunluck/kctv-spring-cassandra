@@ -49,7 +49,7 @@ public class QnaByUserEntity {
     private String userNickname;
     @Column("user_email")
     private String userEmail;
-    private String remark;
+    //private String remark;
 
     public QnaByUserEntity(QnaRequest qnaRequest,UUID userId,String userNickname, String userEmail){
         copyProperties(qnaRequest,this);

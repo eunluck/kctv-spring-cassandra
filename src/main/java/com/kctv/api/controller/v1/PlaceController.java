@@ -1,26 +1,33 @@
 package com.kctv.api.controller.v1;
 
 
+import com.google.common.collect.Lists;
 import com.kctv.api.advice.exception.CPartnerNotFoundException;
+import com.kctv.api.model.coupon.CouponByPlaceDto;
+import com.kctv.api.model.coupon.CouponEntity;
+import com.kctv.api.model.coupon.UserByCouponDto;
 import com.kctv.api.model.interview.OwnerInterviewEntity;
+import com.kctv.api.model.place.PlaceCounterDto;
 import com.kctv.api.model.place.PlaceInfoEntity;
 import com.kctv.api.model.place.WifiInfoEntity;
 import com.kctv.api.model.place.PlaceInfoDto;
 import com.kctv.api.model.response.ListResult;
 import com.kctv.api.model.response.SingleResult;
+import com.kctv.api.model.stylecard.StyleCardCounterDto;
+import com.kctv.api.model.user.UserInfoEntity;
+import com.kctv.api.service.CouponService;
 import com.kctv.api.service.InterviewService;
 import com.kctv.api.service.PlaceService;
 import com.kctv.api.service.ResponseService;
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections.CollectionUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
 
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Api(tags = {"07. Places API"})
 @RestController
@@ -31,6 +38,8 @@ public class PlaceController {
     private final PlaceService placeService;
     private final InterviewService interviewService;
     private final ResponseService responseService;
+    private final CouponService couponService;
+
 
 
 
@@ -99,6 +108,62 @@ public class PlaceController {
     }
 
 
+    private List<PlaceCounterDto> placeCounterDtoCache = null;
+    private Long placeCounterCacheUpdateTs = 0L;
+
+    @ApiOperation(value = "최근 일주일간 장소 조회수 랭킹 TOP5", notes = "가장 많이 조회된 장소 목록(10분마다 갱신)")
+    @GetMapping("/place/hit")
+    public ListResult<PlaceCounterDto> placeOrderByViewCountDay(@RequestParam(value = "minusDays",defaultValue = "7")long day) {
+        //if (placeCounterCacheUpdateTs < (System.currentTimeMillis() - 10000)) {
+
+            List<PlaceCounterDto> counterDtoList = placeService.placeCountListByWeek(day);
+
+
+            if (counterDtoList.size() == 0){
+                return responseService.getListResult(Lists.newArrayList());
+            }
+
+            List<PlaceCounterDto> topFive = counterDtoList
+                    .stream()
+                    .sorted(Comparator.comparingLong(PlaceCounterDto::getViewCount).reversed())
+                    .limit(5)
+                    .collect(Collectors.toList());
+
+            List<PlaceInfoEntity> placeInfoEntities = placeService.getPlaceListByIdIn(counterDtoList.stream().map(PlaceCounterDto::getPlaceId).collect(Collectors.toList()));
+
+            for (PlaceCounterDto placeCounterDto : topFive) {
+                placeCounterDto.setPlaceName(placeInfoEntities.stream().filter(placeInfo -> placeInfo.getPartnerId().equals(placeCounterDto.getPlaceId())).findFirst().get().getBusinessName());
+                placeCounterDto.setPlaceType(placeInfoEntities.stream().filter(placeInfo -> placeInfo.getPartnerId().equals(placeCounterDto.getPlaceId())).findFirst().get().getStoreType());
+                placeCounterDto.setCoverImage(placeInfoEntities.stream().filter(placeInfo -> placeInfo.getPartnerId().equals(placeCounterDto.getPlaceId())).findFirst().get().getCoverImage());
+
+            }
+           // placeCounterDtoCache = topFive;
+       // }
+
+        //return responseService.getListResult(placeCounterDtoCache);
+        return responseService.getListResult(topFive);
+    }
+
+
+    @ApiOperation(value = "가게의 쿠폰 검색", notes = "가게에서 받을 수 있는 쿠폰 목록")
+    @GetMapping("/place/{placeId}/coupon")
+    public ListResult<CouponEntity> couponByPlace(@AuthenticationPrincipal UserInfoEntity loginUser, @PathVariable("placeId")UUID placeId){
+
+
+
+        List<UserByCouponDto> myCouponList = couponService.getCouponByUser(loginUser.getUserId());
+
+        placeService.getCouponByPlace(placeId).stream().filter(CouponEntity::isState).map(CouponByPlaceDto::new).forEach(couponByPlaceDto ->
+                couponByPlaceDto.setCanSaved(!myCouponList.contains(couponByPlaceDto.getCouponId()))
+                );
+
+
+        return responseService.getListResult(placeService.getCouponByPlace(placeId));
+
+        // 사용자가 이미 다운로드 한 쿠폰 false
+        // 쿠폰의 사용여부에따라 false
+
+    }
 
 
 

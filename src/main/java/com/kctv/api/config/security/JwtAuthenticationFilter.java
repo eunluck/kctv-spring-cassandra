@@ -4,6 +4,7 @@ import com.kctv.api.advice.exception.CAuthenticationEntryPointException;
 import com.kctv.api.advice.exception.CTokenNotFoundException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.filter.GenericFilterBean;
 
 import javax.servlet.FilterChain;
@@ -11,6 +12,7 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class JwtAuthenticationFilter extends GenericFilterBean {
@@ -25,10 +27,14 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
     // Request로 들어오는 Jwt Token의 유효성을 검증(jwtTokenProvider.validateToken)하는 filter를 filterChain에 등록합니다.
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException, ServletException {
+
         String token = jwtTokenProvider.resolveToken((HttpServletRequest) request);
         if (token != null && jwtTokenProvider.validateToken(token)) {
+            try {
             Authentication auth = jwtTokenProvider.getAuthentication(token);
             SecurityContextHolder.getContext().setAuthentication(auth);
+            }catch (UsernameNotFoundException e){
+            }
         }
         filterChain.doFilter(request, response);
     }

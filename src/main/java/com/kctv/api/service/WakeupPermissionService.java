@@ -6,6 +6,7 @@ import com.kctv.api.repository.ap.WakeUpPermissionRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
 
@@ -36,10 +37,10 @@ public class WakeupPermissionService {
 
         }
 
-
         return userPermission;
 
     }
+
 
 
 

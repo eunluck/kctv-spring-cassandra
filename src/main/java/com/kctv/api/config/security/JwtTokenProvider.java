@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -50,7 +51,7 @@ public class JwtTokenProvider {
         }
 
         // Jwt 토큰으로 인증 정보를 조회
-        public Authentication getAuthentication(String token) {
+        public Authentication getAuthentication(String token) throws UsernameNotFoundException {
 
             UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserPk(token));
 

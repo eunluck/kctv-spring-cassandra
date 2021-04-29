@@ -6,6 +6,7 @@ import com.google.common.collect.Lists;
 import com.kctv.api.advice.exception.CPartnerNotFoundException;
 import com.kctv.api.advice.exception.CResourceNotExistException;
 import com.kctv.api.model.admin.stylecard.StyleCardVo;
+import com.kctv.api.model.place.PlaceInfoEntity;
 import com.kctv.api.model.stylecard.*;
 import com.kctv.api.model.tag.TagEntity;
 import com.kctv.api.model.tag.TagGroup;
@@ -53,6 +54,21 @@ public class StyleCardService {
         return tagRepository.findByTagType(search);
     }
 
+
+
+    public void addAllTagsTest(){
+
+        List<StyleCardInfoEntity> placeInfoEntities = styleCardRepository.findAll();
+
+
+        for (StyleCardInfoEntity placeInfoEntity : placeInfoEntities) {
+            List<StyleCardByTags> list = placeInfoEntity.getTags().stream().map(s -> new StyleCardByTags(s,placeInfoEntity.getCardId())).collect(Collectors.toList());
+
+            styleByTagsRepository.insert(list);
+        }
+
+
+    }
     public StyleCardInfoEntity getCardById (UUID uuid){
 
         StyleCardInfoEntity card = styleCardRepository.findByCardId(uuid).orElseThrow(CPartnerNotFoundException::new);
@@ -89,12 +105,15 @@ public class StyleCardService {
         beforeCard.setTags(request.getTags());
         if (!Strings.isNullOrEmpty(request.getTitle()))
         beforeCard.setTitle(request.getTitle());
+        if (!Strings.isNullOrEmpty(request.getContent()))
+        beforeCard.setContent(request.getContent());
         beforeCard.setModifyAt(new Date());
         beforeCard.setStatus("업데이트");
 
         StyleCardInfoEntity afterCard = Optional.of(styleCardRepository.save(beforeCard)).orElseThrow(CResourceNotExistException::new);
 
         if (CollectionUtils.isNotEmpty(request.getTags())){
+            styleByTagsRepository.deleteAll(request.getTags().stream().map(s -> new StyleCardByTags(s,beforeCard.getCardId())).collect(Collectors.toList()));
             styleByTagsRepository.saveAll(
                     request.getTags()
                             .stream()
@@ -110,7 +129,10 @@ public class StyleCardService {
 
 
     public List<StyleCardInfoEntity> getCardByTagsService(List<String> tags){
+        System.out.println("tags::"+tags);
         List<StyleCardByTags> result = styleByTagsRepository.findByTagIn(tags); //태그를 조건으로 StyleCard를 검색
+
+        System.out.println(result);
         List<UUID> uuidList = SortingTagsUtiil.duplicationMappingList(result);  //검색된 카드의 태그가 중복되는 갯수 순서로 내림차순 정렬
 
         if(uuidList.size() > 0){
@@ -194,26 +216,25 @@ public class StyleCardService {
 
 
 
-    public List<StyleCardCounterEntity> cardCountListByWeek(){
+    public List<StyleCardCounterDto> cardCountListByWeek(long day){
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
-        LocalDate now = LocalDate.now().minusDays(7);
+        LocalDate now = LocalDate.now().minusDays(day);
         Long nowToLong = Long.valueOf(now.format(formatter)); //일주일전날짜구함
 
-        System.out.println("현재시간변환"+nowToLong);
+        List<StyleCardCounterByDayEntity> list = counterDayRepository.findByWeekCount(nowToLong);
 
-    List<StyleCardCounterByDayEntity> list = counterDayRepository.findByWeekCount(nowToLong);
-
-        System.out.println();
         return list.stream()
-                .collect(Collectors
-                        .groupingBy(styleCardCounterByDayEntity ->
-
-                                styleCardCounterByDayEntity.getKey().getCardId(),TreeMap::new,Collectors.summingLong(value -> value.getViewCount() ==null ? 0 : value.getViewCount())))
-                .entrySet().stream().map(uuidLongEntry ->
-                        new StyleCardCounterEntity(uuidLongEntry.getKey(),0L,Optional.ofNullable(uuidLongEntry.getValue()).orElseGet(() -> 0L),null,null))
-                .collect(Collectors.toList());
+                .map(StyleCardCounterDto::new)
+                .collect(Collectors.groupingBy(StyleCardCounterDto::getCardId,Collectors.collectingAndThen(Collectors.toList(),styleCardCounterDtos -> {
+                    Long view = styleCardCounterDtos.stream().collect(Collectors.summingLong(StyleCardCounterDto::getViewCount));
+                    Long scrap = styleCardCounterDtos.stream().collect(Collectors.summingLong(StyleCardCounterDto::getScrapCount));
+                    return new AbstractMap.SimpleEntry<>(view,scrap);
+                }))).entrySet()
+                .stream()
+                .map(uuidSimpleEntryEntry -> new StyleCardCounterDto(uuidSimpleEntryEntry.getKey(),uuidSimpleEntryEntry.getValue().getKey(),uuidSimpleEntryEntry.getValue().getValue())).collect(Collectors.toList());
     }
+
 
     public List<StyleCardInfoEntity> cardInfosByIds(List<UUID> uuids){
 

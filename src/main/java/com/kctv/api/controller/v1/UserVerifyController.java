@@ -51,8 +51,6 @@ public class UserVerifyController {
 
         UserInfoEntity user = (UserInfoEntity) authentication.getPrincipal();
 
-        System.out.println(user.toString());
-
 
         userService.userVerifyEmailResend(user);
         //userService.sendVerificationMail(user);

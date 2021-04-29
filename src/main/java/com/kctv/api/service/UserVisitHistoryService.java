@@ -39,7 +39,7 @@ public class UserVisitHistoryService {
         CqlTemplate cqlTemplate = (CqlTemplate) cassandraTemplate.getCqlOperations();
         CqlSession session = cqlTemplate.getSession();
 
-        ResultSet resultSet = session.execute("SELECT place_id, count(*) as cnt FROM kctv.place_user_visit_history_view WHERE user_id="+userId.toString()+" GROUP BY place_id");
+        ResultSet resultSet = session.execute("SELECT place_id, count(*) as cnt FROM kctv_dev.place_user_visit_history_view WHERE user_id="+userId.toString()+" GROUP BY place_id");
 
         List list = Lists.newArrayList();
         for(Row row:resultSet) {

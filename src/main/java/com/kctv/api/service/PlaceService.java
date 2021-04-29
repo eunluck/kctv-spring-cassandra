@@ -2,20 +2,24 @@ package com.kctv.api.service;
 
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
+import com.google.common.collect.Lists;
 import com.kctv.api.advice.exception.CPartnerNotFoundException;
 import com.kctv.api.advice.exception.CRequiredValueException;
 import com.kctv.api.advice.exception.CResourceNotExistException;
+import com.kctv.api.model.coupon.CouponEntity;
+import com.kctv.api.model.coupon.PartnerByCouponEntity;
 import com.kctv.api.model.stylecard.PartnersByTags;
 
 import com.kctv.api.model.place.*;
-import com.kctv.api.repository.ap.MenuByPartnerRepository;
-import com.kctv.api.repository.ap.PartnerByTagsRepository;
+import com.kctv.api.model.stylecard.StyleCardCounterByDayEntity;
+import com.kctv.api.model.stylecard.StyleCardCounterDto;
+import com.kctv.api.repository.ap.*;
+import com.kctv.api.repository.coupon.CouponRepository;
+import com.kctv.api.repository.coupon.PartnerByCouponRepository;
 import com.kctv.api.repository.file.CardImageInfoRepository;
 import com.kctv.api.repository.interview.OwnerInterviewRepository;
 import com.kctv.api.repository.tag.PlaceTypeRepository;
 import com.kctv.api.util.GeoOperations;
-import com.kctv.api.repository.ap.PartnerRepository;
-import com.kctv.api.repository.ap.WifiRepository;
 import com.kctv.api.util.MapUtill;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.collections.CollectionUtils;
@@ -24,6 +28,8 @@ import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -39,6 +45,40 @@ public class PlaceService {
     private final MenuByPartnerRepository menuByPartnerRepository;
     private final PlaceTypeRepository placeTypeRepository;
     private final OwnerInterviewRepository ownerInterviewRepository;
+    private final PlaceCounterDayRepository placeCounterDayRepository;
+    private final PartnerByCouponRepository partnerByCouponRepository;
+    private final CouponRepository couponRepository;
+
+
+
+
+
+    // 장소리스트를 입력하면 장소마다 쿠폰/설문 유무를 반환해준다.
+    public List<PlaceInfoEntity> placeInfoEntitiesByCouponYn(List<PlaceInfoEntity> placeInfoEntities){
+
+        for (PlaceInfoEntity placeInfoEntity : placeInfoEntities) {
+
+            List<PartnerByCouponEntity> couponEntityList = partnerByCouponRepository.findByPartnerId(placeInfoEntity.getPartnerId());
+
+            if (CollectionUtils.isEmpty(couponEntityList)) continue;
+            couponEntityList.forEach(partnerByCouponEntity -> placeInfoEntity.couponIsTrue(partnerByCouponEntity.getCouponType()));
+
+        }
+
+        return placeInfoEntities;
+
+    }
+
+    public List<CouponEntity> getCouponByPlace(UUID placeId){
+
+        List<PartnerByCouponEntity> couponEntities = partnerByCouponRepository.findByPartnerId(placeId);
+        if (CollectionUtils.isEmpty(couponEntities)){
+            return Lists.newArrayList();
+        }
+
+        return couponRepository.findByCouponIdIn(couponEntities.stream().map(PartnerByCouponEntity::getCouponId).collect(Collectors.toList())).stream().filter(couponEntity -> couponEntity.isState()).collect(Collectors.toList());
+
+    }
 
 
 
@@ -71,7 +111,7 @@ public class PlaceService {
     public List<PlaceInfoEntity> getPlaceListByIdIn(List<UUID> placeIds) {
 
 
-        return partnerRepository.findByPartnerIdIn(placeIds);
+        return placeInfoEntitiesByCouponYn(partnerRepository.findByPartnerIdIn(placeIds));
 
     }
 
@@ -100,12 +140,44 @@ public class PlaceService {
 
     public Optional<PlaceInfoEntity> getPartnerByIdService(UUID uuid) {
 
-        return partnerRepository.findByPartnerId(uuid);
+        Optional<PlaceInfoEntity> placeInfoEntity = partnerRepository.findByPartnerId(uuid);
+
+        if (placeInfoEntity.isPresent()){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        LocalDate now = LocalDate.now();
+        Long nowToLong = Long.valueOf(now.format(formatter));
+        placeCounterDayRepository.incrementViewCountByPlaceId(nowToLong,placeInfoEntity.get().getPartnerId());
+        }
+
+        return placeInfoEntity;
+    }
+
+    public List<PlaceCounterDto> placeCountListByWeek(long day){
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        LocalDate now = LocalDate.now().minusDays(day);
+        Long nowToLong = Long.valueOf(now.format(formatter)); //일주일전날짜구함
+
+        List<PlaceCounterByDayEntity> list = placeCounterDayRepository.findByWeekCount(nowToLong);
+        list.forEach(System.out::println);
+
+        return list.stream()
+                .map(PlaceCounterDto::new).peek(placeCounterDto -> System.out.println(placeCounterDto))
+                .collect(Collectors.groupingBy(PlaceCounterDto::getPlaceId,Collectors.collectingAndThen(Collectors.toList(),styleCardCounterDtos -> {
+                    Long view = styleCardCounterDtos.stream().collect(Collectors.summingLong(PlaceCounterDto::getViewCount));
+                    Long scrap = styleCardCounterDtos.stream().collect(Collectors.summingLong(PlaceCounterDto::getLikeCount));
+                    return new AbstractMap.SimpleEntry<>(view,scrap);
+                })))
+                .entrySet()
+                .stream()
+                .map(uuidSimpleEntryEntry -> new PlaceCounterDto(uuidSimpleEntryEntry.getKey(),uuidSimpleEntryEntry.getValue().getKey(),uuidSimpleEntryEntry.getValue().getValue()))
+                .collect(Collectors.toList());
     }
 
     public List<PlaceInfoEntity> getPartnerInfoListService() {
 
-        return partnerRepository.findAll();
+
+        return placeInfoEntitiesByCouponYn(partnerRepository.findAll());
     }
 
     public List<PlaceInfoEntity> getPartnerInfoListByTagsService(List<String> tags) {
@@ -137,7 +209,7 @@ public class PlaceService {
                 }
             }
 
-            return resultList;
+            return placeInfoEntitiesByCouponYn(resultList);
         } else {
             return new ArrayList<>();
         }
@@ -173,7 +245,6 @@ public class PlaceService {
         return partnerRepository.insert(placeInfoEntity);
     }
 /*
-
     public List<PartnerInfo> newGetPartnerInfoListByTagsService(List<String> tags){
 
 
@@ -189,7 +260,6 @@ public class PlaceService {
             return null;
     }*/
 
-
     @Transactional
     public PlaceInfoDto modifyPlace(PlaceInfoEntity requestPlace, PlaceInfoEntity beforePlace, List<MenuByPlaceEntity> menuByPlaceEntityList) {
 
@@ -204,6 +274,7 @@ public class PlaceService {
         PlaceInfoEntity afterPlace = Optional.of(partnerRepository.save(beforePlace)).orElseThrow(CResourceNotExistException::new);
 
         if (CollectionUtils.isNotEmpty(requestPlace.getTags())) {
+            partnerByTagsRepository.deleteAll(beforePlace.getTags().stream().map(s -> new PartnersByTags(s,beforePlace.getPartnerId())).collect(Collectors.toList()));
             partnerByTagsRepository.saveAll(
                     afterPlace.getTags().stream()
                             .map(s -> new PartnersByTags(s, afterPlace.getPartnerId()))

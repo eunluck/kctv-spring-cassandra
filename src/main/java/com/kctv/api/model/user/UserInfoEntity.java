@@ -145,6 +145,11 @@ public class UserInfoEntity implements UserDetails {
     }
 
 
+    public void updatePassword(String userPassword){
+        this.userPassword = userPassword;
+        this.roles = this.roles.stream().filter(s -> !s.equals("ROLE_TEMP_PASSWORD")).collect(Collectors.toList());
+    }
+
     public void modifyUser(UserInfoEntity userInfoEntity, String pwd){
         if  (!Strings.isNullOrEmpty(userInfoEntity.getUserEmail()))
             this.userEmail = userInfoEntity.getUserEmail();

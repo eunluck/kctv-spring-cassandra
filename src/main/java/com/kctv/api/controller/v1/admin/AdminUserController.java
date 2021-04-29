@@ -58,10 +58,7 @@ public class AdminUserController {
     public SingleResult<ManagerDto> me() {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UUID uuid = UUID.fromString(authentication.getName());
-        UserInfoEntity user = Optional.of(userService.findByUserId(uuid)).orElseThrow(CUserNotFoundException::new);
-
-        return responseService.getSingleResult(new ManagerDto(user));
+        return responseService.getSingleResult(new ManagerDto((UserInfoEntity)authentication.getPrincipal()));
     }
 
 
@@ -85,10 +82,16 @@ public class AdminUserController {
     @GetMapping("/list")
     public ListResult<UserInfoDto> getAllUser() {
 
-        return responseService.getListResult(userService.getAllUserService().stream().map(userInfo ->
-                new UserInfoDto(userInfo, new ArrayList<String>(userService.getUserInterestTag(userInfo.getUserId())
-                        .orElseGet(() -> new UserInterestTagEntity(userInfo.getUserId(), null, Sets.newHashSet()))
-                        .getTags()))).filter(userInfoDto -> !Role.adminIsTrue(userInfoDto.getRoles()))
+        return responseService.getListResult(
+                userService.getAllUserService()
+                        .stream()
+                        .map(userInfo ->
+                new UserInfoDto(userInfo, new ArrayList<String>(
+                        userService.getUserInterestTag(userInfo.getUserId())
+                        .orElseGet(() ->
+                                new UserInterestTagEntity(userInfo.getUserId(), null, Sets.newHashSet()))
+                        .getTags()))).filter(userInfoDto ->
+                        !Role.adminIsTrue(userInfoDto.getRoles()))
                 .collect(toList()));
     }
 

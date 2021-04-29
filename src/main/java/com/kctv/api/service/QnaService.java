@@ -27,7 +27,14 @@ public class QnaService {
     private final QnaRepository qnaRepository;
 
 
+    public List<QnaAnswerEntity> qnaByQuestionIdList(UUID questionId){
 
+        return qnaAnswerRepository.findByQuestionId(questionId);
+    }
+
+    public QnaAnswerEntity findAnswerById(UUID questionId, UUID answerId){
+        return qnaAnswerRepository.findByQuestionIdAndAnswerId(questionId,answerId);
+    }
 
 
     public QnaByUserEntity findQuestion(UUID questionId){
@@ -55,11 +62,17 @@ public class QnaService {
             case "app":
                 question.setQuestionType("WakeUf 앱 문의");
                 break;
+            case "payment":
+                question.setQuestionType("결제 문의");
+                break;
+            case "pay":
+                question.setQuestionType("결제 문의");
+                break;
             case "etc":
                 question.setQuestionType("기타 문의");
                 break;
         }
-        question.setStatus("미답변");
+        question.setStatus("미접수");
 
         return qnaRepository.insert(new QnaByUserEntity(question,userId,Nickname,email));
     }
@@ -67,16 +80,17 @@ public class QnaService {
 
     public QnaAnswerEntity createAnswer(QnaAnswerEntity qnaAnswerEntity){
 
+        /*
         QnaByUserEntity qna = qnaRepository.findByUserIdAndQuestionId(qnaAnswerEntity.getUserId(), qnaAnswerEntity.getQuestionId()).orElseThrow(CResourceNotExistException::new);
-        qna.setStatus("답변완료");
 
-        qnaRepository.save(qna);
+        qnaRepository.save(qna);*/
 
         return qnaAnswerRepository.save(qnaAnswerEntity);
     }
 
 
     public QnaAnswerEntity saveOrInsertAnswer(QnaAnswerEntity qnaAnswerEntity){
+
 
         return qnaAnswerRepository.save(qnaAnswerEntity);
     }
@@ -109,13 +123,13 @@ public class QnaService {
                         .questionType(qnaEntity.getQuestionType())
                         .modifyDt(qnaEntity.getModifyDt())
                         .title(qnaEntity.getTitle())
-                        .remark(qnaEntity.getRemark())
                         .status(qnaEntity.getStatus())
+                        .address(qnaEntity.getAddress())
                         .userId(qnaEntity.getUserId())
                         .questionId(qnaEntity.getQuestionId())
                         .userNickname(qnaEntity.getUserNickname())
                         .userEmail(qnaEntity.getUserEmail())
-                        .answers(qnaAnswerRepository.findByQuestionId(qnaEntity.getQuestionId()))
+                        .answers(qnaAnswerRepository.findByQuestionId(qnaEntity.getQuestionId()).stream().limit(1).findFirst().orElseGet(() -> null))
                         .build())
                 .orElseThrow(CResourceNotExistException::new);
 

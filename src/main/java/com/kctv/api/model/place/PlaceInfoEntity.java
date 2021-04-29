@@ -5,6 +5,7 @@ import com.kctv.api.model.place.openinghours.CloseOrOpen;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 import org.apache.commons.collections.CollectionUtils;
+import org.springframework.data.annotation.ReadOnlyProperty;
 import org.springframework.data.cassandra.core.cql.PrimaryKeyType;
 import org.springframework.data.cassandra.core.mapping.*;
 
@@ -77,6 +78,9 @@ public class PlaceInfoEntity {
     @Column("images")
     private List<String> images;
 
+    @ApiModelProperty(value = "가게 부가정보", readOnly = true)
+    private String placeExplanation;
+
     @ApiModelProperty(value = "위도", readOnly = true)
     private Long latitude;
     @ApiModelProperty(value = "경도", readOnly = true)
@@ -84,6 +88,11 @@ public class PlaceInfoEntity {
     @ApiModelProperty(value = "서비스타입", readOnly = true)
     @Column("service_type")
     private String serviceType;
+
+    @ReadOnlyProperty
+    private boolean surveyCoupon;
+    @ReadOnlyProperty
+    private boolean placeCoupon;
 
     public void modifyEntity(PlaceInfoEntity requestPlace){
         if (CollectionUtils.isNotEmpty(requestPlace.getPartnerHomepage()))
@@ -112,6 +121,8 @@ public class PlaceInfoEntity {
             this.storeParentType = requestPlace.getStoreParentType();
         if (!Strings.isNullOrEmpty(requestPlace.getDetailed_address()))
             this.detailed_address = requestPlace.getDetailed_address();
+        if (!Strings.isNullOrEmpty(requestPlace.getPlaceExplanation()))
+            this.placeExplanation = requestPlace.getPlaceExplanation();
         if (requestPlace.getLatitude() != null && requestPlace.getLatitude() != 0)
             this.latitude = requestPlace.getLatitude();
         if (requestPlace.getLongitude() != null && requestPlace.getLongitude() != 0)
@@ -131,5 +142,14 @@ public class PlaceInfoEntity {
     }
 
 
+
+    public void couponIsTrue(String couponType){
+        if (couponType.equals("survey")){
+            this.surveyCoupon = true;
+        }else {
+            this.placeCoupon = true;
+        }
+
+    }
 
 }

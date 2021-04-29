@@ -1,5 +1,6 @@
 package com.kctv.api.controller.v1;
 
+import com.google.common.collect.Lists;
 import com.kctv.api.model.qna.QnaByUserEntity;
 import com.kctv.api.model.user.UserInfoEntity;
 import com.kctv.api.model.qna.QnaDto;
@@ -18,6 +19,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @Api(tags = {"09.QnaAPI"})
@@ -39,16 +41,29 @@ public class QnaController {
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 token", required = true, dataType = "String", paramType = "header"),
     })
     @GetMapping("/qna/me")
-    public ListResult<QnaByUserEntity> getMyQnaList(){
+    public ListResult<QnaDto> getMyQnaList(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UUID uuid = UUID.fromString(authentication.getName());
+        UserInfoEntity user = (UserInfoEntity)authentication.getPrincipal();
 
-        return responseService.getListResult(qnaService.getQnaList(uuid));
+        List<QnaByUserEntity> qnaList = qnaService.getQnaList(user.getUserId());
+        List<QnaDto> result = Lists.newArrayList();
+
+        for (QnaByUserEntity qna : qnaList){
+
+            result.add(qnaService.getQna(qna.getQuestionId()));
+        }
+
+
+
+        return responseService.getListResult(result);
     }
 
 
 
     @ApiOperation(value = "QnA상세보기", notes = "등록했던 문의 글을 상세 조회한다.")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 token", required = true, dataType = "String", paramType = "header"),
+    })
     @GetMapping("/qna/{questionId}")
     public SingleResult<QnaDto> getQnaByUserId(@PathVariable("questionId") UUID questionId){
 
@@ -66,12 +81,10 @@ public class QnaController {
     @PostMapping("/qna")
     public SingleResult<QnaByUserEntity> postQnaByUser(@RequestBody QnaRequest qnaRequest){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UUID uuid = UUID.fromString(authentication.getName());
-
-        UserInfoEntity user = userService.findByUserId(uuid);
+        UserInfoEntity user = (UserInfoEntity)authentication.getPrincipal();
 
 
-        return responseService.getSingleResult(qnaService.postQuestion(qnaRequest,uuid,user.getUserNickname(),user.getUserEmail()));
+        return responseService.getSingleResult(qnaService.postQuestion(qnaRequest,user.getUserId(),user.getUserNickname(),user.getUserEmail()));
     }
 
 

@@ -5,7 +5,9 @@ import com.google.common.base.Strings;
 import com.kctv.api.advice.exception.CRequiredValueException;
 import com.kctv.api.advice.exception.CResourceNotExistException;
 import com.kctv.api.model.interview.InterviewByPlaceIdEntity;
+import com.kctv.api.model.interview.OwnerInterviewDto;
 import com.kctv.api.model.interview.OwnerInterviewEntity;
+import com.kctv.api.repository.ap.PartnerRepository;
 import com.kctv.api.repository.interview.InterviewByPlaceIdRepository;
 import com.kctv.api.repository.interview.OwnerInterviewRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,15 +22,22 @@ public class InterviewService {
 
     private final OwnerInterviewRepository ownerInterviewRepository;
     private final InterviewByPlaceIdRepository interviewByPlaceIdRepository;
-
+    private final PartnerRepository partnerRepository;
     public List<OwnerInterviewEntity> findByOwnerInterviewListService(){
 
 
-        ownerInterviewRepository.findAll().stream().sorted(Comparator.comparingLong(value -> value.getCreateDt().toInstant().getEpochSecond())).limit(5).collect(Collectors.toList());
 
-        return ownerInterviewRepository.findAll();
+
+        return ownerInterviewRepository.findAll().stream().filter(OwnerInterviewEntity::getStatus).sorted(Comparator.comparingLong(value -> value.getCreateDt().toInstant().getEpochSecond())).limit(5).collect(Collectors.toList());
     }
 
+
+    public List<OwnerInterviewDto> findByOwnerInterviewListServiceAdminVer(){
+
+
+
+        return ownerInterviewRepository.findAll().stream().sorted(Comparator.comparingLong(value -> value.getCreateDt().toInstant().getEpochSecond())).map(ownerInterviewEntity -> new OwnerInterviewDto(ownerInterviewEntity,partnerRepository.findByPartnerId(ownerInterviewEntity.getPlaceId()).orElseThrow(CResourceNotExistException::new))).collect(Collectors.toList());
+    }
     public Optional<OwnerInterviewEntity> findByOwnerInterViewService(UUID placeId){
 
 
@@ -43,6 +52,7 @@ public class InterviewService {
     }
 
     public OwnerInterviewEntity saveOwnerInterviewEntity(OwnerInterviewEntity ownerInterviewEntity){
+
 
         return ownerInterviewRepository.save(ownerInterviewEntity);
     }

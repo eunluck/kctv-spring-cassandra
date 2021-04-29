@@ -20,8 +20,6 @@ public class UserInfoConvertCallback implements BeforeConvertCallback<UserInfoEn
     @Override
     public UserInfoEntity onBeforeConvert(UserInfoEntity userInfoEntity, CqlIdentifier cqlIdentifier) {
 
-
-        System.out.println(cqlIdentifier.toString());
         AES256Util aes = AES256Util.getInstance();
 
         userInfoEntity.setUserEmail(aes.encrypt(userInfoEntity.getUserEmail()));

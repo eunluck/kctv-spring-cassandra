@@ -18,6 +18,7 @@ import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -53,6 +54,22 @@ public class StorageService {
         this.captivePortalAdRepository = captivePortalAdRepository;
     }
 
+
+    public List<String> getFileFullName(String param,File dir){
+
+        String[] fileName = dir.list();
+        List<String> paramFile = Lists.newArrayList();
+
+        for (int i = 0; i < fileName.length; i++) {
+
+            if (fileName[i].startsWith(param)){
+                paramFile.add(fileName[i]);
+
+            }
+        }
+
+        return paramFile;
+    }
 
     public byte[] getInterviewImage(String placeId,String interviewId,String param) throws IOException {
 
@@ -303,22 +320,24 @@ public class StorageService {
 
     public void ownerInterviewModifyCover(UUID placeId, MultipartFile cover,UUID interviewId) throws IOException {
 
-        File dir = new File(basePath+interviewImagePath+"/"+placeId+"/"+interviewId);
+/*
+
         String[] fileName = dir.list();
 
 
         String paramFile = null;
 
+        if (fileName ==null || fileName.length == 0){
+            return;
+        }
         for (int i = 0; i < fileName.length; i++) {
 
             if (fileName[i].startsWith("cover")){
                 paramFile = fileName[i];
             }
         }
-
-        Path directory = Paths.get(basePath + interviewImagePath +"/" +placeId+"/"+interviewId+"/"+"cover").normalize();
-        Files.deleteIfExists(directory.resolve(paramFile));
-
+*/
+        Path directory = Paths.get(basePath + interviewImagePath +"/" +placeId+"/"+interviewId).normalize();
         saveOwnerInterviewFile(directory.resolve("cover"+cover.getOriginalFilename().substring(cover.getOriginalFilename().lastIndexOf("."))).normalize(),"cover",cover);
 
     }
@@ -335,6 +354,7 @@ public class StorageService {
 
 
     public void ownerInterviewUploadStepTwo(UUID placeId, Map<String,MultipartFile> files,UUID interviewId) throws IOException {
+
         // cover : file
         // 1 : file
         Path directory = Paths.get(basePath + interviewImagePath +"/" +placeId+"/"+interviewId).normalize();
@@ -343,6 +363,7 @@ public class StorageService {
 
         files.forEach((s, file) -> {
             try {
+
                 saveOwnerInterviewFile(path.resolve(s+file.getOriginalFilename().substring(file.getOriginalFilename().lastIndexOf("."))).normalize(),s,file);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -356,15 +377,22 @@ public class StorageService {
 
 
         Assert.state(!file.getOriginalFilename().contains(".."), "Name of file cannot contain '..'");       // 파일명에 '..' 문자가 들어 있다면 오류를 발생하고 아니라면 진행(해킹및 오류방지)
-        Assert.state(!Files.exists(path), key + " File alerdy exists.");  // 파일이 이미 존재하는지 확인하여 존재한다면 오류를 발생하고 없다면 저장한다.
+        List<String> fileList = getFileFullName(key,path.toFile().getParentFile());
+
+
 /*
 
         String fileName = file.getOriginalFilename();
         fileName.substring(fileName.lastIndexOf("/"));
 */
+        if (!CollectionUtils.isEmpty(fileList)) {
+            for (String s : fileList) {
+                Files.deleteIfExists(path.getParent().resolve(s));
+            }
+
+        }
+
         file.transferTo(path);
-
-
     }
 
 

@@ -13,5 +13,9 @@ public interface PartnerByTagsRepository extends CassandraRepository<PartnersByT
     List<PartnersByTags> findByTag(String param);
 
 
+    //사용후지울것
+    PartnersByTags findByTagAndPartnerId(String param,UUID partnerId);
+
+
 
 }

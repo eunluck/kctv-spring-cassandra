@@ -7,6 +7,7 @@ import com.kctv.api.config.security.JwtTokenProvider;
 
 
 import com.kctv.api.model.admin.ManagerDto;
+import com.kctv.api.model.user.PasswordUpdateRequest;
 import com.kctv.api.model.user.UserInfoEntity;
 import com.kctv.api.model.user.UserInfoDto;
 import com.kctv.api.model.user.UserInterestTagEntity;
@@ -45,6 +46,9 @@ public class UserController {
     private final UserService userService;
     private final WakeupPermissionService wakeupPermissionService;
 
+
+
+
     @ApiOperation(value = "회원가입 API", notes = "회원가입 후 인증메일을 발송한다. (인증링크유효기간3분)")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "userInfo", value = "수정할 데이터 body", dataType = "SignUpEx", required = true)
@@ -61,13 +65,40 @@ public class UserController {
             throw new COverlapSnsKey();
         }
 
-        SingleResult<UserInfoEntity> result = responseService.getSingleResult(userService.userSignUpService(userInfoEntity));
+        UserInfoEntity signUpUser = userService.userSignUpService(userInfoEntity);
+        SingleResult<UserInfoEntity> result = responseService.getSingleResult(userService.findByUserId(signUpUser.getUserId()));
         if ("user".equals(result.getData().getUserEmailType()))
             result.setMessage("이메일로 인증 링크를 보내드렸습니다. 회원가입을 완료해주세요.");
 
         return result;
 
     }
+
+
+
+    @ApiOperation(value = "비밀번호 변경 API", notes = "비밀번호를 변경한다.")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 token", required = true, dataType = "String", paramType = "header")
+    })
+    @PutMapping("/user/password")
+    public SingleResult<UserInfoEntity> changePassword(@RequestBody PasswordUpdateRequest request){
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        UserInfoEntity user = (UserInfoEntity) authentication.getPrincipal();
+
+        if (!"user".equals(user.getUserEmailType())){
+            throw new CIncorrectPasswordException("sns 회원은 비밀번호 변경이 불가합니다.");
+        }
+        if (!userService.userPasswordMatches(user,request.getCurrentPassword())){
+            throw new CIncorrectPasswordException();
+        }else {
+            user.updatePassword(request.getNewPassword());
+            userService.userUpdatePassword(user);
+        return responseService.getSingleResult(user);
+        }
+    }
+
 
 
     @ApiOperation(value = "회원탈퇴 API", notes = "사용자를 삭제한다.")
@@ -79,9 +110,7 @@ public class UserController {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        UUID uuid = UUID.fromString(authentication.getName());
-
-        UserInfoEntity deleteRequest = Optional.of(userService.findByUserId(uuid)).orElseThrow(CUserNotFoundException::new);
+        UserInfoEntity deleteRequest = (UserInfoEntity) authentication.getPrincipal();
 
         return responseService.getSingleResult(userService.deleteUserInfo(deleteRequest));
 
@@ -98,9 +127,8 @@ public class UserController {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        UUID uuid = UUID.fromString(authentication.getName());
-        UserInfoEntity user = Optional.ofNullable(userService.findByUserId(uuid)).orElseThrow(CUserNotFoundException::new);
-        UserInterestTagEntity userInterestTagEntity = userService.getUserInterestTag(uuid).orElse(new UserInterestTagEntity(user.getUserId(), null, Sets.newHashSet()));
+        UserInfoEntity user = (UserInfoEntity) authentication.getPrincipal();
+        UserInterestTagEntity userInterestTagEntity = userService.getUserInterestTag(user.getUserId()).orElse(new UserInterestTagEntity(user.getUserId(), null, Sets.newHashSet()));
         List<String> userTags = new ArrayList<>(userInterestTagEntity.getTags());
 
         WakeupPermissionEntity wakeupPermissionEntity = wakeupPermissionService.findPermissionByUserId(user.getUserId());
@@ -125,7 +153,7 @@ public class UserController {
         List<String> userTags = new ArrayList<>(userInterestTagEntity.getTags());
         WakeupPermissionEntity permission = wakeupPermissionService.findPermissionByUserId(afterUser.getUserId());
 
-        return responseService.getSingleResult(new UserInfoDto(afterUser, userTags, permission));
+        return responseService.getSingleResult(new UserInfoDto(userService.findByUserId(afterUser.getUserId()), userTags, permission));
     }
 
     @ApiOperation(value = "로그인 api", notes = "정보 조회 및 JWT 토큰을 발급한다.")
@@ -139,10 +167,8 @@ public class UserController {
         if (loginRequest.getUserEmailType().equals("user")) {
             UserInfoEntity user = userService.checkByEmail(loginRequest.getUserEmail(), loginRequest.getUserEmailType()).orElseThrow(CNotFoundEmailException::new);
             UserInfoEntity loginUser = userService.userLoginService(user.getUserEmail(), user.getUserEmailType(), loginRequest.getUserPassword()).orElseThrow(CIncorrectPasswordException::new);
-
             if (Role.adminIsTrue(loginUser.getRoles())) {
                 LoginResult<ManagerDto> resultManager = responseService.getLoginResult(new ManagerDto(loginUser));
-
                 resultManager.setToken(jwtTokenProvider.createToken(String.valueOf(loginUser.getUserId()), loginUser.getRoles()));
 
                 return resultManager;
@@ -209,7 +235,6 @@ public class UserController {
     @GetMapping("/user/tag/me")
     public SingleResult<UserInterestTagEntity> getUserInterestTags() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
 
         System.out.println("디버깅getUserInterestTags::" + authentication.getName());
         UUID userId = UUID.fromString(authentication.getName());

@@ -22,9 +22,9 @@ public class StyleCardCounterByDayEntity {
     @Column("view_count")
     @CassandraType(type= CassandraType.Name.COUNTER)
     private Long viewCount;
-
+/*
     @ReadOnlyProperty
-    private String cardName;
+    private String cardName;*/
 
 
     @Data

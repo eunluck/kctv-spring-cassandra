@@ -25,10 +25,10 @@ public class QnaDto {
     private Long latitude;
     private Long longitude;
     private String questionType;
+    private String address;
     private String status;
     private String title;
-    private String remark;
-    private List<QnaAnswerEntity> answers;
+    private QnaAnswerEntity answers;
     @ApiModelProperty(required = true,hidden = true,notes = "사용자 계정에 저장되어있는 이메일")
     private String userEmail;
     @ApiModelProperty(required= true,notes = "사용자 계정에 저장되어있는 닉네임")

@@ -1,11 +1,13 @@
 package com.kctv.api.model.place;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.google.common.base.Strings;
 import com.google.common.collect.Maps;
 import com.kctv.api.model.interview.OwnerInterviewEntity;
 import com.kctv.api.model.place.openinghours.CloseOrOpen;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
+import org.springframework.data.annotation.ReadOnlyProperty;
 import org.springframework.data.cassandra.core.mapping.Column;
 import org.springframework.util.CollectionUtils;
 
@@ -77,6 +79,7 @@ public class PlaceInfoDto {
     @ApiModelProperty(value = "경도", readOnly = true)
     private Long longitude;
     private String serviceType;
+    private String placeExplanation;
     private OwnerInterviewEntity ownerInterview;
 
 
@@ -93,6 +96,8 @@ public class PlaceInfoDto {
         Map<String,String> resultMap = Maps.newLinkedHashMap();
         for (CloseOrOpen oneday : original){
             String korean = null;
+            String openingTime = oneday.getOpen().getTime();
+            String closingTime = oneday.getClose().getTime();
             switch (oneday.getOpen().getDay()){
                 case 1:
                     korean = "월";
@@ -128,8 +133,8 @@ public class PlaceInfoDto {
                     korean = "매일";
                     break;
             }
-            if(!"close".equals(oneday.getOpen().getTime())){
-            resultMap.put(korean,oneday.getOpen().getTime().substring(0,2)+":"+ oneday.getOpen().getTime().substring(2,4) +" - "+oneday.getClose().getTime().substring(0,2)+":"+ oneday.getClose().getTime().substring(2,4));
+            if(!"close".equals(openingTime) && !Strings.isNullOrEmpty(openingTime) && !Strings.isNullOrEmpty(closingTime)){
+            resultMap.put(korean,openingTime.substring(0,2)+":"+ openingTime.substring(openingTime.length() - 2) +" - "+closingTime.substring(0,2)+":"+ closingTime.substring(closingTime.length()-2));
             }else {
                 resultMap.put(korean,oneday.getOpen().getTime());
             }

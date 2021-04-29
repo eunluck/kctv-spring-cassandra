@@ -15,7 +15,7 @@ import java.util.UUID;
 @Table("owner_interview")
 public class OwnerInterviewEntity {
 
-    @PrimaryKeyColumn(value = "interview_id",type = PrimaryKeyType.PARTITIONED)
+    @PrimaryKeyColumn(value = "interview_id",type = PrimaryKeyType.PARTITIONED,ordinal = 0)
     private UUID interviewId;
     @Column("place_id")
     private UUID placeId;
@@ -25,7 +25,7 @@ public class OwnerInterviewEntity {
     @Column("owner_saying")
     private String ownerSaying;
     //private PlaceInfoEntity placeInfo;
-    @PrimaryKeyColumn(value = "create_dt",type = PrimaryKeyType.CLUSTERED,ordering = Ordering.DESCENDING)
+    @PrimaryKeyColumn(value = "create_dt",type = PrimaryKeyType.CLUSTERED,ordering = Ordering.DESCENDING,ordinal = 1)
     private Date createDt;
     @Column("modify_dt")
     private Date modifyDt;

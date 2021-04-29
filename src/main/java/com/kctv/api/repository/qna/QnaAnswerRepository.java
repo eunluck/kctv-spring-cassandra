@@ -9,5 +9,6 @@ import java.util.UUID;
 public interface QnaAnswerRepository extends CassandraRepository<QnaAnswerEntity, UUID> {
 
     List<QnaAnswerEntity> findByQuestionId(UUID id);
+    QnaAnswerEntity findByQuestionIdAndAnswerId(UUID questionId, UUID answerId);
 
 }

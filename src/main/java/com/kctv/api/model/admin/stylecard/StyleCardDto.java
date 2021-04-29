@@ -36,6 +36,8 @@ public class StyleCardDto {
     private Date modifyAt;
     @ApiModelProperty(value = "큐레이터의 소갯말")
     private String curatorSaying;
+    @ApiModelProperty(value = "카드 내용")
+    private String content;
     @ApiModelProperty(value = "장소 정보")
     private List<PlaceInfoEntity> placeInfoEntityList;
 

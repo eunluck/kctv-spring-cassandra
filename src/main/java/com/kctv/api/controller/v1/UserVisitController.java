@@ -42,7 +42,7 @@ public class UserVisitController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 token", required = true, dataType = "String", paramType = "header")
     })
-    @GetMapping(value = "/")
+    @GetMapping(value = "")
     public ListResult<UserVisitHistoryDto> visitHistory(){
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -75,7 +75,7 @@ public class UserVisitController {
     @ApiImplicitParams({
             @ApiImplicitParam(name = "Authorization", value = "로그인 성공 후 token", required = true, dataType = "String", paramType = "header")
     })
-    @GetMapping("/user/visit/count")
+    @GetMapping("/count")
     public ListResult<?> visitCountByPlace() {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -103,14 +103,5 @@ public class UserVisitController {
         }
 
     }
-
-
-
-
-
-
-
-
-
 
 }

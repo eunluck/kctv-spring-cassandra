@@ -1,3 +1,4 @@
+/*
 package com.kctv.api.repository.card;
 
 import com.kctv.api.model.stylecard.StyleCardCounterEntity;
@@ -22,3 +23,4 @@ public interface StyleCardCounterRepository extends CassandraRepository<StyleCar
 
 
 }
+*/

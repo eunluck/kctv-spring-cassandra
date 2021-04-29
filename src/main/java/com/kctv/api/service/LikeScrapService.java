@@ -6,6 +6,7 @@ import com.kctv.api.model.stylecard.StyleCardInfoEntity;
 import com.kctv.api.model.user.UserLikePartnerEntity;
 import com.kctv.api.model.user.UserScrapCardEntity;
 import com.kctv.api.repository.ap.PartnerRepository;
+import com.kctv.api.repository.ap.PlaceCounterDayRepository;
 import com.kctv.api.repository.card.StyleCardCounterDayRepository;
 import com.kctv.api.repository.card.StyleCardRepository;
 import com.kctv.api.repository.user.UserLikeRepository;
@@ -26,15 +27,25 @@ public class LikeScrapService {
     private final PartnerRepository partnerRepository;
     private final UserScrapRepository userScrapRepository;
     private final StyleCardRepository styleCardRepository;
+    private final PlaceCounterDayRepository placeCounterDayRepository;
     private final StyleCardCounterDayRepository counterRepository;
     /* 좋아요 기능*/
     public Optional<UserLikePartnerEntity> userLikePartnerService(UUID userId, UUID placeId){
 
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+        LocalDate now = LocalDate.now();
+        Long nowToLong = Long.valueOf(now.format(formatter));
+
+
         if(likeCheck(userId,placeId)){
             userLikeRepository.delete(UserLikePartnerEntity.builder().partnerId(placeId).userId(userId).build());
+            placeCounterDayRepository.decrementLikeCountByPlaceId(nowToLong,placeId);
 
             return Optional.empty();
         }else{
+            placeCounterDayRepository.incrementViewCountByPlaceId(nowToLong,placeId);
+            userLikeRepository.save(UserLikePartnerEntity.builder().partnerId(placeId).userId(userId).build());
+
 
             return Optional.of(userLikeRepository.save(UserLikePartnerEntity.builder().partnerId(placeId).userId(userId).build()));
         }

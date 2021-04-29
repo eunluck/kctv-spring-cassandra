@@ -12,10 +12,8 @@ import org.springframework.data.cassandra.core.mapping.Column;
 import org.springframework.data.cassandra.core.mapping.PrimaryKeyColumn;
 import org.springframework.data.cassandra.core.mapping.Table;
 
-import java.util.Date;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 import static org.springframework.beans.BeanUtils.copyProperties;
 
@@ -73,9 +71,25 @@ public class WakeupPermissionEntity {
         this.plan = "FREE";
         this.volume = 524288000L;
         this.useVolume = null;
-        this.expireEpoch = null;
+        this.expireEpoch = getmidnight();
 
     }
+
+    public long getmidnight() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        sdf.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
+        String aaa = sdf.format(new Date(System.currentTimeMillis()));
+        long ts = 0;
+        try {
+            Date d = sdf.parse(aaa);
+            ts = d.getTime() + 3600 * 24 * 1000;
+        } catch (java.text.ParseException e) {
+            e.printStackTrace();
+        }
+        return ts;
+    } //자정 가져오기
+
+
 
 
 

@@ -36,9 +36,11 @@ public enum Role {
     public static Role findAuthorityByDescription(String description) throws RoleNotFoundException {
 
         return Arrays.stream(Role.values())
-                .filter(role -> role.description.equals(description))
+                .filter(role ->
+                        role.description.equals(description))
                 .findAny()
-                .orElseThrow(() -> new RoleNotFoundException("존재하지 않는 권한입니다."));
+                .orElseThrow(() ->
+                        new RoleNotFoundException("존재하지 않는 권한입니다."));
     }
 
 

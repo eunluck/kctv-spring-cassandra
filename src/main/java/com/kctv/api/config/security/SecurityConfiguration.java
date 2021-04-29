@@ -112,7 +112,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/v1/faq").permitAll() // 태그 조회
                 .antMatchers("/v1/payment/**").permitAll() // 태그 조회
                 .antMatchers("/place/**").permitAll() // 사장님인터뷰 조회
-
                 .antMatchers("/exception/**").permitAll() // 토큰 예외처리
                 // 위 URL들은 토큰없이 접속 가능
                 .antMatchers("/v1/admin/**").hasAnyRole("ADMIN","AP_ADMIN","CUSTOMER_ADMIN","WIRELESS_ADMIN")
@@ -123,8 +122,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .exceptionHandling().authenticationEntryPoint(new CustomAuthenticationEntryPoint()) //authenticationEntryPoint로 필터단에서 나는 예외 처리
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class); // jwt token 필터를 id/password 인증 필터 전에 넣는다
-
     }
+
 
     @Override // ignore check swagger resource
     public void configure(WebSecurity web) {
